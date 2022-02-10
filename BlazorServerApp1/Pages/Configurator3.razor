@@ -1,0 +1,25 @@
+﻿@using BlazorServerApp1.Pages
+@using BlazorServerApp1.Data
+
+@page "/Configurator3"
+@inherits Configurator3Base
+
+<h3>Configurator3</h3>
+
+<select @bind="CUSTNAME" >
+    @if (lstCustomers != null)
+    {
+        @foreach (CUSTOMER_Class c in lstCustomers)
+        {
+            <option value = "@c.CUSTNAME">@c.CUSTDES</option>
+        }
+    }
+</select> />
+
+@code {
+    protected string CUSTNAME;
+    protected static string errMsg = string.Empty;
+    protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+    int x = 17;
+    // protected List<string>? lstCustomers = getCustomers();
+}
