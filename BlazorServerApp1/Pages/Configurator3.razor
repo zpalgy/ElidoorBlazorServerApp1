@@ -6,20 +6,60 @@
 
 <h3>Configurator3</h3>
 
-<select @bind="CUSTNAME" >
-    @if (lstCustomers != null)
-    {
-        @foreach (CUSTOMER_Class c in lstCustomers)
-        {
-            <option value = "@c.CUSTNAME">@c.CUSTDES</option>
-        }
-    }
-</select> />
+<div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+    <table id="tblLine1">
+        <tr>
+            <th>תאריך</th>
+            <th>שם ממלא שאלון</th>
+            <th>אסמכתא</th>
+        </tr>
+        <tr>
+            <td>
+                <input id="txtDate" />
+            </td>
+            <td>
+                <input id="txtFormFiller" />
+            </td>
+            <td>
+                <input id="txtReference" />
+            </td>
+            <td>
+                <label id="lblMsgL1" />
+            </td>
+        </tr>
+    </table>
 
+    <table id="tblLine2">
+        <tr>
+            <th>שם משווק</th>
+            <th>שם לקוח קצה</th>
+            <th>כתובת</th>
+            <th>כתובת לאספקה</th>
+        </tr>
+        <tr>
+            <td>
+                <select id="dlstCustDes" @bind="CUSTNAME" hidden="@hideCustDes">
+                    @if (lstCustomers != null)
+                    {
+                        @foreach (CUSTOMER_Class c in lstCustomers)
+                        {
+                            <option value="@c.CUSTNAME">@c.CUSTDES</option>
+                        }
+                    }
+                </select> />
+            </td>
+        </tr>
+    </table>
+</div>
 @code {
     protected string CUSTNAME;
+    protected bool hideCustDes { get; set; } = false;
     protected static string errMsg = string.Empty;
     protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
     int x = 17;
-    // protected List<string>? lstCustomers = getCustomers();
-}
+    //BlazorServerApp1.Pages.Configurator3
+
+
+    }
+
+
