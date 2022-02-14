@@ -4,6 +4,8 @@
 @page "/Configurator3"
 @inherits Configurator3Base
 
+@inject IJSRuntime JS
+
 <h3>Configurator3</h3>
 
 <div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
@@ -15,16 +17,16 @@
         </tr>
         <tr>
             <td>
-                <input id="txtDate" />
+                <input name="txtDate" />
             </td>
             <td>
-                <input id="txtFormFiller" />
+                <input name="txtFormFiller" />
             </td>
             <td>
-                <input id="txtReference" />
+                <input name="txtReference" />
             </td>
             <td>
-                <label id="lblMsgL1" />
+                <label id="lblMsgL1"  />
             </td>
         </tr>
     </table>
@@ -38,7 +40,12 @@
         </tr>
         <tr>
             <td>
-                <select id="dlstCustDes" @bind="CUSTNAME" hidden="@hideCustDes">
+                <select name="dlstAgent"  dir="rtl" >
+
+                </select>
+            </td>
+            <td>
+                <select name="dlstCustDes" @bind="CUSTNAME" hidden="@hideCustDes">
                     @if (lstCustomers != null)
                     {
                         @foreach (CUSTOMER_Class c in lstCustomers)
@@ -48,9 +55,38 @@
                     }
                 </select> />
             </td>
+            <td>
+                <input dir="rtl" />
+            </td>
+            <td>
+                <input dir="rtl" />
+            </td>
+        </tr>
+    </table>
+    <table id="tblProducts">
+        <tr>
+            <td>
+                <button name="btnDoor">דלת</button>
+            </td>
+            <td>
+                <button name="btnLintel">משקוף</button>
+            </td>
+            <td>
+                <button name="btnCover">חיפוי</button>
+            </td>
+            <td>
+                <button name="btnSideUnit">יחידת צד</button>
+            </td>
+            <td>
+                <button name="btnECabinet">ארון חשמל</button>
+            </td>
+            <td>
+                <button name="btnShelves">מדפים</button>
+            </td>
         </tr>
     </table>
 </div>
+<!--end of divHeader -->
 @code {
     protected string CUSTNAME;
     protected bool hideCustDes { get; set; } = false;
@@ -59,7 +95,112 @@
     int x = 17;
     //BlazorServerApp1.Pages.Configurator3
 
-
     }
+
+<div id ="divDoor" dir="rtl" >
+
+    <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+        <table id="tblDoorTitle">
+            <tr>
+                <th id="thWingsNum" runat="server">מיפתח</th>
+                <th id="thOpenMode" runat="server">צורת פתיחה</th>
+                <th id="thComplient" runat="server">דלת תואם אלידור</th>
+                <th id="thPARTNAME" runat="server">דגם</th>
+                <th id="thFamily" runat="server">סידרה</th>
+            </tr>
+            <tr>
+                <td>
+                    <select name="dlstWingsNum" >
+                        <option>בחר סוג מיפתח</option>
+                        <option>כנף</option>
+                        <option>כנף וחצי</option>
+                        <option>דו כנפי</option>
+                    </select>
+                </td>
+                <td>
+                     <select name="dlstOpenMode" >
+                                <option>בחר צורת פתיחה</option>
+                                <option>החוצה</option>
+                                <option>פנימה</option>
+                     </select>
+                </td>
+
+                <td>
+                    <input type="checkbox"  name="chkbComplient"   />
+                </td>
+                <td>
+                    <select name="dlstPARTNAME" >
+                   </select>
+                </td>
+                <td>
+                    <input name="txtFAMILY"  Enabled="false" />
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    <!-- end divDoorTitle -->
+
+
+    <br />
+    <br />
+    <br />
+
+    @code {
+        // tab control here - 
+        // tab content pages in separate *.razor files
+        // ref: https://blazor-university.com/templating-components-with-renderfragements/creating-a-tabcontrol/
+    }
+
+        <div id="dvTab">
+        <div id="divTabContent" class="tab-content" dir="rtl">
+            <div id="movingwing" role="tabpanel" class="tab-pane active tabDiv" dir="rtl">
+                <table id="MovingWingL1">
+                    <tr>
+
+                        <th id="thOpenSide" runat="server">כיוון פתיחה (R,L)</th>
+                        <th id="thDecorFormat" runat="server">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>
+                        <th id="thTwoColors" runat="server">צביעה בשני צבעים</th>
+                        <th id="thDoorWidth" runat="server">רוחב דלת</th>
+                        <th id="thDoorColor" runat="server">גוון דלת</th>
+                    </tr>
+                    <tr>
+                        <td id="tdOpenSide" runat="server">
+                            <select name="dlstOpenSide" >
+                                <option> </option>
+                                <option>ימין</option>
+                                <option>שמאל</option>
+                            </select>
+                        </td>
+                        <td id="tdDecorFormat" runat="server">
+                            <select name="dlstDecorFormat" >
+                                <option>ללא</option>
+                                <option>חוץ</option>
+                                <option>פנים</option>
+                                <option>דו צדדי</option>
+                            </select>
+                        </td>
+                        <td id="tdTwoColors" runat="server">
+                            <input type="checkbox" name="chkbTwoColors"     />
+                        </td>
+                        <td id="tdDoorWidth" runat="server">
+                            <input name="txtDoorWidth" />
+                        </td>
+                        <td id="tdDoorColor" runat="server">
+                            <select name="dlstDoorColor" >
+                                </select>
+                        </td>
+                    </tr>
+                </table>
+                <!-- end table MovingWingL1 -->
+            </div>
+            <!-- end div movingwing -->
+        </div>
+        <!-- end divTabContent -->
+    </div>
+    <!-- end dvTab -->
+    </div>
+    <!-- end divDoor -->
+
 
 
