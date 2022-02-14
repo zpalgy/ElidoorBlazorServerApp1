@@ -1,0 +1,158 @@
+﻿@using BlazorServerApp1.Data
+
+@page "/Movingwing"
+
+<style>
+    th, td {
+        padding: 15px;
+        text-align: center;
+    }
+</style>
+
+<table id="MovingWingL1">
+    <tr>
+
+        <th id="thOpenSide">כיוון פתיחה (R,L)</th>
+        <th id="thDecorFormat">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>
+        <th id="thTwoColors">צביעה בשני צבעים</th>
+        <th id="thDoorWidth">רוחב דלת</th>
+        <th id="thDoorColor">גוון דלת</th>
+    </tr>
+    <tr>
+        <td id="tdOpenSide">
+            <select name="dlstOpenSide">
+                <option> </option>
+                <option>ימין</option>
+                <option>שמאל</option>
+            </select>
+        </td>
+        <td id="tdDecorFormat">
+            <select name="dlstDecorFormat">
+                <option>ללא</option>
+                <option>חוץ</option>
+                <option>פנים</option>
+                <option>דו צדדי</option>
+            </select>
+        </td>
+        <td id="tdTwoColors">
+            <input type="checkbox" name="chkbTwoColors" />
+        </td>
+        <td id="tdDoorWidth">
+            <input name="txtDoorWidth" />
+        </td>
+        <td id="tdDoorColor">
+            <select name="dlstDoorColor">
+            </select>
+        </td>
+    </tr>
+</table>
+<!-- end table MovingWingL1 -->
+<br />
+                                            <table id="MovingWingL2">
+                                                <tr>
+                                                    <th id="thDoorHeight" >גובה דלת</th>
+                                                    <th id="thTurboApparatus" >מנגנון תגבור</th>
+                                                    <th id="thLockDrilHeight" >גובה ניקוב / מרכז לשונית</th>
+                                                    <th id="thLogo" >לוגו</th>
+                                                    <th id="thHw" >פירזול</th>
+                                                    <th id="thHwColor" >פירזול בצבע</th>
+                                                    <th id="thDril4Hw" >ניקוב פירזול</th>
+                                                </tr>
+                                                <tr>
+                                                    <td id="tdDoorHeight" >
+                                                        <input name="txtDoorHeight" @bind="PrApiCalls.doorConfig.DOORHEIGHT"/>
+                                                    </td>
+                                                    <td id="tdTurboApparatus" >
+                                                        <input type="checkbox"  name="chkbTurboApparatus" />
+                                                    </td>
+                                                    <td id="tdLockDrilHeight" >
+                                                        <input name="txtLockDrilHeight" />
+                                                    </td>
+                                                    <td id="tdLogo" >
+                                                        <asp:CheckBox ID="chkbLogo"  AutoPostBack="false"
+                                                            OnCheckedChanged="ctl_valChanged"
+                                                            onChange="clearFollowingTabs('movingwing')" />
+                                                    </td>
+                                                    <td id="tdHw" >
+                                                        <asp:DropDownList ID="dlstHw"  AutoPostBack="false"
+                                                            OnSelectedIndexChanged="ctl_valChanged"
+                                                            onChange="clearFollowingTabs('movingwing')" />
+                                                    </td>
+                                                    <td id="tdHwColor" >
+                                                        <asp:DropDownList ID="dlstHwColor"  AutoPostBack="false"
+                                                            DataValueField="TRSH_COLORID"
+                                                            DataTextField="TRSH_COLORDES"
+                                                            SelectMethod="getColors"
+                                                            OnSelectedIndexChanged="ctl_valChanged"
+                                                            onChange="clearFollowingTabs('movingwing')" />
+                                                    </td>
+                                                    <td id="tdDril4Hw" >
+                                                        <asp:DropDownList ID="dlstDril4Hw"  AutoPostBack="false"
+                                                            DataValueField="DRIL4HW"
+                                                            DataTextField="DRIL4HWDES"
+                                                            SelectMethod="getDril4Hws"
+                                                            OnSelectedIndexChanged="ctl_valChanged"
+                                                            onChange="Dril4Hw_change()" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- end MovingWingL2 -->
+                                            <br />
+                                            <table id="MovingWingL3">
+                                                <tr>
+                                                    <th id="thCylinder" >צילינדר</th>
+                                                    <th id="thElectricApparatus" >מנגנון חשמלי</th>
+                                                    <th id="thLock" >מנעול</th>
+                                                    <th id="thTwoSidesIDSDril" >ניקוב שני צדדים IDS</th>
+                                                    <th id="thRafafa" >תוספת רפפה עשן/פתח איוורור בכנף הנעה</th>
+                                                    <th id="thLCDEye" >LCD עינית</th>
+                                                </tr>
+                                                <tr>
+                                                    <td id="tdCylinder" >
+                                                        <asp:DropDownList ID="dlstCylinder"  AutoPostBack="false"
+                                                            DataValueField="CYLINDERNAME"
+                                                            DataTextField="CYLINDERDES"
+                                                            SelectMethod="getCylinders"
+                                                            OnSelectedIndexChanged="ctl_valChanged"
+                                                            onChange="clearFollowingTabs('movingwing')" />
+                                                    </td>
+                                                    <td id="tdElectricApparatus" >
+                                                        <asp:CheckBox ID="chkbElectricApparatus"  AutoPostBack="false"
+                                                            OnCheckedChanged="ctl_valChanged"
+                                                            onChange="clearFollowingTabs('movingwing')" />
+                                                    </td>
+                                                    <td id="tdLock" >
+                                                        <asp:DropDownList ID="dlstLock"  AutoPostBack="false"
+                                                            OnSelectedIndexChanged="ctl_valChanged"
+                                                            onChange="clearFollowingTabs('movingwing')" />
+                                                    </td>
+                                                    <td id="tdTwoSidesIDSDril" >
+                                                        <asp:CheckBox ID="chkbTwoSidesIDSDril"  AutoPostBack="false" Enabled="false"
+                                                            OnCheckedChanged="ctl_valChanged"
+                                                            onChange="clearFollowingTabs('movingwing')" />
+                                                    </td>
+                                                    <td id="tdRafafa" >
+                                                        <asp:UpdatePanel ID="uPanelRafafa" >
+                                                            <ContentTemplate>
+                                                                <asp:DropDownList ID="dlstRafafa"  AutoPostBack="false"
+                                                                    OnSelectedIndexChanged="ctl_valChanged"
+                                                                    onChange="clearFollowingTabs('movingwing')">
+                                                                    <asp:ListItem> </asp:ListItem>
+                                                                    <asp:ListItem>1</asp:ListItem>
+                                                                    <asp:ListItem>2</asp:ListItem>
+                                                                    <asp:ListItem>כל הדלת</asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </ContentTemplate>
+                                                        </asp:UpdatePanel>
+                                                    </td>
+                                                    <td id="tdLCDEye" >
+                                                        <asp:CheckBox ID="chkbLCDEye"  AutoPostBack="false"
+                                                            OnCheckedChanged="ctl_valChanged"
+                                                            onChange="clearFollowingTabs('movingwing')" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- end MovingWingL3 -->
+@code {
+  
+}
