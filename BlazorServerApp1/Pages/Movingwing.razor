@@ -12,21 +12,21 @@
 <table id="MovingWingL1">
     <tr>
 
-        <th id="thOpenSide" hidden="@Helper.hideFld[1]">כיוון פתיחה (R,L)</th>
-        <th id="thDecorFormat" hidden="@Helper.hideFld[2]">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>
-        <th id="thTwoColors" hidden="@Helper.hideFld[3]">צביעה בשני צבעים</th>
-        <th id="thDoorWidth" hidden="@Helper.hideFld[4]">רוחב דלת</th>
-        <th id="thDoorColor" hidden="@Helper.hideFld[5]">גוון דלת</th>
+        <th id="thOpenSide" hidden="@Helper.setHideFld(1)">כיוון פתיחה (R,L)</th>
+        <th id="thDecorFormat" hidden="@Helper.setHideFld(2)">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>
+        <th id="thTwoColors" hidden="@Helper.setHideFld(3)">צביעה בשני צבעים</th>
+        <th id="thDoorWidth" hidden="@Helper.setHideFld(4)">רוחב דלת</th>
+        <th id="thDoorColor" hidden="@Helper.setHideFld(5)">גוון דלת</th>
     </tr>
     <tr>
-        <td id="tdOpenSide" hidden="@Helper.hideFld[1]">
+        <td id="tdOpenSide" hidden="@Helper.setHideFld(1)">
             <select name="dlstOpenSide">
                 <option> </option>
                 <option>ימין</option>
                 <option>שמאל</option>
             </select>
         </td>
-        <td id="tdDecorFormat" hidden="@Helper.hideFld[2]">
+        <td id="tdDecorFormat" hidden="@Helper.setHideFld(2)">
             <select name="dlstDecorFormat">
                 <option>ללא</option>
                 <option>חוץ</option>
@@ -34,13 +34,13 @@
                 <option>דו צדדי</option>
             </select>
         </td>
-        <td id="tdTwoColors" hidden="@Helper.hideFld[3]">
+        <td id="tdTwoColors" hidden="@Helper.setHideFld(3)">
             <input type="checkbox" name="chkbTwoColors" />
         </td>
-        <td id="tdDoorWidth" hidden="@Helper.hideFld[4]">
+        <td id="tdDoorWidth" hidden="@Helper.setHideFld(4)">
             <input name="txtDoorWidth" />
         </td>
-        <td id="tdDoorColor" hidden="@Helper.hideFld[5]">
+        <td id="tdDoorColor" hidden="@Helper.setHideFld(5)">
             <select name="dlstDoorColor">
             </select>
         </td>
@@ -50,17 +50,17 @@
 <br />
                                             <table id="MovingWingL2">
                                                 <tr>
-                                                    <th id="thDoorHeight" hidden="@Helper.hideFld[6]">גובה דלת</th>
-                                                    <th id="thTurboApparatus" hidden="@Helper.hideFld[7]">מנגנון תגבור</th>
-                                                    <th id="thLockDrilHeight" hidden="@Helper.hideFld[8]">גובה ניקוב / מרכז לשונית</th>
-                                                    <th id="thLogo" hidden="@Helper.hideFld[9]">לוגו</th>
-                                                    <th id="thHw" hidden="@Helper.hideFld[10]">פירזול</th>
-                                                    <th id="thHwColor" hidden="@Helper.hideFld[11]">פירזול בצבע</th>
-                                                    <th id="thDril4Hw" hidden="@Helper.hideFld[12]">ניקוב פירזול</th>
+                                                    <th id="thDoorHeight" hidden="@Helper.setHideFld(6)">גובה דלת</th>
+                                                    <th id="thTurboApparatus" hidden="@Helper.setHideFld(7)">מנגנון תגבור</th>
+                                                    <th id="thLockDrilHeight" hidden="@Helper.setHideFld(8)">גובה ניקוב / מרכז לשונית</th>
+                                                    <th id="thLogo" hidden="@Helper.setHideFld(9)">לוגו</th>
+                                                    <th id="thHw" hidden="@Helper.setHideFld(10)">פירזול</th>
+                                                    <th id="thHwColor" hidden="@Helper.setHideFld(11)">פירזול בצבע</th>
+                                                    <th id="thDril4Hw" hidden="@Helper.setHideFld(12)">ניקוב פירזול</th>
                                                 </tr>
                                                 <tr>
                                                     <td id="tdDoorHeight" >
-                                                        <input name="txtDoorHeight" @bind="PrApiCalls.doorConfig.DOORHEIGHT" hidden="@Helper.hideFld[1]" />
+                                                        <input name="txtDoorHeight" @bind="PrApiCalls.doorConfig.DOORHEIGHT" hidden="@Helper.setHideFld(6)" />
                                                     </td>
                                                     <td id="tdTurboApparatus" >
                                                         <input type="checkbox"  name="chkbTurboApparatus" />

@@ -12,11 +12,11 @@ namespace BlazorServerApp1.Data
 {
     public static class Helper
     {
-        public static bool[] hideFld = new bool[200];
+        //public static bool[] hideFld = new bool[200];
 
-        public static bool setHideFld (int i, bool val)
+        public static bool setHideFld (int i)
         {
-            hideFld[i] = val;
+            //hideFld[i] = val;
             return true;
         }
 
