@@ -11,8 +11,13 @@
 @code {
     private int currentCount = 0;
 
-    private void IncrementCount()
+    //private void IncrementCount()
+    //{
+    //    currentCount++;
+    //}
+    private async Task IncrementCount()
     {
         currentCount++;
+        await ProtectedSessionStore.SetAsync("count", currentCount);
     }
 }

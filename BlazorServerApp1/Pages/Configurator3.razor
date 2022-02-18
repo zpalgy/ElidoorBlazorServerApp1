@@ -6,6 +6,13 @@
 
 @inject IJSRuntime JS
 
+<style>
+    th, td {
+        padding: 15px;
+        text-align: center;
+    }
+</style>
+
 <h3>Configurator3</h3>
 
 <div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
@@ -17,19 +24,68 @@
         </tr>
         <tr>
             <td>
-                <input name="txtDate" />
+                <input type="date" name="txtDate" @bind="formDate" />
+                @code {
+                    public DoorConfig? doorConfig; // = new DoorConfig();
+
+                    private DateTime _formDate = DateTime.Now;
+                    protected DateTime formDate
+                    {
+                        get { return _formDate; }
+                        set
+                        {
+                            _formDate = value;
+                            if (doorConfig == null)
+                                doorConfig = new DoorConfig();
+                            doorConfig.FORMDATE = _formDate.ToString("dd/MM/yyyy");
+                        }
+                    }
+                }
             </td>
             <td>
-                <input name="txtFormFiller" />
+                <input name="txtFormFiller" @bind="formFiller" dir="rtl" />
             </td>
             <td>
                 <input name="txtReference" />
             </td>
             <td>
-                <label id="lblMsgL1"  />
+                <label id="lblMsgL1" />
             </td>
         </tr>
     </table>
+
+    @code {
+        protected string formFiller { get; set; } = string.Empty;
+
+    }
+    
+    @code {
+        protected override async Task OnInitializedAsync()
+        {
+            doorConfig = new DoorConfig();
+            formDate = DateTime.Now;
+            //doorConfig.FORMDATE = formDate.ToString("dd/MM/yyyy");
+            //doorConfig.FORMFILLER = "aaaaaaaaaaaaaaa";
+            await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        }
+
+        public async Task SaveDoorConfig()
+        {
+            if (doorConfig != null)
+                await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        }
+
+        public async Task GetDoorConfig()
+        {
+            var result = await ProtectedSessionStore.GetAsync<DoorConfig>("doorConfig");
+            doorConfig = result.Success ? result.Value : null;
+        }
+
+        public async Task DeleteDoorConfigFromSession()
+        {
+            await ProtectedSessionStore.DeleteAsync("doorConfig");
+        }
+}
 
     <table id="tblLine2">
         <tr>
@@ -40,17 +96,23 @@
         </tr>
         <tr>
             <td>
-                <select name="dlstAgent"  dir="rtl" >
-
+                <select name="dlstAgent" @bind="AGENT">
+                     @if (lstAgents != null)
+                    {
+                        @foreach (AGENT_Class a in lstAgents)
+                        {
+                            <option value="@a.AGENT">@a.AGENTNAME</option>
+                        }
+                    }
                 </select>
             </td>
             <td>
-                <select name="dlstCustDes" @bind="CUSTNAME" hidden="@hideCustDes">
+                <select name="dlstCustDes" @bind="CUST" >
                     @if (lstCustomers != null)
                     {
                         @foreach (CUSTOMER_Class c in lstCustomers)
                         {
-                            <option value="@c.CUSTNAME">@c.CUSTDES</option>
+                            <option value="@c.CUST">@c.CUSTDES</option>
                         }
                     }
                 </select> />
@@ -89,29 +151,51 @@
 <!--end of divHeader -->
 @code {
     //public DoorConfig doorConfig = new DoorConfig();
-    protected string CUSTNAME;
-    protected bool hideCustDes { get; set; } = false;
+    private string _CUST = string.Empty;
+    protected string CUST
+    {
+        get { return _CUST; }
+        set
+        {
+            _CUST = value;
+            if (doorConfig != null)
+                doorConfig.CUST = int.Parse(_CUST);
+        }
+    }
+    private int _AGENT = 0;
+    protected int AGENT
+    {
+        get { return _AGENT; }
+        set
+        {
+            _AGENT = value;
+            if (doorConfig != null)
+                doorConfig.AGENT = _AGENT;
+        }
+    }
+    //protected bool hideCustDes { get; set; } = false;
     protected static string errMsg = string.Empty;
     protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+    protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
     int x = 17;
     //BlazorServerApp1.Pages.Configurator3
-    
+
     }
 
-<div id ="divDoor" dir="rtl" >
+<div id="divDoor" dir="rtl">
 
     <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
         <table id="tblDoorTitle">
             <tr>
-                <th id="thWingsNum" >מיפתח</th>
-                <th id="thOpenMode" >צורת פתיחה</th>
-                <th id="thComplient" >דלת תואם אלידור</th>
-                <th id="thPARTNAME" >דגם</th>
-                <th id="thFamily" >סידרה</th>
+                <th id="thWingsNum">מיפתח</th>
+                <th id="thOpenMode">צורת פתיחה</th>
+                <th id="thComplient">דלת תואם אלידור</th>
+                <th id="thPARTNAME">דגם</th>
+                <th id="thFamily">סידרה</th>
             </tr>
             <tr>
                 <td>
-                    <select name="dlstWingsNum" >
+                    <select name="dlstWingsNum">
                         <option>בחר סוג מיפתח</option>
                         <option>כנף</option>
                         <option>כנף וחצי</option>
@@ -119,22 +203,22 @@
                     </select>
                 </td>
                 <td>
-                     <select name="dlstOpenMode" >
-                                <option>בחר צורת פתיחה</option>
-                                <option>החוצה</option>
-                                <option>פנימה</option>
-                     </select>
+                    <select name="dlstOpenMode">
+                        <option>בחר צורת פתיחה</option>
+                        <option>החוצה</option>
+                        <option>פנימה</option>
+                    </select>
                 </td>
 
                 <td>
-                    <input type="checkbox"  name="chkbComplient"   />
+                    <input type="checkbox" name="chkbComplient" />
                 </td>
                 <td>
-                    <select name="dlstPARTNAME" >
-                   </select>
+                    <select name="dlstPARTNAME">
+                    </select>
                 </td>
                 <td>
-                    <input name="txtFAMILY"  Enabled="false" />
+                    <input name="txtFAMILY" Enabled="false" />
                 </td>
 
             </tr>
@@ -148,25 +232,22 @@
     <br />
 
     @code {
-        // tab control here - 
+        // tab control here -
         // tab content pages in separate *.razor files
         // ref: https://blazor-university.com/templating-components-with-renderfragements/creating-a-tabcontrol/
     }
 
-    <TabControl  >
-  <TabPage Text="כנף נעה">
-    <Movingwing/>
-  </TabPage>
-  <TabPage Text="Tab 2">
-    <Counter/>
-  </TabPage>
-  <TabPage Text="Tab 3">
-    <h1>The third tab</h1>
-  </TabPage>
-</TabControl>
-        
-    </div>
-    <!-- end divDoor -->
+    <TabControl>
+        <TabPage Text="כנף נעה">
+            <Movingwing doorConfig="@doorConfig" ></Movingwing>
+        </TabPage>
+        <TabPage Text="Tab 2">
+            <Counter />
+        </TabPage>
+        <TabPage Text="Tab 3">
+            <h1>The third tab</h1>
+        </TabPage>
+    </TabControl>
 
-
-
+</div>
+<!-- end divDoor -->

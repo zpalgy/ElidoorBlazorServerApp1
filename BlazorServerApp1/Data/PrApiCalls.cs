@@ -19,6 +19,7 @@ namespace BlazorServerApp1.Data
     {
 
         //public static DataTable MeagedFields = new DataTable();  // it's a table that is common to all users !
+        public static DoorConfig doorConfig = new DoorConfig();
         public static DataTable dtMeagedFields;
         public static DataTable dtDecorSideFlds;
         public static DataTable dtConfFields;
@@ -59,7 +60,7 @@ namespace BlazorServerApp1.Data
         //public static RestClient restClient = new RestClient();  - this is page instance specific we can't make it application specific
         static string certAlert = "Pls check whether the SSL certificate of the Default Web Site on the web server has expired";
 
-        public static DoorConfig doorConfig = new DoorConfig();
+      
 
         public static void initRestClient(RestClient restClient)
         {

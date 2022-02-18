@@ -2,6 +2,7 @@ using BlazorServerApp1.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 string errMsg = string.Empty;
+
 PrApiCalls.InitInMemoryDataSources(ref errMsg);
 
 app.Run();

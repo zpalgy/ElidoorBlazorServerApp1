@@ -14,12 +14,12 @@ namespace BlazorServerApp1.Data
     {
         //public static bool[] hideFld = new bool[200];
 
-        public static bool setHideFld (int i)
-        {
-            //hideFld[i] = val;
-            return true;
-        }
-
+        //public static bool setHideFld (int i)
+        //{
+        //    //hideFld[i] = val;
+        //    return true;
+        //}
+        
 
         public static DataTable ToDataTable<T>(this IList<T> data)
         {
