@@ -128,7 +128,14 @@
     <table id="tblProducts">
         <tr>
             <td>
-                <button name="btnDoor">דלת</button>
+                <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
+                @code
+                {
+                    private void btnDoorClicked()
+                    {
+                        hideDivDoor = false;
+                    }
+                }
             </td>
             <td>
                 <button name="btnLintel">משקוף</button>
@@ -179,10 +186,10 @@
     protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
     int x = 17;
     //BlazorServerApp1.Pages.Configurator3
-
+    protected bool hideDivDoor = true;
     }
 
-<div id="divDoor" dir="rtl">
+<div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
     <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
         <table id="tblDoorTitle">
