@@ -1640,9 +1640,10 @@ namespace BlazorServerApp1.Data
                 }
                 else
                 {
+                    errMsg = "Check whether you are connected to Elidoor VPN";
                     if (response.StatusDescription.ToLower() == "not found")
                     {
-                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        errMsg += "\n response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
                         myLogger.log.Error(errMsg);
                         return null;
                     }

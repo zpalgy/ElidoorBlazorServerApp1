@@ -4,7 +4,7 @@
 @page "/Configurator3"
 @inherits Configurator3Base
 
-@inject IJSRuntime JS
+@inject IJSRuntime Js
 
 <style>
     th, td {
@@ -14,6 +14,8 @@
 </style>
 
 <h3>Configurator3</h3>
+
+
 
 <div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
     <table id="tblLine1">
@@ -44,9 +46,49 @@
             </td>
             <td>
                 <input name="txtFormFiller" @bind="formFiller" dir="rtl" />
+                @code {
+                    protected string _formFiller;
+                    protected string formFiller
+                    {
+                        get { return _formFiller; }
+                        set
+                        {
+                            _formFiller = value;
+                            if (doorConfig != null)
+                                doorConfig.FORMFILLER = _formFiller;
+                        }
+                    }
+                }
             </td>
             <td>
-                <input name="txtReference" />
+                <input name="txtReference" @bind="reference" @ref="txtReference"/>
+                @code {
+
+                    private ElementReference txtReference;
+                    protected string _reference;
+                    protected string reference
+                    {
+                        get { return _reference; }
+                        set
+                        {
+                            _reference = value;
+
+                            if (doorConfig != null)
+                                if (!string.IsNullOrEmpty(PrApiCalls.getReference(_reference, ref errMsg)))
+                                {
+                                //UiLogic.displayErrMsg(lblMsgL1, "אסמכתא עם מספר זה כבר קיימת במערכת");
+                                    //
+                                    //return;
+                                    Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
+                                    txtReference.FocusAsync();
+
+
+                                }
+                            else
+                                doorConfig.REFERENCE = _reference;
+                        }
+                    }
+                }
             </td>
             <td>
                 <label id="lblMsgL1" />
@@ -54,11 +96,6 @@
         </tr>
     </table>
 
-    @code {
-        protected string formFiller { get; set; } = string.Empty;
-
-    }
-    
     @code {
         protected override async Task OnInitializedAsync()
         {
@@ -85,7 +122,7 @@
         {
             await ProtectedSessionStore.DeleteAsync("doorConfig");
         }
-}
+    }
 
     <table id="tblLine2">
         <tr>
@@ -97,7 +134,7 @@
         <tr>
             <td>
                 <select name="dlstAgent" @bind="AGENT">
-                     @if (lstAgents != null)
+                    @if (lstAgents != null)
                     {
                         @foreach (AGENT_Class a in lstAgents)
                         {
@@ -107,7 +144,7 @@
                 </select>
             </td>
             <td>
-                <select name="dlstCustDes" @bind="CUST" >
+                <select name="dlstCustDes" @bind="CUST">
                     @if (lstCustomers != null)
                     {
                         @foreach (CUSTOMER_Class c in lstCustomers)
@@ -246,7 +283,7 @@
 
     <TabControl>
         <TabPage Text="כנף נעה">
-            <Movingwing doorConfig="@doorConfig" ></Movingwing>
+            <Movingwing doorConfig="@doorConfig"></Movingwing>
         </TabPage>
         <TabPage Text="Tab 2">
             <Counter />
@@ -258,3 +295,6 @@
 
 </div>
 <!-- end divDoor -->
+
+
+
