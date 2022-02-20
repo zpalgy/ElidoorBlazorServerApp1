@@ -35,7 +35,14 @@
                 protected string _openSide = string.Empty;
                 protected string openSide
                 {
-                    get { return _openSide; }
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _openSide = doorConfig.OPENSIDE;
+                        }
+                        return _openSide;
+                    }
                     set
                     {
                         _openSide = value;
@@ -46,7 +53,7 @@
 
             }
         </td>
-        <td id="tdDecorFormat" hidden="@UiLogic.setHideFld("DecorFormat")" @bind="@PrApiCalls.doorConfig.DECORFORMAT" >
+        <td id="tdDecorFormat" hidden="@UiLogic.setHideFld("DecorFormat")" @bind="@PrApiCalls.doorConfig.DECORFORMAT">
             <select name="dlstDecorFormat">
                 <option>ללא</option>
                 <option>חוץ</option>
@@ -54,8 +61,8 @@
                 <option>דו צדדי</option>
             </select>
         </td>
- @code {
-            
+        @code {
+
 
         }
         <td id="tdTwoColors" hidden="@UiLogic.setHideFld("TwoColors")">
@@ -72,112 +79,112 @@
 </table>
 <!-- end table MovingWingL1 -->
 <br />
-                                            <table id="MovingWingL2">
-                                                <tr>
-                                                    <th id="thDoorHeight" hidden="@UiLogic.setHideFld("DoorHeight")">גובה דלת</th>
-                                                    <th id="thTurboApparatus" hidden="@UiLogic.setHideFld("TurboApparatus")">מנגנון תגבור</th>
-                                                    <th id="thLockDrilHeight" hidden="@UiLogic.setHideFld("LockDrilHeight")">גובה ניקוב / מרכז לשונית</th>
-                                                    <th id="thLogo" hidden="@UiLogic.setHideFld("Logo")">לוגו</th>
-                                                    <th id="thHw" hidden="@UiLogic.setHideFld("Hw")">פירזול</th>
-                                                    <th id="thHwColor" hidden="@UiLogic.setHideFld("HwColor")">פירזול בצבע</th>
-                                                    <th id="thDril4Hw" hidden="@UiLogic.setHideFld("Dril4Hw")">ניקוב פירזול</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="tdDoorHeight" hidden="@UiLogic.setHideFld("DoorHeight")">
-                                                        <input name="txtDoorHeight" @bind="PrApiCalls.doorConfig.DOORHEIGHT"  />
-                                                    </td>
-                                                    <td id="tdTurboApparatus" >
-                                                        <input type="checkbox"  name="chkbTurboApparatus" />
-                                                    </td>
-                                                    <td id="tdLockDrilHeight" >
-                                                        <input name="txtLockDrilHeight" />
-                                                    </td>
-                                                    <td id="tdLogo" >
-                                                        <asp:CheckBox ID="chkbLogo"  AutoPostBack="false"
-                                                            OnCheckedChanged="ctl_valChanged"
-                                                            onChange="clearFollowingTabs('movingwing')" />
-                                                    </td>
-                                                    <td id="tdHw" >
-                                                        <asp:DropDownList ID="dlstHw"  AutoPostBack="false"
-                                                            OnSelectedIndexChanged="ctl_valChanged"
-                                                            onChange="clearFollowingTabs('movingwing')" />
-                                                    </td>
-                                                    <td id="tdHwColor" >
-                                                        <asp:DropDownList ID="dlstHwColor"  AutoPostBack="false"
-                                                            DataValueField="TRSH_COLORID"
-                                                            DataTextField="TRSH_COLORDES"
-                                                            SelectMethod="getColors"
-                                                            OnSelectedIndexChanged="ctl_valChanged"
-                                                            onChange="clearFollowingTabs('movingwing')" />
-                                                    </td>
-                                                    <td id="tdDril4Hw" >
-                                                        <asp:DropDownList ID="dlstDril4Hw"  AutoPostBack="false"
-                                                            DataValueField="DRIL4HW"
-                                                            DataTextField="DRIL4HWDES"
-                                                            SelectMethod="getDril4Hws"
-                                                            OnSelectedIndexChanged="ctl_valChanged"
-                                                            onChange="Dril4Hw_change()" />
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!-- end MovingWingL2 -->
-                                            <br />
-                                            <table id="MovingWingL3">
-                                                <tr>
-                                                    <th id="thCylinder" >צילינדר</th>
-                                                    <th id="thElectricApparatus" >מנגנון חשמלי</th>
-                                                    <th id="thLock" >מנעול</th>
-                                                    <th id="thTwoSidesIDSDril" >ניקוב שני צדדים IDS</th>
-                                                    <th id="thRafafa" >תוספת רפפה עשן/פתח איוורור בכנף הנעה</th>
-                                                    <th id="thLCDEye" >LCD עינית</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="tdCylinder" >
-                                                        <asp:DropDownList ID="dlstCylinder"  AutoPostBack="false"
-                                                            DataValueField="CYLINDERNAME"
-                                                            DataTextField="CYLINDERDES"
-                                                            SelectMethod="getCylinders"
-                                                            OnSelectedIndexChanged="ctl_valChanged"
-                                                            onChange="clearFollowingTabs('movingwing')" />
-                                                    </td>
-                                                    <td id="tdElectricApparatus" >
-                                                        <asp:CheckBox ID="chkbElectricApparatus"  AutoPostBack="false"
-                                                            OnCheckedChanged="ctl_valChanged"
-                                                            onChange="clearFollowingTabs('movingwing')" />
-                                                    </td>
-                                                    <td id="tdLock" >
-                                                        <asp:DropDownList ID="dlstLock"  AutoPostBack="false"
-                                                            OnSelectedIndexChanged="ctl_valChanged"
-                                                            onChange="clearFollowingTabs('movingwing')" />
-                                                    </td>
-                                                    <td id="tdTwoSidesIDSDril" >
-                                                        <asp:CheckBox ID="chkbTwoSidesIDSDril"  AutoPostBack="false" Enabled="false"
-                                                            OnCheckedChanged="ctl_valChanged"
-                                                            onChange="clearFollowingTabs('movingwing')" />
-                                                    </td>
-                                                    <td id="tdRafafa" >
-                                                        <asp:UpdatePanel ID="uPanelRafafa" >
-                                                            <ContentTemplate>
-                                                                <asp:DropDownList ID="dlstRafafa"  AutoPostBack="false"
-                                                                    OnSelectedIndexChanged="ctl_valChanged"
-                                                                    onChange="clearFollowingTabs('movingwing')">
-                                                                    <asp:ListItem> </asp:ListItem>
-                                                                    <asp:ListItem>1</asp:ListItem>
-                                                                    <asp:ListItem>2</asp:ListItem>
-                                                                    <asp:ListItem>כל הדלת</asp:ListItem>
-                                                                </asp:DropDownList>
-                                                            </ContentTemplate>
-                                                        </asp:UpdatePanel>
-                                                    </td>
-                                                    <td id="tdLCDEye" >
-                                                        <asp:CheckBox ID="chkbLCDEye"  AutoPostBack="false"
-                                                            OnCheckedChanged="ctl_valChanged"
-                                                            onChange="clearFollowingTabs('movingwing')" />
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!-- end MovingWingL3 -->
+<table id="MovingWingL2">
+    <tr>
+        <th id="thDoorHeight" hidden="@UiLogic.setHideFld("DoorHeight")">גובה דלת</th>
+        <th id="thTurboApparatus" hidden="@UiLogic.setHideFld("TurboApparatus")">מנגנון תגבור</th>
+        <th id="thLockDrilHeight" hidden="@UiLogic.setHideFld("LockDrilHeight")">גובה ניקוב / מרכז לשונית</th>
+        <th id="thLogo" hidden="@UiLogic.setHideFld("Logo")">לוגו</th>
+        <th id="thHw" hidden="@UiLogic.setHideFld("Hw")">פירזול</th>
+        <th id="thHwColor" hidden="@UiLogic.setHideFld("HwColor")">פירזול בצבע</th>
+        <th id="thDril4Hw" hidden="@UiLogic.setHideFld("Dril4Hw")">ניקוב פירזול</th>
+    </tr>
+    <tr>
+        <td id="tdDoorHeight" hidden="@UiLogic.setHideFld("DoorHeight")">
+            <input name="txtDoorHeight" @bind="PrApiCalls.doorConfig.DOORHEIGHT" />
+        </td>
+        <td id="tdTurboApparatus">
+            <input type="checkbox" name="chkbTurboApparatus" />
+        </td>
+        <td id="tdLockDrilHeight">
+            <input name="txtLockDrilHeight" />
+        </td>
+        <td id="tdLogo">
+            <asp:CheckBox ID="chkbLogo" AutoPostBack="false"
+                          OnCheckedChanged="ctl_valChanged"
+                          onChange="clearFollowingTabs('movingwing')" />
+        </td>
+        <td id="tdHw">
+            <asp:DropDownList ID="dlstHw" AutoPostBack="false"
+                              OnSelectedIndexChanged="ctl_valChanged"
+                              onChange="clearFollowingTabs('movingwing')" />
+        </td>
+        <td id="tdHwColor">
+            <asp:DropDownList ID="dlstHwColor" AutoPostBack="false"
+                              DataValueField="TRSH_COLORID"
+                              DataTextField="TRSH_COLORDES"
+                              SelectMethod="getColors"
+                              OnSelectedIndexChanged="ctl_valChanged"
+                              onChange="clearFollowingTabs('movingwing')" />
+        </td>
+        <td id="tdDril4Hw">
+            <asp:DropDownList ID="dlstDril4Hw" AutoPostBack="false"
+                              DataValueField="DRIL4HW"
+                              DataTextField="DRIL4HWDES"
+                              SelectMethod="getDril4Hws"
+                              OnSelectedIndexChanged="ctl_valChanged"
+                              onChange="Dril4Hw_change()" />
+        </td>
+    </tr>
+</table>
+<!-- end MovingWingL2 -->
+<br />
+<table id="MovingWingL3">
+    <tr>
+        <th id="thCylinder">צילינדר</th>
+        <th id="thElectricApparatus">מנגנון חשמלי</th>
+        <th id="thLock">מנעול</th>
+        <th id="thTwoSidesIDSDril">ניקוב שני צדדים IDS</th>
+        <th id="thRafafa">תוספת רפפה עשן/פתח איוורור בכנף הנעה</th>
+        <th id="thLCDEye">LCD עינית</th>
+    </tr>
+    <tr>
+        <td id="tdCylinder">
+            <asp:DropDownList ID="dlstCylinder" AutoPostBack="false"
+                              DataValueField="CYLINDERNAME"
+                              DataTextField="CYLINDERDES"
+                              SelectMethod="getCylinders"
+                              OnSelectedIndexChanged="ctl_valChanged"
+                              onChange="clearFollowingTabs('movingwing')" />
+        </td>
+        <td id="tdElectricApparatus">
+            <asp:CheckBox ID="chkbElectricApparatus" AutoPostBack="false"
+                          OnCheckedChanged="ctl_valChanged"
+                          onChange="clearFollowingTabs('movingwing')" />
+        </td>
+        <td id="tdLock">
+            <asp:DropDownList ID="dlstLock" AutoPostBack="false"
+                              OnSelectedIndexChanged="ctl_valChanged"
+                              onChange="clearFollowingTabs('movingwing')" />
+        </td>
+        <td id="tdTwoSidesIDSDril">
+            <asp:CheckBox ID="chkbTwoSidesIDSDril" AutoPostBack="false" Enabled="false"
+                          OnCheckedChanged="ctl_valChanged"
+                          onChange="clearFollowingTabs('movingwing')" />
+        </td>
+        <td id="tdRafafa">
+            <asp:UpdatePanel ID="uPanelRafafa">
+                <ContentTemplate>
+                    <asp:DropDownList ID="dlstRafafa" AutoPostBack="false"
+                                      OnSelectedIndexChanged="ctl_valChanged"
+                                      onChange="clearFollowingTabs('movingwing')">
+                        <asp:ListItem> </asp:ListItem>
+                        <asp:ListItem>1</asp:ListItem>
+                        <asp:ListItem>2</asp:ListItem>
+                        <asp:ListItem>כל הדלת</asp:ListItem>
+                    </asp:DropDownList>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </td>
+        <td id="tdLCDEye">
+            <asp:CheckBox ID="chkbLCDEye" AutoPostBack="false"
+                          OnCheckedChanged="ctl_valChanged"
+                          onChange="clearFollowingTabs('movingwing')" />
+        </td>
+    </tr>
+</table>
+<!-- end MovingWingL3 -->
 @code {
     //bool  x1 = Helper.setHideFld(1, true);
-    
+
 }
