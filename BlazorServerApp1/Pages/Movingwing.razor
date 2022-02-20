@@ -53,8 +53,8 @@
 
             }
         </td>
-        <td id="tdDecorFormat" hidden="@UiLogic.setHideFld("DecorFormat")" @bind="@PrApiCalls.doorConfig.DECORFORMAT">
-            <select name="dlstDecorFormat">
+        <td id="tdDecorFormat" hidden="@UiLogic.setHideFld("DecorFormat")" >
+            <select name="dlstDecorFormat" @bind="DecorFormat">
                 <option>ללא</option>
                 <option>חוץ</option>
                 <option>פנים</option>
@@ -62,19 +62,113 @@
             </select>
         </td>
         @code {
-
+                protected string _DecorFormat = string.Empty;
+                protected string DecorFormat
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _DecorFormat = doorConfig.DECORFORMAT;
+                        }
+                        return _DecorFormat;
+                    }
+                    set
+                    {
+                        _DecorFormat = value;
+                        if (doorConfig != null)
+                            doorConfig.DECORFORMAT = _DecorFormat;
+                    }
+                }
 
         }
         <td id="tdTwoColors" hidden="@UiLogic.setHideFld("TwoColors")">
-            <input type="checkbox" name="chkbTwoColors" />
+            <input type="checkbox" name="chkbTwoColors" @bind="TwoColors" />
         </td>
+        @code
+        {
+				protected bool _TwoColors = false;
+                protected bool TwoColors
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _TwoColors = (doorConfig.TWOCOLORS == "Y");
+                        }
+                        return _TwoColors;
+                    }
+                    set
+                    {
+                        _TwoColors = value;
+                        if (doorConfig != null)
+                            doorConfig.TWOCOLORS = (_TwoColors ? "Y" : "");
+                    }
+                }
+
+        }
         <td id="tdDoorWidth" hidden="@UiLogic.setHideFld("DoorWidth")">
-            <input name="txtDoorWidth" />
+            <input name="txtDoorWidth" @bind="DoorWidth" />
         </td>
+        @code
+{
+				protected int _DoorWidth = 0;
+                protected int DoorWidth
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _DoorWidth = doorConfig.DOORWIDTH;
+                        }
+                        return _DoorWidth;
+                    }
+                    set
+                    {
+                        _DoorWidth = value;
+                        if (doorConfig != null)
+                            doorConfig.DOORWIDTH = _DoorWidth;
+                            //[TODO] implement the following lines
+                            //if (chkbComplient.Checked)
+                            //     txtWindowWidth.Text = calcWindowWidth();
+                    }
+                }
+
+        }
+
         <td id="tdDoorColor" hidden="@UiLogic.setHideFld("DoorColor")">
-            <select name="dlstDoorColor">
+            <select name="dlstDoorColor" @bind="DoorColorId">
+                 @if (PrApiCalls.lstColors != null)
+                    {
+                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+                        {
+                            <option value="@c.TRSH_COLORID">@c.TRSH_COLORDES</option>
+                        }
+                    }
             </select>
         </td>
+        @code
+{
+				protected int _DoorColorId = 0;
+                protected int DoorColorId
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _DoorColorId = doorConfig.DOORCOLORID;
+                        }
+                        return _DoorColorId;
+                    }
+                    set
+                    {
+                        _DoorColorId = value;
+                        if (doorConfig != null)
+                            doorConfig.DOORCOLORID = _DoorColorId;
+                    }
+                }
+
+}
     </tr>
 </table>
 <!-- end table MovingWingL1 -->

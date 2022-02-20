@@ -15,6 +15,16 @@
 
 <h3>Configurator3</h3>
 
+@code {
+    //protected bool hideCustDes { get; set; } = false;
+    protected static string errMsg = string.Empty;
+    protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+    protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
+    int x = 17;
+    //BlazorServerApp1.Pages.Configurator3
+    protected bool hideDivDoor = true;
+    }
+
 
 
 <div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
@@ -61,7 +71,7 @@
                 }
             </td>
             <td>
-                <input name="txtReference" @bind="reference" @ref="txtReference"/>
+                <input name="txtReference" @bind="reference" @ref="txtReference" />
                 @code {
 
                     private ElementReference txtReference;
@@ -76,7 +86,7 @@
                             if (doorConfig != null)
                                 if (!string.IsNullOrEmpty(PrApiCalls.getReference(_reference, ref errMsg)))
                                 {
-                                //UiLogic.displayErrMsg(lblMsgL1, "אסמכתא עם מספר זה כבר קיימת במערכת");
+                                    //UiLogic.displayErrMsg(lblMsgL1, "אסמכתא עם מספר זה כבר קיימת במערכת");
                                     //
                                     //return;
                                     Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
@@ -84,8 +94,8 @@
 
 
                                 }
-                            else
-                                doorConfig.REFERENCE = _reference;
+                                else
+                                    doorConfig.REFERENCE = _reference;
                         }
                     }
                 }
@@ -143,6 +153,19 @@
                     }
                 </select>
             </td>
+            @code {
+                private int _AGENT = 0;
+                protected int AGENT
+                {
+                    get { return _AGENT; }
+                    set
+                    {
+                        _AGENT = value;
+                        if (doorConfig != null)
+                            doorConfig.AGENT = _AGENT;
+                    }
+                }
+            }
             <td>
                 <select name="dlstCustDes" @bind="CUST">
                     @if (lstCustomers != null)
@@ -154,6 +177,20 @@
                     }
                 </select> />
             </td>
+            @code {
+                private string _CUST = string.Empty;
+                protected string CUST
+                {
+                    get { return _CUST; }
+                    set
+                    {
+                        _CUST = value;
+                        if (doorConfig != null)
+                            doorConfig.CUST = int.Parse(_CUST);
+                    }
+                }
+            }
+
             <td>
                 <input dir="rtl" />
             </td>
@@ -193,38 +230,6 @@
     </table>
 </div>
 <!--end of divHeader -->
-@code {
-    //public DoorConfig doorConfig = new DoorConfig();
-    private string _CUST = string.Empty;
-    protected string CUST
-    {
-        get { return _CUST; }
-        set
-        {
-            _CUST = value;
-            if (doorConfig != null)
-                doorConfig.CUST = int.Parse(_CUST);
-        }
-    }
-    private int _AGENT = 0;
-    protected int AGENT
-    {
-        get { return _AGENT; }
-        set
-        {
-            _AGENT = value;
-            if (doorConfig != null)
-                doorConfig.AGENT = _AGENT;
-        }
-    }
-    //protected bool hideCustDes { get; set; } = false;
-    protected static string errMsg = string.Empty;
-    protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
-    protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
-    int x = 17;
-    //BlazorServerApp1.Pages.Configurator3
-    protected bool hideDivDoor = true;
-    }
 
 <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
@@ -295,6 +300,3 @@
 
 </div>
 <!-- end divDoor -->
-
-
-
