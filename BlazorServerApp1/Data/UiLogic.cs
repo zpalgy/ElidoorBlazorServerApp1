@@ -61,6 +61,11 @@ namespace BlazorServerApp1.Data
             }
         }
 
+        public static bool hideStaticWing(string wingsNum)
+        {
+            return (wingsNum == "כנף");
+        }
+
         //public static void toggleColor(Button btn)
         //{
         //    if (btn.BackColor == Color.Blue)

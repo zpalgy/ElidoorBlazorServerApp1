@@ -294,13 +294,41 @@
             </tr>
             <tr>
                 <td>
-                    <select name="dlstWingsNum">
+                    <select name="dlstWingsNum" @bind="WingsNum">
                         <option>בחר סוג מיפתח</option>
                         <option>כנף</option>
                         <option>כנף וחצי</option>
                         <option>דו כנפי</option>
                     </select>
                 </td>
+                @code
+                {
+                    protected bool disableStaticWing = false;
+                    protected string _WingsNum = string.Empty;
+                    protected string WingsNum
+                    {
+                        get
+                        {
+                            if (doorConfig != null)
+                            {
+                                _WingsNum = doorConfig.WINGSNUM;
+                            }
+                            return _WingsNum;
+                        }
+                        set
+                        {
+                            _WingsNum = value;
+                            if (doorConfig != null)
+                                doorConfig.WINGSNUM = _WingsNum;
+ 
+                            disableStaticWing =  (_WingsNum == "כנף");
+
+                                
+                            //hfGreyTab.Value = (dlst.SelectedValue == "כנף" ? "staticwing" : "");
+                        }
+                    }
+
+                }
                 <td>
                     <select name="dlstOpenMode">
                         <option>בחר צורת פתיחה</option>
@@ -340,11 +368,23 @@
         <TabPage Text="כנף נעה">
             <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
         </TabPage>
-        <TabPage Text="Tab 2">
+        <TabPage Text="פרטי דקורציה חוץ">
             <Counter />
         </TabPage>
-        <TabPage Text="Tab 3">
+        <TabPage Text="פרטי דקורציה פנים">
             <h1>The third tab</h1>
+        </TabPage>
+        <TabPage Text = "כנף קבועה" disableTabPage="@disableStaticWing" >
+            <Counter />
+        </TabPage>
+        <TabPage Text = "פרטי צירים">
+            <Counter/>
+        </TabPage>
+        <TabPage Text = "ידית אומנותית">
+            <Counter/>
+        </TabPage>
+        <TabPage Text = "נילווים">
+            <Counter/>
         </TabPage>
     </TabControl>
 

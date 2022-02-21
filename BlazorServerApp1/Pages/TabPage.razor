@@ -1,6 +1,9 @@
 ﻿@if (Parent.ActivePage == this)
 {
-	@ChildContent
+	if (!disableTabPage)
+	{
+	     @ChildContent
+	}
 }
 
 @code {
@@ -12,6 +15,9 @@
 
 	[Parameter]
 	public string Text { get; set; }
+		
+	[Parameter]
+	public bool disableTabPage { get; set; } = false;
 
 	protected override void OnInitialized()
 	{
@@ -19,6 +25,7 @@
 			throw new ArgumentNullException(nameof(Parent), "TabPage must exist within a TabControl");
 
 		base.OnInitialized();
-		Parent.AddPage(this);
+        Parent.AddPage(this);
+		
 	}
 }
