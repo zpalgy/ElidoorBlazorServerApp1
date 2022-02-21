@@ -1,0 +1,46 @@
+@code
+{
+				protected string _Z1 = string.Empty;
+                protected string Z1
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Z1 = doorConfig.X;
+                        }
+                        return _Z1;
+                    }
+                    set
+                    {
+                        _Z1 = value;
+                        if (doorConfig != null)
+                            doorConfig.X = _Z1;
+                    }
+                }
+
+}
+		
+		
+@code
+        {
+				protected bool _B1 = false;
+                protected bool B1
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _B1 = (doorConfig.BB == "Y");
+                        }
+                        return _B1;
+                    }
+                    set
+                    {
+                        _B1 = value;
+                        if (doorConfig != null)
+                            doorConfig.BB = (_B1 ? "Y" : "");
+                    }
+                }
+
+        }

@@ -1,7 +1,10 @@
 ﻿@using BlazorServerApp1.Data
 
-
 @page "/Movingwing"
+
+@inherits MovingwingBase
+
+@inject IJSRuntime Js
 
 <style>
     th, td {
@@ -13,6 +16,9 @@
 {
     [Parameter]
     public DoorConfig doorConfig { get; set; }
+
+    [Parameter]
+    public bool disableLogo { get; set; }
 }
 <table id="MovingWingL1">
     <tr>
@@ -53,7 +59,7 @@
 
             }
         </td>
-        <td id="tdDecorFormat" hidden="@UiLogic.setHideFld("DecorFormat")" >
+        <td id="tdDecorFormat" hidden="@UiLogic.setHideFld("DecorFormat")">
             <select name="dlstDecorFormat" @bind="DecorFormat">
                 <option>ללא</option>
                 <option>חוץ</option>
@@ -62,24 +68,24 @@
             </select>
         </td>
         @code {
-                protected string _DecorFormat = string.Empty;
-                protected string DecorFormat
+            protected string _DecorFormat = string.Empty;
+            protected string DecorFormat
+            {
+                get
                 {
-                    get
+                    if (doorConfig != null)
                     {
-                        if (doorConfig != null)
-                        {
-                            _DecorFormat = doorConfig.DECORFORMAT;
-                        }
-                        return _DecorFormat;
+                        _DecorFormat = doorConfig.DECORFORMAT;
                     }
-                    set
-                    {
-                        _DecorFormat = value;
-                        if (doorConfig != null)
-                            doorConfig.DECORFORMAT = _DecorFormat;
-                    }
+                    return _DecorFormat;
                 }
+                set
+                {
+                    _DecorFormat = value;
+                    if (doorConfig != null)
+                        doorConfig.DECORFORMAT = _DecorFormat;
+                }
+            }
 
         }
         <td id="tdTwoColors" hidden="@UiLogic.setHideFld("TwoColors")">
@@ -87,88 +93,98 @@
         </td>
         @code
         {
-				protected bool _TwoColors = false;
-                protected bool TwoColors
+            protected bool _TwoColors = false;
+            protected bool TwoColors
+            {
+                get
                 {
-                    get
+                    if (doorConfig != null)
                     {
-                        if (doorConfig != null)
-                        {
-                            _TwoColors = (doorConfig.TWOCOLORS == "Y");
-                        }
-                        return _TwoColors;
+                        _TwoColors = (doorConfig.TWOCOLORS == "Y");
                     }
-                    set
-                    {
-                        _TwoColors = value;
-                        if (doorConfig != null)
-                            doorConfig.TWOCOLORS = (_TwoColors ? "Y" : "");
-                    }
+                    return _TwoColors;
                 }
+                set
+                {
+                    _TwoColors = value;
+                    if (doorConfig != null)
+                        doorConfig.TWOCOLORS = (_TwoColors ? "Y" : "");
+                }
+            }
 
         }
         <td id="tdDoorWidth" hidden="@UiLogic.setHideFld("DoorWidth")">
             <input name="txtDoorWidth" @bind="DoorWidth" />
         </td>
         @code
-{
-				protected int _DoorWidth = 0;
-                protected int DoorWidth
+        {
+            protected int _DoorWidth = 0;
+            protected int DoorWidth
+            {
+                get
                 {
-                    get
+                    if (doorConfig != null)
                     {
-                        if (doorConfig != null)
-                        {
-                            _DoorWidth = doorConfig.DOORWIDTH;
-                        }
-                        return _DoorWidth;
+                        _DoorWidth = doorConfig.DOORWIDTH;
                     }
-                    set
+                    return _DoorWidth;
+                }
+                set
+                {
+                    _DoorWidth = value;
+                    if (doorConfig != null)
                     {
-                        _DoorWidth = value;
-                        if (doorConfig != null)
-                            doorConfig.DOORWIDTH = _DoorWidth;
-                            //[TODO] implement the following lines
-                            //if (chkbComplient.Checked)
-                            //     txtWindowWidth.Text = calcWindowWidth();
+                        doorConfig.DOORWIDTH = _DoorWidth;
+                        //[TODO] implement the following lines
+                        //if (chkbComplient.Checked)
+                        //     txtWindowWidth.Text = calcWindowWidth();
+                        if (!string.IsNullOrEmpty(doorConfig.PARTNAME))
+                        {
+                            string errMsg = string.Empty;
+                            doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
+                            if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                            {
+                                Js.InvokeVoidAsync("alert", errMsg);
+                            }
+                        }
                     }
                 }
-
+            }
         }
 
         <td id="tdDoorColor" hidden="@UiLogic.setHideFld("DoorColor")">
             <select name="dlstDoorColor" @bind="DoorColorId">
-                 @if (PrApiCalls.lstColors != null)
+                @if (PrApiCalls.lstColors != null)
+                {
+                    @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
                     {
-                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                        {
-                            <option value="@c.TRSH_COLORID">@c.TRSH_COLORDES</option>
-                        }
+                        <option value="@c.TRSH_COLORID">@c.TRSH_COLORDES</option>
                     }
+                }
             </select>
         </td>
         @code
-{
-				protected int _DoorColorId = 0;
-                protected int DoorColorId
+        {
+            protected int _DoorColorId = 0;
+            protected int DoorColorId
+            {
+                get
                 {
-                    get
+                    if (doorConfig != null)
                     {
-                        if (doorConfig != null)
-                        {
-                            _DoorColorId = doorConfig.DOORCOLORID;
-                        }
-                        return _DoorColorId;
+                        _DoorColorId = doorConfig.DOORCOLORID;
                     }
-                    set
-                    {
-                        _DoorColorId = value;
-                        if (doorConfig != null)
-                            doorConfig.DOORCOLORID = _DoorColorId;
-                    }
+                    return _DoorColorId;
                 }
+                set
+                {
+                    _DoorColorId = value;
+                    if (doorConfig != null)
+                        doorConfig.DOORCOLORID = _DoorColorId;
+                }
+            }
 
-}
+        }
     </tr>
 </table>
 <!-- end table MovingWingL1 -->
@@ -194,10 +210,30 @@
             <input name="txtLockDrilHeight" />
         </td>
         <td id="tdLogo">
-            <asp:CheckBox ID="chkbLogo" AutoPostBack="false"
-                          OnCheckedChanged="ctl_valChanged"
-                          onChange="clearFollowingTabs('movingwing')" />
+            <input type="checkbox" name="chkbLogo" disabled="@disableLogo"/>
         </td>
+        @code
+        {
+				protected bool _chkbLogo = false;
+                protected bool chkbLogo
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _chkbLogo = (doorConfig.LOGO == "Y");
+                        }
+                        return _chkbLogo;
+                    }
+                    set
+                    {
+                        _chkbLogo = value;
+                        if (doorConfig != null)
+                            doorConfig.LOGO = (_chkbLogo ? "Y" : "");
+                    }
+                }
+
+        }
         <td id="tdHw">
             <asp:DropDownList ID="dlstHw" AutoPostBack="false"
                               OnSelectedIndexChanged="ctl_valChanged"

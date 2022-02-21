@@ -20,6 +20,7 @@
     protected static string errMsg = string.Empty;
     protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
     protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
+
     int x = 17;
     //BlazorServerApp1.Pages.Configurator3
     protected bool hideDivDoor = true;
@@ -91,8 +92,6 @@
                                     //return;
                                     Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
                                     txtReference.FocusAsync();
-
-
                                 }
                                 else
                                     doorConfig.REFERENCE = _reference;
@@ -111,8 +110,6 @@
         {
             doorConfig = new DoorConfig();
             formDate = DateTime.Now;
-            //doorConfig.FORMDATE = formDate.ToString("dd/MM/yyyy");
-            //doorConfig.FORMFILLER = "aaaaaaaaaaaaaaa";
             await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
         }
 
@@ -165,7 +162,7 @@
                             doorConfig.AGENT = _AGENT;
                     }
                 }
-            }
+}
             <td>
                 <select name="dlstCustDes" @bind="CUST">
                     @if (lstCustomers != null)
@@ -178,6 +175,7 @@
                 </select> />
             </td>
             @code {
+                public bool disableLogo = false;
                 private string _CUST = string.Empty;
                 protected string CUST
                 {
@@ -186,17 +184,69 @@
                     {
                         _CUST = value;
                         if (doorConfig != null)
+                        {
                             doorConfig.CUST = int.Parse(_CUST);
+                            // set Address and Logo based on CUST
+                            CUSTOMER_Class cust = PrApiCalls.getCustomer(doorConfig.CUST, ref errMsg);
+                            Address = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3);
+                            if (!string.IsNullOrEmpty(cust.TRSH_LOGO) && cust.TRSH_LOGO == "Y")
+                            {
+                                disableLogo = true;
+                                doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                            }
+                            //
+                        }
+
                     }
                 }
             }
 
             <td>
-                <input dir="rtl" />
+                <input dir="rtl" @bind="Address" />
             </td>
+            @code {
+                protected string _Address = string.Empty;
+                protected string Address
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Address = doorConfig.ADDRESS;
+                        }
+                        return _Address;
+                    }
+                    set
+                    {
+                        _Address = value;
+                        if (doorConfig != null)
+                            doorConfig.ADDRESS = _Address;
+                    }
+                }
+            }
             <td>
-                <input dir="rtl" />
+                <input dir="rtl" @bind="ShipAddress"/>
             </td>
+            @code {
+                protected string _ShipAddress = string.Empty;
+                protected string ShipAddress
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _ShipAddress = doorConfig.SHIPADDRESS;
+                        }
+                        return _ShipAddress;
+                    }
+                    set
+                    {
+                        _ShipAddress = value;
+                        if (doorConfig != null)
+                            doorConfig.SHIPADDRESS = _ShipAddress;
+                    }
+                }
+            }
         </tr>
     </table>
     <table id="tblProducts">
@@ -288,7 +338,7 @@
 
     <TabControl>
         <TabPage Text="כנף נעה">
-            <Movingwing doorConfig="@doorConfig"></Movingwing>
+            <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
         </TabPage>
         <TabPage Text="Tab 2">
             <Counter />
