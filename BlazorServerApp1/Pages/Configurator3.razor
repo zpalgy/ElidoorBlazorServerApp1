@@ -364,7 +364,7 @@
         // ref: https://blazor-university.com/templating-components-with-renderfragements/creating-a-tabcontrol/
     }
 
-    <TabControl>
+    <TabControl doorConfig="doorConfig">
         <TabPage Text="כנף נעה">
             <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
         </TabPage>
@@ -374,7 +374,7 @@
         <TabPage Text="פרטי דקורציה פנים">
             <h1>The third tab</h1>
         </TabPage>
-        <TabPage Text = "כנף קבועה" disableTabPage="@disableStaticWing" >
+        <TabPage Text = "כנף קבועה">
             <Counter />
         </TabPage>
         <TabPage Text = "פרטי צירים">
