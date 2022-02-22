@@ -24,32 +24,51 @@ namespace BlazorServerApp1.Data
                                                             "txtBackPinHeight", "txtHingesNum",
                                                             "txtHinge1Height","txtHinge2Height","txtHinge3Height","txtHinge4Height","txtHinge5Height"};
         public static string[] prodButtonIDs; //= new Button[] { new Button()};
-        public static string currentMeaged = string.Empty;
-        public static string decoreSideCode = string.Empty;
+        public static string[] propNames;
+        //public static string currentMeaged = string.Empty;
+        //public static string decoreSideCode = string.Empty;
         #endregion local arrays and tables
-
-        public static bool setHideFld(string fldName)
+        public static void initPropNames(DoorConfig doorConfig)
+        {
+            Type objType = doorConfig.GetType();
+            PropertyInfo[] props = objType.GetProperties();
+            propNames = props.Select(i => i.Name).ToArray();
+        }
+        public static bool hideFld(DoorConfig doorConfig, string fldName)
         {
             bool showByMeaged = true;
-            if (string.IsNullOrEmpty(currentMeaged))
+            if (string.IsNullOrEmpty(doorConfig.meaged))
                 showByMeaged = true;
-            else if (meagedContains(currentMeaged, fldName, PrApiCalls.dtMeagedFields))
+            else if (meagedContains(doorConfig.meaged, fldName, PrApiCalls.dtMeagedFields))
                 showByMeaged = true;
             else
                 showByMeaged = false;  //hide
 
             if (!showByMeaged)
                 return true;  // hide
-            else if (HiddenDecorSideFldsContains(fldName, PrApiCalls.dtDecorSideFlds, Helper.DecorFormat2Code(PrApiCalls.doorConfig.DECORFORMAT)))
+            else if (HiddenDecorSideFldsContains(fldName, PrApiCalls.dtDecorSideFlds, Helper.DecorFormat2Code(doorConfig.DECORFORMAT)))
                 return true;  //hide
             else
                 return false; // show
 
         }
-        public static bool setHideFld(int i)
+        public static bool disableFld(DoorConfig doorConfig, string configFldName)
         {
-            return true;
+            string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
+            DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+            if (rowsDefVal.Length > 0)
+            {
+                //string defval = rowsDefVal[0]["DEFVAL"].ToString();
+                string val_locked = rowsDefVal[0]["VAL_LOCKED"].ToString();
+                return (val_locked == "Y");
+            }
+            return false;
         }
+
+        //public static bool setHideFld(int i)
+        //{
+        //    return true;
+        //}
         public static void initTabNames()
         {
             DataView view = new DataView(PrApiCalls.dtConfFields);
@@ -61,10 +80,10 @@ namespace BlazorServerApp1.Data
             }
         }
 
-        public static bool hideStaticWing(string wingsNum)
-        {
-            return (wingsNum == "כנף");
-        }
+        //public static bool hideStaticWing(string wingsNum)
+        //{
+        //    return (wingsNum == "כנף");
+        //}
 
         //public static void toggleColor(Button btn)
         //{
@@ -231,55 +250,30 @@ namespace BlazorServerApp1.Data
                 return false;
             }
         }
-        //public static void applyFldDefault(HtmlTableCell td, string PARTNAME)
-        //{
-        //    try
-        //    {
-        //        Control c;
-        //        string query = string.Format("PARTNAME = '{0}' AND CONFIG_TDNAME = '{1}'", PARTNAME, td.ID);
-        //        DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
-        //        if (rowsDefVal.Length > 0)
-        //        {
-        //            string config_fieldname = rowsDefVal[0]["CONFIG_FIELDNAME"].ToString();
-        //            c = td.FindControl(config_fieldname);
-        //            string defval = rowsDefVal[0]["DEFVAL"].ToString();
-        //            string val_locked = rowsDefVal[0]["VAL_LOCKED"].ToString();
-
-        //            if (c is DropDownList)
-        //            {
-        //                DropDownList dlst = (DropDownList)c;
-        //                dlst.SelectedIndex = dlst.Items.IndexOf(dlst.Items.FindByText(defval));
-        //                dlst.Enabled = (val_locked != "Y" && val_locked != "כן");
-        //                for (int i = 0; i < rowsDefVal.Length; i++)
-        //                {
-        //                    string wrongval = rowsDefVal[i]["WRONGVAL"].ToString();
-        //                    int index2Remove = dlst.Items.IndexOf(dlst.Items.FindByText(wrongval));
-        //                    if (index2Remove >= 0)
-        //                        dlst.Items.RemoveAt(index2Remove);
-        //                }
-
-        //            }
-        //            else if (c is TextBox)
-        //            {
-        //                TextBox txtB = (TextBox)c;
-        //                txtB.Text = defval;
-        //                txtB.Enabled = (val_locked != "Y" && val_locked != "כן");
-        //            }
-        //            else if (c is CheckBox)
-        //            {
-        //                CheckBox chkb = (CheckBox)c;
-        //                chkb.Checked = (defval == "Y" || defval == "כן");
-        //                chkb.Enabled = (val_locked != "Y" && val_locked != "כן");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
-        //        myLogger.log.Error(errMsg);
-        //        return;
-        //    }
-        //}
+        public static void applyFldDefault(DoorConfig doorConfig, string configFldName)
+        {
+            try
+            {
+                //Control c;
+                configFldName = configFldName.ToUpper();
+                //string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
+                string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
+                DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+                string errMsg = string.Empty;
+                for (int r = 0; r < rowsDefVal.Length; r++)
+                {
+                    string defval = rowsDefVal[r]["DEFVAL"].ToString();
+                    ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
+                    UiLogic.setConfFieldVal(doorConfig, configFldName, cFld.FIELDDATATYPE, defval, ref errMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                string errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return;
+            }
+        }
 
         #endregion Meageds
         #region decorSide 
@@ -537,47 +531,88 @@ namespace BlazorServerApp1.Data
         #endregion clear tab and conf fields
 
         #region conf fields
-        //public static ConfField_Class getConfField(string fieldCode, Label lblMsg)
-        //{
-        //    try
-        //    {
-        //        DataRow[] fldRows = PrApiCalls.dtConfFields.Select(string.Format("FIELDCODE = '{0}'", fieldCode));
-        //        if (fldRows != null && fldRows.Length > 0)
-        //        {
-        //            DataRow fldRow = fldRows[0];
-        //            ConfField_Class fld = new ConfField_Class();
-        //            //--
-        //            Type objType = fld.GetType();
+        public static ConfField_Class getConfFieldByFldName(string configFldName, ref string errMsg)
+        {
+            try
+            {
+                DataRow[] fldRows = PrApiCalls.dtConfFields.Select(string.Format("CONFIG_FIELDNAME = '{0}'", configFldName));
+                if (fldRows != null && fldRows.Length > 0)
+                {
+                    DataRow fldRow = fldRows[0];
+                    ConfField_Class fld = new ConfField_Class();
+                    //--
+                    Type objType = fld.GetType();
 
-        //            PropertyInfo[] props = objType.GetProperties();
-        //            string[] propNames = props.Select(i => i.Name).ToArray();
+                    PropertyInfo[] props = objType.GetProperties();
+                    string[] propNames = props.Select(i => i.Name).ToArray();
 
-        //            for (int p = 0; p < propNames.Length; p++)
-        //            {
-        //                try
-        //                {
-        //                    props[p].SetValue(fld, fldRow[props[p].Name]);
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    string errmsg = string.Format("Error : {0} , fld={1}", ex.Message, fld.FIELDCODE);
-        //                    throw ex;
-        //                }
-        //            }
-        //            return fld;
-        //        }
-        //        else
-        //            return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
-        //        myLogger.log.Error(errMsg);
-        //        displayErrMsg(lblMsg, errMsg);
+                    for (int p = 0; p < propNames.Length; p++)
+                    {
+                        try
+                        {
+                            props[p].SetValue(fld, fldRow[props[p].Name]);
+                        }
+                        catch (Exception ex)
+                        {
+                            string errmsg = string.Format("Error : {0} , fld={1}", ex.Message, fld.FIELDCODE);
+                            throw ex;
+                        }
+                    }
+                    return fld;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                //displayErrMsg(lblMsg, errMsg);
 
-        //        return null;
-        //    }
-        //}
+                return null;
+            }
+        }
+        public static ConfField_Class getConfFieldByFldCode(string fieldCode, ref string  errMsg)
+        {
+            try
+            {
+                DataRow[] fldRows = PrApiCalls.dtConfFields.Select(string.Format("FIELDCODE = '{0}'", fieldCode));
+                if (fldRows != null && fldRows.Length > 0)
+                {
+                    DataRow fldRow = fldRows[0];
+                    ConfField_Class fld = new ConfField_Class();
+                    //--
+                    Type objType = fld.GetType();
+
+                    PropertyInfo[] props = objType.GetProperties();
+                    string[] propNames = props.Select(i => i.Name).ToArray();
+
+                    for (int p = 0; p < propNames.Length; p++)
+                    {
+                        try
+                        {
+                            props[p].SetValue(fld, fldRow[props[p].Name]);
+                        }
+                        catch (Exception ex)
+                        {
+                            string errmsg = string.Format("Error : {0} , fld={1}", ex.Message, fld.FIELDCODE);
+                            throw ex;
+                        }
+                    }
+                    return fld;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                //displayErrMsg(lblMsg, errMsg);
+
+                return null;
+            }
+        }
         //public static ConfField_Class getConfField(Control ctl, Label lblMsg)
         //{
         //    try
@@ -636,69 +671,69 @@ namespace BlazorServerApp1.Data
         //        return null;
         //    }
         //}
-        //public static void setConfFieldVal(DoorConfig doorConfig, string fldName, string dataType, object val, Label lblMsg)
-        //{
-        //    string sval;
-        //    int ival;
+        public static void setConfFieldVal(DoorConfig doorConfig, string fldName, string dataType, object val, ref string errMsg)
+        {
+            string sval;
+            int ival;
 
-        //    Type objType = doorConfig.GetType();
-        //    PropertyInfo[] props = objType.GetProperties();
-        //    string[] propNames = props.Select(i => i.Name).ToArray();
-        //    try
-        //    {
-        //        for (int p = 0; p < propNames.Length; p++)
-        //        {
-        //            if (propNames[p] == fldName)
-        //            {
-        //                switch (dataType)
-        //                {
-        //                    case "CHAR":
-        //                    case "RCHAR":
-        //                        if (val == null || string.IsNullOrEmpty(val.ToString()))
-        //                            sval = string.Empty;
-        //                        else
-        //                            sval = val.ToString();  //(string)val;
-        //                        try
-        //                        {
-        //                            props[p].SetValue(doorConfig, sval);
-        //                        }
-        //                        catch (Exception ex)
-        //                        {
-        //                            string errMsg = string.Format("props[{0}}].SetValue(doorConfig, sval = {1}); FAILED ! \n error: {2} ",
-        //                                                   p, sval, ex.Message);
-        //                            myLogger.log.Error(errMsg);
-        //                            displayErrMsg(lblMsg, errMsg);
-        //                        }
-        //                        return;
-        //                    case "INT":
-        //                        if (val == null || string.IsNullOrEmpty(val.ToString()))
-        //                            ival = 0;
-        //                        else
-        //                            ival = int.Parse(val.ToString());
+            Type objType = doorConfig.GetType();
+            PropertyInfo[] props = objType.GetProperties();
+            //string[] propNames = props.Select(i => i.Name).ToArray();
+            try
+            {
+                //for (int p = 0; p < propNames.Length; p++)
+                //{
+                int p = Array.IndexOf(propNames, fldName);
+                if (p >= 0)
+                { 
+                        switch (dataType)
+                        {
+                            case "CHAR":
+                            case "RCHAR":
+                                if (val == null || string.IsNullOrEmpty(val.ToString()))
+                                    sval = string.Empty;
+                                else
+                                    sval = val.ToString();  //(string)val;
+                                try
+                                {
+                                    props[p].SetValue(doorConfig, sval);
+                                }
+                                catch (Exception ex)
+                                {
+                                    errMsg = string.Format("props[{0}}].SetValue(doorConfig, sval = {1}); FAILED ! \n error: {2} ",
+                                                           p, sval, ex.Message);
+                                    myLogger.log.Error(errMsg);
+                                    //displayErrMsg(lblMsg, errMsg);
+                                }
+                                return;
+                            case "INT":
+                                if (val == null || string.IsNullOrEmpty(val.ToString()))
+                                    ival = 0;
+                                else
+                                    ival = int.Parse(val.ToString());
 
-        //                        try
-        //                        {
-        //                            props[p].SetValue(doorConfig, ival);
-        //                        }
-        //                        catch (Exception ex)
-        //                        {
-        //                            string errMsg = string.Format("props[{0}}].SetValue(doorConfig, ival = {1}); FAILED ! \n error: {2} ",
-        //                                                   p, ival, ex.Message);
-        //                            myLogger.log.Error(errMsg);
-        //                            displayErrMsg(lblMsg, errMsg);
-        //                        }
-        //                        return;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string errMsg = string.Format("Unexpected error: fldname = {0} , error: {1} .  Stacktrace : {2}", fldName, ex.Message, ex.StackTrace);
-        //        myLogger.log.Error(errMsg);
-        //        displayErrMsg(lblMsg, errMsg);
-        //    }
-        //}
+                                try
+                                {
+                                    props[p].SetValue(doorConfig, ival);
+                                }
+                                catch (Exception ex)
+                                {
+                                    errMsg = string.Format("props[{0}}].SetValue(doorConfig, ival = {1}); FAILED ! \n error: {2} ",
+                                                           p, ival, ex.Message);
+                                    myLogger.log.Error(errMsg);
+                                    //displayErrMsg(lblMsg, errMsg);
+                                }
+                                return;
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format("Unexpected error: fldname = {0} , error: {1} .  Stacktrace : {2}", fldName, ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                //displayErrMsg(lblMsg, errMsg);
+            }
+        }
 
         //static List<string> lstThNames = new List<string>();
         //static List<string> lstTdNames = new List<string>();

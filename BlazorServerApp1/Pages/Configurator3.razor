@@ -118,7 +118,9 @@
         {
             doorConfig = new DoorConfig();
             formDate = DateTime.Now;
-            await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+            UiLogic.initPropNames(doorConfig);
+
+            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
         }
 
         public async Task SaveDoorConfig()
@@ -378,6 +380,8 @@
                                 FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
                                 FAMILYDES = familyOfPart.FAMILYDES;
                                 doorConfig.FAMILY = PrApiCalls.getFAMILY(familyOfPart.FAMILYNAME, ref errMsg);
+                                doorConfig.meaged = PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
+                                
                             }
                         }
 

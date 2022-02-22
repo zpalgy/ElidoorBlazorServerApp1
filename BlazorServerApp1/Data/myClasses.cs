@@ -925,7 +925,9 @@ namespace BlazorServerApp1.Data
         public string MEZUZA { get; set; }         //D-1090
         #endregion accessories
         [DataMember(Order = 350), Order]
-        public string COMMENTS { get; set; }
+        public string COMMENTS { get; set; } = string.Empty;
+        [NonSerialized]
+        public string meaged = string.Empty;
     }
     public class ValuesDoorConfig
     {
