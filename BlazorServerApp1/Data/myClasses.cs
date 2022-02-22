@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorServerApp1.Data
 {
@@ -535,6 +536,7 @@ namespace BlazorServerApp1.Data
         #region form header
         [DataMember(Order = 1), Order]
         public string REFERENCE { get; set; }
+        [Required]
         [DataMember(Order = 2), Order]
         public string FORMDATE { get; set; }
         [DataMember(Order = 3), Order]
@@ -545,8 +547,10 @@ namespace BlazorServerApp1.Data
         //public string AGENTCODE { get; set; }
         //[DataMember(Order = 5), Order]
         //public string AGENTNAME { get; set; }
+
+        [Required]      
         [DataMember(Order = 6), Order]
-        public int CUST { get; set; }
+        public int? CUST { get; set; }
         //[DataMember(Order = 6), Order]
         //public string CUSTNAME { get; set; }
         //[DataMember(Order = 7), Order]
@@ -569,6 +573,7 @@ namespace BlazorServerApp1.Data
         public string COMPLIENTDOOR { get; set; }  // Y | N | '' D-920
         //[DataMember(Order = 23), Order]
         //public int PART { get; set; }  //D-20
+        [Required]
         [DataMember(Order = 15), Order]
         public string PARTNAME { get; set; }  //D-20
         //[DataMember(Order = 24), Order]

@@ -11,8 +11,16 @@
         padding: 15px;
         text-align: center;
     }
+    .myDiv {
+        border: solid; 
+        border-color: black; 
+        border-radius: 10px;
+    }
 </style>
 
+<EditForm Model=@doorConfig>
+  <DataAnnotationsValidator/>
+  <ValidationSummary/>
 <h3>Configurator3</h3>
 
 @code {
@@ -162,7 +170,7 @@
                             doorConfig.AGENT = _AGENT;
                     }
                 }
-}
+            }
             <td>
                 <select name="dlstCustDes" @bind="CUST">
                     @if (lstCustomers != null)
@@ -187,7 +195,7 @@
                         {
                             doorConfig.CUST = int.Parse(_CUST);
                             // set Address and Logo based on CUST
-                            CUSTOMER_Class cust = PrApiCalls.getCustomer(doorConfig.CUST, ref errMsg);
+                            CUSTOMER_Class cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
                             Address = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3);
                             if (!string.IsNullOrEmpty(cust.TRSH_LOGO) && cust.TRSH_LOGO == "Y")
                             {
@@ -225,7 +233,7 @@
                 }
             }
             <td>
-                <input dir="rtl" @bind="ShipAddress"/>
+                <input dir="rtl" @bind="ShipAddress" size="80"/>
             </td>
             @code {
                 protected string _ShipAddress = string.Empty;
@@ -320,7 +328,7 @@
                             _WingsNum = value;
                             if (doorConfig != null)
                                 doorConfig.WINGSNUM = _WingsNum;
- 
+
                             //disableStaticWing =  (_WingsNum == "כנף");
                         }
                     }
@@ -338,13 +346,62 @@
                     <input type="checkbox" name="chkbComplient" />
                 </td>
                 <td>
-                    <select name="dlstPARTNAME">
+                    <select name="dlstPARTNAME" @bind="PARTNAME">
+                        @if (PrApiCalls.lstParts != null)
+                        {
+                            @foreach (PART_Class p in PrApiCalls.lstParts)
+                            {
+                                <option value="@p.PARTNAME">@p.PARTDES</option>
+                            }
+                        }
                     </select>
                 </td>
-                <td>
-                    <input name="txtFAMILY" Enabled="false" />
-                </td>
+                @code
+                {
+                    protected string _PARTNAME = string.Empty;
+                    protected string PARTNAME
+                    {
+                        get
+                        {
+                            if (doorConfig != null)
+                            {
+                                _PARTNAME = doorConfig.PARTNAME;
+                            }
+                            return _PARTNAME;
+                        }
+                        set
+                        {
+                            _PARTNAME = value;
+                            if (doorConfig != null)
+                            {
+                                doorConfig.PARTNAME = _PARTNAME;
+                                FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
+                                FAMILYDES = familyOfPart.FAMILYDES;
+                                doorConfig.FAMILY = PrApiCalls.getFAMILY(familyOfPart.FAMILYNAME, ref errMsg);
+                            }
+                        }
 
+                    }
+                }
+                <td>
+                    <input name="txtFAMILY" disabled=@true @bind="FAMILYDES" />
+                </td>
+                @code
+                {
+                    protected string _FAMILYDES;
+                    protected string FAMILYDES
+                    {
+                        get
+                        {
+                            return _FAMILYDES;
+                        }
+                        set
+                        {
+                            _FAMILYDES = value;
+                        }
+                    }
+
+                }
             </tr>
         </table>
     </div>
@@ -361,29 +418,82 @@
         // ref: https://blazor-university.com/templating-components-with-renderfragements/creating-a-tabcontrol/
     }
 
+ <div id="divTabControl" >
     <TabControl doorConfig="doorConfig">
         <TabPage Text="כנף נעה">
+            <div id="divMovingWing" class="myDiv">
             <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
+            </div>
         </TabPage>
         <TabPage Text="פרטי דקורציה חוץ">
+            <div id="divExtDecor" class="myDiv">
             <Counter />
+            </div>
         </TabPage>
         <TabPage Text="פרטי דקורציה פנים">
+            <div id="divIntDecor" class="myDiv">
             <h1>The third tab</h1>
+            </div>
         </TabPage>
-        <TabPage Text = "כנף קבועה">
+        <TabPage Text="כנף קבועה">
+            <div id="divStaticWing" class="myDiv">
             <Counter />
+            </div>
         </TabPage>
-        <TabPage Text = "פרטי צירים">
-            <Counter/>
+        <TabPage Text="פרטי צירים">
+            <div id="divHinges" class="myDiv">
+            <Counter />
+            </div>
         </TabPage>
-        <TabPage Text = "ידית אומנותית">
-            <Counter/>
+        <TabPage Text="ידית אומנותית">
+            <div id="divHandles" class="myDiv">
+            <Counter />
+            </div>
         </TabPage>
-        <TabPage Text = "נילווים">
-            <Counter/>
+        <TabPage Text="נילווים">
+            <div id="divAccessories" class="myDiv">
+            <Counter />
+            </div>
         </TabPage>
     </TabControl>
+    </div>
+    <!-- end divTabControl -->
 
 </div>
 <!-- end divDoor -->
+<div id="divCommentsAndSave" dir="rtl" style="padding-top: 30px;">
+                                <table id="tblComments">
+                                    <tr>
+                                        <th id="thComments" style="text-align: right">הערות</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="txtComments" size="120" AutoCompleteType="Disabled" />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p />
+                                <br />
+                                <br />
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <button name="btnSave"  @onclick="btnSave_Click" >שמירה בפריוריטי</button>
+                                        </td>
+                                        @code {
+                                            private void btnSave_Click()
+                                            {}
+                                        }
+                                        <td>
+                                            <button name="btnClear"  @onclick="btnClear_Click">ניקוי טופס</button>
+                                        </td>
+                                         @code {
+                                            private void btnClear_Click()
+                                            {}
+                                        }
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- end divCommentsAndSave -->
+                            <asp:Label ID="lblBuildDate" runat="server" dir="ltr" Width="600px" />
+</EditForm>
