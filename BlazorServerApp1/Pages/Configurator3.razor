@@ -303,7 +303,7 @@
                 </td>
                 @code
                 {
-                    protected bool disableStaticWing = false;
+                    //protected bool disableStaticWing = false;
                     protected string _WingsNum = string.Empty;
                     protected string WingsNum
                     {
@@ -321,10 +321,7 @@
                             if (doorConfig != null)
                                 doorConfig.WINGSNUM = _WingsNum;
  
-                            disableStaticWing =  (_WingsNum == "כנף");
-
-                                
-                            //hfGreyTab.Value = (dlst.SelectedValue == "כנף" ? "staticwing" : "");
+                            //disableStaticWing =  (_WingsNum == "כנף");
                         }
                     }
 
