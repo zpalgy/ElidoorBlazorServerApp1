@@ -47,7 +47,7 @@
             <td>
                 <input type="date" name="txtDate" @bind="formDate" />
                 @code {
-                    public DoorConfig? doorConfig; // = new DoorConfig();
+                        public DoorConfig? doorConfig; // = new DoorConfig();
 
                     private DateTime _formDate = DateTime.Now;
                     protected DateTime formDate
@@ -58,7 +58,7 @@
                             _formDate = value;
                             if (doorConfig == null)
                                 doorConfig = new DoorConfig();
-                            doorConfig.FORMDATE = _formDate.ToString("dd/MM/yyyy");
+                            doorConfig.FORMDATE = Helper.formatDate4Rest(_formDate);
                         }
                     }
                 }
@@ -186,8 +186,8 @@
             </td>
             @code {
                 public bool disableLogo = false;
-                private string _CUST = string.Empty;
-                protected string CUST
+                private int _CUST = 0;
+                protected int CUST
                 {
                     get { return _CUST; }
                     set
@@ -195,7 +195,7 @@
                         _CUST = value;
                         if (doorConfig != null)
                         {
-                            doorConfig.CUST = int.Parse(_CUST);
+                            doorConfig.CUST = _CUST;
                             // set Address and Logo based on CUST
                             CUSTOMER_Class cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
                             Address = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3);
@@ -345,8 +345,30 @@
                 </td>
 
                 <td>
-                    <input type="checkbox" name="chkbComplient" />
+                    <input type="checkbox" name="chkbComplient"  @bind="Complient" />
                 </td>
+                @code
+        {
+				protected bool _Complient = false;
+                protected bool Complient
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Complient = (doorConfig.COMPLIENTDOOR == "Y");
+                        }
+                        return _Complient;
+                    }
+                    set
+                    {
+                        _Complient = value;
+                        if (doorConfig != null)
+                            doorConfig.COMPLIENTDOOR = (_Complient ? "Y" : "");
+                    }
+                }
+
+        }
                 <td>
                     <select name="dlstPARTNAME" @bind="PARTNAME">
                         @if (PrApiCalls.lstParts != null)
@@ -359,8 +381,8 @@
                     </select>
                 </td>
                 @code
-                {
-                    protected string _PARTNAME = string.Empty;
+                    {
+                        protected string _PARTNAME = string.Empty;
                     protected string PARTNAME
                     {
                         get
@@ -381,7 +403,9 @@
                                 FAMILYDES = familyOfPart.FAMILYDES;
                                 doorConfig.FAMILY = PrApiCalls.getFAMILY(familyOfPart.FAMILYNAME, ref errMsg);
                                 doorConfig.meaged = PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
-                                
+                                doorConfig.TRSH_DOOR_HWCATCODE = PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
+                                UiLogic.applyPartDefaults(doorConfig);
+
                             }
                         }
 
@@ -485,8 +509,26 @@
                                             <button name="btnSave"  @onclick="btnSave_Click" >שמירה בפריוריטי</button>
                                         </td>
                                         @code {
-                                            private void btnSave_Click()
-                                            {}
+                    private void btnSave_Click()
+        {
+                    var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
+
+                    if (response != System.Net.HttpStatusCode.Created)
+                    {
+                    //myMessageBox.Show(Page, errMsg);
+                        //UiLogic.displayErrMsg(lblMsg, "Api call failed : " + errMsg);
+                        Js.InvokeVoidAsync("alert", errMsg);
+                        myLogger.log.Info("Api call failed : " + errMsg);
+                    }
+                    else
+                    {
+                        string lastREFERENCE = PrApiCalls.getLastREFERENCE(ref errMsg);
+                        string msg = string.Format("השאלון {0} נשמר בהצלחה, השאלון האחרון במערכת הוא {1}   י", doorConfig.REFERENCE, lastREFERENCE);
+                        Js.InvokeVoidAsync("alert", msg);
+                        //UiLogic.ClearAllControls();
+                        //doorConfig = new DoorConfig();
+                    }
+        }
                                         }
                                         <td>
                                             <button name="btnClear"  @onclick="btnClear_Click">ניקוי טופס</button>

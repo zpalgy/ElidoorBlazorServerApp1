@@ -1906,8 +1906,8 @@ namespace BlazorServerApp1.Data
             }
         }
 
-        public static IRestResponse SendToPriority(string form, DoorConfig doorConfig, ref string errMsg,
-                          HttpRequest httpRequest)
+        public static IRestResponse SendToPriority(string form, DoorConfig doorConfig, ref string errMsg)
+                          //HttpRequest httpRequest)
         {
             try
             {
@@ -1920,7 +1920,16 @@ namespace BlazorServerApp1.Data
                 request.Method = Method.POST;
                 request.RequestFormat = DataFormat.Json;
                 request.Resource = form; //TRSH_DOORCONFIG   name of the form to populate
+
+                //doorConfig.FORMDATE = "2022-02-24";  // just for test 
+
                 string payload = JsonSerializer<DoorConfig>(doorConfig);
+
+
+                //{"REFERENCE":null,"FORMDATE":"24-02-2022",  wrong date format - fails
+                //"REFERENCE":null,"FORMDATE":"2022-02-24","FORMFILLER":null,"AGENT":0,"CUST":1, - works
+
+
                 request.AddParameter("application/json", payload, ParameterType.RequestBody);
 
                 IRestResponse response = restClient.Execute(request);

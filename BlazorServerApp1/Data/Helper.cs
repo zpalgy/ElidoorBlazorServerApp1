@@ -120,6 +120,12 @@ namespace BlazorServerApp1.Data
                     return "Error";
             }
         }
+        public static string formatDate4Rest (DateTime Date1 )
+        {
+            // Date format is YYYY-MM-DD  e.g. 2022-02-24 
+            return string.Format("{0}-{1}-{2}",
+                             Date1.Year.ToString("0000"), Date1.Month.ToString("00"), Date1.Day.ToString("00"));
+        }
 
     }
 }

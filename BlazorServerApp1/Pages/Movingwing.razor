@@ -32,7 +32,7 @@
     </tr>
     <tr>
         <td id="tdOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">
-            <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "OpenSide")">
+            <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "dlstOpenSide")">
                 <option> </option>
                 <option>ימין</option>
                 <option>שמאל</option>
@@ -65,7 +65,8 @@
                 <option>ללא</option>
                 <option>חוץ</option>
                 <option>פנים</option>
-                <option>דו צדדי</option>
+                <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
+                @* see Helper.DecorFormat2Code(...) method *@
             </select>
         </td>
         @code {
@@ -76,6 +77,7 @@
                 {
                     if (doorConfig != null)
                     {
+                        // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
                         _DecorFormat = doorConfig.DECORFORMAT;
                     }
                     return _DecorFormat;
@@ -115,7 +117,7 @@
 
         }
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
-            <input name="txtDoorWidth" @bind="DoorWidth" />
+            <input name="txtDoorWidth" type="number" @bind="DoorWidth" />
         </td>
         @code
         {
@@ -139,7 +141,7 @@
                         //[TODO] implement the following lines
                         //if (chkbComplient.Checked)
                         //     txtWindowWidth.Text = calcWindowWidth();
-                        if (!string.IsNullOrEmpty(doorConfig.PARTNAME))
+                        if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
                         {
                             string errMsg = string.Empty;
                             doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
@@ -166,6 +168,7 @@
         </td>
         @code
         {
+
             protected int _DoorColorId = 0;
             protected int DoorColorId
             {
@@ -202,59 +205,177 @@
     </tr>
     <tr>
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
-            <input name="txtDoorHeight" @bind="doorConfig.DOORHEIGHT" />
-        </td>
-        <td id="tdTurboApparatus">
-            <input type="checkbox" name="chkbTurboApparatus" />
-        </td>
-        <td id="tdLockDrilHeight">
-            <input name="txtLockDrilHeight" />
-        </td>
-        <td id="tdLogo">
-            <input type="checkbox" name="chkbLogo" disabled="@disableLogo"/>
+            <input name="txtDoorHeight" type="number" @bind="DoorHeight" />
         </td>
         @code
         {
-				protected bool _chkbLogo = false;
-                protected bool chkbLogo
+            protected int _DoorHeight = 0;
+            protected int DoorHeight
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _DoorHeight = doorConfig.DOORHEIGHT;
+                    }
+                    return _DoorHeight;
+                }
+                set
+                {
+                    _DoorHeight = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.DOORHEIGHT = _DoorHeight;
+                        //[TODO] implement the following lines
+                        //if (chkbComplient.Checked)
+                        //     txtWindowWidth.Text = calcWindowWidth();
+                        if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
+                        {
+                            string errMsg2 = string.Empty;
+                            setHingesAndWindowsData(doorConfig, ref errMsg2);
+                            if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
+                            {
+                                Js.InvokeVoidAsync("alert", errMsg2);
+                            }
+                        }
+
+                        string errMsg = string.Empty;
+                        doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
+                        if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                        {
+                            Js.InvokeVoidAsync("alert", errMsg);
+                        }
+                    }
+                }
+            }
+        }
+
+        <td id="tdTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">
+            <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus" />
+        </td>
+        @code
+        {
+            protected bool _TurboApparatus = false;
+            protected bool TurboApparatus
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _TurboApparatus = (doorConfig.TURBOAPPARATUS == "Y");
+                    }
+                    return _TurboApparatus;
+                }
+                set
+                {
+                    _TurboApparatus = value;
+                    if (doorConfig != null)
+                        doorConfig.TURBOAPPARATUS = (_TurboApparatus ? "Y" : "");
+                }
+            }
+
+        }
+        <td id="tdLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">
+            <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" />
+        </td>
+        @code
+        {
+            protected int _LOckDrilHeight = 0;
+            protected int LockDrilHeight
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _LOckDrilHeight = doorConfig.LOCKDRILHEIGHT;
+                    }
+                    return _LOckDrilHeight;
+                }
+                set
+                {
+                    _LOckDrilHeight = value;
+                    if (doorConfig != null)
+                        doorConfig.LOCKDRILHEIGHT = _LOckDrilHeight;
+                }
+            }
+        }
+        <td id="tdLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">
+            <input type="checkbox" name="chkbLogo" @bind="Logo" disabled="@disableLogo" />
+        </td>
+        @code
+        {
+            protected bool _Logo = false;
+            protected bool Logo
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _Logo = (doorConfig.LOGO == "Y");
+                    }
+                    return _Logo;
+                }
+                set
+                {
+                    _Logo = value;
+                    if (doorConfig != null)
+                        doorConfig.LOGO = (_Logo ? "Y" : "");
+                }
+            }
+
+        }
+        <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
+            <select name="dlstHw" @bind="Hw">
+                @{
+                    string errMsg = string.Empty;
+                    List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getPartHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+
+                    if (lstPartHWs != null)
+                    {
+                        @foreach (TRSH_HARDWARE_Class c in lstPartHWs)
+                        {
+                            <option value="@c.TRSH_HARDWARE">@c.HARDWAREDES</option>
+                        }
+                    }
+                }
+            </select>
+            @code
+            {
+                protected int _Hw = 0;
+                protected int Hw
                 {
                     get
                     {
                         if (doorConfig != null)
                         {
-                            _chkbLogo = (doorConfig.LOGO == "Y");
+                            _Hw = doorConfig.TRSH_HARDWARE;
                         }
-                        return _chkbLogo;
+                        return _Hw;
                     }
                     set
                     {
-                        _chkbLogo = value;
+                        _Hw = value;
                         if (doorConfig != null)
-                            doorConfig.LOGO = (_chkbLogo ? "Y" : "");
+                            doorConfig.TRSH_HARDWARE = _Hw;
                     }
                 }
-
-        }
-        <td id="tdHw">
-            <asp:DropDownList ID="dlstHw" AutoPostBack="false"
-                              OnSelectedIndexChanged="ctl_valChanged"
-                              onChange="clearFollowingTabs('movingwing')" />
+            }
         </td>
-        <td id="tdHwColor">
-            <asp:DropDownList ID="dlstHwColor" AutoPostBack="false"
-                              DataValueField="TRSH_COLORID"
-                              DataTextField="TRSH_COLORDES"
-                              SelectMethod="getColors"
-                              OnSelectedIndexChanged="ctl_valChanged"
-                              onChange="clearFollowingTabs('movingwing')" />
+        <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
+            <select name="dlstHwColor"
+                    DataValueField="TRSH_COLORID"
+                    DataTextField="TRSH_COLORDES"
+                    SelectMethod="getColors"
+                    OnSelectedIndexChanged="ctl_valChanged"
+                    onChange="clearFollowingTabs('movingwing')" />
         </td>
-        <td id="tdDril4Hw">
-            <asp:DropDownList ID="dlstDril4Hw" AutoPostBack="false"
-                              DataValueField="DRIL4HW"
-                              DataTextField="DRIL4HWDES"
-                              SelectMethod="getDril4Hws"
-                              OnSelectedIndexChanged="ctl_valChanged"
-                              onChange="Dril4Hw_change()" />
+        <td id="tdDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">
+            <select name="dlstDril4Hw"
+                    DataValueField="DRIL4HW"
+                    DataTextField="DRIL4HWDES"
+                    SelectMethod="getDril4Hws"
+                    OnSelectedIndexChanged="ctl_valChanged"
+                    onChange="Dril4Hw_change()" />
         </td>
     </tr>
 </table>
@@ -288,6 +409,9 @@
                               OnSelectedIndexChanged="ctl_valChanged"
                               onChange="clearFollowingTabs('movingwing')" />
         </td>
+        @{
+            List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+        }
         <td id="tdTwoSidesIDSDril">
             <asp:CheckBox ID="chkbTwoSidesIDSDril" AutoPostBack="false" Enabled="false"
                           OnCheckedChanged="ctl_valChanged"

@@ -54,6 +54,7 @@ namespace BlazorServerApp1.Data
         }
         public static bool disableFld(DoorConfig doorConfig, string configFldName)
         {
+            //configFldName = configFldName.ToUpper();
             string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
             DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
             if (rowsDefVal.Length > 0)
@@ -64,7 +65,23 @@ namespace BlazorServerApp1.Data
             }
             return false;
         }
+        public static bool disableOption(DoorConfig doorConfig, string configFldName, string optionVal)
+        {
+            //configFldName = configFldName.ToUpper();
+            if (string.IsNullOrEmpty(doorConfig.PARTNAME))
+                return false;
 
+            string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
+            DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+            
+            for (int r=0;r<rowsDefVal.Length;r++)
+            {
+                string wrongval = rowsDefVal[r]["WRONGVAL"].ToString();
+                if (optionVal == wrongval)
+                    return true;  //disable option
+            }
+            return false;
+        }
         //public static bool setHideFld(int i)
         //{
         //    return true;
@@ -250,21 +267,56 @@ namespace BlazorServerApp1.Data
                 return false;
             }
         }
+        public static void applyPartDefaults(DoorConfig doorConfig)
+        {
+            try
+            {
+                if (doorConfig != null && !string.IsNullOrEmpty(doorConfig.PARTNAME))
+                {
+                    string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
+                    DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+                    string errMsg = string.Empty;
+                    for (int r = 0; r < rowsDefVal.Length; r++)
+                    {
+                        string defval = rowsDefVal[r]["DEFVAL"].ToString();
+
+                        // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
+                        string configFldName = rowsDefVal[r]["CONFIG_FIELDNAME"].ToString();
+                        ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
+                        UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                string errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return;
+            }
+
+        }
         public static void applyFldDefault(DoorConfig doorConfig, string configFldName)
         {
             try
             {
                 //Control c;
-                configFldName = configFldName.ToUpper();
+                //configFldName = configFldName.ToUpper();
                 //string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
-                string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
-                DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
-                string errMsg = string.Empty;
-                for (int r = 0; r < rowsDefVal.Length; r++)
+                if (doorConfig != null && !string.IsNullOrEmpty(doorConfig.PARTNAME))
                 {
-                    string defval = rowsDefVal[r]["DEFVAL"].ToString();
-                    ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
-                    UiLogic.setConfFieldVal(doorConfig, configFldName, cFld.FIELDDATATYPE, defval, ref errMsg);
+
+                    //string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
+                    string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
+                    DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+                    string errMsg = string.Empty;
+                    for (int r = 0; r < rowsDefVal.Length; r++)
+                    {
+                        string defval = rowsDefVal[r]["DEFVAL"].ToString();
+                        ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
+                        // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
+                        UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+                    }
                 }
             }
             catch (Exception ex)
@@ -533,6 +585,7 @@ namespace BlazorServerApp1.Data
         #region conf fields
         public static ConfField_Class getConfFieldByFldName(string configFldName, ref string errMsg)
         {
+            //configFldName = configFldName.ToUpper();  e.g. dlstDecorFormat it's not DECORFORMAT
             try
             {
                 DataRow[] fldRows = PrApiCalls.dtConfFields.Select(string.Format("CONFIG_FIELDNAME = '{0}'", configFldName));
