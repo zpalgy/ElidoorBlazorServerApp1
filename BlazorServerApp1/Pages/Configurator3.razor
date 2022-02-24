@@ -11,47 +11,48 @@
         padding: 15px;
         text-align: center;
     }
+
     .myDiv {
-        border: solid; 
-        border-color: black; 
+        border: solid;
+        border-color: black;
         border-radius: 10px;
     }
 </style>
 
 <EditForm Model=@doorConfig>
-  <DataAnnotationsValidator/>
-  <ValidationSummary/>
-<h3>Configurator3</h3>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <h3>Configurator3</h3>
 
-@code {
+    @code {
     //protected bool hideCustDes { get; set; } = false;
-    protected static string errMsg = string.Empty;
-    protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
-    protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
+        protected static string errMsg = string.Empty;
+        protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+        protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
 
-    int x = 17;
-    //BlazorServerApp1.Pages.Configurator3
-    protected bool hideDivDoor = true;
+        int x = 17;
+        //BlazorServerApp1.Pages.Configurator3
+        protected bool hideDivDoor = true;
     }
 
 
 
-<div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-    <table id="tblLine1">
-        <tr>
-            <th>תאריך</th>
-            <th>שם ממלא שאלון</th>
-            <th>אסמכתא</th>
-        </tr>
-        <tr>
-            <td>
-                <input type="date" name="txtDate" @bind="formDate" />
-                @code {
-                        public DoorConfig? doorConfig; // = new DoorConfig();
+    <div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+        <table id="tblLine1">
+            <tr>
+                <th>תאריך</th>
+                <th>שם ממלא שאלון</th>
+                <th>אסמכתא</th>
+            </tr>
+            <tr>
+                <td>
+                    <input type="date" name="txtDate" @bind="formDate" />
+                    @code {
+                    public DoorConfig? doorConfig; // = new DoorConfig();
 
-                    private DateTime _formDate = DateTime.Now;
-                    protected DateTime formDate
-                    {
+        private DateTime _formDate = DateTime.Now;
+        protected DateTime formDate
+        {
                         get { return _formDate; }
                         set
                         {
@@ -60,15 +61,15 @@
                                 doorConfig = new DoorConfig();
                             doorConfig.FORMDATE = Helper.formatDate4Rest(_formDate);
                         }
+        }
                     }
-                }
-            </td>
-            <td>
-                <input name="txtFormFiller" @bind="formFiller" dir="rtl" />
-                @code {
+                </td>
+                <td>
+                    <input name="txtFormFiller" @bind="formFiller" dir="rtl" />
+                    @code {
                     protected string _formFiller;
-                    protected string formFiller
-                    {
+        protected string formFiller
+        {
                         get { return _formFiller; }
                         set
                         {
@@ -76,17 +77,17 @@
                             if (doorConfig != null)
                                 doorConfig.FORMFILLER = _formFiller;
                         }
+        }
                     }
-                }
-            </td>
-            <td>
-                <input name="txtReference" @bind="reference" @ref="txtReference" />
-                @code {
+                </td>
+                <td>
+                    <input name="txtReference" @bind="reference" @ref="txtReference" />
+                    @code {
 
                     private ElementReference txtReference;
-                    protected string _reference;
-                    protected string reference
-                    {
+        protected string _reference;
+        protected string reference
+        {
                         get { return _reference; }
                         set
                         {
@@ -104,16 +105,16 @@
                                 else
                                     doorConfig.REFERENCE = _reference;
                         }
+        }
                     }
-                }
-            </td>
-            <td>
-                <label id="lblMsgL1" />
-            </td>
-        </tr>
-    </table>
+                </td>
+                <td>
+                    <label id="lblMsgL1" />
+                </td>
+            </tr>
+        </table>
 
-    @code {
+        @code {
         protected override async Task OnInitializedAsync()
         {
             doorConfig = new DoorConfig();
@@ -139,31 +140,31 @@
         {
             await ProtectedSessionStore.DeleteAsync("doorConfig");
         }
-    }
+        }
 
-    <table id="tblLine2">
-        <tr>
-            <th>שם משווק</th>
-            <th>שם לקוח קצה</th>
-            <th>כתובת</th>
-            <th>כתובת לאספקה</th>
-        </tr>
-        <tr>
-            <td>
-                <select name="dlstAgent" @bind="AGENT">
-                    @if (lstAgents != null)
-                    {
-                        @foreach (AGENT_Class a in lstAgents)
+        <table id="tblLine2">
+            <tr>
+                <th>שם משווק</th>
+                <th>שם לקוח קצה</th>
+                <th>כתובת</th>
+                <th>כתובת לאספקה</th>
+            </tr>
+            <tr>
+                <td>
+                    <select name="dlstAgent" @bind="AGENT">
+                        @if (lstAgents != null)
                         {
-                            <option value="@a.AGENT">@a.AGENTNAME</option>
+                            @foreach (AGENT_Class a in lstAgents)
+                            {
+                                <option value="@a.AGENT">@a.AGENTNAME</option>
+                            }
                         }
-                    }
-                </select>
-            </td>
-            @code {
+                    </select>
+                </td>
+                @code {
                 private int _AGENT = 0;
-                protected int AGENT
-                {
+        protected int AGENT
+        {
                     get { return _AGENT; }
                     set
                     {
@@ -171,24 +172,24 @@
                         if (doorConfig != null)
                             doorConfig.AGENT = _AGENT;
                     }
+        }
                 }
-            }
-            <td>
-                <select name="dlstCustDes" @bind="CUST">
-                    @if (lstCustomers != null)
-                    {
-                        @foreach (CUSTOMER_Class c in lstCustomers)
+                <td>
+                    <select name="dlstCustDes" @bind="CUST">
+                        @if (lstCustomers != null)
                         {
-                            <option value="@c.CUST">@c.CUSTDES</option>
+                            @foreach (CUSTOMER_Class c in lstCustomers)
+                            {
+                                <option value="@c.CUST">@c.CUSTDES</option>
+                            }
                         }
-                    }
-                </select> />
-            </td>
-            @code {
+                    </select> />
+                </td>
+                @code {
                 public bool disableLogo = false;
-                private int _CUST = 0;
-                protected int CUST
-                {
+        private int _CUST = 0;
+        protected int CUST
+        {
                     get { return _CUST; }
                     set
                     {
@@ -208,16 +209,16 @@
                         }
 
                     }
+        }
                 }
-            }
 
-            <td>
-                <input dir="rtl" @bind="Address" />
-            </td>
-            @code {
+                <td>
+                    <input dir="rtl" @bind="Address" />
+                </td>
+                @code {
                 protected string _Address = string.Empty;
-                protected string Address
-                {
+        protected string Address
+        {
                     get
                     {
                         if (doorConfig != null)
@@ -232,15 +233,15 @@
                         if (doorConfig != null)
                             doorConfig.ADDRESS = _Address;
                     }
+        }
                 }
-            }
-            <td>
-                <input dir="rtl" @bind="ShipAddress" size="80"/>
-            </td>
-            @code {
+                <td>
+                    <input dir="rtl" @bind="ShipAddress" size="80" />
+                </td>
+                @code {
                 protected string _ShipAddress = string.Empty;
-                protected string ShipAddress
-                {
+        protected string ShipAddress
+        {
                     get
                     {
                         if (doorConfig != null)
@@ -255,68 +256,68 @@
                         if (doorConfig != null)
                             doorConfig.SHIPADDRESS = _ShipAddress;
                     }
+        }
                 }
-            }
-        </tr>
-    </table>
-    <table id="tblProducts">
-        <tr>
-            <td>
-                <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
-                @code
-                {
-                    private void btnDoorClicked()
-                    {
-                        hideDivDoor = false;
-                    }
-                }
-            </td>
-            <td>
-                <button name="btnLintel">משקוף</button>
-            </td>
-            <td>
-                <button name="btnCover">חיפוי</button>
-            </td>
-            <td>
-                <button name="btnSideUnit">יחידת צד</button>
-            </td>
-            <td>
-                <button name="btnECabinet">ארון חשמל</button>
-            </td>
-            <td>
-                <button name="btnShelves">מדפים</button>
-            </td>
-        </tr>
-    </table>
-</div>
-<!--end of divHeader -->
-
-<div id="divDoor" dir="rtl" hidden="@hideDivDoor">
-
-    <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-        <table id="tblDoorTitle">
-            <tr>
-                <th id="thWingsNum">מיפתח</th>
-                <th id="thOpenMode">צורת פתיחה</th>
-                <th id="thComplient">דלת תואם אלידור</th>
-                <th id="thPARTNAME">דגם</th>
-                <th id="thFamily">סידרה</th>
             </tr>
+        </table>
+        <table id="tblProducts">
             <tr>
                 <td>
-                    <select name="dlstWingsNum" @bind="WingsNum">
-                        <option>בחר סוג מיפתח</option>
-                        <option>כנף</option>
-                        <option>כנף וחצי</option>
-                        <option>דו כנפי</option>
-                    </select>
-                </td>
-                @code
-                {
-                    //protected bool disableStaticWing = false;
-                    protected string _WingsNum = string.Empty;
-                    protected string WingsNum
+                    <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
+                    @code
                     {
+                    private void btnDoorClicked()
+        {
+                        hideDivDoor = false;
+        }
+                    }
+                </td>
+                <td>
+                    <button name="btnLintel">משקוף</button>
+                </td>
+                <td>
+                    <button name="btnCover">חיפוי</button>
+                </td>
+                <td>
+                    <button name="btnSideUnit">יחידת צד</button>
+                </td>
+                <td>
+                    <button name="btnECabinet">ארון חשמל</button>
+                </td>
+                <td>
+                    <button name="btnShelves">מדפים</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--end of divHeader -->
+
+    <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
+
+        <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+            <table id="tblDoorTitle">
+                <tr>
+                    <th id="thWingsNum">מיפתח</th>
+                    <th id="thOpenMode">צורת פתיחה</th>
+                    <th id="thComplient">דלת תואם אלידור</th>
+                    <th id="thPARTNAME">דגם</th>
+                    <th id="thFamily">סידרה</th>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="dlstWingsNum" @bind="WingsNum">
+                            <option>בחר סוג מיפתח</option>
+                            <option>כנף</option>
+                            <option>כנף וחצי</option>
+                            <option>דו כנפי</option>
+                        </select>
+                    </td>
+                    @code
+                    {
+                    //protected bool disableStaticWing = false;
+        protected string _WingsNum = string.Empty;
+        protected string WingsNum
+        {
                         get
                         {
                             if (doorConfig != null)
@@ -333,58 +334,58 @@
 
                             //disableStaticWing =  (_WingsNum == "כנף");
                         }
-                    }
-
-                }
-                <td>
-                    <select name="dlstOpenMode">
-                        <option>בחר צורת פתיחה</option>
-                        <option>החוצה</option>
-                        <option>פנימה</option>
-                    </select>
-                </td>
-
-                <td>
-                    <input type="checkbox" name="chkbComplient"  @bind="Complient" />
-                </td>
-                @code
-        {
-				protected bool _Complient = false;
-                protected bool Complient
-                {
-                    get
-                    {
-                        if (doorConfig != null)
-                        {
-                            _Complient = (doorConfig.COMPLIENTDOOR == "Y");
-                        }
-                        return _Complient;
-                    }
-                    set
-                    {
-                        _Complient = value;
-                        if (doorConfig != null)
-                            doorConfig.COMPLIENTDOOR = (_Complient ? "Y" : "");
-                    }
-                }
-
         }
-                <td>
-                    <select name="dlstPARTNAME" @bind="PARTNAME">
-                        @if (PrApiCalls.lstParts != null)
+
+                    }
+                    <td>
+                        <select name="dlstOpenMode">
+                            <option>בחר צורת פתיחה</option>
+                            <option>החוצה</option>
+                            <option>פנימה</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <input type="checkbox" name="chkbComplient" @bind="Complient" />
+                    </td>
+                    @code
+                    {
+                    protected bool _Complient = false;
+        protected bool Complient
+        {
+                        get
                         {
-                            @foreach (PART_Class p in PrApiCalls.lstParts)
+                            if (doorConfig != null)
                             {
-                                <option value="@p.PARTNAME">@p.PARTDES</option>
+                                _Complient = (doorConfig.COMPLIENTDOOR == "Y");
                             }
+                            return _Complient;
                         }
-                    </select>
-                </td>
-                @code
+                        set
+                        {
+                            _Complient = value;
+                            if (doorConfig != null)
+                                doorConfig.COMPLIENTDOOR = (_Complient ? "Y" : "");
+                        }
+        }
+
+                    }
+                    <td>
+                        <select name="dlstPARTNAME" @bind="PARTNAME">
+                            @if (PrApiCalls.lstParts != null)
+                            {
+                                @foreach (PART_Class p in PrApiCalls.lstParts)
+                                {
+                                    <option value="@p.PARTNAME">@p.PARTDES</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    @code
                     {
-                        protected string _PARTNAME = string.Empty;
-                    protected string PARTNAME
-                    {
+                    protected string _PARTNAME = string.Empty;
+        protected string PARTNAME
+        {
                         get
                         {
                             if (doorConfig != null)
@@ -409,16 +410,16 @@
                             }
                         }
 
+        }
                     }
-                }
-                <td>
-                    <input name="txtFAMILY" disabled=@true @bind="FAMILYDES" />
-                </td>
-                @code
-                {
-                    protected string _FAMILYDES;
-                    protected string FAMILYDES
+                    <td>
+                        <input name="txtFAMILY" disabled=@true @bind="FAMILYDES" />
+                    </td>
+                    @code
                     {
+                    protected string _FAMILYDES;
+        protected string FAMILYDES
+        {
                         get
                         {
                             return _FAMILYDES;
@@ -427,95 +428,95 @@
                         {
                             _FAMILYDES = value;
                         }
+        }
+
                     }
-
-                }
-            </tr>
-        </table>
-    </div>
-    <!-- end divDoorTitle -->
+                </tr>
+            </table>
+        </div>
+        <!-- end divDoorTitle -->
 
 
-    <br />
-    <br />
-    <br />
+        <br />
+        <br />
+        <br />
 
-    @code {
+        @code {
         // tab control here -
         // tab content pages in separate *.razor files
         // ref: https://blazor-university.com/templating-components-with-renderfragements/creating-a-tabcontrol/
-    }
+        }
 
- <div id="divTabControl" >
-    <TabControl doorConfig="doorConfig">
-        <TabPage Text="כנף נעה">
-            <div id="divMovingWing" class="myDiv">
-            <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
-            </div>
-        </TabPage>
-        <TabPage Text="פרטי דקורציה חוץ">
-            <div id="divExtDecor" class="myDiv">
-            <Counter />
-            </div>
-        </TabPage>
-        <TabPage Text="פרטי דקורציה פנים">
-            <div id="divIntDecor" class="myDiv">
-            <h1>The third tab</h1>
-            </div>
-        </TabPage>
-        <TabPage Text="כנף קבועה">
-            <div id="divStaticWing" class="myDiv">
-            <Counter />
-            </div>
-        </TabPage>
-        <TabPage Text="פרטי צירים">
-            <div id="divHinges" class="myDiv">
-            <Counter />
-            </div>
-        </TabPage>
-        <TabPage Text="ידית אומנותית">
-            <div id="divHandles" class="myDiv">
-            <Counter />
-            </div>
-        </TabPage>
-        <TabPage Text="נילווים">
-            <div id="divAccessories" class="myDiv">
-            <Counter />
-            </div>
-        </TabPage>
-    </TabControl>
+        <div id="divTabControl">
+            <TabControl doorConfig="doorConfig">
+                <TabPage Text="כנף נעה">
+                    <div id="divMovingWing" class="myDiv">
+                        <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
+                    </div>
+                </TabPage>
+                <TabPage Text="פרטי דקורציה חוץ">
+                    <div id="divExtDecor" class="myDiv">
+                        <Counter />
+                    </div>
+                </TabPage>
+                <TabPage Text="פרטי דקורציה פנים">
+                    <div id="divIntDecor" class="myDiv">
+                        <h1>The third tab</h1>
+                    </div>
+                </TabPage>
+                <TabPage Text="כנף קבועה">
+                    <div id="divStaticWing" class="myDiv">
+                        <Counter />
+                    </div>
+                </TabPage>
+                <TabPage Text="פרטי צירים">
+                    <div id="divHinges" class="myDiv">
+                        <Counter />
+                    </div>
+                </TabPage>
+                <TabPage Text="ידית אומנותית">
+                    <div id="divHandles" class="myDiv">
+                        <Counter />
+                    </div>
+                </TabPage>
+                <TabPage Text="נילווים">
+                    <div id="divAccessories" class="myDiv">
+                        <Counter />
+                    </div>
+                </TabPage>
+            </TabControl>
+        </div>
+        <!-- end divTabControl -->
+
     </div>
-    <!-- end divTabControl -->
-
-</div>
-<!-- end divDoor -->
-<div id="divCommentsAndSave" dir="rtl" style="padding-top: 30px;">
-                                <table id="tblComments">
-                                    <tr>
-                                        <th id="thComments" style="text-align: right">הערות</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input name="txtComments" size="120" AutoCompleteType="Disabled" />
-                                        </td>
-                                    </tr>
-                                </table>
-                                <p />
-                                <br />
-                                <br />
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <button name="btnSave"  @onclick="btnSave_Click" >שמירה בפריוריטי</button>
-                                        </td>
-                                        @code {
-                    private void btnSave_Click()
+    <!-- end divDoor -->
+    <div id="divCommentsAndSave" dir="rtl" style="padding-top: 30px;">
+        <table id="tblComments">
+            <tr>
+                <th id="thComments" style="text-align: right">הערות</th>
+            </tr>
+            <tr>
+                <td>
+                    <input name="txtComments" size="120" AutoCompleteType="Disabled" />
+                </td>
+            </tr>
+        </table>
+        <p />
+        <br />
+        <br />
+        <table>
+            <tr>
+                <td>
+                    <button name="btnSave" @onclick="btnSave_Click">שמירה בפריוריטי</button>
+                </td>
+                @code {
+                private void btnSave_Click()
         {
                     var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
 
                     if (response != System.Net.HttpStatusCode.Created)
                     {
-                    //myMessageBox.Show(Page, errMsg);
+                        //myMessageBox.Show(Page, errMsg);
                         //UiLogic.displayErrMsg(lblMsg, "Api call failed : " + errMsg);
                         Js.InvokeVoidAsync("alert", errMsg);
                         myLogger.log.Info("Api call failed : " + errMsg);
@@ -529,17 +530,26 @@
                         //doorConfig = new DoorConfig();
                     }
         }
-                                        }
-                                        <td>
-                                            <button name="btnClear"  @onclick="btnClear_Click">ניקוי טופס</button>
-                                        </td>
-                                         @code {
-                                            private void btnClear_Click()
-                                            {}
-                                        }
-                                    </tr>
-                                </table>
-                            </div>
-                            <!-- end divCommentsAndSave -->
-                            <asp:Label ID="lblBuildDate" runat="server" dir="ltr" Width="600px" />
+                }
+                <td>
+                    <button name="btnClear" @onclick="btnClear_Click">ניקוי טופס</button>
+                </td>
+                @code {
+                private void btnClear_Click()
+        { }
+                }
+            </tr>
+        </table>
+
+    </div>
+    <!-- end divCommentsAndSave -->
+    <div id="divBuildTime">
+        <p style="float:left">@buildTime</p>
+        @code {
+        protected string buildTime = string.Format("Build Date : {0}", Helper.getBuildTime());
+        }
+    </div>
+    <!-- end divBuildTime -->
+
+
 </EditForm>
