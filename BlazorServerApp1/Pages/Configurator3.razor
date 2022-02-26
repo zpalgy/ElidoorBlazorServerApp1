@@ -45,6 +45,8 @@
         int x = 17;
         //BlazorServerApp1.Pages.Configurator3
         protected bool hideDivDoor = true;
+
+        public bool MovinwingIsFull = false;
     }
 
 
@@ -468,7 +470,7 @@
                 </TabPage>
                 <TabPage Text="פרטי דקורציה חוץ">
                     <div id="divExtDecor" class="myDiv">
-                        <Counter />
+                        <Extdecor doorConfig="@doorConfig" MovingwingIsFull="@MovinwingIsFull" />
                     </div>
                 </TabPage>
                 <TabPage Text="פרטי דקורציה פנים">

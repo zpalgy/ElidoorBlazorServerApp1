@@ -1,0 +1,49 @@
+﻿@page "/Extdecor"
+
+@* @inherits ExtdecorBase *@
+
+@inject IJSRuntime Js
+
+@implements IDisposable
+
+@inject NavigationManager Navigator
+
+<style>
+    th, td {
+        padding: 15px;
+        text-align: center;
+    }
+</style>
+
+@code
+{
+    [Parameter]
+    public DoorConfig doorConfig { get; set; }
+
+    [Parameter]
+    public bool MovingwingIsFull { get; set; }
+}
+
+<h3>Extdecor</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        if (!MovingwingIsFull)
+        {
+            // navigate back to Movingwing 
+            Navigator.NavigateTo("Movingwing");
+        }
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+    }
+    
+    void IDisposable.Dispose()
+    {
+        int x = 17;
+        if (x == 18)
+        {
+            Js.InvokeVoidAsync("alert", "error !");
+            //NavigationManager.NavigateTo("Movingwing", true);
+        }
+    }
+}

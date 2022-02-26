@@ -6,6 +6,8 @@
 
 @inject IJSRuntime Js
 
+@implements IDisposable
+
 <style>
     th, td {
         padding: 15px;
@@ -20,6 +22,29 @@
     [Parameter]
     public bool disableLogo { get; set; }
 }
+
+@code {
+    @inject NavigationManager NavigationManager;
+
+    void IDisposable.Dispose()
+    {
+        int x = 17;
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        if (x == 17)
+        {
+            Js.InvokeVoidAsync("alert", "Debug: testing error !");
+            //NavigationManager.NavigateTo("Movingwing", true);
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+
+        // doorConfig = await ProtectedSessionStore.GetAsync<DoorConfig>("doorConfig");
+    }
+
+  }
 
 <table id="MovingWingL1">
     <tr>
@@ -473,7 +498,7 @@
             }
         }
 
-                <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
+        <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
             <input type="checkbox" name="chkbElectricApparatus" @bind="ElectricApparatus" />
         </td>
         @code
@@ -535,7 +560,7 @@
 
         @* if the user choose Dril4Hw == "IDS" then we enable  chkbTwoSidesIDSDril   *@
         <td id="tdTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">
-            <input type="checkbox" name="chkbTwoSidesIDSDril" @bind="TwoSidesIDSDril" disabled="@Dril4HwIsNotIDS(doorConfig)"/>
+            <input type="checkbox" name="chkbTwoSidesIDSDril" @bind="TwoSidesIDSDril" disabled="@Dril4HwIsNotIDS(doorConfig)" />
         </td>
         @code
         {
@@ -616,9 +641,3 @@
     </tr>
 </table>
 <!-- end table MovingWingL3 -->
-@code {
-    //bool  x1 = Helper.setHideFld(1, true);
-
-}
-
-<!-- end divMovingWing -->

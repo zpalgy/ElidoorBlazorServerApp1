@@ -36,51 +36,67 @@ namespace BlazorServerApp1.Data
         }
         public static bool hideFld(DoorConfig doorConfig, string fldName)
         {
-            bool showByMeaged = true;
-            if (string.IsNullOrEmpty(doorConfig.meaged))
-                showByMeaged = true;
-            else if (meagedContains(doorConfig.meaged, fldName, PrApiCalls.dtMeagedFields))
-                showByMeaged = true;
-            else
-                showByMeaged = false;  //hide
+            if (doorConfig != null)
+            {
+                bool showByMeaged = true;
+                if (string.IsNullOrEmpty(doorConfig.meaged))
+                    showByMeaged = true;
+                else if (meagedContains(doorConfig.meaged, fldName, PrApiCalls.dtMeagedFields))
+                    showByMeaged = true;
+                else
+                    showByMeaged = false;  //hide
 
-            if (!showByMeaged)
-                return true;  // hide
-            else if (HiddenDecorSideFldsContains(fldName, PrApiCalls.dtDecorSideFlds, Helper.DecorFormat2Code(doorConfig.DECORFORMAT)))
-                return true;  //hide
+                if (!showByMeaged)
+                    return true;  // hide
+                else if (HiddenDecorSideFldsContains(fldName, PrApiCalls.dtDecorSideFlds, Helper.DecorFormat2Code(doorConfig.DECORFORMAT)))
+                    return true;  //hide
+                else
+                    return false; // show
+            }
             else
-                return false; // show
-
+            {
+                return false;
+            }
         }
         public static bool disableFld(DoorConfig doorConfig, string configFldName)
         {
             //configFldName = configFldName.ToUpper();
-            string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
-            DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
-            if (rowsDefVal.Length > 0)
+            if (doorConfig != null)
             {
-                //string defval = rowsDefVal[0]["DEFVAL"].ToString();
-                string val_locked = rowsDefVal[0]["VAL_LOCKED"].ToString();
-                return (val_locked == "Y");
+                string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
+                DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+                if (rowsDefVal.Length > 0)
+                {
+                    //string defval = rowsDefVal[0]["DEFVAL"].ToString();
+                    string val_locked = rowsDefVal[0]["VAL_LOCKED"].ToString();
+                    return (val_locked == "Y");
+                }
+                return false;
             }
-            return false;
+            else
+                return false;
         }
         public static bool disableOption(DoorConfig doorConfig, string configFldName, string optionVal)
         {
             //configFldName = configFldName.ToUpper();
-            if (string.IsNullOrEmpty(doorConfig.PARTNAME))
-                return false;
-
-            string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
-            DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
-            
-            for (int r=0;r<rowsDefVal.Length;r++)
+            if (doorConfig != null)
             {
-                string wrongval = rowsDefVal[r]["WRONGVAL"].ToString();
-                if (optionVal == wrongval)
-                    return true;  //disable option
+                if (string.IsNullOrEmpty(doorConfig.PARTNAME))
+                    return false;
+
+                string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
+                DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+
+                for (int r = 0; r < rowsDefVal.Length; r++)
+                {
+                    string wrongval = rowsDefVal[r]["WRONGVAL"].ToString();
+                    if (optionVal == wrongval)
+                        return true;  //disable option
+                }
+                return false;
             }
-            return false;
+            else
+                return false;
         }
         //public static bool setHideFld(int i)
         //{
