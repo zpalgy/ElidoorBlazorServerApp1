@@ -1,4 +1,16 @@
-﻿@using BlazorServerApp1.Pages
+﻿@* deployed to prt-test.corp.elidoor.co.il  c$:\inetpub\wwwroot\brazor .
+    In IIS (inetmgr) created a web site : Blazor2 whose physical path is that folder.
+    Bindings : https  port 502.
+    associated the existing certificate with this web site.
+    The application pool name is Blazor2, it's pipiline model is "integrated" and it's identity is ApplicationPoolIdentity
+    Exactly as teh default application pool in which https://prt-test.corp.elidoor.co.il/configurator2/wfrmConfigurator2.aspx is running OK from
+    my station.
+
+    When I log into that server I can browse to :     https://prt-test.corp.elidoor.co.il:502/ 
+    and use the application.
+    *** I can't do that from my machine ! ***
+*@
+@using BlazorServerApp1.Pages
 @using BlazorServerApp1.Data
 
 @page "/Configurator3"

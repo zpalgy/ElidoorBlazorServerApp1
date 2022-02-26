@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/bck/Pages/Configurator3.razor
+/bck/Pages/Movingwing-new.razor

@@ -139,6 +139,14 @@ namespace BlazorServerApp1.Pages
                 return;
             }
         }
-
+        protected bool Dril4HwIsNotIDS(DoorConfig doorConfig)
+        {
+            foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw)
+            {
+                if (c.DRIL4HWDES == "IDS" && c.DRIL4HW == doorConfig.DRIL4HW)
+                    return false;
+            }
+            return true;
+        }
     }
     }

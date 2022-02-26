@@ -362,80 +362,257 @@
             }
         </td>
         <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
-            <select name="dlstHwColor"
-                    DataValueField="TRSH_COLORID"
-                    DataTextField="TRSH_COLORDES"
-                    SelectMethod="getColors"
-                    OnSelectedIndexChanged="ctl_valChanged"
-                    onChange="clearFollowingTabs('movingwing')" />
+            <select name="dlstHwColor" @bind="HwColorId">
+                @if (PrApiCalls.lstColors != null)
+                {
+                    @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+                    {
+                        <option value="@c.TRSH_COLORID">@c.TRSH_COLORDES</option>
+                    }
+                }
+            </select>
         </td>
+        @code
+        {
+            protected int _HwColorId = 0;
+            protected int HwColorId
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _HwColorId = doorConfig.HWCOLORID;
+                    }
+                    return _HwColorId;
+                }
+                set
+                {
+                    _HwColorId = value;
+                    if (doorConfig != null)
+                        doorConfig.HWCOLORID = _HwColorId;
+                }
+            }
+        }
+
         <td id="tdDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">
-            <select name="dlstDril4Hw"
-                    DataValueField="DRIL4HW"
-                    DataTextField="DRIL4HWDES"
-                    SelectMethod="getDril4Hws"
-                    OnSelectedIndexChanged="ctl_valChanged"
-                    onChange="Dril4Hw_change()" />
+            <select name="dlstDril4Hw" @bind="Dril4Hw">
+                @if (PrApiCalls.lstDril4Hw != null)
+                {
+                    @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw)
+                    {
+                        <option value="@c.DRIL4HW">@c.DRIL4HWDES</option>
+                    }
+                }
+            </select>
         </td>
+        @code
+        {
+            protected int _Dril4Hw = 0;
+            protected int Dril4Hw
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _Dril4Hw = doorConfig.DRIL4HW;
+                    }
+                    return _Dril4Hw;
+                }
+                set
+                {
+                    _Dril4Hw = value;
+                    if (doorConfig != null)
+                        doorConfig.DRIL4HW = _Dril4Hw;
+                }
+            }
+        }
     </tr>
 </table>
 <!-- end MovingWingL2 -->
 <br />
 <table id="MovingWingL3">
     <tr>
-        <th id="thCylinder">צילינדר</th>
-        <th id="thElectricApparatus">מנגנון חשמלי</th>
-        <th id="thLock">מנעול</th>
-        <th id="thTwoSidesIDSDril">ניקוב שני צדדים IDS</th>
-        <th id="thRafafa">תוספת רפפה עשן/פתח איוורור בכנף הנעה</th>
-        <th id="thLCDEye">LCD עינית</th>
+        <th id="thCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">צילינדר</th>
+        <th id="thElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">מנגנון חשמלי</th>
+        <th id="thLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">מנעול</th>
+        <th id="thTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">ניקוב שני צדדים IDS</th>
+        <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">תוספת רפפה עשן/פתח איוורור בכנף הנעה</th>
+        <th id="thLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEyer")">LCD עינית</th>
     </tr>
     <tr>
-        <td id="tdCylinder">
-            <asp:DropDownList ID="dlstCylinder" AutoPostBack="false"
-                              DataValueField="CYLINDERNAME"
-                              DataTextField="CYLINDERDES"
-                              SelectMethod="getCylinders"
-                              OnSelectedIndexChanged="ctl_valChanged"
-                              onChange="clearFollowingTabs('movingwing')" />
+        <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
+            <select name="dlstCylinder" @bind="CylinderName">
+                @if (PrApiCalls.lstCylinders != null)
+                {
+                    @foreach (CYLINDER_Class c in PrApiCalls.lstCylinders)
+                    {
+                        <option value="@c.CYLINDERNAME">@c.CYLINDERDES</option>
+                    }
+                }
+            </select>
         </td>
-        <td id="tdElectricApparatus">
-            <asp:CheckBox ID="chkbElectricApparatus" AutoPostBack="false"
-                          OnCheckedChanged="ctl_valChanged"
-                          onChange="clearFollowingTabs('movingwing')" />
-        </td>
-        <td id="tdLock">
-            <asp:DropDownList ID="dlstLock" AutoPostBack="false"
-                              OnSelectedIndexChanged="ctl_valChanged"
-                              onChange="clearFollowingTabs('movingwing')" />
-        </td>
-        @{
-            List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+        @code
+        {
+            protected string _CylinderName = string.Empty;
+            protected string CylinderName
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _CylinderName = doorConfig.CYLINDERNAME;
+                    }
+                    return _CylinderName;
+                }
+                set
+                {
+                    _CylinderName = value;
+                    if (doorConfig != null)
+                        doorConfig.CYLINDERNAME = _CylinderName;
+                }
+            }
         }
-        <td id="tdTwoSidesIDSDril">
-            <asp:CheckBox ID="chkbTwoSidesIDSDril" AutoPostBack="false" Enabled="false"
-                          OnCheckedChanged="ctl_valChanged"
-                          onChange="clearFollowingTabs('movingwing')" />
+
+                <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
+            <input type="checkbox" name="chkbElectricApparatus" @bind="ElectricApparatus" />
         </td>
-        <td id="tdRafafa">
-            <asp:UpdatePanel ID="uPanelRafafa">
-                <ContentTemplate>
-                    <asp:DropDownList ID="dlstRafafa" AutoPostBack="false"
-                                      OnSelectedIndexChanged="ctl_valChanged"
-                                      onChange="clearFollowingTabs('movingwing')">
-                        <asp:ListItem> </asp:ListItem>
-                        <asp:ListItem>1</asp:ListItem>
-                        <asp:ListItem>2</asp:ListItem>
-                        <asp:ListItem>כל הדלת</asp:ListItem>
-                    </asp:DropDownList>
-                </ContentTemplate>
-            </asp:UpdatePanel>
+        @code
+        {
+            protected bool _ElectricApparatus = false;
+            protected bool ElectricApparatus
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _ElectricApparatus = (doorConfig.ELECTRICAPPARATUS == "Y");
+                    }
+                    return _ElectricApparatus;
+                }
+                set
+                {
+                    _ElectricApparatus = value;
+                    if (doorConfig != null)
+                        doorConfig.ELECTRICAPPARATUS = (_ElectricApparatus ? "Y" : "");
+                }
+            }
+        }
+
+        <td id="tdLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">
+            <select name="dlstLock" @bind="Lock">
+                @{
+                    List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+                    if (lstPartLocks != null)
+                    {
+                        @foreach (TRSH_LOCK_Class c in lstPartLocks)
+                        {
+                            <option value="@c.TRSH_LOCKNAME">@c.TRSH_LOCKDES</option>
+                        }
+                    }
+                }
+            </select>
         </td>
-        <td id="tdLCDEye">
-            <asp:CheckBox ID="chkbLCDEye" AutoPostBack="false"
-                          OnCheckedChanged="ctl_valChanged"
-                          onChange="clearFollowingTabs('movingwing')" />
+        @code {
+            protected string _Lock = string.Empty;
+            protected string Lock
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _Lock = doorConfig.LOCKNAME;
+                    }
+                    return _Lock;
+                }
+                set
+                {
+                    _Lock = value;
+                    if (doorConfig != null)
+                        doorConfig.LOCKNAME = _Lock;
+                }
+            }
+        }
+
+        @* if the user choose Dril4Hw == "IDS" then we enable  chkbTwoSidesIDSDril   *@
+        <td id="tdTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">
+            <input type="checkbox" name="chkbTwoSidesIDSDril" @bind="TwoSidesIDSDril" disabled="@Dril4HwIsNotIDS(doorConfig)"/>
         </td>
+        @code
+        {
+            protected bool _TwoSidesIDSDril = false;
+            protected bool TwoSidesIDSDril
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _TwoSidesIDSDril = (doorConfig.DRIL4TWOSIDESIDS == "Y");
+                    }
+                    return _TwoSidesIDSDril;
+                }
+                set
+                {
+                    _TwoSidesIDSDril = value;
+                    if (doorConfig != null)
+                        doorConfig.DRIL4TWOSIDESIDS = (_TwoSidesIDSDril ? "Y" : "");
+                }
+            }
+        }
+
+        <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">
+            <select name="dlstRafafa" @bind="Rafafa">
+                <option> </option>
+                <option>1</option>
+                <option>2</option>
+                <option>כל הדלת</option>
+            </select>
+        </td>
+        @code
+        {
+            protected string _Rafafa = string.Empty;
+            protected string Rafafa
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _Rafafa = doorConfig.RAFAFAONMOVINGWING;
+                    }
+                    return _Rafafa;
+                }
+                set
+                {
+                    _Rafafa = value;
+                    if (doorConfig != null)
+                        doorConfig.RAFAFAONMOVINGWING = _Rafafa;
+                }
+            }
+        }
+
+        <td id="tdLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEye")">
+            <input type="checkbox" name="chkbLCDEye" @bind="LCDEye" />
+        </td>
+        @code
+        {
+            protected bool _LCDEye = false;
+            protected bool LCDEye
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _LCDEye = (doorConfig.LCDEYE == "Y");
+                    }
+                    return _LCDEye;
+                }
+                set
+                {
+                    _LCDEye = value;
+                    if (doorConfig != null)
+                        doorConfig.LCDEYE = (_LCDEye ? "Y" : "");
+                }
+            }
+        }
     </tr>
 </table>
 <!-- end table MovingWingL3 -->
