@@ -20,4 +20,11 @@
         currentCount++;
         await ProtectedSessionStore.SetAsync("count", currentCount);
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var currentCountv = await ProtectedSessionStore.GetAsync<int>("count");
+        if (currentCountv.Success)
+            currentCount = currentCountv.Value;
+    }
 }

@@ -29,19 +29,26 @@
     void IDisposable.Dispose()
     {
         int x = 17;
-        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
+        ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
+        string doorConfigJson2 = ProtectedSessionStore.GetAsync<string>("doorConfigJson").ToString();
         if (x == 17)
         {
             Js.InvokeVoidAsync("alert", "Debug: testing error !");
-            //NavigationManager.NavigateTo("Movingwing", true);
         }
     }
 
     protected override async Task OnInitializedAsync()
     {
-        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-
-        // doorConfig = await ProtectedSessionStore.GetAsync<DoorConfig>("doorConfig");
+        string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
+        await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
+        var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
+        if (doorConfigJsonV.Success)
+        {
+            string doorConfigJson2 = doorConfigJsonV.Value;
+            if (!string.IsNullOrEmpty(doorConfigJson2))
+                 doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
+        }
     }
 
   }
