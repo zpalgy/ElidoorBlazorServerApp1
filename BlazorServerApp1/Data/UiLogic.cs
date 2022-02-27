@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Configuration;
 using RestSharp;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace BlazorServerApp1.Data
 {
@@ -97,6 +98,22 @@ namespace BlazorServerApp1.Data
             }
             else
                 return false;
+        }
+        public static async void saveDoorConfig(DoorConfig doorConfig, ProtectedSessionStorage ProtectedSessionStore)
+        {
+            string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
+            await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
+            string doorConfigJson2 = ProtectedSessionStore.GetAsync<string>("doorConfigJson").ToString();
+        }
+        public static async void restoreDoorConfig(ProtectedSessionStorage ProtectedSessionStore, DoorConfig doorConfig)
+        {
+            var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string>("doorConfigJson");
+            if (doorConfigJsonV.Success)
+            {
+                string doorConfigJson2 = doorConfigJsonV.Value;
+                if (!string.IsNullOrEmpty(doorConfigJson2))
+                    doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
+            }
         }
         //public static bool setHideFld(int i)
         //{

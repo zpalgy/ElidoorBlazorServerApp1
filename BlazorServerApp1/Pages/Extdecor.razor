@@ -34,16 +34,25 @@
             // navigate back to Movingwing 
             //[TODO]  Navigator.NavigateTo("Movingwing");
         }
-        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-    }
+        //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
+        //if (doorConfigJsonV.Success)
+        //{
+        //    string doorConfigJson2 = doorConfigJsonV.Value;
+        //    if (!string.IsNullOrEmpty(doorConfigJson2))
+        //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
+        UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
+
+         Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.DRIL4TWOSIDESIDS = {0}", doorConfig.DRIL4TWOSIDESIDS));  //debug
+     }
     
-    void IDisposable.Dispose()
+    
+    async void IDisposable.Dispose()
     {
-        int x = 17;
-        if (x == 18)
-        {
-            Js.InvokeVoidAsync("alert", "error !");
-            //NavigationManager.NavigateTo("Movingwing", true);
-        }
+        //int x = 17;
+        //if (x == 18)
+        //{
+        //    Js.InvokeVoidAsync("alert", "error !");
+        //    //NavigationManager.NavigateTo("Movingwing", true);
+        //}
     }
 }

@@ -26,16 +26,15 @@
 @code {
     @inject NavigationManager NavigationManager;
 
-    void IDisposable.Dispose()
+    async void IDisposable.Dispose()
     {
-        int x = 17;
-        string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
-        ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
-        string doorConfigJson2 = ProtectedSessionStore.GetAsync<string>("doorConfigJson").ToString();
-        if (x == 17)
-        {
-            Js.InvokeVoidAsync("alert", "Debug: testing error !");
-        }
+        //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
+        //await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
+        //string doorConfigJson2 = ProtectedSessionStore.GetAsync<string>("doorConfigJson").ToString();
+        UiLogic.saveDoorConfig(doorConfig, ProtectedSessionStore);
+
+        //Js.InvokeVoidAsync("alert", string.Format("in Movingwing:Dispose doorConfig.DRIL4TWOSIDESIDS = {0}", doorConfig.DRIL4TWOSIDESIDS)); //debug
+        
     }
 
     protected override async Task OnInitializedAsync()
