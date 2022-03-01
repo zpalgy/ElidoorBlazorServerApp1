@@ -130,6 +130,71 @@ namespace BlazorServerApp1.Data
             }
         }
 
+        public static bool tabPageIsFilled (string tabName, DoorConfig doorConfig)
+        {
+            string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
+            DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
+            for (int r = 0; r<tabFields.Length;r++)
+            {
+                string fldName = tabFields[r]["FIELDNAME"].ToString();
+                string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
+                if (!hideFld(doorConfig, fldName) && !doorFldIsFilled(doorConfig, fldName, fldDataType))
+                    return false;
+            }
+            return true;
+        }
+        public static bool doorFldIsFilled(DoorConfig doorConfig, string fldName, string fldDataType)
+        {
+            string errMsg = string.Empty;
+            string sval;
+            int ival;
+
+            Type objType = doorConfig.GetType();
+            PropertyInfo[] props = objType.GetProperties();
+            //string[] propNames = props.Select(i => i.Name).ToArray();
+            try
+            {
+                int p = Array.IndexOf(propNames, fldName);
+                if (p >= 0)
+                {
+                    var val = props[p].GetValue(doorConfig);
+                    if (val == null)
+                        return false;
+                    else
+                    {
+                        switch (fldDataType)
+                        {
+                            case "CHAR":
+                            case "RCHAR":
+                                sval = val.ToString();
+                                if (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
+                                    return false;
+                                else
+                                    return true;
+
+                            case "INT":
+                                ival = int.Parse(val.ToString());
+                                return (ival != 0);
+                            default:
+                                return false;
+                        }
+                    }
+                }
+                else
+                {
+                    errMsg = string.Format("Error: field: {0}, dataType {1}  Not found in DoorConfig class !", fldName, fldDataType);
+                    myLogger.log.Error(errMsg);
+                    throw new Exception(errMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format("Unexpected error: fldname = {0} , error: {1} .  Stacktrace : {2}", fldName, ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return false;
+                //displayErrMsg(lblMsg, errMsg);
+            }
+        }
         //public static bool hideStaticWing(string wingsNum)
         //{
         //    return (wingsNum == "כנף");
