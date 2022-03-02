@@ -6,7 +6,7 @@
     Exactly as teh default application pool in which https://prt-test.corp.elidoor.co.il/configurator2/wfrmConfigurator2.aspx is running OK from
     my station.
 
-    When I log into that server I can browse to :     https://prt-test.corp.elidoor.co.il:502/ 
+    When I log into that server I can browse to :     https://prt-test.corp.elidoor.co.il:502/
     and use the application.
     *** I can't do that from my machine ! ***
 *@
@@ -37,16 +37,41 @@
     <h3>Configurator3</h3>
 
     @code {
-    //protected bool hideCustDes { get; set; } = false;
+        //protected bool hideCustDes { get; set; } = false;
         protected static string errMsg = string.Empty;
         protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
         protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
 
-        int x = 17;
         //BlazorServerApp1.Pages.Configurator3
         protected bool hideDivDoor = true;
 
         public bool MovinwingIsFull = false;
+
+        protected override async Task OnInitializedAsync()
+        {
+        doorConfig = new DoorConfig();
+        formDate = DateTime.Now;
+        UiLogic.initPropNames(doorConfig);
+
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        }
+
+        public async Task SaveDoorConfig()
+        {
+        if (doorConfig != null)
+            await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        }
+
+        public async Task GetDoorConfig()
+        {
+        var result = await ProtectedSessionStore.GetAsync<DoorConfig>("doorConfig");
+        doorConfig = result.Success ? result.Value : null;
+        }
+
+        public async Task DeleteDoorConfigFromSession()
+        {
+        await ProtectedSessionStore.DeleteAsync("doorConfig");
+        }
     }
 
 
@@ -61,8 +86,8 @@
             <tr>
                 <td>
                     <input type="date" name="txtDate" @bind="formDate" />
-                    @code {
-                    public DoorConfig? doorConfig; // = new DoorConfig();
+    @code {
+        public DoorConfig? doorConfig; // = new DoorConfig();
 
         private DateTime _formDate = DateTime.Now;
         protected DateTime formDate
@@ -76,12 +101,12 @@
                             doorConfig.FORMDATE = Helper.formatDate4Rest(_formDate);
                         }
         }
-                    }
+     }
                 </td>
                 <td>
                     <input name="txtFormFiller" @bind="formFiller" dir="rtl" />
-                    @code {
-                    protected string _formFiller;
+     @code {
+        protected string _formFiller;
         protected string formFiller
         {
                         get { return _formFiller; }
@@ -92,13 +117,13 @@
                                 doorConfig.FORMFILLER = _formFiller;
                         }
         }
-                    }
+     }
                 </td>
                 <td>
                     <input name="txtReference" @bind="reference" @ref="txtReference" />
-                    @code {
+     @code {
 
-                    private ElementReference txtReference;
+        private ElementReference txtReference;
         protected string _reference;
         protected string reference
         {
@@ -120,41 +145,13 @@
                                     doorConfig.REFERENCE = _reference;
                         }
         }
-                    }
+   }
                 </td>
                 <td>
                     <label id="lblMsgL1" />
                 </td>
             </tr>
         </table>
-
-        @code {
-        protected override async Task OnInitializedAsync()
-        {
-            doorConfig = new DoorConfig();
-            formDate = DateTime.Now;
-            UiLogic.initPropNames(doorConfig);
-
-            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-        }
-
-        public async Task SaveDoorConfig()
-        {
-            if (doorConfig != null)
-                await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-        }
-
-        public async Task GetDoorConfig()
-        {
-            var result = await ProtectedSessionStore.GetAsync<DoorConfig>("doorConfig");
-            doorConfig = result.Success ? result.Value : null;
-        }
-
-        public async Task DeleteDoorConfigFromSession()
-        {
-            await ProtectedSessionStore.DeleteAsync("doorConfig");
-        }
-        }
 
         <table id="tblLine2">
             <tr>
@@ -175,8 +172,8 @@
                         }
                     </select>
                 </td>
-                @code {
-                private int _AGENT = 0;
+    @code {
+        private int _AGENT = 0;
         protected int AGENT
         {
                     get { return _AGENT; }
@@ -187,7 +184,7 @@
                             doorConfig.AGENT = _AGENT;
                     }
         }
-                }
+     }
                 <td>
                     <select name="dlstCustDes" @bind="CUST">
                         @if (lstCustomers != null)
@@ -197,10 +194,10 @@
                                 <option value="@c.CUST">@c.CUSTDES</option>
                             }
                         }
-                    </select> 
+                    </select>
                 </td>
-                @code {
-                public bool disableLogo = false;
+    @code {
+        public bool disableLogo = false;
         private int _CUST = 0;
         protected int CUST
         {
@@ -224,13 +221,13 @@
 
                     }
         }
-                }
+     }
 
                 <td>
                     <input dir="rtl" @bind="Address" />
                 </td>
-                @code {
-                protected string _Address = string.Empty;
+     @code {
+        protected string _Address = string.Empty;
         protected string Address
         {
                     get
@@ -248,12 +245,12 @@
                             doorConfig.ADDRESS = _Address;
                     }
         }
-                }
+     }
                 <td>
                     <input dir="rtl" @bind="ShipAddress" size="80" />
                 </td>
-                @code {
-                protected string _ShipAddress = string.Empty;
+    @code {
+        protected string _ShipAddress = string.Empty;
         protected string ShipAddress
         {
                     get
@@ -271,20 +268,20 @@
                             doorConfig.SHIPADDRESS = _ShipAddress;
                     }
         }
-                }
+    }
             </tr>
         </table>
         <table id="tblProducts">
             <tr>
                 <td>
                     <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
-                    @code
-                    {
-                    private void btnDoorClicked()
+    @code
+    {
+        private void btnDoorClicked()
         {
                         hideDivDoor = false;
         }
-                    }
+    }
                 </td>
                 <td>
                     <button name="btnLintel">משקוף</button>
@@ -326,9 +323,9 @@
                             <option>דו כנפי</option>
                         </select>
                     </td>
-                    @code
-                    {
-                    //protected bool disableStaticWing = false;
+    @code
+    {
+        //protected bool disableStaticWing = false;
         protected string _WingsNum = string.Empty;
         protected string WingsNum
         {
@@ -350,7 +347,7 @@
                         }
         }
 
-                    }
+     }
                     <td>
                         <select name="dlstOpenMode">
                             <option>בחר צורת פתיחה</option>
@@ -362,9 +359,9 @@
                     <td>
                         <input type="checkbox" name="chkbComplient" @bind="Complient" />
                     </td>
-                    @code
-                    {
-                    protected bool _Complient = false;
+    @code
+    {
+        protected bool _Complient = false;
         protected bool Complient
         {
                         get
@@ -383,7 +380,7 @@
                         }
         }
 
-                    }
+     }
                     <td>
                         <select name="dlstPARTNAME" @bind="PARTNAME">
                             @if (PrApiCalls.lstParts != null)
@@ -395,9 +392,9 @@
                             }
                         </select>
                     </td>
-                    @code
-                    {
-                    protected string _PARTNAME = string.Empty;
+    @code
+    {
+        protected string _PARTNAME = string.Empty;
         protected string PARTNAME
         {
                         get
@@ -414,24 +411,25 @@
                             if (doorConfig != null)
                             {
                                 doorConfig.PARTNAME = _PARTNAME;
-                                FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
-                                FAMILYDES = familyOfPart.FAMILYDES;
-                                doorConfig.FAMILY = PrApiCalls.getFAMILY(familyOfPart.FAMILYNAME, ref errMsg);
-                                doorConfig.meaged = PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
-                                doorConfig.TRSH_DOOR_HWCATCODE = PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
+                                PART_Class part = PrApiCalls.getPart(doorConfig.PARTNAME, ref errMsg);
+                                //FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
+                                FAMILYDES = part.FAMILYDES;         //familyOfPart.FAMILYDES;
+                                doorConfig.FAMILY = PrApiCalls.getFAMILY(part.FAMILYNAME, ref errMsg);
+                                doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
+                                doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
                                 UiLogic.applyPartDefaults(doorConfig);
 
                             }
                         }
 
         }
-                    }
+    }
                     <td>
                         <input name="txtFAMILY" disabled=@true @bind="FAMILYDES" />
                     </td>
-                    @code
-                    {
-                    protected string _FAMILYDES;
+    @code
+    {
+        protected string _FAMILYDES;
         protected string FAMILYDES
         {
                         get
@@ -444,7 +442,7 @@
                         }
         }
 
-                    }
+    }
                 </tr>
             </table>
         </div>
@@ -455,11 +453,11 @@
         <br />
         <br />
 
-        @code {
+    @code {
         // tab control here -
         // tab content pages in separate *.razor files
         // ref: https://blazor-university.com/templating-components-with-renderfragements/creating-a-tabcontrol/
-        }
+    }
 
         <div id="divTabControl">
             <TabControl doorConfig="doorConfig">
@@ -523,8 +521,8 @@
                 <td>
                     <button name="btnSave" @onclick="btnSave_Click">שמירה בפריוריטי</button>
                 </td>
-                @code {
-                private void btnSave_Click()
+    @code {
+        private void btnSave_Click()
         {
                     var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
 
@@ -544,14 +542,14 @@
                         //doorConfig = new DoorConfig();
                     }
         }
-                }
+    }
                 <td>
                     <button name="btnClear" @onclick="btnClear_Click">ניקוי טופס</button>
                 </td>
-                @code {
-                private void btnClear_Click()
+    @code {
+        private void btnClear_Click()
         { }
-                }
+    }
             </tr>
         </table>
 
@@ -559,9 +557,9 @@
     <!-- end divCommentsAndSave -->
     <div id="divBuildTime">
         <p style="float:left">@buildTime</p>
-        @code {
-        protected string buildTime = string.Format("Build Date : {0}", Helper.getBuildTime());
-        }
+    @code {
+            protected string buildTime = string.Format("Build Date : {0}", Helper.getBuildTime());
+    }
     </div>
     <!-- end divBuildTime -->
 

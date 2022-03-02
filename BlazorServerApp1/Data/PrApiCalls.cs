@@ -37,7 +37,7 @@ namespace BlazorServerApp1.Data
         public static DataTable dtDril4Hws = new DataTable();
         public static List<CYLINDER_Class> lstCylinders = new List<CYLINDER_Class>();
         public static List<TRSH_LOCK_Class> lstLocks = new List<TRSH_LOCK_Class>();
-        public static DataTable dtLocks = new DataTable(); 
+        public static DataTable dtLocks = new DataTable();
 
         public static List<TILETYPE_Class> lstTileTypes = new List<TILETYPE_Class>();
         public static List<RAW4CPLATES_Class> lstRaw4CPlates = new List<RAW4CPLATES_Class>();
@@ -60,7 +60,7 @@ namespace BlazorServerApp1.Data
         //public static RestClient restClient = new RestClient();  - this is page instance specific we can't make it application specific
         static string certAlert = "Pls check whether the SSL certificate of the Default Web Site on the web server has expired";
 
-      
+
 
         public static void initRestClient(RestClient restClient)
         {
@@ -576,7 +576,7 @@ namespace BlazorServerApp1.Data
                 if (dtDecorSideFlds == null)
                     return;  //abort
                 dtConfFields = getConfFields(ref errMsg);
-                    if (dtConfFields == null)
+                if (dtConfFields == null)
                     return;
                 dtDefaults = getDefaults(ref errMsg);
                 lstParts = getAllParts(ref errMsg);
@@ -807,7 +807,7 @@ namespace BlazorServerApp1.Data
             }
         }
 
-        public static List<TRSH_HARDWARE_Class>  getPartHWs(int TRSH_DOOR_HWCATCODE, ref string errMsg)
+        public static List<TRSH_HARDWARE_Class> getPartHWs(int TRSH_DOOR_HWCATCODE, ref string errMsg)
         {
             try
             {
@@ -987,8 +987,8 @@ namespace BlazorServerApp1.Data
         {
             try
             {
-                DataRow[] rowsArray; 
-                string query = string.Format("TRSH_DOOR_HWCATCODE = '{0}'",TRSH_DOOR_HWCATCODE);
+                DataRow[] rowsArray;
+                string query = string.Format("TRSH_DOOR_HWCATCODE = '{0}'", TRSH_DOOR_HWCATCODE);
                 if (dtLocks == null)
                 {
                     errMsg = "dtLocks is null, maybe caused by page refresh, recreating it";
@@ -1025,8 +1025,8 @@ namespace BlazorServerApp1.Data
             }
         }
 
-                //TRSH_TILETYPES        -  70
-                public static List<TILETYPE_Class> getTileTypes(ref string errMsg)
+        //TRSH_TILETYPES        -  70
+        public static List<TILETYPE_Class> getTileTypes(ref string errMsg)
         {
             try
             {
@@ -1798,6 +1798,47 @@ namespace BlazorServerApp1.Data
                 return null;
             }
         }
+        public static PART_Class getPart(string PARTNAME, ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "PART,PARTNAME,PARTDES,MPARTNAME,FAMILYNAME,FAMILYDES,TRSH_DOOR_HWCATCODE";
+                request.Resource = string.Format("LOGPART?$filter=PARTNAME eq '{0}'&$select={1}", PARTNAME, fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesPART_Class val = JsonConvert.DeserializeObject<ValuesPART_Class>(response.Content);
+                    //List<PART_Class> val1 = new List<PART_Class>();  //val.value;
+                    return val.value[0];
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errMsg = string.Format("Unexpected error: {0} - check whether you can connect to Priority server.  Stacktrace : {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return null;
+            }
+        }
         public static string getMeagedOfPart(string PARTNAME, ref string errMsg)
         {
             try
@@ -1849,7 +1890,7 @@ namespace BlazorServerApp1.Data
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
                 string fields = "TRSH_DOORCONFIG,REFERENCE,FORMDATE,FORMFILLER,CUSTDES,PARTNAME";
-                request.Resource = string.Format("TRSH_DOORCONFIG?$orderby=TRSH_DOORCONFIG desc&$select={0}&$top=1",fields);
+                request.Resource = string.Format("TRSH_DOORCONFIG?$orderby=TRSH_DOORCONFIG desc&$select={0}&$top=1", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
                 {
@@ -1886,7 +1927,7 @@ namespace BlazorServerApp1.Data
                 return string.Empty;
             }
         }
-    
+
         #endregion get last TRSH_DOORCONFIG
 
         public static string JsonSerializer<T>(T t)
@@ -1907,7 +1948,7 @@ namespace BlazorServerApp1.Data
         }
 
         public static IRestResponse SendToPriority(string form, DoorConfig doorConfig, ref string errMsg)
-                          //HttpRequest httpRequest)
+        //HttpRequest httpRequest)
         {
             try
             {
