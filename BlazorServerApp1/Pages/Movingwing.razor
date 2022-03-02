@@ -31,10 +31,13 @@
         //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
         //await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
         //string doorConfigJson2 = ProtectedSessionStore.GetAsync<string>("doorConfigJson").ToString();
-        UiLogic.saveDoorConfig(doorConfig, ProtectedSessionStore);
+        //UiLogic.saveDoorConfig(doorConfig, ProtectedSessionStore);
+
+        //Js.InvokeVoidAsync("alert", string.Format("in Movingwing Dispose : doorConfig.EXTCOLORID= ", doorConfig.EXTCOLORID));  //debug
+
         if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))
         {
-            Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'כנף נעה' י");  
+            Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'כנף נעה' י");
         }
         //Js.InvokeVoidAsync("alert", string.Format("in Movingwing:Dispose doorConfig.DRIL4TWOSIDESIDS = {0}", doorConfig.DRIL4TWOSIDESIDS)); //debug
         
@@ -42,19 +45,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
-        await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
-        var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
-        if (doorConfigJsonV.Success)
-        {
-            string doorConfigJson2 = doorConfigJsonV.Value;
-            if (!string.IsNullOrEmpty(doorConfigJson2))
-                 doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
-        }
+        //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
+          
+        //Js.InvokeVoidAsync("alert", string.Format("in Movingwing OnInitializedAsync : doorConfig.EXTCOLORID= ", doorConfig.EXTCOLORID));  // debug
+
+        //await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
+        //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
+        //if (doorConfigJsonV.Success)
+        //{
+        //    string doorConfigJson2 = doorConfigJsonV.Value;
+        //    if (!string.IsNullOrEmpty(doorConfigJson2))
+        //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
+        //}
     }
-
-    
-
   }
 
 <table id="MovingWingL1">
@@ -90,7 +93,10 @@
                     {
                         _openSide = value;
                         if (doorConfig != null)
+                        {
                             doorConfig.OPENSIDE = _openSide;
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
                     }
                 }
 
@@ -122,7 +128,10 @@
                 {
                     _DecorFormat = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.DECORFORMAT = _DecorFormat;
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
 
@@ -146,8 +155,11 @@
                 set
                 {
                     _TwoColors = value;
-                    if (doorConfig != null)
+                    if (doorConfig != null) 
+                    {
                         doorConfig.TWOCOLORS = (_TwoColors ? "Y" : "");
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
 
@@ -186,6 +198,7 @@
                                 Js.InvokeVoidAsync("alert", errMsg);
                             }
                         }
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
             }
@@ -220,7 +233,10 @@
                 {
                     _DoorColorId = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.DOORCOLORID = _DoorColorId;
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
 
@@ -281,6 +297,7 @@
                         {
                             Js.InvokeVoidAsync("alert", errMsg);
                         }
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
             }
@@ -306,7 +323,10 @@
                 {
                     _TurboApparatus = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.TURBOAPPARATUS = (_TurboApparatus ? "Y" : "");
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
 
@@ -331,7 +351,10 @@
                 {
                     _LOckDrilHeight = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.LOCKDRILHEIGHT = _LOckDrilHeight;
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
         }
@@ -355,7 +378,10 @@
                 {
                     _Logo = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.LOGO = (_Logo ? "Y" : "");
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
 
@@ -392,7 +418,10 @@
                     {
                         _Hw = value;
                         if (doorConfig != null)
+                        {
                             doorConfig.TRSH_HARDWARE = _Hw;
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
                     }
                 }
             }
@@ -425,7 +454,10 @@
                 {
                     _HwColorId = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.HWCOLORID = _HwColorId;
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
         }
@@ -458,7 +490,10 @@
                 {
                     _Dril4Hw = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.DRIL4HW = _Dril4Hw;
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
         }

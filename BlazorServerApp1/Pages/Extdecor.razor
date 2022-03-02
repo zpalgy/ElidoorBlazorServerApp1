@@ -29,6 +29,7 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
+		int x = doorConfig.EXTCOLORID;
         if (!MovingwingIsFull)
         {
             // navigate back to Movingwing 
@@ -40,9 +41,9 @@
         //    string doorConfigJson2 = doorConfigJsonV.Value;
         //    if (!string.IsNullOrEmpty(doorConfigJson2))
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
-        UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
+        //UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
 
-        // Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.DRIL4TWOSIDESIDS = {0}", doorConfig.DRIL4TWOSIDESIDS));  //debug
+        //Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
      }
     
     

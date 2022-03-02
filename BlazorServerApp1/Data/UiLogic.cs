@@ -138,7 +138,11 @@ namespace BlazorServerApp1.Data
             {
                 string fldName = tabFields[r]["FIELDNAME"].ToString();
                 string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
-                if (!hideFld(doorConfig, fldName) && !doorFldIsFilled(doorConfig, fldName, fldDataType))
+                string controlName = tabFields[r]["CONFIG_FIELDNAME"].ToString();
+                string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
+                if (!hideFld(doorConfig, controlThName) 
+                    && !controlName.StartsWith("chkb")
+                    && !doorFldIsFilled(doorConfig, fldName, fldDataType))
                     return false;
             }
             return true;
@@ -148,6 +152,8 @@ namespace BlazorServerApp1.Data
             string errMsg = string.Empty;
             string sval;
             int ival;
+
+            
 
             Type objType = doorConfig.GetType();
             PropertyInfo[] props = objType.GetProperties();
@@ -195,6 +201,79 @@ namespace BlazorServerApp1.Data
                 //displayErrMsg(lblMsg, errMsg);
             }
         }
+        public static void clearFollowingTabFields(DoorConfig doorConfig, string tabName)
+        {
+            string errMsg = string.Empty;
+            int t = Array.IndexOf(tabNames, tabName);
+            if (t > -1 && t < tabNames.Length - 1)
+            {
+                string nextTab = tabNames[t + 1];
+                string query = string.Format("CONFIG_SUBFORM = '{0}'", nextTab.ToLower());
+                DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
+                for (int r = 0; r < tabFields.Length; r++)
+                {
+                    string fldName = tabFields[r]["FIELDNAME"].ToString();
+                    string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
+                    clearConfField(doorConfig, fldName, fldDataType, ref errMsg);
+                    applyFldDefault(doorConfig, fldName);
+                }
+            }
+        }
+        public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
+        {
+            string sval;
+            int ival;
+
+            Type objType = doorConfig.GetType();
+            PropertyInfo[] props = objType.GetProperties();
+            if (fldName == "EXTCOLORID")
+            {
+                int x = 17;
+            }
+            try
+            {
+                int p = Array.IndexOf(propNames, fldName);
+                if (p >= 0)
+                {
+                    switch (dataType)
+                    {
+                        case "CHAR":
+                        case "RCHAR":
+                                sval = string.Empty;
+                            try
+                            {
+                                props[p].SetValue(doorConfig, sval);
+                            }
+                            catch (Exception ex)
+                            {
+                                errMsg = string.Format("props[{0}}].SetValue(doorConfig, sval = {1}); FAILED ! \n error: {2} ",
+                                                       p, sval, ex.Message);
+                                myLogger.log.Error(errMsg);
+                            }
+                            return;
+                        case "INT":
+                                ival = 0;
+                            try
+                            {
+                                props[p].SetValue(doorConfig, ival);
+                            }
+                            catch (Exception ex)
+                            {
+                                errMsg = string.Format("props[{0}}].SetValue(doorConfig, ival = {1}); FAILED ! \n error: {2} ",
+                                                       p, ival, ex.Message);
+                                myLogger.log.Error(errMsg);
+                            }
+                            return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format("Unexpected error: fldname = {0} , error: {1} .  Stacktrace : {2}", fldName, ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+            }
+        }
+
         //public static bool hideStaticWing(string wingsNum)
         //{
         //    return (wingsNum == "כנף");
@@ -224,10 +303,6 @@ namespace BlazorServerApp1.Data
         //    btn.Enabled = false;
         //    btn.BackColor = Color.Gray;
         //}
-
-
-
-
 
         #region Meageds
         //public static void applyMeaged(string PARTNAME, DataTable MeagedFields, HtmlGenericControl dvTab, ref string errMsg)
@@ -384,7 +459,6 @@ namespace BlazorServerApp1.Data
                         UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
                     }
                 }
-                
             }
             catch (Exception ex)
             {
@@ -392,7 +466,6 @@ namespace BlazorServerApp1.Data
                 myLogger.log.Error(errMsg);
                 return;
             }
-
         }
         public static void applyFldDefault(DoorConfig doorConfig, string configFldName)
         {
@@ -760,7 +833,6 @@ namespace BlazorServerApp1.Data
                 errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
                 myLogger.log.Error(errMsg);
                 //displayErrMsg(lblMsg, errMsg);
-
                 return null;
             }
         }
