@@ -46,6 +46,8 @@
         protected bool hideDivDoor = true;
 
         public bool MovinwingIsFull = false;
+        public bool ExtdecorIsFull = false;
+        public bool IntdecorIsFull = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -393,8 +395,8 @@
                         </select>
                     </td>
     @code
-    {
-        protected string _PARTNAME = string.Empty;
+                    {
+                        protected string _PARTNAME = string.Empty;
         protected string PARTNAME
         {
                         get
@@ -414,7 +416,8 @@
                                 PART_Class part = PrApiCalls.getPart(doorConfig.PARTNAME, ref errMsg);
                                 //FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
                                 FAMILYDES = part.FAMILYDES;         //familyOfPart.FAMILYDES;
-                                doorConfig.FAMILY = PrApiCalls.getFAMILY(part.FAMILYNAME, ref errMsg);
+                                doorConfig.FAMILYNAME = part.FAMILYNAME;  //[NonSerialized]
+                                //doorConfig.FAMILY = PrApiCalls.getFAMILY(part.FAMILYNAME, ref errMsg);
                                 doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
                                 doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
                                 UiLogic.applyPartDefaults(doorConfig);
@@ -473,7 +476,7 @@
                 </TabPage>
                 <TabPage Text="פרטי דקורציה פנים">
                     <div id="divIntDecor" class="myDiv">
-                        <h1>The third tab</h1>
+                       <Intdecor doorConfig="@doorConfig" ExtdecorIsFull="@ExtdecorIsFull" />
                     </div>
                 </TabPage>
                 <TabPage Text="כנף קבועה">
@@ -524,6 +527,7 @@
     @code {
         private void btnSave_Click()
         {
+                    doorConfig.FAMILY = PrApiCalls.getFAMILY(doorConfig.FAMILYNAME, ref errMsg);
                     var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
 
                     if (response != System.Net.HttpStatusCode.Created)

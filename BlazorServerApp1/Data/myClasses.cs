@@ -582,6 +582,8 @@ namespace BlazorServerApp1.Data
         public int FAMILY { get; set; }  // D-10
         //[DataMember(Order = 22), Order]
         //public string FAMILYDES { get; set; }
+        [NonSerialized]
+        public string FAMILYNAME = string.Empty;
         [DataMember(Order = 17), Order]
         public int TRSH_DOOR_HWCATCODE { get; set; }
         #endregion door header

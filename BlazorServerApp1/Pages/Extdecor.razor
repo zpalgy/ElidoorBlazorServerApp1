@@ -29,12 +29,18 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-		int x = doorConfig.EXTCOLORID;
-        if (!MovingwingIsFull)
+		//int x = doorConfig.EXTCOLORID;
+  //      if (!MovingwingIsFull)
+  //      {
+  //          // navigate back to Movingwing 
+  //          //[TODO]  Navigator.NavigateTo("Movingwing");
+  //      }
+
+   if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))
         {
-            // navigate back to Movingwing 
-            //[TODO]  Navigator.NavigateTo("Movingwing");
+            Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'כנף נעה' י");
         }
+
         //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
         //if (doorConfigJsonV.Success)
         //{
@@ -49,6 +55,10 @@
     
     async void IDisposable.Dispose()
     {
+		 //if (!UiLogic.tabPageIsFilled("extdecor", doorConfig))
+   //     {
+   //         Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה חוץ' י");
+   //     }
         //int x = 17;
         //if (x == 18)
         //{
