@@ -464,39 +464,39 @@
 
         <div id="divTabControl">
             <TabControl doorConfig="doorConfig">
-                <TabPage Text="כנף נעה">
+                <TabPage Text="כנף נעה" TabName="movingwing">
                     <div id="divMovingWing" class="myDiv">
                         <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
                     </div>
                 </TabPage>
-                <TabPage Text="פרטי דקורציה חוץ">
+                <TabPage Text="פרטי דקורציה חוץ" TabName="extdecor">
                     <div id="divExtDecor" class="myDiv">
                         <Extdecor doorConfig="@doorConfig" MovingwingIsFull="@MovinwingIsFull" />
                     </div>
                 </TabPage>
-                <TabPage Text="פרטי דקורציה פנים">
+                <TabPage Text="פרטי דקורציה פנים" TabName="intdecor">
                     <div id="divIntDecor" class="myDiv">
                        <Intdecor doorConfig="@doorConfig" ExtdecorIsFull="@ExtdecorIsFull" />
                     </div>
                 </TabPage>
-                <TabPage Text="כנף קבועה">
+                <TabPage Text="כנף קבועה" TabName="staticwing">
                     <div id="divStaticWing" class="myDiv">
-                        <Counter />
+                        <Staticwing doorConfig="@doorConfig" />
                     </div>
                 </TabPage>
-                <TabPage Text="פרטי צירים">
+                <TabPage Text="פרטי צירים" TabName="hinges">
                     <div id="divHinges" class="myDiv">
-                        <Counter />
+                        <Hinges doorConfig="@doorConfig" />
                     </div>
                 </TabPage>
-                <TabPage Text="ידית אומנותית">
+                <TabPage Text="ידית אומנותית" TabName="handle">
                     <div id="divHandles" class="myDiv">
-                        <Counter />
+                        <Handle doorConfig="@doorConfig" />
                     </div>
                 </TabPage>
-                <TabPage Text="נילווים">
+                <TabPage Text="נילווים" TabName="accessories">
                     <div id="divAccessories" class="myDiv">
-                        <Counter />
+                        <Accessories doorConfig="@doorConfig" />
                     </div>
                 </TabPage>
             </TabControl>

@@ -1,0 +1,66 @@
+﻿@page "/Handle"
+
+@inject IJSRuntime Js
+
+@implements IDisposable
+
+@inject NavigationManager Navigator
+
+<style>
+    th, td {
+        padding: 15px;
+        text-align: center;
+    }
+</style>
+
+@code
+{
+    [Parameter]
+    public DoorConfig doorConfig { get; set; }
+
+    //[Parameter]
+    //public bool ExtdecorIsFull { get; set; }
+}
+<h3>Intdecor</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+		
+        //if (!ExtdecorIsFull)
+        //{
+        //    // navigate back to Movingwing 
+        //    //[TODO]  Navigator.NavigateTo("Movingwing");
+        //}
+
+		 if (!UiLogic.tabPageIsFilled("extdecor", doorConfig))
+        {
+            Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה חוץ' י");
+        }
+
+        //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
+        //if (doorConfigJsonV.Success)
+        //{
+        //    string doorConfigJson2 = doorConfigJsonV.Value;
+        //    if (!string.IsNullOrEmpty(doorConfigJson2))
+        //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
+        //UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
+
+        //Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
+     }
+    
+    
+    async void IDisposable.Dispose()
+    {
+		 //if (!UiLogic.tabPageIsFilled("intdecor", doorConfig))
+   //     {
+   //         Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה פנים' י");
+   //     }
+        //int x = 17;
+        //if (x == 18)
+        //{
+        //    Js.InvokeVoidAsync("alert", "error !");
+        //    //NavigationManager.NavigateTo("Movingwing", true);
+        //}
+    }
+}

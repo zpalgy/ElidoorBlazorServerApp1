@@ -39,9 +39,25 @@
 		return page == ActivePage ? "btn-primary" : "btn-secondary";
 	}
 
-	void ActivatePage(TabPage page)
+	void ActivatePage(TabPage page )
 	{
-		ActivePage = page;
+		int t = Array.IndexOf(UiLogic.tabNames, page.TabName);
+		string prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
+		if (t == 0)
+		{
+			ActivePage = page;
+		}
+		else
+		{
+			if (UiLogic.tabPageIsFilled(prevTab, doorConfig))
+				ActivePage = page;
+			else
+			{
+				string errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevTab);
+				Js.InvokeVoidAsync("alert", errMsg);
+			}
+		}
+		
 	}
 	bool disableTab(string tabPageText, string wingsNum)
 	{
