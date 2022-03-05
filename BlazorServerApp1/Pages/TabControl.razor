@@ -53,7 +53,8 @@
 				ActivePage = page;
 			else
 			{
-				string errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevTab);
+				string prevTabText = UiLogic.tabTexts[t - 1];
+				string errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevTabText);
 				Js.InvokeVoidAsync("alert", errMsg);
 			}
 		}
