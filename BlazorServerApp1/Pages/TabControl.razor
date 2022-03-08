@@ -55,6 +55,11 @@
 		{
 			int t = Array.IndexOf(UiLogic.tabNames, page.TabName);
 			string prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
+			string prevText = (t > 0 ? UiLogic.tabTexts[t - 1] : string.Empty); 
+			if (prevTab.ToLower() == "staticwing" && disableTab(prevText, doorConfig.WINGSNUM))
+			{
+				prevTab = UiLogic.tabNames[t - 2];
+			}
 			if (t == 0)
 			{
 				ActivePage = page;

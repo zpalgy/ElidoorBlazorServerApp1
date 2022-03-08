@@ -138,7 +138,9 @@ namespace BlazorServerApp1.Data
         {
             string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
-            for (int r = 0; r<tabFields.Length;r++)
+            int fieldsNum = tabFields.Length;
+
+            for (int r = 0; r< fieldsNum; r++)
             {
                 string fldName = tabFields[r]["FIELDNAME"].ToString();
                 string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
@@ -164,7 +166,15 @@ namespace BlazorServerApp1.Data
             //string[] propNames = props.Select(i => i.Name).ToArray();
             try
             {
-                int p = Array.IndexOf(propNames, fldName);
+                // special logic for Hinges 
+                if (fldName == "HINGE5HEIGHT" && doorConfig.HINGESNUM < 5)
+                    return true;
+                else if (fldName == "HINGE4HEIGHT" && doorConfig.HINGESNUM < 4)
+                    return true;
+                else if (fldName == "HINGE3HEIGHT" && doorConfig.HINGESNUM < 3)
+                    return true;
+
+                    int p = Array.IndexOf(propNames, fldName);
                 if (p >= 0)
                 {
                     var val = props[p].GetValue(doorConfig);

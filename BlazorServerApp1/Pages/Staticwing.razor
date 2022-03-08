@@ -72,6 +72,7 @@
 			@{	string thCyl = "thCylinder4HalfWing"; }
             <th id="thCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, thCyl)">צילינדר בחצי כנף</th>
 		
+			@* ref : https://stackoverflow.com/questions/63693734/how-to-show-hide-an-element-in-real-time-blazor *@
 		@{
 			bool hw4 = UiLogic.hideFld(doorConfig, "thHW4ExtraWing");
 		}
