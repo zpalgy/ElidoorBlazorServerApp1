@@ -64,3 +64,48 @@
         //}
     }
 }
+                                            <table id="tblAccessoriesL1">
+                                                <tr>
+                                                    <th id="thRafafaLocation" runat="server">מיקום רפפה עשן\פתח איוורור</th>
+                                                    <th id="thSafeLock" runat="server">מנעול כספת</th>
+                                                    <th id="thWetColorBox" runat="server">קופסאת צבע רטוב</th>
+                                                    <th id="thColorSpray" runat="server">תרסיס צבע</th>
+                                                    <th id="thCleaningSpray" runat="server">תרסיס ניקוי</th>
+                                                    <th id="thCore" runat="server">ליבה</th>
+                                                    <th id="thMezuza" runat="server">מזוזה</th>
+                                                </tr>
+                                                <tr>
+                                                    <td id="tdRafafaLocation" runat="server">
+                                                        <asp:DropDownList ID="dlstRafafaLocation" runat="server"
+                                                            OnSelectedIndexChanged="ctl_valChanged">
+                                                            <asp:ListItem></asp:ListItem>
+                                                            <asp:ListItem>17</asp:ListItem>
+                                                            <asp:ListItem>53</asp:ListItem>
+                                                        </asp:DropDownList>
+                                                    </td>
+                                                    <td id="tdSafeLock" runat="server">
+                                                        <asp:CheckBox ID="chkbSafeLock" runat="server"
+                                                            OnCheckedChanged="ctl_valChanged" />
+                                                    </td>
+                                                    <td id="tdWetColorBox" runat="server">
+                                                        <asp:CheckBox ID="chkbWetColorBox" runat="server"
+                                                            OnCheckedChanged="ctl_valChanged" />
+                                                    </td>
+                                                    <td id="tdColorSpray" runat="server">
+                                                        <asp:CheckBox ID="chkbColorSpray" runat="server"
+                                                            OnCheckedChanged="ctl_valChanged" />
+                                                    </td>
+                                                    <td id="tdCleaningSpray" runat="server">
+                                                        <asp:CheckBox ID="chkbCleaningSpray" runat="server"
+                                                            OnCheckedChanged="ctl_valChanged" />
+                                                    </td>
+                                                    <td id="tdCore" runat="server">
+                                                        <asp:CheckBox ID="chkbCore" runat="server"
+                                                            OnCheckedChanged="ctl_valChanged" />
+                                                    </td>
+                                                    <td id="tdMezuza" runat="server">
+                                                        <asp:CheckBox ID="chkbMezuza" runat="server"
+                                                            OnCheckedChanged="ctl_valChanged" />
+                                                    </td>
+                                                </tr>
+                                            </table>

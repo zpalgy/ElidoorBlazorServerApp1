@@ -64,3 +64,91 @@
         //}
     }
 }
+<table id="tblHandle">
+                                                <tr>
+                                                    @{ 	bool h = UiLogic.hideFld(doorConfig, "thHandle"); 	}
+			                                        @if (!h)
+			                                        {	
+                                                        <th id="thHandle"  >דגם ידית אומנותית</th>
+                                                    }
+                                                    @{ 	bool hclr = UiLogic.hideFld(doorConfig, "thHandleColorID"); 	}
+			                                        @if (!hclr)
+			                                        {	
+                                                        <th id="thHandleColorID" >צבע ידית אומנותית</th>
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    @if (!h)
+			                                        {	
+                                                        <td id="tdHandle" >
+                                                            <select name="dlstHandle" @bind="Handle1" >
+                                                                @if (PrApiCalls.lstHandles != null)
+                                                                 {
+	                                                                @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
+	                                                                {
+		                                                                <option value="@c.HANDLENAME">@c.HANDLEDES</option>
+	                                                                }
+                                                                 }
+                                                            </select>
+                                                        </td>
+                                                    }
+                                                    @code
+                                                    {
+	                                                    protected string _Handle1 = string.Empty;
+	                                                    protected string Handle1
+	                                                    {
+		                                                    get
+		                                                    {
+			                                                    if (doorConfig != null)
+			                                                    {
+				                                                    _Handle1 = doorConfig.HANDLENAME;
+			                                                    }
+			                                                    return _Handle1;
+		                                                    }
+		                                                    set
+		                                                    {
+			                                                    _Handle1 = value;
+			                                                    if (doorConfig != null)
+				                                                    doorConfig.HANDLENAME = _Handle1;
+		                                                    }
+	                                                    }
+                                                    }
+
+                                                    @if (!hclr)
+			                                        {	
+                                                        <td id="tdHandleColorID" >
+                                                            <select name="dlstHandleColorID"  @bind="HandleColorID">
+                                                                @if (PrApiCalls.lstColors != null)
+	                                                            {
+		                                                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+		                                                            {
+			                                                            <option value="@c.TRSH_COLORID">@c.TRSH_COLORDES</option>
+		                                                            }
+	                                                            }
+                                                            </select>
+                                                        </td>
+                                                    }
+                                                    @code
+                                                    {
+	                                                    protected int _HandleColorID = 0;
+	                                                    protected int HandleColorID
+	                                                    {
+		                                                    get
+		                                                    {
+			                                                    if (doorConfig != null)
+			                                                    {
+				                                                    _HandleColorID = doorConfig.HANDLECOLORID;
+			                                                    }
+			                                                    return _HandleColorID;
+		                                                    }
+		                                                    set
+		                                                    {
+			                                                    _HandleColorID = value;
+			                                                    if (doorConfig != null)
+				                                                    doorConfig.HANDLECOLORID = _HandleColorID;
+		                                                    }
+	                                                    }
+                                                    }       
+                                                    
+                                                </tr>
+                                            </table>

@@ -73,27 +73,27 @@
             <th id="thCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, thCyl)">צילינדר בחצי כנף</th>
 		
 			@* ref : https://stackoverflow.com/questions/63693734/how-to-show-hide-an-element-in-real-time-blazor *@
-		@{
-			bool hw4 = UiLogic.hideFld(doorConfig, "thHW4ExtraWing");
-		}
-		@if (!hw4)
-		{
-			<th id="thHW4ExtraWing" >פרזול לכנף נוספת</th>
-		}
-		@{
-			bool dew = UiLogic.hideFld(doorConfig, "thDesignedExtraWing");
-		}
-		@if (!dew)
-		{	
-            <th id="thDesignedExtraWing" >כנף נוספת מעוצבת</th>
-		}
-		@{
-			bool dww = UiLogic.hideFld(doorConfig, "thDesignedWindowedWing");
-		}
-		@if (!dew)
-		{	
-			<th id="thDesignedWindowedWing" >כנף מעוצבת עם חלון</th>
-		}
+			@{
+				bool hw4 = UiLogic.hideFld(doorConfig, "thHW4ExtraWing");
+			}
+			@if (!hw4)
+			{
+				<th id="thHW4ExtraWing" >פרזול לכנף נוספת</th>
+			}
+			@{
+				bool dew = UiLogic.hideFld(doorConfig, "thDesignedExtraWing");
+			}
+			@if (!dew)
+			{	
+				<th id="thDesignedExtraWing" >כנף נוספת מעוצבת</th>
+			}
+			@{
+				bool dww = UiLogic.hideFld(doorConfig, "thDesignedWindowedWing");
+			}
+			@if (!dew)
+			{	
+				<th id="thDesignedWindowedWing" >כנף מעוצבת עם חלון</th>
+			}
         </tr>
         <tr>
 		    <td id="tdOpenDirection" @hidden="@UiLogic.hideFld(doorConfig, "thOpenDirection")" >
