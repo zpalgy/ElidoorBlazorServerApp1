@@ -3,7 +3,7 @@
     Bindings : https  port 502.
     associated the existing certificate with this web site.
     The application pool name is Blazor2, it's pipiline model is "integrated" and it's identity is ApplicationPoolIdentity
-    Exactly as teh default application pool in which https://prt-test.corp.elidoor.co.il/configurator2/wfrmConfigurator2.aspx is running OK from
+    Exactly as the default application pool in which https://prt-test.corp.elidoor.co.il/configurator2/wfrmConfigurator2.aspx is running OK from
     my station.
 
     When I log into that server I can browse to :     https://prt-test.corp.elidoor.co.il:502/
@@ -54,6 +54,7 @@
         doorConfig = new DoorConfig();
         formDate = DateTime.Now;
         UiLogic.initPropNames(doorConfig);
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
         //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
         }
@@ -421,7 +422,6 @@
                                 doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
                                 doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
                                 UiLogic.applyPartDefaults(doorConfig);
-
                             }
                         }
 

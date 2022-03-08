@@ -11,6 +11,10 @@
 				@tabPage.Text
 			</button>
 		}
+		@{
+			UiLogic.tabNames = lstTabNames.ToArray();
+			UiLogic.tabTexts = lstTabTexts.ToArray();
+		}
 	</div>
 	@ChildContent
 </CascadingValue>
@@ -25,12 +29,18 @@
 
 	public TabPage ActivePage { get; set; }
 	List<TabPage> Pages = new List<TabPage>();
-
+	List<string> lstTabTexts = new List<string>();
+	List<string> lstTabNames = new List<string>();
 	internal void AddPage(TabPage tabPage)
 	{
 		Pages.Add(tabPage);
-		if (Pages.Count == 1)
+		lstTabTexts.Add(tabPage.Text);
+		lstTabNames.Add(tabPage.TabName);
+
+		if (Pages.Count == 1 && !string.IsNullOrEmpty(doorConfig.PARTNAME))
+		{
 			ActivePage = tabPage;
+		}
 		StateHasChanged();
 	}
 
@@ -41,24 +51,38 @@
 
 	void ActivatePage(TabPage page )
 	{
-		int t = Array.IndexOf(UiLogic.tabNames, page.TabName);
-		string prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
-		if (t == 0)
+		if (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME))
 		{
-			ActivePage = page;
+			int t = Array.IndexOf(UiLogic.tabNames, page.TabName);
+			string prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
+			if (t == 0)
+			{
+				ActivePage = page;
+			}
+			else
+			{
+				if (UiLogic.tabPageIsFilled(prevTab, doorConfig))
+					ActivePage = page;
+				else
+				{
+					string prevTabText = UiLogic.tabTexts[t - 1];
+					string errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevTabText);
+					Js.InvokeVoidAsync("alert", errMsg);
+				}
+			}
 		}
 		else
 		{
-			if (UiLogic.tabPageIsFilled(prevTab, doorConfig))
-				ActivePage = page;
-			else
-			{
-				string prevTabText = UiLogic.tabTexts[t - 1];
-				string errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevTabText);
-				Js.InvokeVoidAsync("alert", errMsg);
-			}
+			string errMsg = string.Empty;
+			if (doorConfig.CUST == null || doorConfig.CUST == 0)
+				errMsg += "חובה לציין לקוח";
+			if (string.IsNullOrEmpty(doorConfig.PARTNAME))
+				errMsg += " חובה לציין דגם , ";
+
+			Js.InvokeVoidAsync("alert", errMsg);
 		}
-		
+		//debug 
+		//ActivePage = page;  //debug temporarily show the page !!!
 	}
 	bool disableTab(string tabPageText, string wingsNum)
 	{

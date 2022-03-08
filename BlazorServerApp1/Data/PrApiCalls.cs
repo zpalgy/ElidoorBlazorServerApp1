@@ -1758,7 +1758,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "LINENUM,TRSH_NUM,PARTNAME,FIELDCODE,CONFIG_FIELDNAME,CONFIG_TDNAME,DEFVAL,VAL_LOCKED,WRONGVAL";
+                string fields = "LINENUM,TRSH_NUM,PARTNAME,FIELDCODE,CONFIG_FIELDNAME,FIELDNAME,CONFIG_TDNAME,FIELDDATATYPE,DEFVAL,VAL_LOCKED,WRONGVAL";
                 request.Resource = string.Format("TRSH_DEFAULTS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)

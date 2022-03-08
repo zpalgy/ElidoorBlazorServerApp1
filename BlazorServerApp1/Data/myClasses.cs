@@ -517,12 +517,16 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 5)]
         public string CONFIG_FIELDNAME { get; set; }  //e.g. dlstPARTNAME
         [DataMember(Order = 6)]
-        public string CONFIG_TDNAME { get; set; }
-        [DataMember(Order = 6)]
-        public string DEFVAL { get; set; }
+        public string FIELDNAME { get; set; }  //e.g. PARTNAME
         [DataMember(Order = 7)]
-        public string VAL_LOCKED { get; set; }
+        public string CONFIG_TDNAME { get; set; }
         [DataMember(Order = 8)]
+        public string FIELDDATATYPE { get; set; }
+        [DataMember(Order = 9)]
+        public string DEFVAL { get; set; }
+        [DataMember(Order = 10)]
+        public string VAL_LOCKED { get; set; }
+        [DataMember(Order = 11)]
         public string WRONGVAL { get; set; }
     }
     public class ValuesDefaults_Class
@@ -536,7 +540,7 @@ namespace BlazorServerApp1.Data
         #region form header
         [DataMember(Order = 1), Order]
         public string REFERENCE { get; set; }
-        [Required]
+        //[Required]
         [DataMember(Order = 2), Order]
         public string FORMDATE { get; set; }
         [DataMember(Order = 3), Order]
@@ -548,7 +552,7 @@ namespace BlazorServerApp1.Data
         //[DataMember(Order = 5), Order]
         //public string AGENTNAME { get; set; }
 
-        [Required]      
+        //[Required]      
         [DataMember(Order = 6), Order]
         public int? CUST { get; set; }
         //[DataMember(Order = 6), Order]
@@ -573,7 +577,7 @@ namespace BlazorServerApp1.Data
         public string COMPLIENTDOOR { get; set; }  // Y | N | '' D-920
         //[DataMember(Order = 23), Order]
         //public int PART { get; set; }  //D-20
-        [Required]
+        //[Required]
         [DataMember(Order = 15), Order]
         public string PARTNAME { get; set; }  //D-20
         //[DataMember(Order = 24), Order]

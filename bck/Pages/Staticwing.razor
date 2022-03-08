@@ -21,6 +21,7 @@
     //[Parameter]
     //public bool ExtdecorIsFull { get; set; }
 }
+<h3>Staticwing</h3>
 
 @code {
     protected override async Task OnInitializedAsync()
@@ -68,34 +69,14 @@
             <th id="thOpenDirection" @hidden="@UiLogic.hideFld(doorConfig, "thOpenDirection")">כיוון</th>
             <th id="thCentralColClrID" @hidden="@UiLogic.hideFld(doorConfig, "thCentralColClrID")">גוון עמוד מרכזי</th>
             <th id="thShalvaniaClrID" @hidden="@UiLogic.hideFld(doorConfig, "thShalvaniaClrID")">גוון שלווניה</th>
-			
-			@{	string thCyl = "thCylinder4HalfWing"; }
-            <th id="thCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, thCyl)">צילינדר בחצי כנף</th>
-		
-		@{
-			bool hw4 = UiLogic.hideFld(doorConfig, "thHW4ExtraWing");
-		}
-		@if (!hw4)
-		{
-			<th id="thHW4ExtraWing" >פרזול לכנף נוספת</th>
-		}
-		@{
-			bool dew = UiLogic.hideFld(doorConfig, "thDesignedExtraWing");
-		}
-		@if (!dew)
-		{	
-            <th id="thDesignedExtraWing" >כנף נוספת מעוצבת</th>
-		}
-		@{
-			bool dww = UiLogic.hideFld(doorConfig, "thDesignedWindowedWing");
-		}
-		@if (!dew)
-		{	
-			<th id="thDesignedWindowedWing" >כנף מעוצבת עם חלון</th>
-		}
+            <th id="thCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, "thCylinder4HalfWing")">צילינדר בחצי כנף</th>
+            <th id="thHW4ExtraWing" @hidden="@UiLogic.hideFld(doorConfig, "thHW4ExtraWing")">פרזול לכנף נוספת</th>
+            <th id="thDesignedExtraWing" @hidden="@UiLogic.hideFld(doorConfig, "thDesignedExtraWing")">כנף נוספת מעוצבת</th>
+            <th id="thDesignedWindowedWing" @hidden="@UiLogic.hideFld(doorConfig, "thDesignedWindowedWing")">כנף מעוצבת עם חלון</th>
         </tr>
         <tr>
-		    <td id="tdOpenDirection" @hidden="@UiLogic.hideFld(doorConfig, "thOpenDirection")" >
+            <!--  td id="tdOpenDirection" @hidden="@UiLogic.hideFld(doorConfig, "thOpenDirection")" -->
+		    <td id="tdOpenDirection" >
                 <input name="txtOpenDirection" disabled=@true @bind="OpenDirection"   /> 
             </td>
             @code
@@ -117,7 +98,7 @@
 		            }
 	            }
             }
-           <td id="tdCentralColClrID" @hidden="@UiLogic.hideFld(doorConfig, "thCentralColClrID")">
+            <td id="tdCentralColClrID" @hidden="@UiLogic.hideFld(doorConfig, "thCentralColClrID")">
                 <select name="dlstCentralColClrID" @bind="CentralColClrID" >
                     @if (PrApiCalls.lstColors != null)
 	                {
@@ -211,13 +192,9 @@
 		            }
 	            }
             }
-            
-			@if (!hw4)
-			{
-			<td id="tdHW4ExtraWing" >
-				<input type="checkbox" name="chkbHW4ExtraWing" @bind="HW4ExtraWing" />
+            <td id="tdHW4ExtraWing" @hidden="@UiLogic.hideFld(doorConfig, "thHW4ExtraWing")">
+                <input type="checkbox" name="chkbHW4ExtraWing" @bind="HW4ExtraWing" />
             </td>
-			}
             @code
             {
 	            protected bool _HW4ExtraWing = false;
@@ -239,12 +216,9 @@
 		            }
 	            }
             }
-			@if (!dew)
-			{
-			<td id="tdDesignedExtraWing" >
-				<input type="checkbox" name="chkbDesignedExtraWing" @bind="DesignedExtraWing" />
+            <td id="tdDesignedExtraWing" @hidden="@UiLogic.hideFld(doorConfig, "thDesignedExtraWing")">
+                <input type="checkbox" name="chkbDesignedExtraWing" @bind="DesignedExtraWing" />
             </td>
-			}
             @code
 			{
 				protected bool _DesignedExtraWing = false;
@@ -266,12 +240,10 @@
 					}
 				}
 			}
-			@if (!dww)
-			{
-			<td id="tdDesignedWindowedWing" >
-				<input type="checkbox" name="chkbDesignedWindowedWing" @bind="DesignedWindowedWing" />
+
+            <td id="tdDesignedWindowedWing" @hidden="@UiLogic.hideFld(doorConfig, "thDesignedWindowedWing")">
+                <input type="checkbox" name="chkbDesignedWindowedWing" @bind="DesignedWindowedWing" />
             </td>
-			}
 			@code
 			{
 				protected bool _DesignedWindowedWing = false;
@@ -299,15 +271,9 @@
     <br />
     <table id="staticWingL2">
         <tr>
-		    	
-			    <th id="thExtraWingWidth" @hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")">רוחב כנף נוספת</th>
-
-			@{ 	bool ccw = UiLogic.hideFld(doorConfig, "thCentralColWidth"); }
-		    @if (!ccw) 	{ 	<th id="thCentralColWidth" >רוחב עמוד מרכזי</th> }
-		
-		
-			@{ bool rsw = UiLogic.hideFld(doorConfig, "thRafafaOnStaticWing"); }
-			@if (!rsw) 	{ <th id="thRafafaOnStaticWing" >תוספת רפפה עשן\פתח איוורור בכנף הקבועה</th> 	}
+            <th id="thExtraWingWidth" @hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")">רוחב כנף נוספת</th>
+            <th id="thCentralColWidth" @hidden="@UiLogic.hideFld(doorConfig, "thCentralColWidth")">רוחב עמוד מרכזי</th>
+            <th id="thRafafaOnStaticWing" @hidden="@UiLogic.hideFld(doorConfig, "thRafafaOnStaticWing")">תוספת רפפה עשן\פתח איוורור בכנף הקבועה</th>
         </tr>
         <tr>
             <td id="tdExtraWingWidth" @hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")">
@@ -335,15 +301,12 @@
 				}
 			}
 
-			@if (!ccw)
-			{
-            <td id="tdCentralColWidth" @hidden="@false" >
+            <td id="tdCentralColWidth" @hidden="@UiLogic.hideFld(doorConfig, "thCentralColWidth")">
                 <select name="dlstCentralColWidth" @bind="CentralColWidth" >
                     <option>40</option>
                     <option>30</option>
                 </select>
             </td>
-			}
 			@code
 			{
 				protected int _CentralColWidth = 0;
@@ -365,12 +328,9 @@
 					}
 				}
 			}
-            @if (!rsw)
-			{
-			<td id="tdRafafaOnStaticWing" >
+            <td id="tdRafafaOnStaticWing" @hidden="@UiLogic.hideFld(doorConfig, "thRafafaOnStaticWing")">
                 <input type="checkbox" name="chkbRafafaOnStaticWing" @bind="RafafaOnStaticWing" />
             </td>
-			}
 			@code
 			{
 				protected bool _RafafaOnStaticWing = false;
@@ -395,4 +355,3 @@
         </tr>
     </table>
     <!-- end table staticWingL2 -->
- 

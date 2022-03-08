@@ -21,7 +21,7 @@
     //[Parameter]
     //public bool ExtdecorIsFull { get; set; }
 }
-<h3>Intdecor</h3>
+<h3>Handle</h3>
 
 @code {
     protected override async Task OnInitializedAsync()
@@ -33,10 +33,10 @@
         //    //[TODO]  Navigator.NavigateTo("Movingwing");
         //}
 
-		 if (!UiLogic.tabPageIsFilled("extdecor", doorConfig))
-        {
-            Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה חוץ' י");
-        }
+		//if (!UiLogic.tabPageIsFilled("extdecor", doorConfig))
+  //      {
+  //          Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה חוץ' י");
+  //      }
 
         //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
         //if (doorConfigJsonV.Success)

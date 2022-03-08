@@ -20,8 +20,8 @@ namespace BlazorServerApp1.Data
     public static class UiLogic
     {
         #region local arrays and tables
-        public static string[] tabNames = new string[] { "movingwing", "extdecor", "intdecor", "staticwing", "hinges", "handle", "accessories" };
-        public static string[] tabTexts = new string[] { "כנף נעה", "פרטי דקורציה חוץ", "פרטי דקורציה פנים", "כנף קבועה", "פרטי צירים", "ידית אומנותית", "נילווים" };
+        public static string[] tabNames = new string[] { }; //"movingwing", "extdecor", "intdecor", "staticwing", "hinges", "handle", "accessories" };
+        public static string[] tabTexts = new string[] { };// "כנף נעה", "פרטי דקורציה חוץ", "פרטי דקורציה פנים", "כנף קבועה", "פרטי צירים", "ידית אומנותית", "נילווים" };
         public static string[] Fields2Keep = new string[] { "txtWindowWidth", "txtWindowHeight", "txtOpenDirection",  "txtLockDrilHeight",
                                                             "txtBackPinHeight", "txtHingesNum",
                                                             "txtHinge1Height","txtHinge2Height","txtHinge3Height","txtHinge4Height","txtHinge5Height"};
@@ -38,6 +38,10 @@ namespace BlazorServerApp1.Data
         }
         public static bool hideFld(DoorConfig doorConfig, string fldName)
         {
+            if (fldName == "thHW4ExtraWing")
+            {
+                int x = 17;
+            }
             if (doorConfig != null)
             {
                 bool showByMeaged = true;
@@ -46,11 +50,10 @@ namespace BlazorServerApp1.Data
                 else if (meagedContains(doorConfig.meaged, fldName, PrApiCalls.dtMeagedFields))
                     showByMeaged = true;
                 else
-                    showByMeaged = false;  //hide
-
-                if (!showByMeaged)
-                    return true;  // hide
-                else if (HiddenDecorSideFldsContains(fldName, PrApiCalls.dtDecorSideFlds, Helper.DecorFormat2Code(doorConfig.DECORFORMAT)))
+                    return true;   //showByMeaged = false;  //hide
+                
+                // if we're here showByMeaged == true
+                if (HiddenDecorSideFldsContains(fldName, PrApiCalls.dtDecorSideFlds, Helper.DecorFormat2Code(doorConfig.DECORFORMAT)))
                     return true;  //hide
                 else
                     return false; // show
@@ -468,26 +471,51 @@ namespace BlazorServerApp1.Data
                 return;
             }
         }
-        public static void applyFldDefault(DoorConfig doorConfig, string configFldName)
+
+        public static void applyFldDefault(DoorConfig doorConfig, string fldName)
         {
             try
             {
                 //Control c;
                 //configFldName = configFldName.ToUpper();
                 //string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
-                if (doorConfig != null && !string.IsNullOrEmpty(doorConfig.PARTNAME))
+                if (doorConfig != null) 
                 {
-
-                    //string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
-                    string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
-                    DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
-                    string errMsg = string.Empty;
-                    for (int r = 0; r < rowsDefVal.Length; r++)
+                    if (!string.IsNullOrEmpty(doorConfig.PARTNAME))
                     {
-                        string defval = rowsDefVal[r]["DEFVAL"].ToString();
-                        ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
-                        // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
-                        UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+
+                        //string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
+                        string query = string.Format("PARTNAME = '{0}' AND FIELDNAME = '{1}'", doorConfig.PARTNAME, fldName);
+                        DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+                        string errMsg = string.Empty;
+                        for (int r = 0; r < rowsDefVal.Length; r++)
+                        {
+                            string defval = rowsDefVal[r]["DEFVAL"].ToString();
+                            string fldDataType = rowsDefVal[r]["FIELDDATATYPE"].ToString();
+                            //ConfField_Class cFld = getConfFieldByFldName(fldName, ref errMsg);
+                            // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
+                            //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+                            UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
+                        }
+                    }
+                    else // field was not found in the DEFAULTs that depend on PARTNAME, maybe it has a general default that does not depend on PARTNAME
+                    {
+                        //if (fldName == "COMPLIENTDOOR")
+                        //{
+                        //    int x = 17;
+                        //}
+                        string query = string.Format("(PARTNAME = '' OR PARTNAME IS NULL) AND FIELDNAME = '{0}'", fldName);  //default that does not depend on PARTNAME
+                        DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+                        string errMsg = string.Empty;
+                        for (int r = 0; r < rowsDefVal.Length; r++)
+                        {
+                            string defval = rowsDefVal[r]["DEFVAL"].ToString();
+                            string fldDataType = rowsDefVal[r]["FIELDDATATYPE"].ToString();
+                            //ConfField_Class cFld = getConfFieldByFldName(fldName, ref errMsg);
+                            // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
+                            //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+                            UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
+                        }
                     }
                 }
             }
@@ -895,6 +923,29 @@ namespace BlazorServerApp1.Data
         //        return null;
         //    }
         //}
+        public static void AppAllDefaults(DoorConfig doorConfig, ref string errMsg)
+        {
+            string sval;
+            int ival;
+            string fldName = string.Empty;
+
+            Type objType = doorConfig.GetType();
+            PropertyInfo[] props = objType.GetProperties();
+            try
+            {
+                for (int p = 0; p < propNames.Length; p++)
+                {
+                    fldName = propNames[p];
+                    applyFldDefault(doorConfig, fldName);
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format("Unexpected error: fldname = {0} , error: {1} .  Stacktrace : {2}", fldName, ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+            }
+        }
+
         public static void setConfFieldVal(DoorConfig doorConfig, string fldName, string dataType, object val, ref string errMsg)
         {
             string sval;
