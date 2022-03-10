@@ -12,6 +12,7 @@ using System.Text;
 using System.Data;
 using System.Diagnostics;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorServerApp1.Data
 {

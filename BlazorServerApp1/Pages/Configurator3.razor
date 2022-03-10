@@ -10,10 +10,16 @@
     and use the application.
     *** I can't do that from my machine ! ***
 *@
+
+@*ref: https://stackoverflow.com/questions/56876631/setting-a-startup-page-in-blazor  *@
+
+@page "/"
+
 @using BlazorServerApp1.Pages
 @using BlazorServerApp1.Data
 
-@page "/Configurator3"
+@* @page "/Configurator3" *@
+
 @inherits Configurator3Base
 
 @inject IJSRuntime Js
@@ -90,12 +96,17 @@
                 <td>
                     <input type="date" name="txtDate" @bind="formDate" />
     @code {
-        public DoorConfig? doorConfig; // = new DoorConfig();
+                        public DoorConfig? doorConfig; // = new DoorConfig();
 
         private DateTime _formDate = DateTime.Now;
         protected DateTime formDate
         {
-                        get { return _formDate; }
+                        get {
+                            if (doorConfig != null)
+                                _formDate = Convert.ToDateTime(doorConfig.FORMDATE);
+
+                            return _formDate; 
+                        }
                         set
                         {
                             _formDate = value;
@@ -109,10 +120,15 @@
                 <td>
                     <input name="txtFormFiller" @bind="formFiller" dir="rtl" />
      @code {
-        protected string _formFiller;
+                        protected string _formFiller;
         protected string formFiller
         {
-                        get { return _formFiller; }
+                        get {
+                            if (doorConfig != null)
+                                _formFiller = doorConfig.FORMFILLER;
+
+                            return _formFiller; 
+                        }
                         set
                         {
                             _formFiller = value;
@@ -126,11 +142,16 @@
                     <input name="txtReference" @bind="reference" @ref="txtReference" />
      @code {
 
-        private ElementReference txtReference;
+                        private ElementReference txtReference;
         protected string _reference;
         protected string reference
         {
-                        get { return _reference; }
+                        get {
+                            if (doorConfig != null)
+                                _reference = doorConfig.REFERENCE;
+
+                            return _reference; 
+                        }
                         set
                         {
                             _reference = value;
@@ -175,11 +196,16 @@
                         }
                     </select>
                 </td>
-    @code {
-        private int _AGENT = 0;
+                @code {
+                    private int _AGENT = 0;
         protected int AGENT
         {
-                    get { return _AGENT; }
+                    get {
+                        if (doorConfig != null)
+                            _AGENT = doorConfig.AGENT;
+
+                        return _AGENT; 
+                    }
                     set
                     {
                         _AGENT = value;
@@ -199,12 +225,17 @@
                         }
                     </select>
                 </td>
-    @code {
-        public bool disableLogo = false;
+                @code {
+                    public bool disableLogo = false;
         private int _CUST = 0;
         protected int CUST
         {
-                    get { return _CUST; }
+                    get {
+                        if (doorConfig != null)
+                            _CUST = doorConfig.CUST;
+
+                        return _CUST; 
+                    }
                     set
                     {
                         _CUST = value;
@@ -405,6 +436,8 @@
                             if (doorConfig != null)
                             {
                                 _PARTNAME = doorConfig.PARTNAME;
+                                if (string.IsNullOrEmpty(_PARTNAME))
+                                    _FAMILYDES = string.Empty;
                             }
                             return _PARTNAME;
                         }
@@ -551,8 +584,10 @@
                     <button name="btnClear" @onclick="btnClear_Click">ניקוי טופס</button>
                 </td>
     @code {
-        private void btnClear_Click()
-        { }
+                    private void btnClear_Click()
+        {
+            UiLogic.clearDoorConfig(doorConfig);            
+        }
     }
             </tr>
         </table>

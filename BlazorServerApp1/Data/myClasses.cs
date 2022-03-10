@@ -554,7 +554,7 @@ namespace BlazorServerApp1.Data
 
         //[Required]      
         [DataMember(Order = 6), Order]
-        public int? CUST { get; set; }
+        public int CUST { get; set; }
         //[DataMember(Order = 6), Order]
         //public string CUSTNAME { get; set; }
         //[DataMember(Order = 7), Order]

@@ -233,6 +233,25 @@ namespace BlazorServerApp1.Data
                 }
             }
         }
+        public static void clearDoorConfig (DoorConfig doorConfig)
+        {
+            string errMsg = string.Empty;
+            doorConfig.PARTNAME = string.Empty;
+            for (int r=0;r<PrApiCalls.dtConfFields.Rows.Count; r++)
+            {
+                DataRow row = PrApiCalls.dtConfFields.Rows[r];
+                string fldname = row["FIELDNAME"].ToString();
+                if (fldname == "CUST")
+                {
+                    int x = 17;
+                }
+                string dataType = row["FIELDDATATYPE"].ToString();
+                if (dataType != "Date" && fldname != "PARTNAME")
+                    clearConfField(doorConfig, fldname, dataType, ref errMsg);
+                
+                applyFldDefault(doorConfig, fldname);
+            }
+        }
         public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
         {
             string sval;

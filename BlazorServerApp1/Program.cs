@@ -30,6 +30,11 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
+//
+log4net.Config.XmlConfigurator.Configure(new FileInfo(@"log4net.Config"));
+myLogger.log.Info("starting app");
+//
+
 string errMsg = string.Empty;
 
 PrApiCalls.InitInMemoryDataSources(ref errMsg);
