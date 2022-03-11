@@ -237,6 +237,8 @@ namespace BlazorServerApp1.Data
         {
             string errMsg = string.Empty;
             doorConfig.PARTNAME = string.Empty;
+            doorConfig.COMMENTS = string.Empty;
+
             for (int r=0;r<PrApiCalls.dtConfFields.Rows.Count; r++)
             {
                 DataRow row = PrApiCalls.dtConfFields.Rows[r];

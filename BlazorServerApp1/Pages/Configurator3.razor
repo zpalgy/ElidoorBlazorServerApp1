@@ -545,8 +545,29 @@
             </tr>
             <tr>
                 <td>
-                    <input name="txtComments" size="120" AutoCompleteType="Disabled" />
+                    <input name="txtComments" size="120"   @bind="Comments"  AutoCompleteType="Disabled" />
                 </td>
+                @code
+                {
+	                protected string _Comments = string.Empty;
+	                protected string Comments
+	                {
+		                get
+		                {
+			                if (doorConfig != null)
+			                {
+				                _Comments = doorConfig.COMMENTS;
+			                }
+			                return _Comments;
+		                }
+		                set
+		                {
+			                _Comments = value;
+			                if (doorConfig != null)
+				                doorConfig.COMMENTS = _Comments;
+		                }
+	                }
+                }
             </tr>
         </table>
         <p />
