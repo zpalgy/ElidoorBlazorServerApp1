@@ -77,8 +77,9 @@
 				else
 				{
 					string prevTabText = UiLogic.tabTexts[t - 1];
-					string errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevTabText);
-					Js.InvokeVoidAsync("alert", errMsg);
+					errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevTabText);
+					// Js.InvokeVoidAsync("alert", errMsg);
+					openMsgBox = true;
 				}
 			}
 		}
@@ -91,9 +92,8 @@
 				errMsg += " חובה לציין דגם , ";
 
 			//Js.InvokeVoidAsync("alert", errMsg);
-			//
 			openMsgBox = true;
-			//
+
 		}
 		//debug 
 		//ActivePage = page;  //debug temporarily show the page !!!
@@ -105,7 +105,7 @@
 }
 @if (openMsgBox)
 {
-	<MsgBox Caption="Error"
+	<MsgBox Caption="שגיאה"
 	        Message = "@errMsg"
 			OnClose="OnDialogClose" >
 	</MsgBox>
