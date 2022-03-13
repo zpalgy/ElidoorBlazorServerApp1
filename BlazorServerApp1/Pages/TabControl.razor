@@ -31,6 +31,12 @@
 	List<TabPage> Pages = new List<TabPage>();
 	List<string> lstTabTexts = new List<string>();
 	List<string> lstTabNames = new List<string>();
+
+	//
+	private bool openMsgBox = false;
+	string errMsg = string.Empty;
+	//
+
 	internal void AddPage(TabPage tabPage)
 	{
 		Pages.Add(tabPage);
@@ -78,13 +84,16 @@
 		}
 		else
 		{
-			string errMsg = string.Empty;
+			errMsg = string.Empty;
 			if (doorConfig.CUST == null || doorConfig.CUST == 0)
 				errMsg += "חובה לציין לקוח";
 			if (string.IsNullOrEmpty(doorConfig.PARTNAME))
 				errMsg += " חובה לציין דגם , ";
 
-			Js.InvokeVoidAsync("alert", errMsg);
+			//Js.InvokeVoidAsync("alert", errMsg);
+			//
+			openMsgBox = true;
+			//
 		}
 		//debug 
 		//ActivePage = page;  //debug temporarily show the page !!!
@@ -93,4 +102,19 @@
 	{
 		return (tabPageText == "כנף קבועה" && wingsNum == "כנף");
 	}
+}
+@if (openMsgBox)
+{
+	<MsgBox Caption="Error"
+	        Message = "@errMsg"
+			OnClose="OnDialogClose" >
+	</MsgBox>
+	@code {
+	private void OnDialogClose()
+	{
+		openMsgBox = false;
+		errMsg = string.Empty;
+	}
+}
+
 }
