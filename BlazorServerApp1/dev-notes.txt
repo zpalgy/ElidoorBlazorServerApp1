@@ -1,3 +1,12 @@
+13/03/2022
+github :
+   decided ti use github and not bitbucket, becauase VS2022's IDE is integrated with Github and not Bitbucket .
+   From "Git Changes", one can easily commit and then PUSH the commit to github.
+   In Github   the following URL points to the list of "Commits" of the barnch named "master" : https://github.com/zpalgy/ElidoorBlazorServerApp1/commits/master
+   For that I had to make the repository PUBLIC .
+
+
+11/03/2022
 Publish :
 
 1.  in VS2022 (on the dev machine).
@@ -8,7 +17,7 @@ Publish :
      browse to teh folder
      click on PUBLISH button
 
-       It builds the papplication and copies the files created to teh folder specified.
+       It builds the papplication and copies the files created to the folder specified.
        copy teh files in the target folder on the dev machine.
 
 2.  On target server :
@@ -72,4 +81,5 @@ Publish :
     2.2 After the files were pasted - right click on the Web Site : Manage Website >  "start" .
 
     
+-----------
 
