@@ -29,7 +29,11 @@ namespace BlazorServerApp1.Data
         public static string[] propNames;
         //public static string currentMeaged = string.Empty;
         //public static string decoreSideCode = string.Empty;
+
+        //public static System.Web.UI.InputLanguage HebInputLang;
+        //public static InputLanguage EngInputLang;
         #endregion local arrays and tables
+
         public static void initPropNames(DoorConfig doorConfig)
         {
             Type objType = doorConfig.GetType();

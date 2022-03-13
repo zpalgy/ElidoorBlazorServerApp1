@@ -22,7 +22,7 @@ Publish :
 
 
       2.1 right click the site in IIS -> sites .
-          click "stop" - so that we can replace the files
+          click Manage Website > "stop" - so that we can replace the files
 
        paste the files  (6 new files )
        The target folder contains 43 files and 15 folders.
@@ -69,7 +69,7 @@ Publish :
 
        ---
 
-    2.2 After the files were pasted - right click on thw web site : "start" .
+    2.2 After the files were pasted - right click on the Web Site : Manage Website >  "start" .
 
     
 

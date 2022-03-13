@@ -11,6 +11,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
+builder.Services.AddLocalization();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,10 +33,13 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-//
+app.UseRequestLocalization(new RequestLocalizationOptions()
+    .AddSupportedCultures(new[] { "en-US", "he-IL" })
+    .AddSupportedUICultures(new[] { "en-US", "he-IL" }));
+
 log4net.Config.XmlConfigurator.Configure(new FileInfo(@"log4net.Config"));
 myLogger.log.Info("starting app");
-//
+
 
 string errMsg = string.Empty;
 
