@@ -158,7 +158,6 @@
                                     //Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
                                     errMsg2 = "אסמכתא עם מספר זה כבר קיימת במערכת";
                                     openMsgBox = true;
-
                                     txtReference.FocusAsync();
                                 }
                                 else
@@ -629,7 +628,8 @@
 {
 	<MsgBox Caption="שגיאה"
 	        Message = "@errMsg2"
-			OnClose="OnDialogClose" >
+			OnClose="OnDialogClose" 
+            ErrMsgCssClass= "modal-body redMessage" >
 	</MsgBox>
 	@code 
     {

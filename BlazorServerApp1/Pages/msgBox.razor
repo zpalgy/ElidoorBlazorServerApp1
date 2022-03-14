@@ -8,7 +8,9 @@
             <button type="button" class="close"
                @onclick="@Cancel">&times;</button>
          </div>
-         <div class="modal-body redMessage">
+         @* div class="modal-body redMessage" *@
+
+         <div class="@ErrMsgCssClass">
             <p>@Message</p>
          </div>
          <div class="modal-footer">
@@ -36,30 +38,34 @@
    </div>
 </div>
 @code {
-   [Parameter] 
-   public string Caption { get; set; }
+    [Parameter] 
+    public string Caption { get; set; }
 
-   [Parameter] 
-   public string Message { get; set; }
+    [Parameter] 
+    public string Message { get; set; }
 
-   [Parameter] 
-   public EventCallback<bool> OnClose { get; set; }
+    [Parameter] 
+    public EventCallback<bool> OnClose { get; set; }
 
-   [Parameter] 
-   public Category Type { get; set; }
-   
-   private Task Cancel()
-   {
-      return OnClose.InvokeAsync(false);
-   }
-   private Task Ok()
-   {
-      return OnClose.InvokeAsync(true);
-   }
-   public enum Category
-   {
-      Okay,
-      SaveNot,
-      DeleteNot
-   }
+    [Parameter] 
+    public Category Type { get; set; }
+
+    [Parameter]
+    public string ErrMsgCssClass { get; set; }   //= "modal-body redMessage";
+
+    private Task Cancel()
+    {
+        return OnClose.InvokeAsync(false);
+    }
+    private Task Ok()
+    {
+        return OnClose.InvokeAsync(true);
+    }
+    public enum Category
+    {
+        Okay,
+        SaveNot,
+        DeleteNot
+    }
+    //private string errMsgCssClass = "modal-body redMessage";
 }
