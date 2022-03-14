@@ -20,6 +20,10 @@
 @code {
     @inject NavigationManager NavigationManager;
 
+
+    private bool openMsgBox = false;
+    private  string errMsg2 = string.Empty;
+
     async void IDisposable.Dispose()
     {
         //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
@@ -189,7 +193,9 @@
                             doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
                             if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
                             {
-                                Js.InvokeVoidAsync("alert", errMsg);
+                                //Js.InvokeVoidAsync("alert", errMsg);
+                                errMsg2 = errMsg;
+                                openMsgBox = true;
                             }
                         }
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
@@ -277,19 +283,21 @@
                         //     txtWindowWidth.Text = calcWindowWidth();
                         if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
                         {
-                            string errMsg2 = string.Empty;
+                            errMsg2 = string.Empty;
                             setHingesAndWindowsData(doorConfig, ref errMsg2);
                             if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
                             {
-                                Js.InvokeVoidAsync("alert", errMsg2);
+                                //Js.InvokeVoidAsync("alert", errMsg2);
+                                openMsgBox = true;
                             }
                         }
 
-                        string errMsg = string.Empty;
-                        doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
-                        if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                        errMsg2 = string.Empty;
+                        doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg2);
+                        if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg2))
                         {
-                            Js.InvokeVoidAsync("alert", errMsg);
+                            //Js.InvokeVoidAsync("alert", errMsg2);
+                            openMsgBox = true;
                         }
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
@@ -681,3 +689,19 @@
     </tr>
 </table>
 <!-- end table MovingWingL3 -->
+
+@if (openMsgBox)
+{
+	<MsgBox Caption="שגיאה"
+	        Message = "@errMsg2"
+			OnClose="OnDialogClose" >
+	</MsgBox>
+	@code 
+	{
+		private void OnDialogClose()
+		{
+			openMsgBox = false;
+			errMsg2 = string.Empty;
+		}
+	}
+}

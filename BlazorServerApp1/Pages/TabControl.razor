@@ -109,12 +109,12 @@
 	        Message = "@errMsg"
 			OnClose="OnDialogClose" >
 	</MsgBox>
-	@code {
-	private void OnDialogClose()
+	@code 
 	{
-		openMsgBox = false;
-		errMsg = string.Empty;
+		private void OnDialogClose()
+		{
+			openMsgBox = false;
+			errMsg = string.Empty;
+		}
 	}
-}
-
 }

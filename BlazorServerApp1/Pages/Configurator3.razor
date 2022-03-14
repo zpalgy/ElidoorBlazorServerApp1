@@ -32,6 +32,10 @@
     @code {
         //protected bool hideCustDes { get; set; } = false;
         protected static string errMsg = string.Empty;
+        
+        private bool openMsgBox = false;
+        private string errMsg2 = string.Empty;
+        
         protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
         protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
 
@@ -41,6 +45,8 @@
         public bool MovinwingIsFull = false;
         public bool ExtdecorIsFull = false;
         public bool IntdecorIsFull = false;
+
+        
 
         protected override async Task OnInitializedAsync()
         {
@@ -146,10 +152,13 @@
                             if (doorConfig != null)
                                 if (!string.IsNullOrEmpty(PrApiCalls.getReference(_reference, ref errMsg)))
                                 {
-                                    //UiLogic.displayErrMsg(lblMsgL1, "אסמכתא עם מספר זה כבר קיימת במערכת");
+                                //UiLogic.displayErrMsg(lblMsgL1, "אסמכתא עם מספר זה כבר קיימת במערכת");
                                     //
                                     //return;
-                                    Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
+                                    //Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
+                                    errMsg2 = "אסמכתא עם מספר זה כבר קיימת במערכת";
+                                    openMsgBox = true;
+
                                     txtReference.FocusAsync();
                                 }
                                 else
@@ -566,23 +575,28 @@
                     <button name="btnSave" @onclick="btnSave_Click">שמירה בפריוריטי</button>
                 </td>
     @code {
-        private void btnSave_Click()
+                    private void btnSave_Click()
         {
                     doorConfig.FAMILY = PrApiCalls.getFAMILY(doorConfig.FAMILYNAME, ref errMsg);
                     var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
 
                     if (response != System.Net.HttpStatusCode.Created)
                     {
-                        //myMessageBox.Show(Page, errMsg);
+                    //myMessageBox.Show(Page, errMsg);
                         //UiLogic.displayErrMsg(lblMsg, "Api call failed : " + errMsg);
-                        Js.InvokeVoidAsync("alert", errMsg);
+                        //Js.InvokeVoidAsync("alert", errMsg);
+                        errMsg2 = errMsg;
+                        openMsgBox = true;
+
                         myLogger.log.Info("Api call failed : " + errMsg);
                     }
                     else
                     {
                         string lastREFERENCE = PrApiCalls.getLastREFERENCE(ref errMsg);
-                        string msg = string.Format("השאלון {0} נשמר בהצלחה, השאלון האחרון במערכת הוא {1}   י", doorConfig.REFERENCE, lastREFERENCE);
-                        Js.InvokeVoidAsync("alert", msg);
+                        errMsg2 = string.Format("השאלון {0} נשמר בהצלחה, השאלון האחרון במערכת הוא {1}   י", doorConfig.REFERENCE, lastREFERENCE);
+                        //Js.InvokeVoidAsync("alert", errMsg2);
+                        openMsgBox = true;
+
                         //UiLogic.ClearAllControls();
                         //doorConfig = new DoorConfig();
                     }
@@ -609,6 +623,20 @@
     }
     </div>
     <!-- end divBuildTime -->
-
-
 </EditForm>
+
+@if (openMsgBox)
+{
+	<MsgBox Caption="שגיאה"
+	        Message = "@errMsg2"
+			OnClose="OnDialogClose" >
+	</MsgBox>
+	@code 
+    {
+	    private void OnDialogClose()
+	    {
+		    openMsgBox = false;
+		    errMsg2 = string.Empty;
+	    }
+}
+}

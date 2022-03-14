@@ -1,0 +1,14 @@
+﻿/* ref:  
+    https://docs.microsoft.com/en-us/aspnet/core/blazor/components/css-isolation?view=aspnetcore-6.0
+*/
+.redTitle {
+    color: red;
+    font-weight: bold;
+    font-size: 150%;
+}
+
+.redMessage {
+    color: red;
+    font-weight: bold;
+    font-size: 180%;
+}

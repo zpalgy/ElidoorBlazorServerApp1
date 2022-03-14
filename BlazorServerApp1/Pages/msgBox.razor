@@ -4,11 +4,11 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title">@Caption</h4>
+            <h4 class="modal-title redTitle">@Caption</h4>
             <button type="button" class="close"
                @onclick="@Cancel">&times;</button>
          </div>
-         <div class="modal-body">
+         <div class="modal-body redMessage">
             <p>@Message</p>
          </div>
          <div class="modal-footer">
@@ -16,7 +16,7 @@
             {
                case Category.Okay:
                   <button type="button" class="btn btn-primary"
-                          @onclick=@Ok>OK</button>
+                          @onclick=@Ok>אישור</button>
                   break;
                case Category.SaveNot:
                   <button type="button" class="btn btn-primary"
