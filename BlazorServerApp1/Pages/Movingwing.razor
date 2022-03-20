@@ -22,7 +22,10 @@
 
 
     private bool openMsgBox = false;
-    private  string errMsg2 = string.Empty;
+    string errMsg2 = string.Empty;
+    string errMsg3 = "xxxxxxxxxxxxxxxxxx";
+    private string msgCaption = "שגיאה";
+    string msgClass = "modal-body redMessage";
 
     async void IDisposable.Dispose()
     {
@@ -194,7 +197,7 @@
                             if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
                             {
                                 //Js.InvokeVoidAsync("alert", errMsg);
-                                errMsg2 = errMsg;
+                                errMsg3 = errMsg;
                                 openMsgBox = true;
                             }
                         }
@@ -288,6 +291,8 @@
                             if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
                             {
                                 //Js.InvokeVoidAsync("alert", errMsg2);
+                                //msgClass = "modal-body redMessage";
+                                errMsg3 = errMsg2;
                                 openMsgBox = true;
                             }
                         }
@@ -297,6 +302,7 @@
                         if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg2))
                         {
                             //Js.InvokeVoidAsync("alert", errMsg2);
+                            errMsg3 = errMsg2;
                             openMsgBox = true;
                         }
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
@@ -693,7 +699,7 @@
 @if (openMsgBox)
 {
 	<MsgBox Caption="שגיאה"
-	        Message = "@errMsg2"
+	        Message = "@errMsg3"
 			OnClose="OnDialogClose" 
             ErrMsgCssClass= "modal-body redMessage" >
 	</MsgBox>

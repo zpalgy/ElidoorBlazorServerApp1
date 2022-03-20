@@ -17,6 +17,7 @@
 
 @using BlazorServerApp1.Pages
 @using BlazorServerApp1.Data
+@using System.Globalization;
 
 @* @page "/Configurator3" *@
 
@@ -35,6 +36,8 @@
         
         private bool openMsgBox = false;
         private string errMsg2 = string.Empty;
+        private string msgCaption = "שגיאה";
+        private string msgClass = "modal-body redMessage";
         
         protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
         protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
@@ -45,6 +48,8 @@
         public bool MovinwingIsFull = false;
         public bool ExtdecorIsFull = false;
         public bool IntdecorIsFull = false;
+        CultureInfo hebrew;
+        CultureInfo english;
 
         
 
@@ -56,6 +61,9 @@
         UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
         //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+
+           hebrew = new CultureInfo("he-IL", false);
+           english = new CultureInfo("en-US", false); 
         }
 
         public async Task SaveDoorConfig()
@@ -111,9 +119,12 @@
      }
                 </td>
                 <td>
-                    <input name="txtFormFiller" @bind="formFiller" dir="rtl" />
+                    <input name="txtFormFiller" @bind="formFiller" dir="rtl" 
+                       @onfocus="@( () => formFillerHasFocus() )" 
+                       @onblur="@( () => formFillerLostFocus() )"
+                    />
      @code {
-        protected string _formFiller;
+                        protected string _formFiller;
         protected string formFiller
         {
                         get {
@@ -128,6 +139,14 @@
                             if (doorConfig != null)
                                 doorConfig.FORMFILLER = _formFiller;
                         }
+        }
+        void formFillerHasFocus()
+        {
+           // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);        
+        }
+        void formFillerLostFocus()
+        {
+            //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);    
         }
      }
                 </td>
@@ -156,6 +175,8 @@
                                     //
                                     //return;
                                     //Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
+                                    msgCaption = "שגיאה";
+                                    msgClass = "modal-body redMessage";
                                     errMsg2 = "אסמכתא עם מספר זה כבר קיימת במערכת";
                                     openMsgBox = true;
                                     txtReference.FocusAsync();
@@ -581,10 +602,12 @@
 
                     if (response != System.Net.HttpStatusCode.Created)
                     {
-                    //myMessageBox.Show(Page, errMsg);
+                        //myMessageBox.Show(Page, errMsg);
                         //UiLogic.displayErrMsg(lblMsg, "Api call failed : " + errMsg);
                         //Js.InvokeVoidAsync("alert", errMsg);
+                        msgCaption = "שגיאה";
                         errMsg2 = errMsg;
+                        msgClass = "modal-body redMessage";
                         openMsgBox = true;
 
                         myLogger.log.Info("Api call failed : " + errMsg);
@@ -594,7 +617,9 @@
                         string lastREFERENCE = PrApiCalls.getLastREFERENCE(ref errMsg);
                         errMsg2 = string.Format("השאלון {0} נשמר בהצלחה, השאלון האחרון במערכת הוא {1}   י", doorConfig.REFERENCE, lastREFERENCE);
                         //Js.InvokeVoidAsync("alert", errMsg2);
-                        openMsgBox = true;
+                         msgCaption = "הודעה";
+                         msgClass = "modal-body greenMessage";
+                         openMsgBox = true;
 
                         //UiLogic.ClearAllControls();
                         //doorConfig = new DoorConfig();
@@ -626,10 +651,10 @@
 
 @if (openMsgBox)
 {
-	<MsgBox Caption="שגיאה"
+	<MsgBox Caption="@msgCaption"
 	        Message = "@errMsg2"
 			OnClose="OnDialogClose" 
-            ErrMsgCssClass= "modal-body redMessage" >
+            ErrMsgCssClass= "@msgClass" >
 	</MsgBox>
 	@code 
     {
