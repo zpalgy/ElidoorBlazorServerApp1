@@ -33,12 +33,13 @@
     @code {
         //protected bool hideCustDes { get; set; } = false;
         protected static string errMsg = string.Empty;
-        
+
         private bool openMsgBox = false;
         private string errMsg2 = string.Empty;
         private string msgCaption = "שגיאה";
         private string msgClass = "modal-body redMessage";
-        
+        private string titleClass = "modal-title redTitle";
+
         protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
         protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
 
@@ -602,7 +603,7 @@
 
                     if (response != System.Net.HttpStatusCode.Created)
                     {
-                        //myMessageBox.Show(Page, errMsg);
+                    //myMessageBox.Show(Page, errMsg);
                         //UiLogic.displayErrMsg(lblMsg, "Api call failed : " + errMsg);
                         //Js.InvokeVoidAsync("alert", errMsg);
                         msgCaption = "שגיאה";
@@ -617,8 +618,9 @@
                         string lastREFERENCE = PrApiCalls.getLastREFERENCE(ref errMsg);
                         errMsg2 = string.Format("השאלון {0} נשמר בהצלחה, השאלון האחרון במערכת הוא {1}   י", doorConfig.REFERENCE, lastREFERENCE);
                         //Js.InvokeVoidAsync("alert", errMsg2);
-                         msgCaption = "הודעה";
-                         msgClass = "modal-body greenMessage";
+                        msgCaption = "הודעה";
+                        titleClass = "modal-title greenTitle";
+                        msgClass = "modal-body greenMessage";
                          openMsgBox = true;
 
                         //UiLogic.ClearAllControls();
@@ -653,7 +655,8 @@
 {
 	<MsgBox Caption="@msgCaption"
 	        Message = "@errMsg2"
-			OnClose="OnDialogClose" 
+			OnClose="OnDialogClose"
+            MsgTitleCssClass= "@titleClass"
             ErrMsgCssClass= "@msgClass" >
 	</MsgBox>
 	@code 

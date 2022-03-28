@@ -4,7 +4,7 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title redTitle">@Caption</h4>
+            <h4 class="@MsgTitleCssClass">@Caption</h4>
             <button type="button" class="close"
                @onclick="@Cancel">&times;</button>
          </div>
@@ -50,6 +50,8 @@
     [Parameter] 
     public Category Type { get; set; }
 
+    [Parameter]
+    public string MsgTitleCssClass { get; set; }    //="modal-title redTitle"
     [Parameter]
     public string ErrMsgCssClass { get; set; }   //= "modal-body redMessage";
 
