@@ -1,3 +1,18 @@
+24/04/2022
+  After some windows updates and upgrade of VS2022 from 17.1.3 to 17.1.5 IISexpress failed after startup.
+  
+  Found : https://docs.microsoft.com/en-us/answers/questions/712142/visual-studio-2022-the-iis-express-applicationhost.html
+
+    and applied solution 1:
+
+    Go: C:\Program Files\IIS Express\config\templates\PersonalWebServer
+    Copy 3 files: applicationhost.config, aspnet.config, redirection.config
+    Go to: c:\users\<my username>\Documents\IISExpress\config
+    Paste and replace all 3 files
+    Reload
+
+    That solved the problem !
+
 13/03/2022
 github :
    decided ti use github and not bitbucket, becauase VS2022's IDE is integrated with Github and not Bitbucket .
