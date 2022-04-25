@@ -65,6 +65,7 @@
 			if (prevTab.ToLower() == "staticwing" && disableTab(prevText, doorConfig.WINGSNUM))
 			{
 				prevTab = UiLogic.tabNames[t - 2];
+				prevText = UiLogic.tabTexts[t - 2];
 			}
 			if (t == 0)
 			{
@@ -76,8 +77,8 @@
 					ActivePage = page;
 				else
 				{
-					string prevTabText = UiLogic.tabTexts[t - 1];
-					errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevTabText);
+					//string prevTabText = UiLogic.tabTexts[t - 1];
+					errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
 					// Js.InvokeVoidAsync("alert", errMsg);
 					openMsgBox = true;
 				}
