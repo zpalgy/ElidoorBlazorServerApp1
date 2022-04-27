@@ -27,6 +27,8 @@ namespace BlazorServerApp1.Data
                                                             "txtHinge1Height","txtHinge2Height","txtHinge3Height","txtHinge4Height","txtHinge5Height"};
         public static string[] prodButtonIDs; //= new Button[] { new Button()};
         public static string[] propNames;
+        
+        public static string borderColor = string.Empty;
         //public static string currentMeaged = string.Empty;
         //public static string decoreSideCode = string.Empty;
 
@@ -132,6 +134,7 @@ namespace BlazorServerApp1.Data
             DataView view = new DataView(PrApiCalls.dtConfFields);
             DataTable dtTabs = view.ToTable(true, "CONFIG_SUBFORM");
             tabNames = new string[] { };
+            borderColor = string.Empty;
             for (int i = 0; i < dtTabs.Rows.Count; i++)
             {
                 tabNames[i] = dtTabs.Rows[i]["CONFIG_SUBFORM"].ToString();
@@ -143,6 +146,7 @@ namespace BlazorServerApp1.Data
             string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
             int fieldsNum = tabFields.Length;
+            bool isFilled = true;  
 
             for (int r = 0; r< fieldsNum; r++)
             {
@@ -150,12 +154,20 @@ namespace BlazorServerApp1.Data
                 string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
                 string controlName = tabFields[r]["CONFIG_FIELDNAME"].ToString();
                 string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
-                if (!hideFld(doorConfig, controlThName) 
+                string fldDes = tabFields[r]["FIELDDES"].ToString();
+                borderColor = string.Empty;
+                if (!hideFld(doorConfig, controlThName)
                     && !controlName.StartsWith("chkb")
                     && !doorFldIsFilled(doorConfig, fldName, fldDataType))
-                    return false;
+                {
+                    borderColor = "redBorder";
+                    doorConfig.borderColors[fldName] = "redBorder";
+
+                    isFilled = false;
+                    //return false;
+                }
             }
-            return true;
+            return isFilled;
         }
         public static bool doorFldIsFilled(DoorConfig doorConfig, string fldName, string fldDataType)
         {

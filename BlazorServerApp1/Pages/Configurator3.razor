@@ -52,11 +52,13 @@
         CultureInfo hebrew;
         CultureInfo english;
 
-        
+
 
         protected override async Task OnInitializedAsync()
         {
         doorConfig = new DoorConfig();
+        doorConfig.initBorderColors();
+
         formDate = DateTime.Now;
         UiLogic.initPropNames(doorConfig);
         UiLogic.AppAllDefaults(doorConfig, ref errMsg);
@@ -112,8 +114,11 @@
                         set
                         {
                             _formDate = value;
-                            if (doorConfig == null)
+                            if (doorConfig == null) 
+                            {
                                 doorConfig = new DoorConfig();
+                                doorConfig.initBorderColors();
+                            }
                             doorConfig.FORMDATE = Helper.formatDate4Rest(_formDate);
                         }
         }

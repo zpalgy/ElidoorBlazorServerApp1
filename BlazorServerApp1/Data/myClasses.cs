@@ -934,6 +934,20 @@ namespace BlazorServerApp1.Data
         public string COMMENTS { get; set; } = string.Empty;
         [NonSerialized]
         public string meaged = string.Empty;
+        //[NonSerialized]
+        public Dictionary<string, string> borderColors { get; set; } 
+
+        public void initBorderColors()
+        {
+            Type objType = this.GetType();
+            PropertyInfo[] props = objType.GetProperties();
+            borderColors = new Dictionary<string, string>();
+            foreach (PropertyInfo pinfo in props)
+            {
+                borderColors.Add(pinfo.Name, string.Empty);
+            }
+        }
+
     }
     public class ValuesDoorConfig
     {
@@ -961,6 +975,5 @@ namespace BlazorServerApp1.Data
         public string SessionId { get; set; }
         public string compName { get; set; }
     }
-
    
 }

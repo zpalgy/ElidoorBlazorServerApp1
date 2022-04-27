@@ -105,6 +105,10 @@ th, td {
 a {
     text-align:center;
 }
+.redBorder 
+{
+    border-color: red;
+}
 /*
 .redTitle {
     color: red;
