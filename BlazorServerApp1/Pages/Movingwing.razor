@@ -350,7 +350,7 @@
 
         }
         <td id="tdLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">
-            <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" />
+            <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight"  class= "@doorConfig.borderColors["LOCKDRILHEIGHT"]" />
         </td>
         @code
         {
@@ -371,6 +371,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.LOCKDRILHEIGHT = _LOckDrilHeight;
+                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -405,7 +406,7 @@
 
         }
         <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
-            <select name="dlstHw" @bind="Hw">
+            <select name="dlstHw" @bind="Hw" class= "@doorConfig.borderColors["TRSH_HARDWARE"]" >
                 @{
                     string errMsg = string.Empty;
                     List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getPartHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
@@ -438,6 +439,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.TRSH_HARDWARE = _Hw;
+                            doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -445,7 +447,7 @@
             }
         </td>
         <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
-            <select name="dlstHwColor" @bind="HwColorId">
+            <select name="dlstHwColor" @bind="HwColorId"  class= "@doorConfig.borderColors["HWCOLORID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -474,6 +476,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.HWCOLORID = _HwColorId;
+                        doorConfig.borderColors["HWCOLORID"] = (value != 0 ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -481,7 +484,7 @@
         }
 
         <td id="tdDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">
-            <select name="dlstDril4Hw" @bind="Dril4Hw">
+            <select name="dlstDril4Hw" @bind="Dril4Hw" class= "@doorConfig.borderColors["DRIL4HW"]" >
                 @if (PrApiCalls.lstDril4Hw != null)
                 {
                     @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw)
@@ -510,6 +513,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.DRIL4HW = _Dril4Hw;
+                        doorConfig.borderColors["DRIL4HW"] = (value != 0 ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -530,7 +534,7 @@
     </tr>
     <tr>
         <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
-            <select name="dlstCylinder" @bind="CylinderName">
+            <select name="dlstCylinder" @bind="CylinderName"  class= "@doorConfig.borderColors["CYLINDERNAME"]">
                 @if (PrApiCalls.lstCylinders != null)
                 {
                     @foreach (CYLINDER_Class c in PrApiCalls.lstCylinders)
@@ -557,7 +561,11 @@
                 {
                     _CylinderName = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.CYLINDERNAME = _CylinderName;
+                        doorConfig.borderColors["CYLINDERNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
         }
@@ -588,7 +596,7 @@
         }
 
         <td id="tdLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">
-            <select name="dlstLock" @bind="Lock">
+            <select name="dlstLock" @bind="Lock" class= "@doorConfig.borderColors["LOCKNAME"]" >
                 @{
                     List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
                     if (lstPartLocks != null)
@@ -617,7 +625,11 @@
                 {
                     _Lock = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.LOCKNAME = _Lock;
+                        doorConfig.borderColors["LOCKNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
         }
@@ -649,7 +661,7 @@
         }
 
         <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">
-            <select name="dlstRafafa" @bind="Rafafa">
+            <select name="dlstRafafa" @bind="Rafafa" class= "@doorConfig.borderColors["RAFAFAONMOVINGWING"]" >
                 <option> </option>
                 <option>1</option>
                 <option>2</option>
@@ -673,7 +685,11 @@
                 {
                     _Rafafa = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.RAFAFAONMOVINGWING = _Rafafa;
+                        doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
         }
