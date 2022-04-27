@@ -73,7 +73,8 @@
     </tr>
     <tr>
         <td id="tdOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">
-            <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "dlstOpenSide")">
+            <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "dlstOpenSide")"
+                class = "@doorConfig.borderColors["OPENSIDE"]" >
                 <option> </option>
                 <option>ימין</option>
                 <option>שמאל</option>
@@ -97,6 +98,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.OPENSIDE = _openSide;
+                            doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -132,6 +134,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.DECORFORMAT = _DecorFormat;
+                        doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -167,7 +170,7 @@
 
         }
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
-            <input name="txtDoorWidth" type="number" @bind="DoorWidth" />
+            <input name="txtDoorWidth" type="number" @bind="DoorWidth" class= "@doorConfig.borderColors["DOORWIDTH"]" />
         </td>
         @code
         {
@@ -188,6 +191,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.DOORWIDTH = _DoorWidth;
+                        doorConfig.borderColors["DOORWIDTH"] = (value != 0 ? string.Empty : "redBorder");
                         //[TODO] implement the following lines
                         //if (chkbComplient.Checked)
                         //     txtWindowWidth.Text = calcWindowWidth();
@@ -209,7 +213,7 @@
         }
         
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
-            <input name="txtDoorHeight" type="number" @bind="DoorHeight" />
+            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class= "@doorConfig.borderColors["DOORHEIGHT"]" />
         </td>
         @code
         {
@@ -230,6 +234,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.DOORHEIGHT = _DoorHeight;
+                        doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
                         //[TODO] implement the following lines
                         //if (chkbComplient.Checked)
                         //     txtWindowWidth.Text = calcWindowWidth();
@@ -247,8 +252,8 @@
                         }
 
                         errMsg2 = string.Empty;
-                        doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg2);
-                        if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg2))
+                        doorConfig.WINDOWHEIGHT = calcWindowHeight(doorConfig, ref errMsg2);
+                        if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
                         {
                             //Js.InvokeVoidAsync("alert", errMsg2);
                             errMsg3 = errMsg2;
@@ -264,7 +269,7 @@
         
 
         <td id="tdDoorColor" hidden="@UiLogic.hideFld(doorConfig, "DoorColor")">
-            <select name="dlstDoorColor" @bind="DoorColorId">
+            <select name="dlstDoorColor" @bind="DoorColorId"  class= "@doorConfig.borderColors["DOORCOLORID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -294,6 +299,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.DOORCOLORID = _DoorColorId;
+                        doorConfig.borderColors["DOORCOLORID"] = (value != 0 ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
