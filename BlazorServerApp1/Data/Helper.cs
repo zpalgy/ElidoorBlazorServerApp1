@@ -126,6 +126,11 @@ namespace BlazorServerApp1.Data
             return string.Format("{0}-{1}-{2}",
                              Date1.Year.ToString("0000"), Date1.Month.ToString("00"), Date1.Day.ToString("00"));
         }
-
+        public static string formatDateTime (DateTime Date1)
+        {
+            return string.Format("{0}-{1}-{2} {3}:{4}:{5}",
+                   Date1.Day.ToString("00"), Date1.Month.ToString("00"), Date1.Year.ToString("0000"),
+                     Date1.Hour.ToString("00"), Date1.Minute.ToString("00"), Date1.Second.ToString("00"));
+        }
     }
 }

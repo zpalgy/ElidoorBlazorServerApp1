@@ -650,7 +650,7 @@
     <div id="divBuildTime">
         <p style="float:left">@buildTime</p>
     @code {
-            protected string buildTime = string.Format("Build Date : {0}", Helper.getBuildTime());
+            protected string buildTime = string.Format("Build Date : {0}", Helper.formatDateTime(Helper.getBuildTime()));
     }
     </div>
     <!-- end divBuildTime -->

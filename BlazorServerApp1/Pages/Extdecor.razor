@@ -82,7 +82,7 @@
         </tr>
         <tr>
         <td id="tdPassim" hidden="@UiLogic.hideFld(doorConfig, "Passim")" >
-                    <select name="dlstPassimShkuimBoltim"  @bind="Passim" >
+                    <select name="dlstPassimShkuimBoltim"  @bind="Passim" class= "@doorConfig.borderColors["LINESFORMAT"]" >
                         <option></option>
                         <option>בולטים</option>
                         <option>שקועים</option>
@@ -105,13 +105,17 @@
                 {
                     _Passim = value;
                     if (doorConfig != null)
+					{
                         doorConfig.LINESFORMAT = _Passim;
+						doorConfig.borderColors["LINESFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+					}
                 }
             }
         }
 
         <td id="tdTiletype" hidden="@UiLogic.hideFld(doorConfig, "Tiletype")" >
-            <select name="dlstTiletype"  @bind="TileName" >
+            <select name="dlstTiletype"  @bind="TileName" class= "@doorConfig.borderColors["TILENAME"]" >
                 @if (PrApiCalls.lstTileTypes != null)
                 {
                     @foreach (TILETYPE_Class c in PrApiCalls.lstTileTypes)
@@ -138,12 +142,16 @@
                 {
                     _TileName = value;
                     if (doorConfig != null)
+					{
                         doorConfig.TILENAME = _TileName;
+						doorConfig.borderColors["TILENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+					}
                 }
             }
         }
         <td id="tdExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")" >
-            <select name="dlstExtColor" @bind="ExtColor" >
+            <select name="dlstExtColor" @bind="ExtColor" class= "@doorConfig.borderColors["EXTCOLORID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -170,12 +178,16 @@
                     {
                         _ExtColor = value;
                         if (doorConfig != null)
+						{
                             doorConfig.EXTCOLORID = _ExtColor;
+							doorConfig.borderColors["EXTCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+						}
                     }
                 }
         }   
          <td id="tdGridColor" hidden="@UiLogic.hideFld(doorConfig, "tdGridColor")" >
-            <select name="dlstGridColor"  @bind="GridColor" >
+            <select name="dlstGridColor"  @bind="GridColor" class= "@doorConfig.borderColors["GRIDCOLORID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -202,7 +214,11 @@
 		        {
 			        _GridColor = value;
 			        if (doorConfig != null)
+					{
 				        doorConfig.GRIDCOLORID = _GridColor;
+						doorConfig.borderColors["GRIDCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+					}
 		        }
 	        }
         }
@@ -234,7 +250,7 @@
         }
 
         <td id="tdExtSepLinesClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtSepLinesClr")" >
-            <select name="dlstExtSepLinesClr" @bind="ExtSepLinesClr" >
+            <select name="dlstExtSepLinesClr" @bind="ExtSepLinesClr" class= "@doorConfig.borderColors["EXTSEPLINESCLRID"]" >
                 @if (PrApiCalls.lstColors != null)
 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -261,12 +277,16 @@
 		        {
 			        _ExtSepLinesClr = value;
 			        if (doorConfig != null)
+					{
 				        doorConfig.EXTSEPLINESCLRID = _ExtSepLinesClr;
+						doorConfig.borderColors["EXTSEPLINESCLRID"] = (value != 0 ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+					}
 		        }
 	        }
         }
         <td id="tdExtCPlateHTDmndClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtCPlateHTDmndClr")" >
-            <select name="dlstExtCPlateHTDmndClr"  @bind="ExtCPlateHTDmndClr" >
+            <select name="dlstExtCPlateHTDmndClr"  @bind="ExtCPlateHTDmndClr" class= "@doorConfig.borderColors["EXTCPLATEHTDMNDCLRID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -293,12 +313,16 @@
 		        {
 			        _ExtCPlateHTDmndClr = value;
 			        if (doorConfig != null)
+					{
 				        doorConfig.EXTCPLATEHTDMNDCLRID = _ExtCPlateHTDmndClr;
+						doorConfig.borderColors["EXTCPLATEHTDMNDCLRID"] = (value != 0 ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+					}
 		        }
 	        }
         }
         <td id="tdExtPerifProfileClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtPerifProfileClr")" >
-            <select name="dlstExtPerifProfileClr" @bind="ExtPerifProfileClr" >
+            <select name="dlstExtPerifProfileClr" @bind="ExtPerifProfileClr" class= "@doorConfig.borderColors["EXTPERIFPROFILECLRID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -325,12 +349,16 @@
 		        {
 			        _ExtPerifProfileClr = value;
 			        if (doorConfig != null)
+					{
 				        doorConfig.EXTPERIFPROFILECLRID = _ExtPerifProfileClr;
+						doorConfig.borderColors["EXTPERIFPROFILECLRID"] = (value != 0 ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+					}
 		        }
 	        }
         }
         <td id="tdExtModerCPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtModerCPlateClr")" >
-            <select name="dlstExtModerCPlateClr"  @bind="ExtModerCPlateClr" >
+            <select name="dlstExtModerCPlateClr"  @bind="ExtModerCPlateClr" class= "@doorConfig.borderColors["EXTMODERNCPLATECLRID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -357,12 +385,16 @@
 		        {
 			        _ExtModerCPlateClr = value;
 			        if (doorConfig != null)
+					{
 				        doorConfig.EXTMODERNCPLATECLRID = _ExtModerCPlateClr;
+						doorConfig.borderColors["EXTMODERNCPLATECLRID"] = (value != 0 ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+					}
 		        }
 	        }
         }
         <td id="tdExtCGridClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtCGridClr")" >
-            <select name="dlstExtCGridClr"  @bind="ExtCGridClr" >
+            <select name="dlstExtCGridClr"  @bind="ExtCGridClr" class= "@doorConfig.borderColors["EXTCGTIDCLRID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -389,7 +421,11 @@
 		        {
 			        _ExtCGridClr = value;
 			        if (doorConfig != null)
+					{
 				        doorConfig.EXTCGTIDCLRID = _ExtCGridClr;
+						doorConfig.borderColors["EXTCGTIDCLRID"] = (value != 0 ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+					}
 		        }
 	        }
         }
@@ -413,7 +449,7 @@
         </tr>
         <tr>
             <td id="tdExtHTPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtHTPlatesClr")" >
-                <select name="dlstExtHTPlatesClr"  @bind="ExtHTPlatesClr" >
+                <select name="dlstExtHTPlatesClr"  @bind="ExtHTPlatesClr" class= "@doorConfig.borderColors["EXTHTPLATESCLRID"]" >
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -440,12 +476,16 @@
 		            {
 			            _ExtHTPlatesClr = value;
 			            if (doorConfig != null)
+						{
 				            doorConfig.EXTHTPLATESCLRID = _ExtHTPlatesClr;
+							doorConfig.borderColors["EXTHTPLATESCLRID"] = (value != 0 ? string.Empty : "redBorder");
+							UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+						}
 		            }
 	            }
             }
             <td id="tdAttachedPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "tdAttachedPlatesClr")" >
-                <select name="dlstAttachedPlatesClr"  @bind="AttachedPlatesClr" >
+                <select name="dlstAttachedPlatesClr"  @bind="AttachedPlatesClr" class= "@doorConfig.borderColors["ATTACHEDPLATECLRID"]" >
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -472,12 +512,16 @@
 		            {
 			            _AttachedPlatesClr = value;
 			            if (doorConfig != null)
+						{
 				            doorConfig.ATTACHEDPLATECLRID = _AttachedPlatesClr;
+							doorConfig.borderColors["ATTACHEDPLATECLRID"] = (value != 0 ? string.Empty : "redBorder");
+							UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+						}
 		            }
 	            }
             }
             <td id="tdExtGlassPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtGlassPlateClr")" >
-                <select name="dlstExtGlassPlateClr" @bind="ExtGlassPlateClr" >
+                <select name="dlstExtGlassPlateClr" @bind="ExtGlassPlateClr" class= "@doorConfig.borderColors["EXTGLASSPLATECLRID"]" >
                     @if (PrApiCalls.lstGlassColors4Diamond != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstGlassColors4Diamond)
@@ -504,13 +548,17 @@
 		            {
 			            _ExtGlassPlateClr = value;
 			            if (doorConfig != null)
+						{
 				            doorConfig.EXTGLASSPLATECLRID = _ExtGlassPlateClr;
+							doorConfig.borderColors["EXTGLASSPLATECLRID"] = (value != 0 ? string.Empty : "redBorder");
+							UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+						}
 		            }
 	            }
             }
             
             <td id="tdExtModerPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtModerPlateClr")" >
-                <select name="dlstExtModerPlateClr"  @bind="ExtModerPlateClr" >
+                <select name="dlstExtModerPlateClr"  @bind="ExtModerPlateClr" class= "@doorConfig.borderColors["EXTMODERNPLATECLRID"]" >
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -537,12 +585,16 @@
 		                {
 			                _ExtModerPlateClr = value;
 			                if (doorConfig != null)
+							{
 				                doorConfig.EXTMODERNPLATECLRID = _ExtModerPlateClr;
+								doorConfig.borderColors["EXTMODERNPLATECLRID"] = (value != 0 ? string.Empty : "redBorder");
+								UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+							}
 		                }
 	                }
 }
                 <td id="tdDecorativePlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdDecorativePlateClr")" >
-                    <select name="dlstDecorativePlateClr"  @bind="DecorativePlateClr" >
+                    <select name="dlstDecorativePlateClr"  @bind="DecorativePlateClr" class= "@doorConfig.borderColors["DECORPLATECLRID"]" >
                         @if (PrApiCalls.lstColors != null)
                         {
                             @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -569,12 +621,16 @@
 		                {
 			                _DecorativePlateClr = value;
 			                if (doorConfig != null)
+							{
 				                doorConfig.DECORPLATECLRID = _DecorativePlateClr;
+								doorConfig.borderColors["DECORPLATECLRID"] = (value != 0 ? string.Empty : "redBorder");
+								UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+							}
 		                }
 	                }
                 }
                 <td id="tdNirostaLinesClr" hidden="@UiLogic.hideFld(doorConfig, "tdNirostaLinesClr")" >
-                    <select name="dlstNirostaLinesClr"  @bind="NirostaLinesClr" >
+                    <select name="dlstNirostaLinesClr"  @bind="NirostaLinesClr" class= "@doorConfig.borderColors["NIROSTALINESCLRID"]" >
                         @if (PrApiCalls.lstColors != null)
                         {
                             @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -601,12 +657,16 @@
 		                {
 			                _NirostaLinesClr = value;
 			                if (doorConfig != null)
+							{
 				                doorConfig.NIROSTALINESCLRID = _NirostaLinesClr;
+								doorConfig.borderColors["NIROSTALINESCLRID"] = (value != 0 ? string.Empty : "redBorder");
+								UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+							}
 		                }
 	                }
                 }
                 <td id="tdExtNirostaLinesClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtNirostaLinesClr")" >
-                    <select name="dlstExtNirostaLinesClr"  @bind="ExtNirostaLinesClr" >
+                    <select name="dlstExtNirostaLinesClr"  @bind="ExtNirostaLinesClr" class= "@doorConfig.borderColors["EXTNIROSTALINESCLRID"]" >
                         @if (PrApiCalls.lstColors != null)
                         {
                             @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -633,12 +693,16 @@
 		                {
 			                _ExtNirostaLinesClr = value;
 			                if (doorConfig != null)
+							{
 				                doorConfig.EXTNIROSTALINESCLRID = _ExtNirostaLinesClr;
+								doorConfig.borderColors["EXTNIROSTALINESCLRID"] = (value != 0 ? string.Empty : "redBorder");
+								UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+							}
 		                }
 	                }
                 }
                 <td id="tdExtInsertCoverClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtInsertCoverClr")" >
-                    <select name="dlstExtInsertCoverClr"  @bind="ExtInsertCoverClr" >
+                    <select name="dlstExtInsertCoverClr"  @bind="ExtInsertCoverClr" class= "@doorConfig.borderColors["EXTINSERTCLRID"]" >
                         @if (PrApiCalls.lstColors != null)
                         {
                             @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -665,7 +729,11 @@
 		                {
 			                _ExtInsertCoverClr = value;
 			                if (doorConfig != null)
+							{
 				                doorConfig.EXTINSERTCLRID = _ExtInsertCoverClr;
+								doorConfig.borderColors["EXTINSERTCLRID"] = (value != 0 ? string.Empty : "redBorder");
+								UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+							}
 		                }
 	                }
                 }
@@ -694,7 +762,7 @@
 	                }
                 }
                 <td id="tdWindowWidth" hidden="@UiLogic.hideFld(doorConfig, "tdWindowWidth")" >
-                    <input  name="txtWindowWidth" @bind="WindowWidth" />
+                    <input  name="txtWindowWidth" @bind="WindowWidth" class= "@doorConfig.borderColors["WINDOWWIDTH"]" />
                 </td>
                 @code
                 {
@@ -713,12 +781,16 @@
 		                {
 			                _WindowWidth = value;
 			                if (doorConfig != null)
+							{
 				                doorConfig.WINDOWWIDTH = _WindowWidth;
+								doorConfig.borderColors["WINDOWWIDTH"] = (value != 0 ? string.Empty : "redBorder");
+								UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+							}
 		                }
 	                }
                 }
                 <td id="tdWindowHeight" hidden="@UiLogic.hideFld(doorConfig, "tdWindowHeight")" >
-                    <input  name="txtWindowHeight"  @bind="WindowHeight" />
+                    <input  name="txtWindowHeight"  @bind="WindowHeight" class= "@doorConfig.borderColors["WINDOWHEIGHT"]" />
                 </td>
                 @code
                 {
@@ -737,7 +809,11 @@
 		                {
 			                _WindowHeight = value;
 			                if (doorConfig != null)
+							{
 				                doorConfig.WINDOWHEIGHT = _WindowHeight;
+								doorConfig.borderColors["WINDOWHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
+								UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+							}
 		                }
 	                }
                 }
@@ -759,7 +835,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td id="tdProfile4Window" hidden="@UiLogic.hideFld(doorConfig, "tdProfile4Window")" >
-                                                        <select name="dlstProfile4Window" @bind="Profile4Window" >
+                                                        <select name="dlstProfile4Window" @bind="Profile4Window" class= "@doorConfig.borderColors["PROFILE4WINDOWNAME"]" >
                                                             @if (PrApiCalls.lstProfiles4Windows != null)
                                                             {
 	                                                            @foreach (PROFILE4WINDOW_Class c in PrApiCalls.lstProfiles4Windows)
@@ -786,7 +862,11 @@
 		                                                    {
 			                                                    _Profile4Window = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.PROFILE4WINDOWNAME = _Profile4Window;
+																	doorConfig.borderColors["PROFILE4WINDOWNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
@@ -815,7 +895,7 @@
 	                                                    }
                                                     }
                                                     <td id="tdGlass4Window" hidden="@UiLogic.hideFld(doorConfig, "tdGlass4Window")" >
-                                                        <select name="dlstGlass4Window" @bind="Glass4Window" >
+                                                        <select name="dlstGlass4Window" @bind="Glass4Window" class= "@doorConfig.borderColors["GLASS4WINDOWID"]" >
                                                              @if (PrApiCalls.lstGlasses4Windows != null)
                                                              {
 	                                                            @foreach (GLASS4WINDOW_Class c in PrApiCalls.lstGlasses4Windows)
@@ -842,12 +922,16 @@
 		                                                    {
 			                                                    _Glass4Window = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.GLASS4WINDOWID = _Glass4Window;
+																	doorConfig.borderColors["GLASS4WINDOWID"] = (value != 0 ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
                                                     <td id="tdGrid" hidden="@UiLogic.hideFld(doorConfig, "tdGrid")" >
-                                                        <select name="dlstGrid"  @bind="Grid" >
+                                                        <select name="dlstGrid"  @bind="Grid" class= "@doorConfig.borderColors["GRID_ID"]" >
                                                              @if (PrApiCalls.lstGrids != null)
                                                              {
 	                                                            @foreach (GRID_Class c in PrApiCalls.lstGrids)
@@ -874,12 +958,16 @@
 		                                                    {
 			                                                    _Grid = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.GRID_ID = _Grid;
+																	doorConfig.borderColors["GRID_ID"] = (value != 0 ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
                                                     <td id="tdVitrage" hidden="@UiLogic.hideFld(doorConfig, "tdVitrage")" >
-                                                        <select name="dlstVitrage" @bind="Vitrage" >
+                                                        <select name="dlstVitrage" @bind="Vitrage" class= "@doorConfig.borderColors["VITRAGENAME"]" >
                                                              @if (PrApiCalls.lstVitrages != null)
                                                              {
 	                                                            @foreach (VITRAGE_Class c in PrApiCalls.lstVitrages)
@@ -906,7 +994,11 @@
 		                                                    {
 			                                                    _Vitrage = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.VITRAGENAME = _Vitrage;
+																	doorConfig.borderColors["VITRAGENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
@@ -959,7 +1051,7 @@
 	                                                    }
                                                     }
                                                     <td id="tdCPlate4HTDiamond" hidden="@UiLogic.hideFld(doorConfig, "tdCPlate4HTDiamond")" >
-                                                        <select name="dlstCPlate4HTDiamond" @bind="CPlate4HTDiamond" >
+                                                        <select name="dlstCPlate4HTDiamond" @bind="CPlate4HTDiamond" class= "@doorConfig.borderColors["EXTCPLATE4HTDMNDNAME"]" >
                                                             @if (PrApiCalls.lstRaw4CPlates != null)
                                                              {
 	                                                            @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
@@ -990,12 +1082,16 @@
 		                                                    {
 			                                                    _CPlate4HTDiamond = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.EXTCPLATE4HTDMNDNAME = _CPlate4HTDiamond;
+																	doorConfig.borderColors["EXTCPLATE4HTDMNDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
                                                     <td id="tdExtSide_C_Plate" hidden="@UiLogic.hideFld(doorConfig, "tdExtSide_C_Plate")" >
-                                                        <select name="dlstExtSide_C_Plate" @bind="ExtSide_C_Plate">
+                                                        <select name="dlstExtSide_C_Plate" @bind="ExtSide_C_Plate" class= "@doorConfig.borderColors["EXTSIDE_C_PLATENAME"]" >
                                                             @if (PrApiCalls.lstRaw4CPlates != null)
                                                              {
 	                                                            @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
@@ -1022,13 +1118,17 @@
 		                                                    {
 			                                                    _ExtSide_C_Plate = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.EXTSIDE_C_PLATENAME = _ExtSide_C_Plate;
+																	doorConfig.borderColors["EXTSIDE_C_PLATENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
 
                                                     <td id="tdDecorGridPlate" hidden="@UiLogic.hideFld(doorConfig, "tdDecorGridPlate")" >
-                                                        <select name="dlstDecorGridPlate" @bind="DecorGridPlate" >
+                                                        <select name="dlstDecorGridPlate" @bind="DecorGridPlate" class= "@doorConfig.borderColors["DECORGRIDPLATEDES"]" >
                                                             @if (PrApiCalls.lstGrids != null)
                                                              {
 	                                                            @foreach (GRID_Class c in PrApiCalls.lstGrids)
@@ -1059,7 +1159,11 @@
 		                                                    {
 			                                                    _DecorGridPlate = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.DECORGRIDPLATEDES = _DecorGridPlate;
+																	doorConfig.borderColors["DECORGRIDPLATEDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
@@ -1082,7 +1186,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td id="tdGrid4HT1084" hidden="@UiLogic.hideFld(doorConfig, "tdGrid4HT1084")" >
-                                                        <select name="dlstGrid4HT1084"  @bind="Grid4HT1084" >
+                                                        <select name="dlstGrid4HT1084"  @bind="Grid4HT1084" class= "@doorConfig.borderColors["GRID4HT1084NAME"]" >
                                                             @if (PrApiCalls.lstGrid4HT1084 != null)
                                                              {
 	                                                            @foreach (GRID4HT1084_Class c in PrApiCalls.lstGrid4HT1084)
@@ -1109,12 +1213,16 @@
 		                                                    {
 			                                                    _Grid4HT1084 = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.GRID4HT1084NAME = _Grid4HT1084;
+																	doorConfig.borderColors["GRID4HT1084NAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
                                                     <td id="tdExtGridCPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtGridCPlate")" >
-                                                        <select name="dlstExtGridCPlate"  @bind="ExtGridCPlate" >
+                                                        <select name="dlstExtGridCPlate"  @bind="ExtGridCPlate" class= "@doorConfig.borderColors["EXTGRIDCPLATEDES"]" >
                                                             @if (PrApiCalls.lstGrids != null)
                                                              {
 	                                                            @foreach (GRID_Class c in PrApiCalls.lstGrids)
@@ -1141,12 +1249,16 @@
 		                                                    {
 			                                                    _ExtGridCPlate = value;
 			                                                    if (doorConfig != null)
+																{
 				                                                    doorConfig.EXTGRIDCPLATEDES = _ExtGridCPlate;
+																	doorConfig.borderColors["EXTGRIDCPLATEDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 		                                                    }
 	                                                    }
                                                     }
                                                     <td id="tdExtHTPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtHTPlate")" >
-                                                        <select name="dlstExtHTPlate"  @bind="ExtHTPlate" >
+                                                        <select name="dlstExtHTPlate"  @bind="ExtHTPlate" class= "@doorConfig.borderColors["EXTHTPLATENAME"]" >
                                                             @if (PrApiCalls.lstRaw4CPlates != null)
 															 {
 																@foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
@@ -1173,12 +1285,16 @@
 															{
 																_ExtHTPlate = value;
 																if (doorConfig != null)
+																{
 																	doorConfig.EXTHTPLATENAME = _ExtHTPlate;
+																	doorConfig.borderColors["EXTHTPLATENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 															}
 														}
 													}
                                                     <td id="tdVitrage4Diamond" hidden="@UiLogic.hideFld(doorConfig, "tdVitrage4Diamond")" >
-                                                        <select name="dlstVitrage4Diamond" @bind="Vitrage4Diamond" >
+                                                        <select name="dlstVitrage4Diamond" @bind="Vitrage4Diamond" class= "@doorConfig.borderColors["VITRAGE4DIAMONDNAME"]" >
 															@if (PrApiCalls.lstVitrages4Diamond != null)
 															 {
 																@foreach (VITRAGE4DIAMOND_Class c in PrApiCalls.lstVitrages4Diamond)
@@ -1205,12 +1321,17 @@
 															{
 																_Vitrage4Diamond = value;
 																if (doorConfig != null)
+																{
 																	doorConfig.VITRAGE4DIAMONDNAME = _Vitrage4Diamond;
+																	doorConfig.borderColors["VITRAGE4DIAMONDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 															}
 														}
 													}
                                                     <td id="tdExtVitrage4DiamondQ" hidden="@UiLogic.hideFld(doorConfig, "tdExtVitrage4DiamondQ")" >
-                                                        <input type="number"  name="txtExtVitrage4DiamondQ"  @bind="ExtVitrage4DiamondQ" />
+                                                        <input type="number"  name="txtExtVitrage4DiamondQ"  @bind="ExtVitrage4DiamondQ" 
+														       class= "@doorConfig.borderColors["EXTVITRAGE4DIAMONDQ"]" />
                                                     </td>
 													@code
 													{
@@ -1229,12 +1350,16 @@
 															{
 																_ExtVitrage4DiamondQ = value;
 																if (doorConfig != null)
+																{
 																	doorConfig.EXTVITRAGE4DIAMONDQ = _ExtVitrage4DiamondQ;
+																	doorConfig.borderColors["EXTVITRAGE4DIAMONDQ"] = (value != 0 ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 															}
 														}
 													}
                                                     <td id="tdInterPlatesSpace" hidden="@UiLogic.hideFld(doorConfig, "tdInterPlatesSpace")" >
-                                                        <select name="dlstInterPlatesSpace"   @bind="InterPlatesSpace" >
+                                                        <select name="dlstInterPlatesSpace"   @bind="InterPlatesSpace" class= "@doorConfig.borderColors["INTERPLATESSPACE"]" >
                                                             <option></option>
                                                             <option>4</option>
                                                             <option>5</option>
@@ -1257,12 +1382,17 @@
 															{
 																_InterPlatesSpace = value;
 																if (doorConfig != null)
+																{
 																	doorConfig.INTERPLATESSPACE = _InterPlatesSpace;
+																	doorConfig.borderColors["INTERPLATESSPACE"] = (value != 0 ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 															}
 														}
 													}
                                                     <td id="tdExtFinModernCPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernCPlate")" >
-                                                        <select name="dlstExtFinModernCPlate"  @bind="ExtFinModernCPlate" >
+                                                        <select name="dlstExtFinModernCPlate"  @bind="ExtFinModernCPlate" 
+														            class= "@doorConfig.borderColors["EXTFINMODERNCPLATE"]" >
                                                             <option></option>
                                                             <option>חלק</option>
                                                             <option>מחורץ</option>
@@ -1285,12 +1415,17 @@
 															{
 																_ExtFinModernCPlate = value;
 																if (doorConfig != null)
+																{
 																	doorConfig.EXTFINMODERNCPLATE = _ExtFinModernCPlate;
+																	doorConfig.borderColors["EXTFINMODERNCPLATE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 															}
 														}
 													}
                                                     <td id="tdExtFinModernSepLine" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernSepLine")" >
-                                                        <select name="dlstExtFinModernSepLine"  @bind="ExtFinModernSepLine">
+                                                        <select name="dlstExtFinModernSepLine"  @bind="ExtFinModernSepLine" 
+														             class= "@doorConfig.borderColors["EXTFINMODERNSEPLINE"]" >
                                                             <option></option>
                                                             <option>חלק</option>
                                                             <option>מחורץ</option>
@@ -1313,12 +1448,17 @@
 															{
 																_ExtFinModernSepLine = value;
 																if (doorConfig != null)
+																{
 																	doorConfig.EXTFINMODERNSEPLINE = _ExtFinModernSepLine;
+																	doorConfig.borderColors["EXTFINMODERNSEPLINE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 															}
 														}
 													}
                                                     <td id="tdExtFinModernPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernPlate")" >
-                                                        <select name="dlstExtFinModernPlate"  @bind="ExtFinModernPlate" >
+                                                        <select name="dlstExtFinModernPlate"  @bind="ExtFinModernPlate" 
+														                class= "@doorConfig.borderColors["EXTFINMODERNPLATE"]" >
                                                             <option></option>
                                                             <option>חלק</option>
                                                             <option>מחורץ</option>
@@ -1341,12 +1481,16 @@
 															{
 																_ExtFinModernPlate = value;
 																if (doorConfig != null)
+																{
 																	doorConfig.EXTFINMODERNPLATE = _ExtFinModernPlate;
+																	doorConfig.borderColors["EXTFINMODERNPLATE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																}
 															}
 														}
 													}
                                                     <td id="tdHandle4Diamond" hidden="@UiLogic.hideFld(doorConfig, "tdHandle4Diamond")" >
-                                                        <select name="dlstHandle4Diamond"  @bind="Handle4Diamond" >
+                                                        <select name="dlstHandle4Diamond"  @bind="Handle4Diamond" class= "@doorConfig.borderColors["HANDLE4DIAMONDNAME"]" >
 															@if (PrApiCalls.lstHandles4Diamond != null)
 															 {
 																@foreach (HANDLE4DIAMOND_Class c in PrApiCalls.lstHandles4Diamond)
@@ -1373,7 +1517,11 @@
 																{
 																	_Handle4Diamond = value;
 																	if (doorConfig != null)
+																	{
 																		doorConfig.HANDLE4DIAMONDNAME = _Handle4Diamond;
+																		doorConfig.borderColors["HANDLE4DIAMONDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+																		UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+																	}
 																}
 															}
 														}

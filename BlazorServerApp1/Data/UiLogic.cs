@@ -44,10 +44,12 @@ namespace BlazorServerApp1.Data
         }
         public static bool hideFld(DoorConfig doorConfig, string fldName)
         {
-            if (fldName == "thHW4ExtraWing")
+            //debug
+            if (fldName == "ExtColor" || fldName == "thExtColor")
             {
                 int x = 17;
             }
+            // end debug
             if (doorConfig != null)
             {
                 bool showByMeaged = true;
@@ -156,6 +158,10 @@ namespace BlazorServerApp1.Data
                 string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
                 string fldDes = tabFields[r]["FIELDDES"].ToString();
                 borderColor = string.Empty;
+                if (fldName == "EXTCOLORID")
+                {
+                    int x = 17;
+                }
                 if (!hideFld(doorConfig, controlThName)
                     && !controlName.StartsWith("chkb")
                     && !doorFldIsFilled(doorConfig, fldName, fldDataType))
@@ -189,8 +195,14 @@ namespace BlazorServerApp1.Data
                     return true;
                 else if (fldName == "HINGE3HEIGHT" && doorConfig.HINGESNUM < 3)
                     return true;
+				//  debug
+				if (fldName == "EXTCOLORID")
+				{
+					int x = 17;
+				}
+				//
 
-                    int p = Array.IndexOf(propNames, fldName);
+				int p = Array.IndexOf(propNames, fldName);
                 if (p >= 0)
                 {
                     var val = props[p].GetValue(doorConfig);
@@ -203,7 +215,9 @@ namespace BlazorServerApp1.Data
                             case "CHAR":
                             case "RCHAR":
                                 sval = val.ToString();
-                                if (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
+                                if ( (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
+                                    || (fldName == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
+
                                     return false;
                                 else
                                     return true;
@@ -259,16 +273,19 @@ namespace BlazorServerApp1.Data
             {
                 DataRow row = PrApiCalls.dtConfFields.Rows[r];
                 string fldname = row["FIELDNAME"].ToString();
+                //debug
                 if (fldname == "CUST")
                 {
                     int x = 17;
                 }
+                //end debug
                 string dataType = row["FIELDDATATYPE"].ToString();
                 if (dataType != "Date" && fldname != "PARTNAME")
                     clearConfField(doorConfig, fldname, dataType, ref errMsg);
                 
                 applyFldDefault(doorConfig, fldname);
             }
+            doorConfig.initBorderColors();
         }
         public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
         {
@@ -632,7 +649,10 @@ namespace BlazorServerApp1.Data
                 //    int dbg = 17;
                 //}
                 //DataRow[] rowsTh1 = dtDecorSideFlds.Select("DECORSIDECODE = 'O' AND CONFIG_THNAME = 'thExtColor'");
-
+                if (!fldName.StartsWith("th") && !fldName.StartsWith("td"))
+                {
+                    fldName = "th" + fldName;
+                }
                 if (fldName.StartsWith("th")) // && c.Visible)
                 {
                     //string x = "20";
