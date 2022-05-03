@@ -607,7 +607,7 @@ namespace BlazorServerApp1.Data
                 lstGrid4HT1084 = getGrid4HT1084(ref errMsg);
                 lstGrids = getGrids(ref errMsg);
                 lstGlasses4Windows = getGlasses4Windows(ref errMsg);
-
+                //UiLogic.initTabNames();  -> done in TabContro.AddPage() 
             }
             catch (Exception ex)
             {

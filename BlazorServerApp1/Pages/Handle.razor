@@ -81,7 +81,7 @@
                                                     @if (!h)
 			                                        {	
                                                         <td id="tdHandle" >
-                                                            <select name="dlstHandle" @bind="Handle1" >
+                                                            <select name="dlstHandle" @bind="Handle1" class= "@doorConfig.borderColors["HANDLENAME"]" >
                                                                 @if (PrApiCalls.lstHandles != null)
                                                                  {
 	                                                                @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
@@ -109,7 +109,11 @@
 		                                                    {
 			                                                    _Handle1 = value;
 			                                                    if (doorConfig != null)
+                                                                {
 				                                                    doorConfig.HANDLENAME = _Handle1;
+                                                                    doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                                    UiLogic.clearFollowingTabFields(doorConfig, "handle");
+                                                                }
 		                                                    }
 	                                                    }
                                                     }
@@ -117,7 +121,7 @@
                                                     @if (!hclr)
 			                                        {	
                                                         <td id="tdHandleColorID" >
-                                                            <select name="dlstHandleColorID"  @bind="HandleColorID">
+                                                            <select name="dlstHandleColorID"  @bind="HandleColorID"  class= "@doorConfig.borderColors["HANDLECOLORID"]">
                                                                 @if (PrApiCalls.lstColors != null)
 	                                                            {
 		                                                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -145,7 +149,11 @@
 		                                                    {
 			                                                    _HandleColorID = value;
 			                                                    if (doorConfig != null)
+                                                                {
 				                                                    doorConfig.HANDLECOLORID = _HandleColorID;
+                                                                    doorConfig.borderColors["HANDLECOLORID"] = (value != 0  ? string.Empty : "redBorder");
+                                                                    UiLogic.clearFollowingTabFields(doorConfig, "handle");
+                                                                }
 		                                                    }
 	                                                    }
                                                     }       

@@ -15,8 +15,8 @@
 
 	[Parameter]
 	public string Text { get; set; }
-	
-    [Parameter]
+
+	[Parameter]
 	public string TabName { get; set; }
 	//[Parameter]
 	//public bool disableTabPage { get; set; } = false;
@@ -27,7 +27,8 @@
 			throw new ArgumentNullException(nameof(Parent), "TabPage must exist within a TabControl");
 
 		base.OnInitialized();
-        Parent.AddPage(this);
-		
+		Parent.AddPage(this);
+
 	}
+	
 }

@@ -20,7 +20,7 @@ namespace BlazorServerApp1.Data
     public static class UiLogic
     {
         #region local arrays and tables
-        public static string[] tabNames = new string[] { }; //"movingwing", "extdecor", "intdecor", "staticwing", "hinges", "handle", "accessories" };
+        public static string[] tabNames = new string[] {"movingwing", "extdecor", "intdecor", "staticwing", "hinges", "handle", "accessories" };
         public static string[] tabTexts = new string[] { };// "כנף נעה", "פרטי דקורציה חוץ", "פרטי דקורציה פנים", "כנף קבועה", "פרטי צירים", "ידית אומנותית", "נילווים" };
         public static string[] Fields2Keep = new string[] { "txtWindowWidth", "txtWindowHeight", "txtOpenDirection",  "txtLockDrilHeight",
                                                             "txtBackPinHeight", "txtHingesNum",
@@ -135,12 +135,14 @@ namespace BlazorServerApp1.Data
         {
             DataView view = new DataView(PrApiCalls.dtConfFields);
             DataTable dtTabs = view.ToTable(true, "CONFIG_SUBFORM");
-            tabNames = new string[] { };
-            borderColor = string.Empty;
+            List<string> lstTabNames = new List<string>();
+            //tabNames = new string[] { };
+            //borderColor = string.Empty;
             for (int i = 0; i < dtTabs.Rows.Count; i++)
             {
-                tabNames[i] = dtTabs.Rows[i]["CONFIG_SUBFORM"].ToString();
+                lstTabNames.Add(dtTabs.Rows[i]["CONFIG_SUBFORM"].ToString());
             }
+            tabNames = lstTabNames.ToArray();
         }
 
         public static bool tabPageIsFilled (string tabName, DoorConfig doorConfig)
@@ -195,8 +197,9 @@ namespace BlazorServerApp1.Data
                     return true;
                 else if (fldName == "HINGE3HEIGHT" && doorConfig.HINGESNUM < 3)
                     return true;
-				//  debug
-				if (fldName == "EXTCOLORID")
+
+                //  debug
+                if (fldName == "EXTCOLORID")
 				{
 					int x = 17;
 				}
@@ -215,9 +218,17 @@ namespace BlazorServerApp1.Data
                             case "CHAR":
                             case "RCHAR":
                                 sval = val.ToString();
-                                if ( (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
-                                    || (fldName == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
-
+                                // commented on 03/05/2022 ללא is not the empty value because it is in the defaults table
+                                //                  note לא that is also in the defaults table appears also in pair with חוץ 
+                                //                     and in that case I use חוץ  as the default value.  (e.g. doors : 1082, 2002 etc. )
+                                //                     note also that the value פנים does not appear in the defaults table for field D-60 DECORFORMAT
+                                //                    so I updated the code accordingly.
+                                //                    i.e. DECORFORMAT is not filled when it's value is empty as all the other fields.
+                                //
+                                //if ( (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
+                                //    || (fldName == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
+                                //-- 
+                                if (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
                                     return false;
                                 else
                                     return true;
@@ -252,6 +263,14 @@ namespace BlazorServerApp1.Data
             if (t > -1 && t < tabNames.Length - 1)
             {
                 string nextTab = tabNames[t + 1];
+                if (nextTab == "staticwing" && doorConfig.WINGSNUM == "כנף")
+                {
+                    nextTab = tabNames[t + 3];  // staticwing TAB is diabled - skip it and skip hinges tab
+                }
+                if (nextTab == "hinges")
+                {
+                    nextTab = tabNames[t + 2];
+                }
                 string query = string.Format("CONFIG_SUBFORM = '{0}'", nextTab.ToLower());
                 DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
                 for (int r = 0; r < tabFields.Length; r++)

@@ -549,7 +549,7 @@
                         <Handle doorConfig="@doorConfig" />
                     </div>
                 </TabPage>
-                <TabPage Text="נילווים" TabName="accessories">
+                <TabPage Text="נילווים" TabName="accessories" >
                     <div id="divAccessories" class="myDiv">
                         <Accessories doorConfig="@doorConfig" />
                     </div>
@@ -603,6 +603,16 @@
     @code {
                     private void btnSave_Click()
         {
+                    string prevTab = "accessories";
+                    string prevText = "נילווים";
+                    if (!UiLogic.tabPageIsFilled(prevTab, doorConfig))
+                    {
+                        errMsg2 = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
+                        // Js.InvokeVoidAsync("alert", errMsg);
+                        openMsgBox = true;
+                        return;
+                    }
+
                     doorConfig.FAMILY = PrApiCalls.getFAMILY(doorConfig.FAMILYNAME, ref errMsg);
                     var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
 

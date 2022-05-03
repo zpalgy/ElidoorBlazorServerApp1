@@ -1,3 +1,25 @@
+03/05/2022
+
+Comment I added to Uilogic.cs doorFldsFilled() method :
+            sval = val.ToString();
+            // commented on 03/05/2022 ללא is not the empty value because it is in the defaults table
+            //                  note לא that is also in the defaults table appears also in pair with חוץ 
+            //                     and in that case I use חוץ  as the default value.  (e.g. doors : 1082, 2002 etc. )
+            //                     note also that the value פנים does not appear in the defaults table for field D-60 DECORFORMAT
+            //                    so I updated the code accordingly.
+            //                    i.e. DECORFORMAT is not filled when it's value is empty as all the other fields.
+            //
+            //if ( (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
+            //    || (fldName == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
+            //-- 
+            if (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
+                return false;
+            else
+                return true;
+
+            ...
+
+
 24/04/2022
   After some windows updates and upgrade of VS2022 from 17.1.3 to 17.1.5 IISexpress failed after startup.
   

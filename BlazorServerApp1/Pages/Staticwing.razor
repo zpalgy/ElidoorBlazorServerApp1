@@ -119,7 +119,7 @@
 	            }
             }
            <td id="tdCentralColClrID" @hidden="@UiLogic.hideFld(doorConfig, "thCentralColClrID")">
-                <select name="dlstCentralColClrID" @bind="CentralColClrID" >
+                <select name="dlstCentralColClrID" @bind="CentralColClrID" class= "@doorConfig.borderColors["CENTRALCOLCLRID"]"  >
                     @if (PrApiCalls.lstColors != null)
 	                {
 		                @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -146,13 +146,17 @@
 		            {
 			            _CentralColClrID = value;
 			            if (doorConfig != null)
+						{
 				            doorConfig.CENTRALCOLCLRID = _CentralColClrID;
+							doorConfig.borderColors["CENTRALCOLCLRID"] = (value != 0 ? string.Empty : "redBorder");
+							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						}
 		            }
 	            }
             }
 
             <td id="tdShalvaniaClrID" @hidden="@UiLogic.hideFld(doorConfig, "thShalvaniaClrID")">
-                <select name="dlstShalvaniaClrID" @bind="ShalvaniaClrID" >
+                <select name="dlstShalvaniaClrID" @bind="ShalvaniaClrID" class= "@doorConfig.borderColors["SHALVANIACLRID"]" >
                     @if (PrApiCalls.lstColors != null)
 	                {
 		                @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -179,13 +183,17 @@
 		            {
 			            _ShalvaniaClrID = value;
 			            if (doorConfig != null)
+						{
 				            doorConfig.SHALVANIACLRID = _ShalvaniaClrID;
+							doorConfig.borderColors["SHALVANIACLRID"] = (value != 0 ? string.Empty : "redBorder");
+							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						}
 		            }
 	            }
             }
 
             <td id="tdCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, "thCylinder4HalfWing")">
-                <select name="dlstCylinder4HalfWing" @bind="Cylinder4HalfWing" >
+                <select name="dlstCylinder4HalfWing" @bind="Cylinder4HalfWing" class= "@doorConfig.borderColors["CYLINDER4HALFWING"]" >
                     <option>לא</option>
                     <option>כן</option>
                     <option>חצי</option>
@@ -208,7 +216,11 @@
 		            {
 			            _Cylinder4HalfWing = value;
 			            if (doorConfig != null)
+						{
 				            doorConfig.CYLINDER4HALFWING = _Cylinder4HalfWing;
+							doorConfig.borderColors["CYLINDER4HALFWING"] = (!string.IsNullOrEmpty(value)  ? string.Empty : "redBorder");
+							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						}
 		            }
 	            }
             }
@@ -312,7 +324,7 @@
         </tr>
         <tr>
             <td id="tdExtraWingWidth" @hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")">
-                <input type="number"  name="txtExtraWingWidth" @bind="ExtraWingWidth" />
+                <input type="number"  name="txtExtraWingWidth" @bind="ExtraWingWidth" class= "@doorConfig.borderColors["EXTRAWINGWIDTH"]" />
             </td>
 			@code
 			{
@@ -331,7 +343,11 @@
 					{
 						_ExtraWingWidth = value;
 						if (doorConfig != null)
+						{
 							doorConfig.EXTRAWINGWIDTH = _ExtraWingWidth;
+							doorConfig.borderColors["EXTRAWINGWIDTH"] = (value != 0 ? string.Empty : "redBorder");
+							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						}
 					}
 				}
 			}
@@ -339,7 +355,7 @@
 			@if (!ccw)
 			{
             <td id="tdCentralColWidth" @hidden="@false" >
-                <select name="dlstCentralColWidth" @bind="CentralColWidth" >
+                <select name="dlstCentralColWidth" @bind="CentralColWidth" class= "@doorConfig.borderColors["CENTRALCOLWIDTH"]" >
                     <option>40</option>
                     <option>30</option>
                 </select>
@@ -362,7 +378,11 @@
 					{
 						_CentralColWidth = value;
 						if (doorConfig != null)
+						{
 							doorConfig.CENTRALCOLWIDTH = _CentralColWidth;
+							doorConfig.borderColors["CENTRALCOLWIDTH"] = (value != 0 ? string.Empty : "redBorder");
+							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						}
 					}
 				}
 			}

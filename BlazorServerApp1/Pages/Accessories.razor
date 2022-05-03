@@ -112,7 +112,7 @@
                                                 @if (!rl)
                                                 {
                                                     <td id="tdRafafaLocation" >
-                                                        <select name="dlstRafafaLocation" @bind="RafafaLocation" >
+                                                        <select name="dlstRafafaLocation" @bind="RafafaLocation" class= "@doorConfig.borderColors["RAFAFALOC"]">
                                                             <option></option>
                                                             <option>17</option>
                                                             <option>53</option>
@@ -136,7 +136,11 @@
 		                                                {
 			                                                _RafafaLocation = value;
 			                                                if (doorConfig != null)
+                                                            {
 				                                                doorConfig.RAFAFALOC = _RafafaLocation;
+                                                                doorConfig.borderColors["RAFAFALOC"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                                UiLogic.clearFollowingTabFields(doorConfig, "accessories");
+                                                            }
 		                                                }
 	                                                }
                                                  }
