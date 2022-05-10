@@ -1,26 +1,10 @@
-﻿@* deployed to prt-test.corp.elidoor.co.il  c$:\inetpub\wwwroot\brazor .
-    In IIS (inetmgr) created a web site : Blazor2 whose physical path is that folder.
-    Bindings : https  port 502.
-    associated the existing certificate with this web site.
-    The application pool name is Blazor2, it's pipiline model is "integrated" and it's identity is ApplicationPoolIdentity
-    Exactly as the default application pool in which https://prt-test.corp.elidoor.co.il/configurator2/wfrmConfigurator2.aspx is running OK from
-    my station.
-
-    When I log into that server I can browse to :     https://prt-test.corp.elidoor.co.il:502/
-    and use the application.
-    *** I can't do that from my machine ! ***
-*@
-@page "/"
-
-@*ref: https://stackoverflow.com/questions/56876631/setting-a-startup-page-in-blazor  *@
-
-
+﻿@page "/Configurator4"
 
 @using BlazorServerApp1.Pages
 @using BlazorServerApp1.Data
 @using System.Globalization;
 
-@* @page "/Configurator3" *@
+@* @page "/Configurator4" *@
 
 @inherits Configurator3Base
 
@@ -29,9 +13,9 @@
 <EditForm Model=@doorConfig>
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <h3>Configurator3</h3>
+    <h3>Configurator4</h3>
 
-    @code {
+@code {
         //protected bool hideCustDes { get; set; } = false;
         protected static string errMsg = string.Empty;
 
@@ -50,6 +34,7 @@
         public bool MovinwingIsFull = false;
         public bool ExtdecorIsFull = false;
         public bool IntdecorIsFull = false;
+        public DoorConfig? doorConfig; 
         CultureInfo hebrew;
         CultureInfo english;
 
@@ -70,38 +55,77 @@
            english = new CultureInfo("en-US", false); 
         }
 
-        public async Task SaveDoorConfig()
-        {
-        if (doorConfig != null)
-            await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-        }
-
-        public async Task GetDoorConfig()
-        {
-        var result = await ProtectedSessionStore.GetAsync<DoorConfig>("doorConfig");
-        doorConfig = result.Success ? result.Value : null;
-        }
-
-        public async Task DeleteDoorConfigFromSession()
-        {
-        await ProtectedSessionStore.DeleteAsync("doorConfig");
-        }
     }
 
 
-
-    <div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-        <table id="tblLine1">
+            <table id="tblMainContainer">
+                <tr>
+                    <td>
+                        <div id="divMainMenuButtons" dir="rtl" class="menuButtonsDiv">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnGeneral" runat="server" Text="פרטים כלליים" CssClass="button" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnProdDes" runat="server" Text="פרטי המוצר" CssClass="button" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnmovingwing" runat="server" Text="כנף נעה" CssClass="button" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnextdecor" runat="server" Text="פרטי דקורציה חוץ" CssClass="button" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnintdecor" runat="server" Text="פרטי דקורציה פנים" CssClass="button" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnstaticwing" runat="server" Text="כנף קבועה" CssClass="button" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnhinges" runat="server" Text="פרטי צירים" CssClass="button" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnhandle" runat="server" Text="ידיות אומנותיות" CssClass="button" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnaccessories" runat="server" Text="נילווים" CssClass="button" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- end of divMainMenuButtons -->
+                    </td>
+                    <td id="tdMainForm" >
+                        <div id="divMainForm" dir="rtl" class="mainFormDiv">
+                            <div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+                                      <table id="tblLine1">
             <tr>
                 <th>תאריך</th>
                 <th>שם ממלא שאלון</th>
                 <th>אסמכתא</th>
             </tr>
-            <tr>
-                <td>
+            <tr id="trHeaderL1Controls" >
+                <td id="tdDate">
                     <input type="date" name="txtDate" @bind="formDate" />
     @code {
-                        public DoorConfig? doorConfig; // = new DoorConfig();
+                       // public DoorConfig? doorConfig; // = new DoorConfig();
 
         private DateTime _formDate = DateTime.Now;
         protected DateTime formDate
@@ -125,7 +149,8 @@
         }
      }
                 </td>
-                <td>
+                <!-- end tdDate-->
+                <td id="tdFormFiller" >
                     <input name="txtFormFiller" @bind="formFiller" dir="rtl" 
                        @onfocus="@( () => formFillerHasFocus() )" 
                        @onblur="@( () => formFillerLostFocus() )"
@@ -157,7 +182,8 @@
         }
      }
                 </td>
-                <td>
+                <!-- end tdFormFiller -->
+                <td id="tdReference" >
                     <input name="txtReference" @bind="reference" @ref="txtReference" />
      @code {
 
@@ -194,11 +220,14 @@
         }
    }
                 </td>
+                <!-- end tdReference -->
                 <td>
                     <label id="lblMsgL1" />
                 </td>
             </tr>
+            <!-- end trHeaderL1Controls -->
         </table>
+        <!-- end tblLine1 -->
 
         <table id="tblLine2">
             <tr>
@@ -207,7 +236,7 @@
                 <th>כתובת</th>
                 <th>כתובת לאספקה</th>
             </tr>
-            <tr>
+            <tr id="trLine2Controls" >
                 <td>
                     <select name="dlstAgent" @bind="AGENT">
                         @if (lstAgents != null)
@@ -279,6 +308,7 @@
                     }
         }
      }
+     @* end CUST *@
 
                 <td>
                     <input dir="rtl" @bind="Address" />
@@ -303,6 +333,7 @@
                     }
         }
      }
+     @* end Address  *@
                 <td>
                     <input dir="rtl" @bind="ShipAddress" size="80" />
                 </td>
@@ -326,11 +357,15 @@
                     }
         }
     }
+    @* end ShipAddress *@
             </tr>
+            <!-- end trLine2Controls -->
         </table>
-        <table id="tblProducts">
+        <!-- end tblLine2 -->
+
+            <table id="tblProducts">
             <tr>
-                <td>
+                <td id="tdBtnDoor" >
                     <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
     @code
     {
@@ -340,6 +375,7 @@
         }
     }
                 </td>
+                <!-- end tdBtnDoor -->
                 <td>
                     <button name="btnLintel">משקוף</button>
                 </td>
@@ -357,10 +393,10 @@
                 </td>
             </tr>
         </table>
-    </div>
-    <!--end of divHeader -->
-
-    <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
+        <!--end tblProducts -->
+     </div>
+     <!--end of divHeader -->
+            <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
         <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
             <table id="tblDoorTitle">
@@ -504,21 +540,18 @@
     }
                 </tr>
             </table>
+            <!-- end tblDoorTitle-->
         </div>
         <!-- end divDoorTitle -->
 
 
-        <br />
-        <br />
-        <br />
 
-    @code {
-        // tab control here -
-        // tab content pages in separate *.razor files
-        // ref: https://blazor-university.com/templating-components-with-renderfragements/creating-a-tabcontrol/
-    }
+                                <br />
+                                <br />
+                                <br />
 
-        <div id="divTabControl">
+
+                               <div id="divTabControl">
             <TabControl doorConfig="doorConfig">
                 <TabPage Text="כנף נעה" TabName="movingwing">
                     <div id="divMovingWing" class="myDiv">
@@ -559,9 +592,10 @@
         </div>
         <!-- end divTabControl -->
 
-    </div>
-    <!-- end divDoor -->
-    <div id="divCommentsAndSave" dir="rtl" style="padding-top: 30px;">
+        </div>
+        <!-- end divDoor -->
+
+ <div id="divCommentsAndSave" dir="rtl" style="padding-top: 30px;">
         <table id="tblComments">
             <tr>
                 <th id="thComments" style="text-align: right">הערות</th>
@@ -596,7 +630,7 @@
         <p />
         <br />
         <br />
-        <table>
+        <table id="tblSaveClear" >
             <tr>
                 <td>
                     <button name="btnSave" @onclick="btnSave_Click">שמירה בפריוריטי</button>
@@ -655,9 +689,17 @@
     }
             </tr>
         </table>
+        <!-- end tblSaveClear -->
 
     </div>
     <!-- end divCommentsAndSave -->
+    </div>
+    <!-- end divMainForm -->
+    </td>
+    <!-- end tdMainForm -->
+    </tr>
+    </table>
+    <!-- end tblMainContainer -->
     <div id="divBuildTime">
         <p style="float:left">@buildTime</p>
     @code {
