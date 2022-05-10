@@ -16,10 +16,11 @@
     height: 50px;
     color: blue;
     border-color: blue;
-    text-wrap: normal;
+    /* text-wrap: normal; */
     text-align:center;
     transition-duration: 0.4s;
 }
+
 
 .float-right {
     float:right;
