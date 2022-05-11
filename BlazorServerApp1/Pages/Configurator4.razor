@@ -38,7 +38,8 @@
         CultureInfo hebrew;
         CultureInfo english;
 
-        Type dyncompType = typeof(Movingwing);
+        Type? dyncompType; // = typeof(Index);
+
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
 
@@ -52,7 +53,7 @@
         UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
         //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-
+        dyncompType = typeof(Movingwing);
         pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
 
         hebrew = new CultureInfo("he-IL", false);
@@ -87,8 +88,18 @@
                                     <table id="tblTabButtons">
                                         <tr>
                                             <td>
-                                                <button name="btnmovingwing" class="button">כנף נעה</button>
+                                                <button name="btnmovingwing" class="button"
+                                                @onclick=@( () => @showMw())
+                                                >כנף נעה</button>
                                             </td>
+                                            @{
+                                                void showMw()
+                                                {
+                                                    pageParams["doorConfig"] = doorConfig;
+                                                    //edParams.Add("disableLogo", disableLogo);
+                                                    dyncompType = typeof(Movingwing);
+                                                }
+                                            }
                                         </tr>
                                         <tr>
                                             @{
