@@ -1,7 +1,7 @@
 ﻿@inject IJSRuntime Js
 
 <CascadingValue Value="this">
-	<div class="btn-group" role="group">
+	<div class="btn-group" role="group" hidden="hidden">
 		@foreach (TabPage tabPage in Pages)
 		{
 			<button type="button"
@@ -11,11 +11,13 @@
 				@tabPage.Text
 			</button>
 		}
-		@{
-			UiLogic.tabNames = lstTabNames.ToArray();
-			UiLogic.tabTexts = lstTabTexts.ToArray();
-		}
 	</div>
+
+	@{
+		UiLogic.tabNames = lstTabNames.ToArray();
+		UiLogic.tabTexts = lstTabTexts.ToArray();
+	}
+
 	@ChildContent
 </CascadingValue>
 
@@ -55,7 +57,7 @@
 		return page == ActivePage ? "btn-primary" : "btn-secondary";
 	}
 
-	void ActivatePage(TabPage page )
+	public void ActivatePage(TabPage page )
 	{
 		if (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME))
 		{
