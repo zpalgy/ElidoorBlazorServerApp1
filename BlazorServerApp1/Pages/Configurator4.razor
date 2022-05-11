@@ -258,7 +258,7 @@
                             </tr>
                             <tr id="trLine2Controls">
                                 <td>
-                                    <select name="dlstAgent" @bind="AGENT">
+                                    <select name="dlstAgent" @bind="AGENT" class = "@doorConfig.borderColors["AGENT"]" >
                                         @if (lstAgents != null)
                                         {
                                             @foreach (AGENT_Class a in lstAgents)
@@ -283,12 +283,15 @@
                                     {
                                         _AGENT = value;
                                         if (doorConfig != null)
+                                        {
                                             doorConfig.AGENT = _AGENT;
+                                            doorConfig.borderColors["AGENT"] = (value != 0 ? string.Empty : "redBorder");
+                                        }
                                     }
         }
                                 }
                                 <td>
-                                    <select name="dlstCustDes" @bind="CUST">
+                                    <select name="dlstCustDes" @bind="CUST" class = "@doorConfig.borderColors["CUST"]">
                                         @if (lstCustomers != null)
                                         {
                                             @foreach (CUSTOMER_Class c in lstCustomers)
@@ -319,6 +322,7 @@
                                             // set Address and Logo based on CUST
                                             CUSTOMER_Class cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
                                             Address = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3);
+                                            doorConfig.borderColors["CUST"] = (value != 0 ? string.Empty : "redBorder");
                                             if (!string.IsNullOrEmpty(cust.TRSH_LOGO) && cust.TRSH_LOGO == "Y")
                                             {
                                                 disableLogo = true;
@@ -498,7 +502,7 @@
 
                                     }
                                     <td>
-                                        <select name="dlstPARTNAME" @bind="PARTNAME">
+                                        <select name="dlstPARTNAME" @bind="PARTNAME" class = "@doorConfig.borderColors["PARTNAME"]" >
                                             @if (PrApiCalls.lstParts != null)
                                             {
                                                 @foreach (PART_Class p in PrApiCalls.lstParts)
@@ -536,6 +540,7 @@
                                                                                           //doorConfig.FAMILY = PrApiCalls.getFAMILY(part.FAMILYNAME, ref errMsg);
                                                 doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
                                                 doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
+                                                doorConfig.borderColors["MPARTNAME"] = (!(string.IsNullOrEmpty(value)) ? string.Empty : "redBorder");
                                                 UiLogic.applyPartDefaults(doorConfig);
                                             }
                                         }
@@ -574,9 +579,35 @@
                         <br />
                         @{
                             Type dyncompType = typeof(Movingwing);
-                        }
-                        @* <DynamicComponent Type="@dyncompType" /> *@
+                            Dictionary<string, object> mwParams = new Dictionary<string, object>();
+                            mwParams.Add("doorConfig", doorConfig);
+                            mwParams.Add("disableLogo", disableLogo);
+                            bool showMw = false;
 
+                            @*
+                                openMsgBox = false;
+                                errMsg2 = string.Empty;
+                                if (doorConfig.CUST == null || doorConfig.CUST == 0)
+                                errMsg2 += "חובה לציין לקוח";
+                                if (string.IsNullOrEmpty(doorConfig.PARTNAME))
+                                errMsg2 += " חובה לציין דגם , ";
+                                if (!string.IsNullOrEmpty(errMsg2))
+                                {
+                                //Js.InvokeVoidAsync("alert", errMsg);
+                                openMsgBox = true;
+                                showMw = false;
+                                }
+                            *@
+                            showMw = (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME));
+                        }
+                        }
+                        @if (showMw)
+                        {
+                         <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+                          <DynamicComponent Type="@dyncompType" Parameters="@mwParams" /> 
+                         </div>
+                        }
+                        @*
                         <div id="divTabControl"  >
                             <TabControl doorConfig="doorConfig">
                                 <TabPage Text="כנף נעה" TabName="movingwing">
@@ -617,7 +648,7 @@
                             </TabControl>
                         </div>
                         <!-- end divTabControl -->
-
+                        *@
                     </div>
                     <!-- end divDoor -->
 

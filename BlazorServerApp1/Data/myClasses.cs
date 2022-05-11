@@ -944,6 +944,10 @@ namespace BlazorServerApp1.Data
             borderColors = new Dictionary<string, string>();
             foreach (PropertyInfo pinfo in props)
             {
+                if (pinfo.Name == "CUST")
+                {
+                    int x = 17;
+                }
                 borderColors.Add(pinfo.Name, string.Empty);
             }
         }
