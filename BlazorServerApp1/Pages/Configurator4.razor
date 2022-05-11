@@ -6,7 +6,7 @@
 
 @* @page "/Configurator4" *@
 
-@inherits Configurator3Base
+@inherits Configurator4Base
 
 @inject IJSRuntime Js
 
@@ -38,21 +38,25 @@
         CultureInfo hebrew;
         CultureInfo english;
 
-
+        Type dyncompType = typeof(Movingwing);
+        Dictionary<string, object> pageParams = new Dictionary<string, object>();
+        bool showDynComp = false;
 
         protected override async Task OnInitializedAsync()
         {
-            doorConfig = new DoorConfig();
-            doorConfig.initBorderColors();
+        doorConfig = new DoorConfig();
+        doorConfig.initBorderColors();
 
-            formDate = DateTime.Now;
-            UiLogic.initPropNames(doorConfig);
-            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+        formDate = DateTime.Now;
+        UiLogic.initPropNames(doorConfig);
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
 
-            hebrew = new CultureInfo("he-IL", false);
-            english = new CultureInfo("en-US", false);
+        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+
+        hebrew = new CultureInfo("he-IL", false);
+        english = new CultureInfo("en-US", false);
         }
 
     }
@@ -87,18 +91,22 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            @{
+                                                bool disableEd = !ActivatePage("extdecor", doorConfig, ref errMsg2);
+                                                bool x = showDynComp;
+                                                disableEd = false;
+                                            }
                                             <td>
-                                                <button name="btnextdecor" class="button" @onclick=@( () => @showExtdecor()) >פרטי דקורציה חוץ</button>
+                                                <button name="btnextdecor" class="button" @onclick=@( () => @showExtdecor())
+                                                    disabled="@disableEd">פרטי דקורציה חוץ</button>
                                             </td>
                                             @{
                                                 void showExtdecor()
                                                 {
-                                                    Type dyncompType = typeof(Extdecor);
-                                                    Dictionary<string, object> edParams = new Dictionary<string, object>();
-                                                    edParams.Add("doorConfig", doorConfig);
-                                                    edParams.Add("disableLogo", disableLogo);
-                                                    bool showEd = false;
-                                                                        }
+                                                    pageParams["doorConfig"] = doorConfig;
+                                                    //edParams.Add("disableLogo", disableLogo);
+                                                    dyncompType = typeof(Extdecor);
+                                                }
                                             }
                                         </tr>
                                         <tr>
@@ -112,9 +120,9 @@
                                                 disableSw = (doorConfig.WINGSNUM == "כנף");
                                             }
                                             <td>
-                                                <button name="btnstaticwing" class="button" disabled= "@disableSw" >כנף קבועה</button>
+                                                <button name="btnstaticwing" class="button" disabled="@disableSw">כנף קבועה</button>
                                             </td>
-                                           
+
                                         </tr>
                                         <tr>
                                             <td>
@@ -590,11 +598,12 @@
                         <br />
                         <br />
                         @{
-                            Type dyncompType = typeof(Movingwing);
-                            Dictionary<string, object> mwParams = new Dictionary<string, object>();
-                            mwParams.Add("doorConfig", doorConfig);
-                            mwParams.Add("disableLogo", disableLogo);
-                            bool showMw = false;
+                            //Type dyncompType = typeof(Movingwing);
+                            //Dictionary<string, object> mwParams = new Dictionary<string, object>();
+                            //pageParams.Add("doorConfig", doorConfig);
+                            //pageParams.Add("disableLogo", disableLogo);
+                            pageParams["disableLogo"] = disableLogo;
+                            //bool showDynComp = false;
 
                             @*
                                 openMsgBox = false;
@@ -610,13 +619,13 @@
                                 showMw = false;
                                 }
                             *@
-                            showMw = (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME));
+                            showDynComp = (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME));
                         }
                         }
-                        @if (showMw)
+                        @if (showDynComp)
                         {
                             <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-                                <DynamicComponent Type="@dyncompType" Parameters="@mwParams" />
+                                <DynamicComponent Type="@dyncompType" Parameters="@pageParams" />
                             </div>
                         }
                         @*
