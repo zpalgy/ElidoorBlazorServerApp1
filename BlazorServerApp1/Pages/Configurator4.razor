@@ -42,17 +42,17 @@
 
         protected override async Task OnInitializedAsync()
         {
-        doorConfig = new DoorConfig();
-        doorConfig.initBorderColors();
+            doorConfig = new DoorConfig();
+            doorConfig.initBorderColors();
 
-        formDate = DateTime.Now;
-        UiLogic.initPropNames(doorConfig);
-        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+            formDate = DateTime.Now;
+            UiLogic.initPropNames(doorConfig);
+            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
 
-        hebrew = new CultureInfo("he-IL", false);
-        english = new CultureInfo("en-US", false);
+            hebrew = new CultureInfo("he-IL", false);
+            english = new CultureInfo("en-US", false);
         }
 
     }
@@ -83,16 +83,23 @@
                                     <table id="tblTabButtons">
                                         <tr>
                                             <td>
-                                                <button name="btnmovingwing"
-                                                    class="button">
-                                                    כנף נעה
-                                                </button>
+                                                <button name="btnmovingwing" class="button">כנף נעה</button>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnextdecor" class="button">פרטי דקורציה חוץ</button>
+                                                <button name="btnextdecor" class="button" @onclick=@( () => @showExtdecor()) >פרטי דקורציה חוץ</button>
                                             </td>
+                                            @{
+                                                void showExtdecor()
+                                                {
+                                                    Type dyncompType = typeof(Extdecor);
+                                                    Dictionary<string, object> edParams = new Dictionary<string, object>();
+                                                    edParams.Add("doorConfig", doorConfig);
+                                                    edParams.Add("disableLogo", disableLogo);
+                                                    bool showEd = false;
+                                                                        }
+                                            }
                                         </tr>
                                         <tr>
                                             <td>
@@ -100,9 +107,14 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            @{
+                                                bool disableSw = false;
+                                                disableSw = (doorConfig.WINGSNUM == "כנף");
+                                            }
                                             <td>
-                                                <button name="btnstaticwing" class="button">כנף קבועה</button>
+                                                <button name="btnstaticwing" class="button" disabled= "@disableSw" >כנף קבועה</button>
                                             </td>
+                                           
                                         </tr>
                                         <tr>
                                             <td>
@@ -258,7 +270,7 @@
                             </tr>
                             <tr id="trLine2Controls">
                                 <td>
-                                    <select name="dlstAgent" @bind="AGENT" class = "@doorConfig.borderColors["AGENT"]" >
+                                    <select name="dlstAgent" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]">
                                         @if (lstAgents != null)
                                         {
                                             @foreach (AGENT_Class a in lstAgents)
@@ -291,7 +303,7 @@
         }
                                 }
                                 <td>
-                                    <select name="dlstCustDes" @bind="CUST" class = "@doorConfig.borderColors["CUST"]">
+                                    <select name="dlstCustDes" @bind="CUST" class="@doorConfig.borderColors["CUST"]">
                                         @if (lstCustomers != null)
                                         {
                                             @foreach (CUSTOMER_Class c in lstCustomers)
@@ -502,7 +514,7 @@
 
                                     }
                                     <td>
-                                        <select name="dlstPARTNAME" @bind="PARTNAME" class = "@doorConfig.borderColors["PARTNAME"]" >
+                                        <select name="dlstPARTNAME" @bind="PARTNAME" class="@doorConfig.borderColors["PARTNAME"]">
                                             @if (PrApiCalls.lstParts != null)
                                             {
                                                 @foreach (PART_Class p in PrApiCalls.lstParts)
@@ -603,51 +615,51 @@
                         }
                         @if (showMw)
                         {
-                         <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-                          <DynamicComponent Type="@dyncompType" Parameters="@mwParams" /> 
-                         </div>
+                            <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+                                <DynamicComponent Type="@dyncompType" Parameters="@mwParams" />
+                            </div>
                         }
                         @*
-                        <div id="divTabControl"  >
+                            <div id="divTabControl"  >
                             <TabControl doorConfig="doorConfig">
-                                <TabPage Text="כנף נעה" TabName="movingwing">
-                                    <div id="divMovingWing" class="myDiv">
-                                        <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
-                                    </div>
-                                </TabPage>
-                                <TabPage Text="פרטי דקורציה חוץ" TabName="extdecor">
-                                    <div id="divExtDecor" class="myDiv">
-                                        <Extdecor doorConfig="@doorConfig" MovingwingIsFull="@MovinwingIsFull" />
-                                    </div>
-                                </TabPage>
-                                <TabPage Text="פרטי דקורציה פנים" TabName="intdecor">
-                                    <div id="divIntDecor" class="myDiv">
-                                        <Intdecor doorConfig="@doorConfig" ExtdecorIsFull="@ExtdecorIsFull" />
-                                    </div>
-                                </TabPage>
-                                <TabPage Text="כנף קבועה" TabName="staticwing">
-                                    <div id="divStaticWing" class="myDiv">
-                                        <Staticwing doorConfig="@doorConfig" />
-                                    </div>
-                                </TabPage>
-                                <TabPage Text="פרטי צירים" TabName="hinges">
-                                    <div id="divHinges" class="myDiv">
-                                        <Hinges doorConfig="@doorConfig" />
-                                    </div>
-                                </TabPage>
-                                <TabPage Text="ידית אומנותית" TabName="handle">
-                                    <div id="divHandles" class="myDiv">
-                                        <Handle doorConfig="@doorConfig" />
-                                    </div>
-                                </TabPage>
-                                <TabPage Text="נילווים" TabName="accessories">
-                                    <div id="divAccessories" class="myDiv">
-                                        <Accessories doorConfig="@doorConfig" />
-                                    </div>
-                                </TabPage>
+                            <TabPage Text="כנף נעה" TabName="movingwing">
+                            <div id="divMovingWing" class="myDiv">
+                            <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
+                            </div>
+                            </TabPage>
+                            <TabPage Text="פרטי דקורציה חוץ" TabName="extdecor">
+                            <div id="divExtDecor" class="myDiv">
+                            <Extdecor doorConfig="@doorConfig" MovingwingIsFull="@MovinwingIsFull" />
+                            </div>
+                            </TabPage>
+                            <TabPage Text="פרטי דקורציה פנים" TabName="intdecor">
+                            <div id="divIntDecor" class="myDiv">
+                            <Intdecor doorConfig="@doorConfig" ExtdecorIsFull="@ExtdecorIsFull" />
+                            </div>
+                            </TabPage>
+                            <TabPage Text="כנף קבועה" TabName="staticwing">
+                            <div id="divStaticWing" class="myDiv">
+                            <Staticwing doorConfig="@doorConfig" />
+                            </div>
+                            </TabPage>
+                            <TabPage Text="פרטי צירים" TabName="hinges">
+                            <div id="divHinges" class="myDiv">
+                            <Hinges doorConfig="@doorConfig" />
+                            </div>
+                            </TabPage>
+                            <TabPage Text="ידית אומנותית" TabName="handle">
+                            <div id="divHandles" class="myDiv">
+                            <Handle doorConfig="@doorConfig" />
+                            </div>
+                            </TabPage>
+                            <TabPage Text="נילווים" TabName="accessories">
+                            <div id="divAccessories" class="myDiv">
+                            <Accessories doorConfig="@doorConfig" />
+                            </div>
+                            </TabPage>
                             </TabControl>
-                        </div>
-                        <!-- end divTabControl -->
+                            </div>
+                            <!-- end divTabControl -->
                         *@
                     </div>
                     <!-- end divDoor -->
