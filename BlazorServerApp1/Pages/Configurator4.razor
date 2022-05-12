@@ -103,31 +103,53 @@
                                         </tr>
                                         <tr>
                                             @{
-                                                bool disableEd = !ActivatePage("extdecor", doorConfig, ref errMsg2);
-                                                bool x = showDynComp;
-                                                disableEd = false;
+                                                bool disableEd = false;
+                                                //disableEd = !ActivatePage("extdecor", doorConfig, ref errMsg2);
+                                                // 12/05/2022 : at present btnextdecor is always disabled
+                                                //[TODO] when leaving Movingwing check whether it is filled.
+                                                //  if it's not filled disable btnextdecor
                                             }
+
                                             <td>
                                                 <button name="btnextdecor" class="button" @onclick="showExtdecor"
-                                                    disabled="@disableEd">
+                                                    disabled="@disableEd"  @onfocus= "focusExtDecor">
                                                     פרטי דקורציה חוץ
                                                 </button>
                                             </td>
                                             @{
-                                                void showExtdecor()
+                                                void focusExtDecor()
                                                 {
                                                     errMsg2 = string.Empty;
                                                     if (ActivatePage("extdecor", doorConfig, ref errMsg2))
+                                                        disableEd = false;
+                                                    else
                                                     {
-                                                        pageParams["doorConfig"] = doorConfig;
+                                                        disableEd = true;
+                                                        openMsgBox = true;
+                                                    }
+                                                }
+                                                void showExtdecor()
+                                                {
+                                                    pageParams["doorConfig"] = doorConfig;
                                                         if (pageParams.ContainsKey("disableLogo"))
                                                             pageParams.Remove("disableLogo");
                                                         dyncompType = typeof(Extdecor);
-                                                    }
-                                                    else
-                                                    {
-                                                        openMsgBox = true;
-                                                    }
+
+                                                //  code moved to focusExtDecor()
+                                                //
+                                                //    errMsg2 = string.Empty;
+                                                //    if (ActivatePage("extdecor", doorConfig, ref errMsg2))
+                                                //    {
+                                                //        pageParams["doorConfig"] = doorConfig;
+                                                //        if (pageParams.ContainsKey("disableLogo"))
+                                                //            pageParams.Remove("disableLogo");
+                                                //        dyncompType = typeof(Extdecor);
+                                                //    }
+                                                //    else
+                                                //    {
+                                                //        openMsgBox = true;
+                                                //    }
+                                                //  end of moved code 
                                                 }
                                             }
 
