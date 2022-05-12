@@ -167,18 +167,39 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnhinges" class="button">פרטי צירים</button>
+                                                <button name="btnhinges" class="button"
+                                                     @onclick="showHinges"  >פרטי צירים</button>
                                             </td>
+                                            @{
+                                                void showHinges()
+                                                {
+                                                    showTabPage(typeof(Hinges), "hinges");
+                                                }
+                                            }
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnhandle" class="button">ידיות אומנותיות</button>
+                                                <button name="btnhandle" class="button"
+                                                 @onclick="showHandle" >ידיות אומנותיות</button>
                                             </td>
+                                            @{
+                                                void showHandle()
+                                                {
+                                                    showTabPage(typeof(Handle), "handle");
+                                                }
+                                            }
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnaccessories" class="button">נילווים</button>
+                                                <button name="btnaccessories" class="button"
+                                                  @onclick="showAccessories"  >נילווים</button>
                                             </td>
+                                            @{
+                                                void showAccessories()
+                                                {
+                                                    showTabPage(typeof(Accessories), "accessories");
+                                                }
+                                            }
                                         </tr>
                                     </table>
                                     <!-- end tblTabButtons -->
@@ -664,7 +685,7 @@
                             *@
                             showDynComp = (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME));
                         }
-                        }
+                        
                         @if (showDynComp)
                         {
                             <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
