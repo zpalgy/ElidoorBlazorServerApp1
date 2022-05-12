@@ -131,17 +131,6 @@
                                                 </button>
                                             </td>
                                             @{
-                                                //void focusExtDecor()
-                                                //{
-                                                //    errMsg2 = string.Empty;
-                                                //    if (ActivatePage("extdecor", doorConfig, ref errMsg2))
-                                                //        disableEd = false;
-                                                //    else
-                                                //    {
-                                                //        disableEd = true;
-                                                //        openMsgBox = true;
-                                                //    }
-                                                //}
                                                 void showExtdecor()
                                                 {
                                                     showTabPage(typeof(Extdecor), "extdecor");
@@ -166,9 +155,15 @@
                                                 disableSw = (doorConfig.WINGSNUM == "כנף");
                                             }
                                             <td>
-                                                <button name="btnstaticwing" class="button" disabled="@disableSw">כנף קבועה</button>
+                                                <button name="btnstaticwing" class="button" disabled="@disableSw"
+                                                    @onclick="showStaticwing" >כנף קבועה</button>
                                             </td>
-
+                                            @{
+                                                void showStaticwing()
+                                                {
+                                                    showTabPage(typeof(Staticwing), "staticwing");
+                                                }
+                                            }
                                         </tr>
                                         <tr>
                                             <td>
