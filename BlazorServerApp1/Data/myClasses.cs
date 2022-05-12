@@ -936,6 +936,7 @@ namespace BlazorServerApp1.Data
         public string meaged = string.Empty;
         //[NonSerialized]
         public Dictionary<string, string> borderColors { get; set; } 
+        public Dictionary<string, string> btnClasses { get; set; }
 
         public void initBorderColors()
         {
@@ -949,6 +950,23 @@ namespace BlazorServerApp1.Data
                     int x = 17;
                 }
                 borderColors.Add(pinfo.Name, string.Empty);
+            }
+            initBtnClasses();
+        }
+        public void initBtnClasses()
+        {
+            btnClasses = new Dictionary<string, string>(); 
+            foreach (string tabName in UiLogic.tabNames)
+            {
+                btnClasses.Add(tabName, "button");
+            }
+        }
+        public void markButton (string tabName)
+        {
+            foreach (string tabName1 in UiLogic.tabNames)
+            {
+                string btnClass = (tabName1 == tabName ? "buttonSelected" : "button");
+                btnClasses[tabName1] = btnClass;
             }
         }
 

@@ -31,9 +31,10 @@
         //BlazorServerApp1.Pages.Configurator3
         protected bool hideDivDoor = true;
 
-        public bool MovinwingIsFull = false;
-        public bool ExtdecorIsFull = false;
-        public bool IntdecorIsFull = false;
+        //public bool MovinwingIsFull = false;
+        //public bool ExtdecorIsFull = false;
+        //public bool IntdecorIsFull = false;
+
         public DoorConfig? doorConfig;
         CultureInfo hebrew;
         CultureInfo english;
@@ -41,6 +42,7 @@
         Type dyncompType = typeof(Index);
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
+        
 
         protected override async Task OnInitializedAsync()
         {
@@ -68,6 +70,8 @@
                 if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
                     pageParams.Remove("disableLogo");
                 dyncompType = pageType;
+                //doorConfig.btnClasses[tabName] = "buttonSelected";
+                doorConfig.markButton(tabName);
             }
             else
             {
@@ -102,8 +106,8 @@
                                     <table id="tblTabButtons">
                                         <tr>
                                             <td>
-                                                <button name="btnmovingwing" class="button"
-                                                    @onclick=@( () => @showMw())>
+                                                <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
+                                                    @onclick=@( () => @showMw()) >
                                                     כנף נעה
                                                 </button>
                                             </td>
@@ -125,7 +129,7 @@
                                             }
 
                                             <td>
-                                                <button name="btnextdecor" class="button" @onclick="showExtdecor"
+                                                <button name="btnextdecor" class="@doorConfig.btnClasses["extdecor"]" @onclick="showExtdecor"
                                                     disabled="@disableEd" >
                                                     פרטי דקורציה חוץ
                                                 </button>
@@ -140,7 +144,8 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnintdecor" class="button" @onclick="showIntdecor" >פרטי דקורציה פנים</button>
+                                                <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]" 
+                                                     @onclick="showIntdecor" >פרטי דקורציה פנים</button>
                                             </td>
                                             @{
                                                 void showIntdecor()
@@ -155,7 +160,7 @@
                                                 disableSw = (doorConfig.WINGSNUM == "כנף");
                                             }
                                             <td>
-                                                <button name="btnstaticwing" class="button" disabled="@disableSw"
+                                                <button name="btnstaticwing" class="@doorConfig.btnClasses["staticwing"]" disabled="@disableSw"
                                                     @onclick="showStaticwing" >כנף קבועה</button>
                                             </td>
                                             @{
@@ -167,7 +172,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnhinges" class="button"
+                                                <button name="btnhinges" class="@doorConfig.btnClasses["hinges"]"
                                                      @onclick="showHinges"  >פרטי צירים</button>
                                             </td>
                                             @{
@@ -179,7 +184,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnhandle" class="button"
+                                                <button name="btnhandle" class="@doorConfig.btnClasses["handle"]"
                                                  @onclick="showHandle" >ידיות אומנותיות</button>
                                             </td>
                                             @{
@@ -191,7 +196,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnaccessories" class="button"
+                                                <button name="btnaccessories" class="@doorConfig.btnClasses["accessories"]"
                                                   @onclick="showAccessories"  >נילווים</button>
                                             </td>
                                             @{
@@ -477,13 +482,15 @@
                                     <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
                                     @code
                                     {
-        private void btnDoorClicked()
-        {
+                                        private void btnDoorClicked()
+                                        {
                                         pageParams["doorConfig"] = doorConfig;
                                         pageParams["disableLogo"] = disableLogo;
                                         dyncompType = typeof(Movingwing);
                                         hideDivDoor = false;
-        }
+                                        //doorConfig.btnClasses["movingwing"] = "buttonSelected";
+                                        doorConfig.markButton("movingwing");
+                                        }
                                     }
                                 </td>
                                 <!-- end tdBtnDoor -->

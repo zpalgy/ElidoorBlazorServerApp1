@@ -20,6 +20,18 @@
     text-align:center;
     transition-duration: 0.4s;
 }
+.buttonSelected {
+    width: 120px;
+    height: 50px;
+    color: blue;
+    border-color: blue;
+    /* text-wrap: normal; */
+    text-align: center;
+    transition-duration: 0.4s;
+    background-color: blue;
+    color: yellow;
+}
+
 
 
 .float-right {
