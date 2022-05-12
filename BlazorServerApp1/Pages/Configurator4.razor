@@ -38,7 +38,7 @@
         CultureInfo hebrew;
         CultureInfo english;
 
-        Type? dyncompType = typeof(Index);
+        Type dyncompType = typeof(Index);
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
 
@@ -59,6 +59,21 @@
         english = new CultureInfo("en-US", false);
         }
 
+        void showTabPage( Type pageType, string tabName)
+        {
+            errMsg2 = string.Empty;
+            if (ActivatePage(tabName, doorConfig, ref errMsg2))
+            {
+                pageParams["doorConfig"] = doorConfig;
+                if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
+                    pageParams.Remove("disableLogo");
+                dyncompType = pageType;
+            }
+            else
+            {
+                openMsgBox = true;
+            }
+        }
     }
 
 
@@ -95,9 +110,8 @@
                                             @{
                                                 void showMw()
                                                 {
-                                                    pageParams["doorConfig"] = doorConfig;
                                                     pageParams["disableLogo"] = disableLogo;
-                                                    dyncompType = typeof(Movingwing);
+                                                    showTabPage(typeof(Movingwing), "movinwing");
                                                 }
                                             }
                                         </tr>
@@ -105,59 +119,46 @@
                                             @{
                                                 bool disableEd = false;
                                                 //disableEd = !ActivatePage("extdecor", doorConfig, ref errMsg2);
-                                                // 12/05/2022 : at present btnextdecor is always disabled
+                                                // 12/05/2022 : at present btnextdecor is always ENABLED
                                                 //[TODO] when leaving Movingwing check whether it is filled.
-                                                //  if it's not filled disable btnextdecor
+                                                //  if it's not filled DISABLE btnextdecor
                                             }
 
                                             <td>
                                                 <button name="btnextdecor" class="button" @onclick="showExtdecor"
-                                                    disabled="@disableEd"  @onfocus= "focusExtDecor">
+                                                    disabled="@disableEd" >
                                                     פרטי דקורציה חוץ
                                                 </button>
                                             </td>
                                             @{
-                                                void focusExtDecor()
-                                                {
-                                                    errMsg2 = string.Empty;
-                                                    if (ActivatePage("extdecor", doorConfig, ref errMsg2))
-                                                        disableEd = false;
-                                                    else
-                                                    {
-                                                        disableEd = true;
-                                                        openMsgBox = true;
-                                                    }
-                                                }
-                                                void showExtdecor()
-                                                {
-                                                    pageParams["doorConfig"] = doorConfig;
-                                                        if (pageParams.ContainsKey("disableLogo"))
-                                                            pageParams.Remove("disableLogo");
-                                                        dyncompType = typeof(Extdecor);
-
-                                                //  code moved to focusExtDecor()
-                                                //
+                                                //void focusExtDecor()
+                                                //{
                                                 //    errMsg2 = string.Empty;
                                                 //    if (ActivatePage("extdecor", doorConfig, ref errMsg2))
-                                                //    {
-                                                //        pageParams["doorConfig"] = doorConfig;
-                                                //        if (pageParams.ContainsKey("disableLogo"))
-                                                //            pageParams.Remove("disableLogo");
-                                                //        dyncompType = typeof(Extdecor);
-                                                //    }
+                                                //        disableEd = false;
                                                 //    else
                                                 //    {
+                                                //        disableEd = true;
                                                 //        openMsgBox = true;
                                                 //    }
-                                                //  end of moved code 
+                                                //}
+                                                void showExtdecor()
+                                                {
+                                                    showTabPage(typeof(Extdecor), "extdecor");
                                                 }
                                             }
 
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnintdecor" class="button">פרטי דקורציה פנים</button>
+                                                <button name="btnintdecor" class="button" @onclick="showIntdecor" >פרטי דקורציה פנים</button>
                                             </td>
+                                            @{
+                                                void showIntdecor()
+                                                {
+                                                    showTabPage(typeof(Intdecor), "intdecor");
+                                                }
+                                            }
                                         </tr>
                                         <tr>
                                             @{
