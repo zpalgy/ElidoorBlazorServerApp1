@@ -38,8 +38,7 @@
         CultureInfo hebrew;
         CultureInfo english;
 
-        Type? dyncompType; // = typeof(Index);
-
+        Type? dyncompType = typeof(Index);
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
 
@@ -53,8 +52,8 @@
         UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
         //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-        dyncompType = typeof(Movingwing);
         pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+       // dyncompType = typeof(Extdecor);
 
         hebrew = new CultureInfo("he-IL", false);
         english = new CultureInfo("en-US", false);
@@ -89,14 +88,15 @@
                                         <tr>
                                             <td>
                                                 <button name="btnmovingwing" class="button"
-                                                @onclick=@( () => @showMw())
-                                                >כנף נעה</button>
+                                                    @onclick=@( () => @showMw())>
+                                                    כנף נעה
+                                                </button>
                                             </td>
                                             @{
                                                 void showMw()
                                                 {
                                                     pageParams["doorConfig"] = doorConfig;
-                                                    //edParams.Add("disableLogo", disableLogo);
+                                                    pageParams["disableLogo"] = disableLogo;
                                                     dyncompType = typeof(Movingwing);
                                                 }
                                             }
@@ -108,14 +108,17 @@
                                                 disableEd = false;
                                             }
                                             <td>
-                                                <button name="btnextdecor" class="button" @onclick=@( () => @showExtdecor())
-                                                    disabled="@disableEd">פרטי דקורציה חוץ</button>
+                                                <button name="btnextdecor" class="button" @onclick="showExtdecor"
+                                                    disabled="@disableEd">
+                                                    פרטי דקורציה חוץ
+                                                </button>
                                             </td>
                                             @{
                                                 void showExtdecor()
                                                 {
                                                     pageParams["doorConfig"] = doorConfig;
-                                                    //edParams.Add("disableLogo", disableLogo);
+                                                    if (pageParams.ContainsKey("disableLogo"))
+                                                            pageParams.Remove("disableLogo");
                                                     dyncompType = typeof(Extdecor);
                                                 }
                                             }
@@ -426,11 +429,13 @@
                                     <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
                                     @code
                                     {
-        private void btnDoorClicked()
-        {
-                                        hideDivDoor = false;
-
-        }
+                                        private void btnDoorClicked()
+                                        {
+                                            pageParams["doorConfig"] = doorConfig;
+                                            pageParams["disableLogo"] = disableLogo;
+                                            dyncompType = typeof(Movingwing);
+                                            hideDivDoor = false;
+                                        }
                                     }
                                 </td>
                                 <!-- end tdBtnDoor -->
@@ -613,7 +618,7 @@
                             //Dictionary<string, object> mwParams = new Dictionary<string, object>();
                             //pageParams.Add("doorConfig", doorConfig);
                             //pageParams.Add("disableLogo", disableLogo);
-                            pageParams["disableLogo"] = disableLogo;
+                            //pageParams["disableLogo"] = disableLogo;
                             //bool showDynComp = false;
 
                             @*
