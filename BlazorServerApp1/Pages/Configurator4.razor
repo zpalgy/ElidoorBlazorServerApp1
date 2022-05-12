@@ -53,7 +53,7 @@
 
         //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
         pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-       // dyncompType = typeof(Extdecor);
+                                                   // dyncompType = typeof(Extdecor);
 
         hebrew = new CultureInfo("he-IL", false);
         english = new CultureInfo("en-US", false);
@@ -116,12 +116,21 @@
                                             @{
                                                 void showExtdecor()
                                                 {
-                                                    pageParams["doorConfig"] = doorConfig;
-                                                    if (pageParams.ContainsKey("disableLogo"))
+                                                    errMsg2 = string.Empty;
+                                                    if (ActivatePage("extdecor", doorConfig, ref errMsg2))
+                                                    {
+                                                        pageParams["doorConfig"] = doorConfig;
+                                                        if (pageParams.ContainsKey("disableLogo"))
                                                             pageParams.Remove("disableLogo");
-                                                    dyncompType = typeof(Extdecor);
+                                                        dyncompType = typeof(Extdecor);
+                                                    }
+                                                    else
+                                                    {
+                                                        openMsgBox = true;
+                                                    }
                                                 }
                                             }
+
                                         </tr>
                                         <tr>
                                             <td>
@@ -429,13 +438,13 @@
                                     <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
                                     @code
                                     {
-                                        private void btnDoorClicked()
-                                        {
-                                            pageParams["doorConfig"] = doorConfig;
-                                            pageParams["disableLogo"] = disableLogo;
-                                            dyncompType = typeof(Movingwing);
-                                            hideDivDoor = false;
-                                        }
+        private void btnDoorClicked()
+        {
+                                        pageParams["doorConfig"] = doorConfig;
+                                        pageParams["disableLogo"] = disableLogo;
+                                        dyncompType = typeof(Movingwing);
+                                        hideDivDoor = false;
+        }
                                     }
                                 </td>
                                 <!-- end tdBtnDoor -->
