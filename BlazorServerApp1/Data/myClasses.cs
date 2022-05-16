@@ -955,7 +955,10 @@ namespace BlazorServerApp1.Data
         }
         public void initBtnClasses()
         {
-            btnClasses = new Dictionary<string, string>(); 
+            btnClasses = new Dictionary<string, string>();
+            btnClasses["general"] =
+            btnClasses["proddes"] = "button";
+
             foreach (string tabName in UiLogic.tabNames)
             {
                 btnClasses.Add(tabName, "button");
