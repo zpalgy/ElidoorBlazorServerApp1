@@ -257,7 +257,7 @@
                                 </td>
                                 <!-- end tdDate-->
                                 <td id="tdFormFiller">
-                                    <input name="txtFormFiller" @bind="formFiller" dir="rtl"
+                                    <input name="txtFormFiller" @bind="formFiller" dir="rtl" class= "@doorConfig.borderColors["FORMFILLER"]"
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" />
                                     @code {
@@ -275,7 +275,10 @@
                                         {
                                             _formFiller = value;
                                             if (doorConfig != null)
+                                            {
                                                 doorConfig.FORMFILLER = _formFiller;
+                                                doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                            }
                                         }
         }
         void formFillerHasFocus()
@@ -424,7 +427,7 @@
                                 @* end CUST *@
 
                                 <td>
-                                    <input dir="rtl" @bind="Address" />
+                                    <input dir="rtl" @bind="Address" class= "@doorConfig.borderColors["ADDRESS"]" />
                                 </td>
                                 @code {
         protected string _Address = string.Empty;
@@ -442,16 +445,19 @@
                                     {
                                         _Address = value;
                                         if (doorConfig != null)
+                                        {
                                             doorConfig.ADDRESS = _Address;
+                                             doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                        }
                                     }
         }
                                 }
                                 @* end Address  *@
                                 <td>
-                                    <input dir="rtl" @bind="ShipAddress" size="80" />
+                                    <input dir="rtl" @bind="ShipAddress" size="80" class= "@doorConfig.borderColors["SHIPADDRESS"]" />
                                 </td>
                                 @code {
-        protected string _ShipAddress = string.Empty;
+                                    protected string _ShipAddress = string.Empty;
         protected string ShipAddress
         {
                                     get
@@ -466,10 +472,13 @@
                                     {
                                         _ShipAddress = value;
                                         if (doorConfig != null)
+                                        {
                                             doorConfig.SHIPADDRESS = _ShipAddress;
+                                            doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                        }
                                     }
         }
-                                }
+}
                                 @* end ShipAddress *@
                             </tr>
                             <!-- end trLine2Controls -->
@@ -479,35 +488,45 @@
                         <table id="tblProducts">
                             <tr>
                                 <td id="tdBtnDoor">
-                                    <button name="btnDoor" @onclick="btnDoorClicked">דלת</button>
+                                    <button name="btnDoor" @onclick="btnDoorClicked" class="button" >דלת</button>
                                     @code
                                     {
                                         private void btnDoorClicked()
+        {
+                                        if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
                                         {
-                                        pageParams["doorConfig"] = doorConfig;
-                                        pageParams["disableLogo"] = disableLogo;
-                                        dyncompType = typeof(Movingwing);
-                                        hideDivDoor = false;
-                                        //doorConfig.btnClasses["movingwing"] = "buttonSelected";
-                                        doorConfig.markButton("movingwing");
+                                             errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
+                                            // Js.InvokeVoidAsync("alert", errMsg);
+                                             openMsgBox = true;
+                                             return;
                                         }
+                                        else
+                                        {
+                                            pageParams["doorConfig"] = doorConfig;
+                                            pageParams["disableLogo"] = disableLogo;
+                                            dyncompType = typeof(Movingwing);
+                                            hideDivDoor = false;
+                                            //doorConfig.btnClasses["movingwing"] = "buttonSelected";
+                                            doorConfig.markButton("movingwing");
+                                        }
+        }
                                     }
                                 </td>
                                 <!-- end tdBtnDoor -->
                                 <td>
-                                    <button name="btnLintel">משקוף</button>
+                                    <button name="btnLintel"  class="button" >משקוף</button>
                                 </td>
                                 <td>
-                                    <button name="btnCover">חיפוי</button>
+                                    <button name="btnCover" class="button" >חיפוי</button>
                                 </td>
                                 <td>
-                                    <button name="btnSideUnit">יחידת צד</button>
+                                    <button name="btnSideUnit" class="button" >יחידת צד</button>
                                 </td>
                                 <td>
-                                    <button name="btnECabinet">ארון חשמל</button>
+                                    <button name="btnECabinet" class="button" >ארון חשמל</button>
                                 </td>
                                 <td>
-                                    <button name="btnShelves">מדפים</button>
+                                    <button name="btnShelves" class="button" >מדפים</button>
                                 </td>
                             </tr>
                         </table>
@@ -750,7 +769,7 @@
                                 <th id="thComments" style="text-align: right">הערות</th>
                             </tr>
                             <tr>
-                                <td>
+                                <td id="tdComments">
                                     <input name="txtComments" size="120" @bind="Comments" AutoCompleteType="Disabled" />
                                 </td>
                                 @code
