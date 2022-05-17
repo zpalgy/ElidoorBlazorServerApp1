@@ -24,6 +24,7 @@
         private string msgCaption = "שגיאה";
         private string msgClass = "modal-body redMessage";
         private string titleClass = "modal-title redTitle";
+        private bool openYesNo = false;
 
         protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
         protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
@@ -42,6 +43,7 @@
         Type dyncompType = typeof(Index);
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
+        bool hideProducts = false;
 
 
         protected override async Task OnInitializedAsync()
@@ -71,7 +73,7 @@
                 if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
                     pageParams.Remove("disableLogo");
                 dyncompType = pageType;
-                //doorConfig.btnClasses[tabName] = "buttonSelected";
+                //doorConfig.btnClasses[tabName] = "buttonActive";
                 doorConfig.markButton(tabName);
             }
             else
@@ -89,14 +91,37 @@
                     <table id="tblmenuButtons">
                         <tr>
                             <td>
+                                <button name="btnRestart" class="@doorConfig.btnClasses["restart"]" 
+                                   onclick="@restart" >התחל מחדש</button>
+                            </td>
+                            @{
+                                void restart()
+                                {
+                                    openYesNo = true;
+                                    msgCaption = string.Empty;
+                                    errMsg2 = "תחילת שאלון חדש ?";
+                                    titleClass = string.Empty;
+                                    msgClass = string.Empty;
+                                }
+                            }
+                        </tr>
+                        <tr>
+                            <td>
                                 <button name="btnGeneral" class="@doorConfig.btnClasses["general"]" >פרטים כלליים</button>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button name="btnProdDes" class="@doorConfig.btnClasses["proddes"]" >פרטי המוצר</button>
+                                <button name="btnProdDes" class="@doorConfig.btnClasses["proddes"]" 
+                                   onclick="@showProdButtons">פרטי המוצר</button>
                             </td>
-                        </tr>
+                            @{
+                                void showProdButtons()
+                                {
+                                    hideProducts = false;
+                                }
+                            }
+                         </tr>
                         @{
                             bool showTabs = false;
                         }
@@ -488,6 +513,7 @@
                         </table>
                         <!-- end tblLine2 -->
 
+                        <div id="divProducts" hidden="@hideProducts" >
                         <table id="tblProducts">
                             <tr>
                                 <td id="tdBtnDoor">
@@ -511,7 +537,7 @@
                                             hideDivDoor = false;
                                             doorConfig.btnClasses["general"] =
                                             doorConfig.btnClasses["proddes"] = "buttonLostFocus";
-                                            //doorConfig.btnClasses["movingwing"] = "buttonSelected";
+                                            //doorConfig.btnClasses["movingwing"] = "buttonActive";
                                             doorConfig.markButton("movingwing");
                                         }
         }
@@ -536,6 +562,8 @@
                             </tr>
                         </table>
                         <!--end tblProducts -->
+                        </div>
+                        <!-- end divProducts -->
                     </div>
                     <!--end of divHeader -->
                     <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
@@ -895,6 +923,28 @@
     private void OnDialogClose()
     {
         openMsgBox = false;
+        errMsg2 = string.Empty;
+    }
+}
+}
+@if (openYesNo)
+{
+    <MsgBox Caption="@msgCaption"
+        Type = "MsgBox.Category.YesNo"
+        Message="@errMsg2"
+        OnClose="OnCloseYesNo"
+        MsgTitleCssClass="@titleClass"
+        ErrMsgCssClass="@msgClass">
+    </MsgBox>
+    @code
+    {
+    private void OnCloseYesNo(bool isYes)
+    {
+        if (isYes)
+        {
+            UiLogic.clearDoorConfig(doorConfig);
+        }
+        openYesNo = false;
         errMsg2 = string.Empty;
     }
 }

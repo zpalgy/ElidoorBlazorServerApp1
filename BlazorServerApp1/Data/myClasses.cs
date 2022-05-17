@@ -956,6 +956,7 @@ namespace BlazorServerApp1.Data
         public void initBtnClasses()
         {
             btnClasses = new Dictionary<string, string>();
+            btnClasses["restart"] = "buttonRed";
             btnClasses["general"] =
             btnClasses["proddes"] = "button";
 
@@ -968,7 +969,7 @@ namespace BlazorServerApp1.Data
         {
             foreach (string tabName1 in UiLogic.tabNames)
             {
-                string btnClass = (tabName1 == tabName ? "buttonSelected" : "button");
+                string btnClass = (tabName1 == tabName ? "buttonActive" : "button");
                 btnClasses[tabName1] = btnClass;
             }
         }

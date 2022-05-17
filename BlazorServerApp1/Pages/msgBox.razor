@@ -32,6 +32,12 @@
                   <button type="button" class="btn btn-warning"
                      @onclick="@Cancel">Don't Delete</button>
                   break;
+                case Category.YesNo:
+                 <button type="button" class="btn btn-primary"
+                     @onclick=@Yes>כן</button>
+                  <button type="button" class="btn btn-primary"
+                     @onclick="@Cancel">לא</button>
+                  break;
             }
          </div>
       </div>
@@ -63,11 +69,16 @@
     {
         return OnClose.InvokeAsync(true);
     }
+    private Task Yes()
+    {
+        return OnClose.InvokeAsync(true);
+    }
     public enum Category
     {
         Okay,
         SaveNot,
-        DeleteNot
+        DeleteNot,
+        YesNo
     }
     //private string errMsgCssClass = "modal-body redMessage";
 }
