@@ -43,25 +43,31 @@
         Type dyncompType = typeof(Index);
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
-        bool hideProducts = false;
+        bool showProducts = false;
+        string divProductsClass = "hideProducts";
+        bool hideProducts = true;
 
 
         protected override async Task OnInitializedAsync()
         {
-        doorConfig = new DoorConfig();
-        doorConfig.initBorderColors();
-        doorConfig.btnClasses["general"] = "buttonLostFocus";
+            doorConfig = new DoorConfig();
+            doorConfig.initBorderColors();
+            doorConfig.btnClasses["general"] = "buttonLostFocus";
 
-        formDate = DateTime.Now;
-        UiLogic.initPropNames(doorConfig);
-        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+            formDate = DateTime.Now;
+            UiLogic.initPropNames(doorConfig);
+            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                   // dyncompType = typeof(Extdecor);
+            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+            pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+                                                       // dyncompType = typeof(Extdecor);
 
-        hebrew = new CultureInfo("he-IL", false);
-        english = new CultureInfo("en-US", false);
+            hebrew = new CultureInfo("he-IL", false);
+            english = new CultureInfo("en-US", false);
+
+            showProducts = false;
+            divProductsClass = "hideProducts";
+            hideProducts = true;
         }
 
         void showTabPage( Type pageType, string tabName)
@@ -118,6 +124,8 @@
                             @{
                                 void showProdButtons()
                                 {
+                                    showProducts = true;
+                                    divProductsClass = "div1";
                                     hideProducts = false;
                                 }
                             }
@@ -512,36 +520,40 @@
                             <!-- end trLine2Controls -->
                         </table>
                         <!-- end tblLine2 -->
+                        </div>
+                    <!--end of divHeader -->
 
-                        <div id="divProducts" hidden="@hideProducts" >
-                        <table id="tblProducts">
-                            <tr>
-                                <td id="tdBtnDoor">
-                                    <button name="btnDoor" @onclick="btnDoorClicked" class="button" >דלת</button>
-                                    @code
-                                    {
-                                        private void btnDoorClicked()
-        {
-                                        if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
-                                        {
-                                             errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
-                                            // Js.InvokeVoidAsync("alert", errMsg);
-                                             openMsgBox = true;
-                                             return;
-                                        }
-                                        else
-                                        {
-                                            pageParams["doorConfig"] = doorConfig;
-                                            pageParams["disableLogo"] = disableLogo;
-                                            dyncompType = typeof(Movingwing);
-                                            hideDivDoor = false;
-                                            doorConfig.btnClasses["general"] =
-                                            doorConfig.btnClasses["proddes"] = "buttonLostFocus";
-                                            //doorConfig.btnClasses["movingwing"] = "buttonActive";
-                                            doorConfig.markButton("movingwing");
-                                        }
-        }
-                                    }
+                        @if (showProducts)
+                        {
+                            <div id="divProducts" class="div1"   >
+                                <table id="tblProducts" hidden="@hideProducts" >
+                                    <tr>
+                                        <td id="tdBtnDoor">
+                                            <button name="btnDoor" @onclick="btnDoorClicked" class="button" >דלת</button>
+                                            @code
+                                            {
+                                                private void btnDoorClicked()
+                                                {
+                                                    if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+                                                    {
+                                                        errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
+                                                        // Js.InvokeVoidAsync("alert", errMsg);
+                                                        openMsgBox = true;
+                                                        return;
+                                                    }
+                                                    else
+                                                    {
+                                                        pageParams["doorConfig"] = doorConfig;
+                                                        pageParams["disableLogo"] = disableLogo;
+                                                        dyncompType = typeof(Movingwing);
+                                                        hideDivDoor = false;
+                                                        doorConfig.btnClasses["general"] =
+                                                        doorConfig.btnClasses["proddes"] = "buttonLostFocus";
+                                                        //doorConfig.btnClasses["movingwing"] = "buttonActive";
+                                                        doorConfig.markButton("movingwing");
+                                                    }
+                                                }
+                                            }
                                 </td>
                                 <!-- end tdBtnDoor -->
                                 <td>
@@ -560,12 +572,12 @@
                                     <button name="btnShelves" class="button" >מדפים</button>
                                 </td>
                             </tr>
-                        </table>
-                        <!--end tblProducts -->
-                        </div>
-                        <!-- end divProducts -->
-                    </div>
-                    <!--end of divHeader -->
+                         </table>
+                         <!--end tblProducts -->
+                      </div>
+                      <!-- end divProducts -->
+                    }
+                    
                     <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
                         <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
@@ -883,10 +895,14 @@
                                     <button name="btnClear" @onclick="btnClear_Click">ניקוי טופס</button>
                                 </td>
                                 @code {
-        private void btnClear_Click()
-        {
-                                    UiLogic.clearDoorConfig(doorConfig);
-        }
+                                    private void btnClear_Click()
+                                    {
+                                        showProducts = false;
+                                        divProductsClass = "hideProducts";
+                                        hideProducts = true;
+                                        UiLogic.clearDoorConfig(doorConfig);
+                                        this.StateHasChanged();
+                                    }
                                 }
                             </tr>
                         </table>

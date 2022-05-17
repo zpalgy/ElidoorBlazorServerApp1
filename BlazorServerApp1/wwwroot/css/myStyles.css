@@ -135,6 +135,14 @@ th, td {
     min-height: 1200px;
     min-width: 2000px;
 }
+.div1 {
+    border: solid; 
+    border-color: black; 
+    border-radius: 10px;
+}
+.hideproducts {
+    display: none;
+}
 a {
     text-align:center;
 }
