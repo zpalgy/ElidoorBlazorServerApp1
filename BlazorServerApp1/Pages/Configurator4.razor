@@ -44,9 +44,6 @@
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
         bool showProducts = false;
-        string divProductsClass = "hideProducts";
-        bool hideProducts = true;
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -66,8 +63,6 @@
             english = new CultureInfo("en-US", false);
 
             showProducts = false;
-            divProductsClass = "hideProducts";
-            hideProducts = true;
         }
 
         void showTabPage( Type pageType, string tabName)
@@ -107,7 +102,7 @@
                                     msgCaption = string.Empty;
                                     errMsg2 = "תחילת שאלון חדש ?";
                                     titleClass = string.Empty;
-                                    msgClass = string.Empty;
+                                    msgClass = "centeredMsg"; //string.Empty;
                                 }
                             }
                         </tr>
@@ -125,8 +120,6 @@
                                 void showProdButtons()
                                 {
                                     showProducts = true;
-                                    divProductsClass = "div1";
-                                    hideProducts = false;
                                 }
                             }
                          </tr>
@@ -525,8 +518,8 @@
 
                         @if (showProducts)
                         {
-                            <div id="divProducts" class="div1"   >
-                                <table id="tblProducts" hidden="@hideProducts" >
+                         <div id="divProducts" class="div1"   >
+                                <table id="tblProducts"  >
                                     <tr>
                                         <td id="tdBtnDoor">
                                             <button name="btnDoor" @onclick="btnDoorClicked" class="button" >דלת</button>
@@ -898,8 +891,6 @@
                                     private void btnClear_Click()
                                     {
                                         showProducts = false;
-                                        divProductsClass = "hideProducts";
-                                        hideProducts = true;
                                         UiLogic.clearDoorConfig(doorConfig);
                                         this.StateHasChanged();
                                     }
@@ -959,6 +950,7 @@
         if (isYes)
         {
             UiLogic.clearDoorConfig(doorConfig);
+            showProducts = false;
         }
         openYesNo = false;
         errMsg2 = string.Empty;
