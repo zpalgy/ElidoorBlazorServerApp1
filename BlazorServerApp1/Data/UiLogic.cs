@@ -179,6 +179,14 @@ namespace BlazorServerApp1.Data
             }
             return isFilled;
         }
+        public static void try2UpdateBtnClass(DoorConfig doorConfig, string tabName, string tabBtn, string nextTabBtn )
+        {
+            if (UiLogic.tabPageIsFilled(tabName, doorConfig))
+            {
+                doorConfig.btnClasses[tabBtn] = "buttonFilled";
+                doorConfig.btnClasses[nextTabBtn] = "buttonActive";
+            }
+        }
         public static bool doorFldIsFilled(DoorConfig doorConfig, string fldName, string fldDataType)
         {
             string errMsg = string.Empty;

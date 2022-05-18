@@ -47,40 +47,40 @@
 
         protected override async Task OnInitializedAsync()
         {
-            doorConfig = new DoorConfig();
-            doorConfig.initBorderColors();
-            doorConfig.btnClasses["general"] = "buttonLostFocus";
+        doorConfig = new DoorConfig();
+        doorConfig.initBorderColors();
+        doorConfig.btnClasses["general"] = "buttonActive";
 
-            formDate = DateTime.Now;
-            UiLogic.initPropNames(doorConfig);
-            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+        formDate = DateTime.Now;
+        UiLogic.initPropNames(doorConfig);
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-            pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                       // dyncompType = typeof(Extdecor);
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+                                                   // dyncompType = typeof(Extdecor);
 
-            hebrew = new CultureInfo("he-IL", false);
-            english = new CultureInfo("en-US", false);
+        hebrew = new CultureInfo("he-IL", false);
+        english = new CultureInfo("en-US", false);
 
-            showProducts = false;
+        showProducts = false;
         }
 
-        void showTabPage( Type pageType, string tabName)
+        void showTabPage(Type pageType, string tabName)
         {
-            errMsg2 = string.Empty;
-            if (ActivatePage(tabName, doorConfig, ref errMsg2))
-            {
-                pageParams["doorConfig"] = doorConfig;
-                if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
-                    pageParams.Remove("disableLogo");
-                dyncompType = pageType;
-                //doorConfig.btnClasses[tabName] = "buttonActive";
-                doorConfig.markButton(tabName);
-            }
-            else
-            {
-                openMsgBox = true;
-            }
+        errMsg2 = string.Empty;
+        if (ActivatePage(tabName, doorConfig, ref errMsg2))
+        {
+            pageParams["doorConfig"] = doorConfig;
+            if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
+                pageParams.Remove("disableLogo");
+            dyncompType = pageType;
+            //doorConfig.btnClasses[tabName] = "buttonActive";
+            doorConfig.markButton(tabName);
+        }
+        else
+        {
+            openMsgBox = true;
+        }
         }
     }
 
@@ -92,8 +92,10 @@
                     <table id="tblmenuButtons">
                         <tr>
                             <td>
-                                <button name="btnRestart" class="@doorConfig.btnClasses["restart"]" 
-                                   onclick="@restart" >התחל מחדש</button>
+                                <button name="btnRestart" class="@doorConfig.btnClasses["restart"]"
+                                        onclick="@restart">
+                                    התחל מחדש
+                                </button>
                             </td>
                             @{
                                 void restart()
@@ -108,21 +110,32 @@
                         </tr>
                         <tr>
                             <td>
-                                <button name="btnGeneral" class="@doorConfig.btnClasses["general"]" >פרטים כלליים</button>
+                                <button name="btnGeneral" class="@doorConfig.btnClasses["general"]">פרטים כלליים</button>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button name="btnProdDes" class="@doorConfig.btnClasses["proddes"]" 
-                                   onclick="@showProdButtons">פרטי המוצר</button>
+                                <button name="btnProdDes" class="@doorConfig.btnClasses["proddes"]"
+                                        onclick="@showProdButtons">
+                                    פרטי המוצר
+                                </button>
                             </td>
                             @{
                                 void showProdButtons()
                                 {
+                                    if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+                                    {
+                                        msgCaption = string.Empty;
+                                        errMsg2 = string.Format("שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה");
+                                        // Js.InvokeVoidAsync("alert", errMsg);
+                                        msgClass = "modal-body centeredMsg";
+                                        openMsgBox = true;
+                                        return;
+                                    }
                                     showProducts = true;
                                 }
                             }
-                         </tr>
+                        </tr>
                         @{
                             bool showTabs = false;
                         }
@@ -134,7 +147,7 @@
                                         <tr>
                                             <td>
                                                 <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
-                                                    @onclick=@( () => @showMw()) >
+                                                    @onclick=@( () => @showMw())>
                                                     כנף נעה
                                                 </button>
                                             </td>
@@ -144,7 +157,7 @@
                                                     pageParams["disableLogo"] = disableLogo;
                                                     showTabPage(typeof(Movingwing), "movinwing");
                                                     doorConfig.btnClasses["general"] =
-                                                    doorConfig.btnClasses["proddes"] = "buttonLostFocus";
+                                                    doorConfig.btnClasses["proddes"] = "buttonDisabled";
                                                 }
                                             }
                                         </tr>
@@ -159,7 +172,7 @@
 
                                             <td>
                                                 <button name="btnextdecor" class="@doorConfig.btnClasses["extdecor"]" @onclick="showExtdecor"
-                                                    disabled="@disableEd" >
+                                                    disabled="@disableEd">
                                                     פרטי דקורציה חוץ
                                                 </button>
                                             </td>
@@ -173,8 +186,10 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]" 
-                                                     @onclick="showIntdecor" >פרטי דקורציה פנים</button>
+                                                <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]"
+                                                    @onclick="showIntdecor">
+                                                    פרטי דקורציה פנים
+                                                </button>
                                             </td>
                                             @{
                                                 void showIntdecor()
@@ -190,7 +205,9 @@
                                             }
                                             <td>
                                                 <button name="btnstaticwing" class="@doorConfig.btnClasses["staticwing"]" disabled="@disableSw"
-                                                    @onclick="showStaticwing" >כנף קבועה</button>
+                                                    @onclick="showStaticwing">
+                                                    כנף קבועה
+                                                </button>
                                             </td>
                                             @{
                                                 void showStaticwing()
@@ -202,7 +219,9 @@
                                         <tr>
                                             <td>
                                                 <button name="btnhinges" class="@doorConfig.btnClasses["hinges"]"
-                                                     @onclick="showHinges"  >פרטי צירים</button>
+                                                    @onclick="showHinges">
+                                                    פרטי צירים
+                                                </button>
                                             </td>
                                             @{
                                                 void showHinges()
@@ -214,7 +233,9 @@
                                         <tr>
                                             <td>
                                                 <button name="btnhandle" class="@doorConfig.btnClasses["handle"]"
-                                                 @onclick="showHandle" >ידיות אומנותיות</button>
+                                                    @onclick="showHandle">
+                                                    ידיות אומנותיות
+                                                </button>
                                             </td>
                                             @{
                                                 void showHandle()
@@ -226,7 +247,9 @@
                                         <tr>
                                             <td>
                                                 <button name="btnaccessories" class="@doorConfig.btnClasses["accessories"]"
-                                                  @onclick="showAccessories"  >נילווים</button>
+                                                    @onclick="showAccessories">
+                                                    נילווים
+                                                </button>
                                             </td>
                                             @{
                                                 void showAccessories()
@@ -280,13 +303,14 @@
                                                 doorConfig.initBorderColors();
                                             }
                                             doorConfig.FORMDATE = Helper.formatDate4Rest(_formDate);
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                         }
         }
                                     }
                                 </td>
                                 <!-- end tdDate-->
                                 <td id="tdFormFiller">
-                                    <input name="txtFormFiller" @bind="formFiller" dir="rtl" class= "@doorConfig.borderColors["FORMFILLER"]"
+                                    <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" />
                                     @code {
@@ -307,6 +331,7 @@
                                             {
                                                 doorConfig.FORMFILLER = _formFiller;
                                                 doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                             }
                                         }
         }
@@ -341,20 +366,24 @@
                                             _reference = value;
 
                                             if (doorConfig != null)
+                                            {
                                                 if (!string.IsNullOrEmpty(PrApiCalls.getReference(_reference, ref errMsg)))
                                                 {
                                                     //UiLogic.displayErrMsg(lblMsgL1, "אסמכתא עם מספר זה כבר קיימת במערכת");
                                                     //
                                                     //return;
                                                     //Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
-                                                    msgCaption = "שגיאה";
-                                                    msgClass = "modal-body redMessage";
+                                                    //msgCaption = "שגיאה";
+                                                    msgClass = "modal-body centeredMsg";
                                                     errMsg2 = "אסמכתא עם מספר זה כבר קיימת במערכת";
                                                     openMsgBox = true;
                                                     txtReference.FocusAsync();
                                                 }
                                                 else
                                                     doorConfig.REFERENCE = _reference;
+
+                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            }
                                         }
         }
                                     }
@@ -405,6 +434,7 @@
                                         {
                                             doorConfig.AGENT = _AGENT;
                                             doorConfig.borderColors["AGENT"] = (value != 0 ? string.Empty : "redBorder");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                         }
                                     }
         }
@@ -447,6 +477,7 @@
                                                 disableLogo = true;
                                                 doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
                                             }
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                             //
                                         }
 
@@ -456,7 +487,7 @@
                                 @* end CUST *@
 
                                 <td>
-                                    <input dir="rtl" @bind="Address" class= "@doorConfig.borderColors["ADDRESS"]" />
+                                    <input dir="rtl" @bind="Address" class="@doorConfig.borderColors["ADDRESS"]" />
                                 </td>
                                 @code {
         protected string _Address = string.Empty;
@@ -476,17 +507,18 @@
                                         if (doorConfig != null)
                                         {
                                             doorConfig.ADDRESS = _Address;
-                                             doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                            doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                         }
                                     }
         }
                                 }
                                 @* end Address  *@
                                 <td>
-                                    <input dir="rtl" @bind="ShipAddress" size="80" class= "@doorConfig.borderColors["SHIPADDRESS"]" />
+                                    <input dir="rtl" @bind="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]" />
                                 </td>
                                 @code {
-                                    protected string _ShipAddress = string.Empty;
+        protected string _ShipAddress = string.Empty;
         protected string ShipAddress
         {
                                     get
@@ -504,73 +536,73 @@
                                         {
                                             doorConfig.SHIPADDRESS = _ShipAddress;
                                             doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                         }
                                     }
         }
-}
+                                }
                                 @* end ShipAddress *@
                             </tr>
                             <!-- end trLine2Controls -->
                         </table>
                         <!-- end tblLine2 -->
-                        </div>
+                    </div>
                     <!--end of divHeader -->
-
-                        @if (showProducts)
-                        {
-                         <div id="divProducts" class="div1"   >
-                                <table id="tblProducts"  >
-                                    <tr>
-                                        <td id="tdBtnDoor">
-                                            <button name="btnDoor" @onclick="btnDoorClicked" class="button" >דלת</button>
-                                            @code
-                                            {
-                                                private void btnDoorClicked()
-                                                {
-                                                    if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
-                                                    {
-                                                        errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
-                                                        // Js.InvokeVoidAsync("alert", errMsg);
-                                                        openMsgBox = true;
-                                                        return;
-                                                    }
-                                                    else
-                                                    {
-                                                        pageParams["doorConfig"] = doorConfig;
-                                                        pageParams["disableLogo"] = disableLogo;
-                                                        dyncompType = typeof(Movingwing);
-                                                        hideDivDoor = false;
-                                                        doorConfig.btnClasses["general"] =
-                                                        doorConfig.btnClasses["proddes"] = "buttonLostFocus";
-                                                        //doorConfig.btnClasses["movingwing"] = "buttonActive";
-                                                        doorConfig.markButton("movingwing");
-                                                    }
-                                                }
-                                            }
+                    @if (showProducts)
+                    {
+                        <div id="divProducts" class="div1">
+                            <table id="tblProducts">
+                                <tr>
+                                    <td id="tdBtnDoor">
+                                        <button name="btnDoor" @onclick="btnDoorClicked" class="button">דלת</button>
+                                        @code
+                                        {
+        private void btnDoorClicked()
+        {
+                                        if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+                                        {
+                                            errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
+                                            // Js.InvokeVoidAsync("alert", errMsg);
+                                            openMsgBox = true;
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            pageParams["doorConfig"] = doorConfig;
+                                            pageParams["disableLogo"] = disableLogo;
+                                            dyncompType = typeof(Movingwing);
+                                            hideDivDoor = false;
+                                            doorConfig.btnClasses["general"] =
+                                            doorConfig.btnClasses["proddes"] = "buttonLostFocus";
+                                            //doorConfig.btnClasses["movingwing"] = "buttonActive";
+                                            doorConfig.markButton("movingwing");
+                                        }
+        }
+                                    }
                                 </td>
                                 <!-- end tdBtnDoor -->
                                 <td>
-                                    <button name="btnLintel"  class="button" >משקוף</button>
+                                    <button name="btnLintel" class="button">משקוף</button>
                                 </td>
                                 <td>
-                                    <button name="btnCover" class="button" >חיפוי</button>
+                                    <button name="btnCover" class="button">חיפוי</button>
                                 </td>
                                 <td>
-                                    <button name="btnSideUnit" class="button" >יחידת צד</button>
+                                    <button name="btnSideUnit" class="button">יחידת צד</button>
                                 </td>
                                 <td>
-                                    <button name="btnECabinet" class="button" >ארון חשמל</button>
+                                    <button name="btnECabinet" class="button">ארון חשמל</button>
                                 </td>
                                 <td>
-                                    <button name="btnShelves" class="button" >מדפים</button>
+                                    <button name="btnShelves" class="button">מדפים</button>
                                 </td>
                             </tr>
-                         </table>
-                         <!--end tblProducts -->
-                      </div>
-                      <!-- end divProducts -->
+                        </table>
+                        <!--end tblProducts -->
+                    </div>
+                        <!-- end divProducts -->
                     }
-                    
+
                     <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
                         <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
@@ -749,7 +781,7 @@
                             *@
                             showDynComp = (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME));
                         }
-                        
+
                         @if (showDynComp)
                         {
                             <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
@@ -888,12 +920,12 @@
                                     <button name="btnClear" @onclick="btnClear_Click">ניקוי טופס</button>
                                 </td>
                                 @code {
-                                    private void btnClear_Click()
-                                    {
-                                        showProducts = false;
-                                        UiLogic.clearDoorConfig(doorConfig);
-                                        this.StateHasChanged();
-                                    }
+        private void btnClear_Click()
+        {
+                                    showProducts = false;
+                                    UiLogic.clearDoorConfig(doorConfig);
+                                    this.StateHasChanged();
+        }
                                 }
                             </tr>
                         </table>
@@ -937,7 +969,7 @@
 @if (openYesNo)
 {
     <MsgBox Caption="@msgCaption"
-        Type = "MsgBox.Category.YesNo"
+        Type="MsgBox.Category.YesNo"
         Message="@errMsg2"
         OnClose="OnCloseYesNo"
         MsgTitleCssClass="@titleClass"
