@@ -34,11 +34,37 @@
     background-color: white;
     color: black;
 }
+.floatR {
+    float : right;
+}
+.floatL {
+    float: left;
+}
 .btnYesNo {
     border-color: black;
     background-color: white;
     color: black;
 }
+
+/* ref: https://stackoverflow.com/questions/40513763/buttons-equally-space-between-them-horizontally */
+.buttons {
+    text-align: justify;
+}
+
+.buttons:after {
+    content: '';
+    display: inline-block;
+    /* width: 99.5%; */ /* generates an extra transparent line */
+}
+/* makeup*/
+.buttons {
+    min-width: 28em;
+    padding: 1.2em 1em 0; 
+   /* box-shadow: 0 0 5px; */
+    margin: 1em;
+   /* border-radius: 0.25em; */
+}
+
 /*
     classes from bootstrap.min.css 
 

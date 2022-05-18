@@ -50,23 +50,35 @@
                         </button>
                         break;
                     case Category.YesNo:
-                        <table id="tblYesNo" >
-                            <tr style="align-items:center">
-                                <td class="tdYesNo">
-                                    <button type="button" class="btn btnYesNo"
-                                    @onclick=@Yes>
-                                        כן
-                                    </button>
-                                </td>
-                                <td class="tdYesNo">
-                                    <button type="button" class="btn btnYesNo"
-                                    @onclick="@Cancel">
-                                        לא
-                                    </button>
-                                </td>
+                        @*
+                            <table id="tblYesNo" >
+                            <tr>
+                            <td class="tdYesNo floatR">
+                            <button type="button" class="btn btnYesNo"
+                            @onclick=@Yes>
+                            כן
+                            </button>
+                            </td>
+                            <td class="tdYesNo floatL">
+                            <button type="button" class="btn btnYesNo"
+                            @onclick="@Cancel">
+                            לא
+                            </button>
+                            </td>
                             </tr>
-                        </table>
-                        <!-- end tblYesNo -->
+                            </table>
+                            <!-- end tblYesNo -->
+                        *@
+                        <div class="buttons">
+                        <button type="button" class="btn btnYesNo floatR"
+                        @onclick=@Yes>
+                            כן
+                        </button>
+                        <button type="button" class="btn btnYesNo floatL"
+                        @onclick="@Cancel">
+                            לא
+                        </button>
+                        </div>
                         break;
                 }
             </div>
