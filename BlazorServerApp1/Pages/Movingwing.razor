@@ -66,7 +66,7 @@
     <tr>
 
         <th id="thOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">כיוון פתיחה (R,L)</th>
-        <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>
+      @*  <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th> *@
         <th id="thTwoColors" hidden="@UiLogic.hideFld(doorConfig, "TwoColors")">צביעה בשני צבעים</th>
         <th id="thDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">רוחב דלת</th>
         <th id="thDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">גובה דלת</th>
@@ -107,6 +107,7 @@
 
             }
         </td>
+        @*
         <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
             <select name="dlstDecorFormat" @bind="DecorFormat" class= "@doorConfig.borderColors["DECORFORMAT"]" >
                 <option></option>
@@ -114,9 +115,10 @@
                 <option>חוץ</option>
                 <option>פנים</option>
                 <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
-                @* see Helper.DecorFormat2Code(...) method *@
+                <!-- see Helper.DecorFormat2Code(...) method -->
             </select>
         </td>
+        *@
         @code {
             protected string _DecorFormat = string.Empty;
             protected string DecorFormat

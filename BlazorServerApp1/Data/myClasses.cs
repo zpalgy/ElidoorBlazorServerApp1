@@ -590,6 +590,8 @@ namespace BlazorServerApp1.Data
         public string FAMILYNAME = string.Empty;
         [DataMember(Order = 17), Order]
         public int TRSH_DOOR_HWCATCODE { get; set; }
+        [DataMember(Order = 18), Order]
+        public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
         #endregion door header
 
         #region moving wing

@@ -402,15 +402,15 @@
                             <tr id="trLine2Controls">
                                 <td>
                                     @*
-                                    <select name="dlstAgent" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]">
+                                        <select name="dlstAgent" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]">
                                         @if (lstAgents != null)
                                         {
-                                            @foreach (AGENT_Class a in lstAgents)
-                                            {
-                                                <option value="@a.AGENT">@a.AGENTNAME</option>
-                                            }
+                                        @foreach (AGENT_Class a in lstAgents)
+                                        {
+                                        <option value="@a.AGENT">@a.AGENTNAME</option>
                                         }
-                                    </select>
+                                        }
+                                        </select>
                                     *@
                                     <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]">
                                         @if (lstCustomers != null)
@@ -522,8 +522,8 @@
                                         if (doorConfig != null)
                                         {
                                             doorConfig.INSTALLADDRESS = _InstallAddress;
-                                            // 
-                                            //doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder"); 
+                                            //
+                                            //doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                                             UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                         }
                                     }
@@ -625,10 +625,15 @@
                             <table id="tblDoorTitle">
                                 <tr>
                                     <th id="thWingsNum">מיפתח</th>
-                                    <th id="thOpenMode">צורת פתיחה</th>
-                                    <th id="thComplient">דלת תואם אלידור</th>
                                     <th id="thPARTNAME">דגם</th>
-                                    <th id="thFamily">סידרה</th>
+
+                                    @* <th id="thOpenMode">צורת פתיחה</th> *@
+                                    
+                                    <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>
+                                    <th id="thComplient">דלת תואם אלידור</th>
+                                    <th id="thMeasuresDoc">מצורף נספח מדידה</th>
+
+                                    @* <th id="thFamily">סידרה</th> *@
                                 </tr>
                                 <tr>
                                     <td>
@@ -660,39 +665,6 @@
                                                 doorConfig.WINGSNUM = _WingsNum;
 
                                             //disableStaticWing =  (_WingsNum == "כנף");
-                                        }
-        }
-
-                                    }
-                                    <td>
-                                        <select name="dlstOpenMode">
-                                            <option>בחר צורת פתיחה</option>
-                                            <option>החוצה</option>
-                                            <option>פנימה</option>
-                                        </select>
-                                    </td>
-
-                                    <td>
-                                        <input type="checkbox" name="chkbComplient" @bind="Complient" />
-                                    </td>
-                                    @code
-                                    {
-        protected bool _Complient = false;
-        protected bool Complient
-        {
-                                        get
-                                        {
-                                            if (doorConfig != null)
-                                            {
-                                                _Complient = (doorConfig.COMPLIENTDOOR == "Y");
-                                            }
-                                            return _Complient;
-                                        }
-                                        set
-                                        {
-                                            _Complient = value;
-                                            if (doorConfig != null)
-                                                doorConfig.COMPLIENTDOOR = (_Complient ? "Y" : "");
                                         }
         }
 
@@ -743,9 +715,109 @@
 
         }
                                     }
-                                    <td>
-                                        <input name="txtFAMILY" disabled=@true @bind="FAMILYDES" />
+                                    @*
+                                        <td>
+                                        <select name="dlstOpenMode">
+                                        <option>בחר צורת פתיחה</option>
+                                        <option>החוצה</option>
+                                        <option>פנימה</option>
+                                        </select>
+                                        </td>
+                                    *@
+                                    <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
+                                        <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]">
+                                            <option></option>
+                                            <option>ללא</option>
+                                            <option>חוץ</option>
+                                            <option>פנים</option>
+                                            <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
+                                            @* see Helper.DecorFormat2Code(...) method *@
+                                        </select>
                                     </td>
+                                    @code {
+        protected string _DecorFormat = string.Empty;
+        protected string DecorFormat
+        {
+                                        get
+                                        {
+                                            if (doorConfig != null)
+                                            {
+                                                // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
+                                                _DecorFormat = doorConfig.DECORFORMAT;
+                                            }
+                                            return _DecorFormat;
+                                        }
+                                        set
+                                        {
+                                            _DecorFormat = value;
+                                            if (doorConfig != null)
+                                            {
+                                                doorConfig.DECORFORMAT = _DecorFormat;
+                                                doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                                            }
+                                        }
+        }
+                                    }
+
+
+
+                                    <td>
+                                        <input type="checkbox" name="chkbComplient" @bind="Complient" />
+                                    </td>
+                                    @code
+                                    {
+        protected bool _Complient = false;
+        protected bool Complient
+        {
+                                        get
+                                        {
+                                            if (doorConfig != null)
+                                            {
+                                                _Complient = (doorConfig.COMPLIENTDOOR == "Y");
+                                            }
+                                            return _Complient;
+                                        }
+                                        set
+                                        {
+                                            _Complient = value;
+                                            if (doorConfig != null)
+                                                doorConfig.COMPLIENTDOOR = (_Complient ? "Y" : "");
+                                        }
+        }
+                                    }
+
+                                    <td>
+                                        <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" />
+                                    </td>
+                                    @code
+                                    {
+        protected bool _MeasuresDoc = false;
+        protected bool MeasuresDoc
+        {
+                                        get
+                                        {
+                                            if (doorConfig != null)
+                                            {
+                                                _MeasuresDoc = (doorConfig.MEASURESDOC == "Y");
+                                            }
+                                            return _MeasuresDoc;
+                                        }
+                                        set
+                                        {
+                                            _MeasuresDoc = value;
+                                            if (doorConfig != null)
+                                                doorConfig.MEASURESDOC = (_MeasuresDoc ? "Y" : "");
+                                        }
+        }
+                                    }
+                                    @*
+                                        At present the position of FAMILY was not specified.
+
+                                        <td>
+                                        <input name="txtFAMILY" disabled=@true @bind="FAMILYDES" />
+                                        </td>
+                                    *@
                                     @code
                                     {
         protected string _FAMILYDES;
@@ -762,6 +834,7 @@
         }
 
                                     }
+
                                 </tr>
                             </table>
                             <!-- end tblDoorTitle-->
