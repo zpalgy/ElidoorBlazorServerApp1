@@ -369,11 +369,6 @@
                                             {
                                                 if (!string.IsNullOrEmpty(PrApiCalls.getReference(_reference, ref errMsg)))
                                                 {
-                                                    //UiLogic.displayErrMsg(lblMsgL1, "אסמכתא עם מספר זה כבר קיימת במערכת");
-                                                    //
-                                                    //return;
-                                                    //Js.InvokeVoidAsync("alert", "אסמכתא עם מספר זה כבר קיימת במערכת");
-                                                    //msgCaption = "שגיאה";
                                                     msgClass = "modal-body centeredMsg";
                                                     errMsg2 = "אסמכתא עם מספר זה כבר קיימת במערכת";
                                                     openMsgBox = true;
@@ -401,17 +396,28 @@
                             <tr>
                                 <th>שם משווק</th>
                                 <th>שם לקוח קצה</th>
-                                <th>כתובת</th>
+                                <th>כתובת התקנה</th>
                                 <th>כתובת לאספקה</th>
                             </tr>
                             <tr id="trLine2Controls">
                                 <td>
+                                    @*
                                     <select name="dlstAgent" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]">
                                         @if (lstAgents != null)
                                         {
                                             @foreach (AGENT_Class a in lstAgents)
                                             {
                                                 <option value="@a.AGENT">@a.AGENTNAME</option>
+                                            }
+                                        }
+                                    </select>
+                                    *@
+                                    <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]">
+                                        @if (lstCustomers != null)
+                                        {
+                                            @foreach (CUSTOMER_Class c in lstCustomers)
+                                            {
+                                                <option value="@c.CUST">@c.CUSTDES</option>
                                             }
                                         }
                                     </select>
@@ -434,6 +440,15 @@
                                         {
                                             doorConfig.AGENT = _AGENT;
                                             doorConfig.borderColors["AGENT"] = (value != 0 ? string.Empty : "redBorder");
+                                            //
+                                            CUSTOMER_Class agent = PrApiCalls.getCustomer((int)doorConfig.AGENT, ref errMsg);
+                                            ShipAddress = string.Format("{0} {1} {2}", agent.ADDRESS, agent.ADDRESS2, agent.ADDRESS3);
+                                            if (!string.IsNullOrEmpty(agent.TRSH_LOGO) && agent.TRSH_LOGO == "Y")
+                                            {
+                                                disableLogo = true;
+                                                doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                                            }
+                                            //
                                             UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                         }
                                     }
@@ -470,7 +485,7 @@
                                             doorConfig.CUST = _CUST;
                                             // set Address and Logo based on CUST
                                             CUSTOMER_Class cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
-                                            Address = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3);
+                                            //InstallAddress = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3); - NOT required field
                                             doorConfig.borderColors["CUST"] = (value != 0 ? string.Empty : "redBorder");
                                             if (!string.IsNullOrEmpty(cust.TRSH_LOGO) && cust.TRSH_LOGO == "Y")
                                             {
@@ -487,27 +502,28 @@
                                 @* end CUST *@
 
                                 <td>
-                                    <input dir="rtl" @bind="Address" class="@doorConfig.borderColors["ADDRESS"]" />
+                                    <input dir="rtl" @bind="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]" />
                                 </td>
                                 @code {
-        protected string _Address = string.Empty;
-        protected string Address
+        protected string _InstallAddress = string.Empty;
+        protected string InstallAddress
         {
                                     get
                                     {
                                         if (doorConfig != null)
                                         {
-                                            _Address = doorConfig.ADDRESS;
+                                            _InstallAddress = doorConfig.INSTALLADDRESS;
                                         }
-                                        return _Address;
+                                        return _InstallAddress;
                                     }
                                     set
                                     {
-                                        _Address = value;
+                                        _InstallAddress = value;
                                         if (doorConfig != null)
                                         {
-                                            doorConfig.ADDRESS = _Address;
-                                            doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                            doorConfig.INSTALLADDRESS = _InstallAddress;
+                                            // 
+                                            //doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder"); 
                                             UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                         }
                                     }

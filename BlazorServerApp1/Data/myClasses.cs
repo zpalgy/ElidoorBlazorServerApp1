@@ -560,7 +560,7 @@ namespace BlazorServerApp1.Data
         //[DataMember(Order = 7), Order]
         //public string CUSTDES { get; set; }
         [DataMember(Order = 8), Order]
-        public string ADDRESS { get; set; }
+        public string INSTALLADDRESS { get; set; }
         [DataMember(Order = 9), Order]
         public string SHIPADDRESS { get; set; }
         //[DataMember(Order = 10), Order]

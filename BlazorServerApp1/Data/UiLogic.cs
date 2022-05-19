@@ -168,7 +168,8 @@ namespace BlazorServerApp1.Data
                     && !controlName.StartsWith("chkb")
                     && !doorFldIsFilled(doorConfig, fldName, fldDataType)
                     && fldName.ToUpper() != "REFERENCE"
-                    && fldName.ToUpper() != "FORMDATE")
+                    && fldName.ToUpper() != "FORMDATE"
+                    && fldName.ToUpper() != "INSTALLADDRESS")
                 {
                     borderColor = "redBorder";
                     doorConfig.borderColors[fldName] = "redBorder";
