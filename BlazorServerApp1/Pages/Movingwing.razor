@@ -41,13 +41,13 @@
         //    Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'כנף נעה' י");
         //}
         //Js.InvokeVoidAsync("alert", string.Format("in Movingwing:Dispose doorConfig.DRIL4TWOSIDESIDS = {0}", doorConfig.DRIL4TWOSIDESIDS)); //debug
-        
+
     }
 
     protected override async Task OnInitializedAsync()
     {
         //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
-          
+
         //Js.InvokeVoidAsync("alert", string.Format("in Movingwing OnInitializedAsync : doorConfig.EXTCOLORID= ", doorConfig.EXTCOLORID));  // debug
 
         //await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
@@ -60,13 +60,23 @@
         //}
     }
   }
-  <h1 class="tabMeader">כנף נעה</h1>
+<br />
+<table>
+    <tr>
+        <td>
+            <div class="tabPageTitle">
+                <h1 class="rightLeftMargin" >כנף נעה</h1>
+            </div>
+        </td>
+    </tr>
+</table>
+
 
 <table id="MovingWingL1">
     <tr>
 
         <th id="thOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">כיוון פתיחה (R,L)</th>
-      @*  <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th> *@
+        @*  <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th> *@
         <th id="thTwoColors" hidden="@UiLogic.hideFld(doorConfig, "TwoColors")">צביעה בשני צבעים</th>
         <th id="thDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">רוחב דלת</th>
         <th id="thDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">גובה דלת</th>
@@ -75,7 +85,7 @@
     <tr>
         <td id="tdOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">
             <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "dlstOpenSide")"
-                class = "@doorConfig.borderColors["OPENSIDE"]" >
+                    class="@doorConfig.borderColors["OPENSIDE"]">
                 <option> </option>
                 <option>ימין</option>
                 <option>שמאל</option>
@@ -108,16 +118,16 @@
             }
         </td>
         @*
-        <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
+            <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
             <select name="dlstDecorFormat" @bind="DecorFormat" class= "@doorConfig.borderColors["DECORFORMAT"]" >
-                <option></option>
-                <option>ללא</option>
-                <option>חוץ</option>
-                <option>פנים</option>
-                <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
-                <!-- see Helper.DecorFormat2Code(...) method -->
+            <option></option>
+            <option>ללא</option>
+            <option>חוץ</option>
+            <option>פנים</option>
+            <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
+            <!-- see Helper.DecorFormat2Code(...) method -->
             </select>
-        </td>
+            </td>
         *@
         @code {
             protected string _DecorFormat = string.Empty;
@@ -164,7 +174,7 @@
                 set
                 {
                     _TwoColors = value;
-                    if (doorConfig != null) 
+                    if (doorConfig != null)
                     {
                         doorConfig.TWOCOLORS = (_TwoColors ? "Y" : "");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
@@ -174,7 +184,7 @@
 
         }
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
-            <input name="txtDoorWidth" type="number" @bind="DoorWidth" class= "@doorConfig.borderColors["DOORWIDTH"]" />
+            <input name="txtDoorWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" />
         </td>
         @code
         {
@@ -215,9 +225,9 @@
                 }
             }
         }
-        
+
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
-            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class= "@doorConfig.borderColors["DOORHEIGHT"]" />
+            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" />
         </td>
         @code
         {
@@ -269,11 +279,11 @@
             }
         }
 
-        
-        
+
+
 
         <td id="tdDoorColor" hidden="@UiLogic.hideFld(doorConfig, "DoorColor")">
-            <select name="dlstDoorColor" @bind="DoorColorId"  class= "@doorConfig.borderColors["DOORCOLORID"]" >
+            <select name="dlstDoorColor" @bind="DoorColorId" class="@doorConfig.borderColors["DOORCOLORID"]">
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -324,7 +334,7 @@
         <th id="thDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">ניקוב פירזול</th>
     </tr>
     <tr>
-        
+
         <td id="tdTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">
             <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus" />
         </td>
@@ -354,7 +364,7 @@
 
         }
         <td id="tdLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">
-            <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight"  class= "@doorConfig.borderColors["LOCKDRILHEIGHT"]" />
+            <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" />
         </td>
         @code
         {
@@ -410,7 +420,7 @@
 
         }
         <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
-            <select name="dlstHw" @bind="Hw" class= "@doorConfig.borderColors["TRSH_HARDWARE"]" >
+            <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]">
                 @{
                     string errMsg = string.Empty;
                     List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getPartHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
@@ -451,7 +461,7 @@
             }
         </td>
         <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
-            <select name="dlstHwColor" @bind="HwColorId"  class= "@doorConfig.borderColors["HWCOLORID"]" >
+            <select name="dlstHwColor" @bind="HwColorId" class="@doorConfig.borderColors["HWCOLORID"]">
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -488,7 +498,7 @@
         }
 
         <td id="tdDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">
-            <select name="dlstDril4Hw" @bind="Dril4Hw" class= "@doorConfig.borderColors["DRIL4HW"]" >
+            <select name="dlstDril4Hw" @bind="Dril4Hw" class="@doorConfig.borderColors["DRIL4HW"]">
                 @if (PrApiCalls.lstDril4Hw != null)
                 {
                     @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw)
@@ -538,7 +548,7 @@
     </tr>
     <tr>
         <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
-            <select name="dlstCylinder" @bind="CylinderName"  class= "@doorConfig.borderColors["CYLINDERNAME"]">
+            <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]">
                 @if (PrApiCalls.lstCylinders != null)
                 {
                     @foreach (CYLINDER_Class c in PrApiCalls.lstCylinders)
@@ -600,7 +610,7 @@
         }
 
         <td id="tdLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">
-            <select name="dlstLock" @bind="Lock" class= "@doorConfig.borderColors["LOCKNAME"]" >
+            <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["LOCKNAME"]">
                 @{
                     List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
                     if (lstPartLocks != null)
@@ -665,7 +675,7 @@
         }
 
         <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">
-            <select name="dlstRafafa" @bind="Rafafa" class= "@doorConfig.borderColors["RAFAFAONMOVINGWING"]" >
+            <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]">
                 <option> </option>
                 <option>1</option>
                 <option>2</option>
@@ -725,21 +735,20 @@
     </tr>
 </table>
 <!-- end table MovingWingL3 -->
-
 @if (openMsgBox)
 {
-	<MsgBox Caption="שגיאה"
-	        Message = "@errMsg3"
-			OnClose="OnDialogClose"
-            MsgTitleCssClass= "modal-title redTitle"
-            ErrMsgCssClass= "modal-body redMessage" >
-	</MsgBox>
-	@code 
-	{
-		private void OnDialogClose()
-		{
-			openMsgBox = false;
-			errMsg2 = string.Empty;
-		}
+    <MsgBox Caption="שגיאה"
+        Message="@errMsg3"
+        OnClose="OnDialogClose"
+        MsgTitleCssClass="modal-title redTitle"
+        ErrMsgCssClass="modal-body redMessage">
+    </MsgBox>
+    @code
+    {
+    private void OnDialogClose()
+    {
+        openMsgBox = false;
+        errMsg2 = string.Empty;
+    }
 	}
 }

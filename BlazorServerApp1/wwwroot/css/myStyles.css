@@ -68,6 +68,21 @@
 .float-right {
     float:right;
 }
+
+.tabPageTitle {
+    float: right;
+    color:mediumpurple;
+    border:solid;
+    border-color:mediumpurple;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-right:30px;
+    margin-left:30px;
+}
+.rightLeftMargin {
+    margin-right: 40px;
+    margin-left: 40px;
+}
 .comment {
 	width: 1000px; 
 	  height: 30px; 
