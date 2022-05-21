@@ -534,6 +534,59 @@ namespace BlazorServerApp1.Data
         public List<Defaults_Class> value { get; set; }
     }
 
+    [DataContract]
+    public class WingsNum_Class
+    {
+        [DataMember(Order = 1)]
+        public int TRSH_WINGSNUM { get; set; }
+        [DataMember(Order = 2)]
+        public string TRSH_WINGNUMCODE { get; set; }
+            [DataMember(Order = 3)]
+        public string TRSH_WINGNUMDES { get; set; }
+    }
+    public class ValuesWingsNum_Class
+    {
+        public List<WingsNum_Class> value { get; set; }
+    }
+
+    [DataContract]
+    public class Model_Class
+    {
+        [DataMember(Order = 1)]
+        //123456789 123456789  
+        public int TRSH_MODEL { get; set; }
+        [DataMember(Order = 2)]
+        public string TRSH_MODELNAME { get; set; }
+        [DataMember(Order = 3)]
+        public string TRSH_MODELDES { get; set; }
+        [DataMember(Order = 4)]
+        public string TRSH_MEAGEDNAME { get; set; }
+        [DataMember(Order = 5)]
+        public string TRSH_MEAGEDDES { get; set; }
+        [DataMember(Order = 6)]
+        public int TRSH_DOOR_HWCATCODE { get; set; }
+        [DataMember(Order = 7)]
+        public string TRSH_DOOR_HWCAT { get; set; }
+    }
+    public class ValuesModel_Class
+    {
+        public List<Model_Class> value { get; set; }
+    }
+
+    [DataContract]
+    public class Decoration_Class
+    {
+        [DataMember(Order = 1)]
+        public int TRSH_DECORATION { get; set; }
+                    [DataMember(Order = 2)]
+        public string DECORATIONSIDE { get; set; }
+    }
+    public class ValuesDecoration_Class
+    {
+        public List<Decoration_Class> value { get; set; }
+    }
+
+
     [DataContract, Serializable]
     public class DoorConfig
     {
@@ -572,25 +625,31 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 12), Order]
         public string WINGSNUM { get; set; }  // one, one and half, double 
         [DataMember(Order = 13), Order]
-        public string OPENMODE { get; set; }  // in,out  D-40
+        public string OPENMODE { get; set; }  // in,out  D-40   >> moved to Movingwing
         [DataMember(Order = 14), Order]
         public string COMPLIENTDOOR { get; set; }  // Y | N | '' D-920
         //[DataMember(Order = 23), Order]
         //public int PART { get; set; }  //D-20
         //[Required]
-        [DataMember(Order = 15), Order]
+        //*******************************
+        // new field TRSH_MODELNAME
+        //[TODO]  - check that it works on sendToPriority ***
+        [DataMember(Order = 15), Order] 
+        public string TRSH_MODELNAME { get; set; }
+        //***********************************************
+        [DataMember(Order = 16), Order]
         public string PARTNAME { get; set; }  //D-20
         //[DataMember(Order = 24), Order]
         //public string PARTDES { get; set; }
-        [DataMember(Order = 16), Order]
+        [DataMember(Order = 17), Order]
         public int FAMILY { get; set; }  // D-10
         //[DataMember(Order = 22), Order]
         //public string FAMILYDES { get; set; }
         [NonSerialized]
         public string FAMILYNAME = string.Empty;
-        [DataMember(Order = 17), Order]
-        public int TRSH_DOOR_HWCATCODE { get; set; }
         [DataMember(Order = 18), Order]
+        public int TRSH_DOOR_HWCATCODE { get; set; }
+        [DataMember(Order = 19), Order]
         public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
         #endregion door header
 

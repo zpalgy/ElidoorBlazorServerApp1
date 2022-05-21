@@ -161,6 +161,14 @@ a {
 {
     border-color: red;
 }
+.tabHeader {
+    float:right;
+    border:solid;
+    background-color : white;
+    border-color:mediumpurple;
+    color: mediumpurple;
+}
+
 /*
 .redTitle {
     color: red;

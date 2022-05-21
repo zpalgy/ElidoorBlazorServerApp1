@@ -638,10 +638,19 @@
                                 <tr>
                                     <td>
                                         <select name="dlstWingsNum" @bind="WingsNum">
-                                            <option>בחר סוג מיפתח</option>
+                                            @* 
+                                                <option>בחר סוג מיפתח</option>
                                             <option>כנף</option>
                                             <option>כנף וחצי</option>
                                             <option>דו כנפי</option>
+                                            *@
+                                            @if (PrApiCalls.lstWingsNum != null)
+                                            {
+                                                @foreach (WingsNum_Class wn in PrApiCalls.lstWingsNum)
+                                                {
+                                                    <option value="@wn.TRSH_WINGNUMDES">@wn.TRSH_WINGNUMDES</option>
+                                                }
+                                            }
                                         </select>
                                     </td>
                                     @code
@@ -669,6 +678,7 @@
         }
 
                                     }
+                                    @*
                                     <td>
                                         <select name="dlstPARTNAME" @bind="PARTNAME" class="@doorConfig.borderColors["PARTNAME"]">
                                             @if (PrApiCalls.lstParts != null)
@@ -682,48 +692,75 @@
                                     </td>
                                     @code
                                     {
-        protected string _PARTNAME = string.Empty;
-        protected string PARTNAME
-        {
-                                        get
+                                        protected string _PARTNAME = string.Empty;
+                                        protected string PARTNAME
                                         {
-                                            if (doorConfig != null)
+                                            get
                                             {
-                                                _PARTNAME = doorConfig.PARTNAME;
-                                                if (string.IsNullOrEmpty(_PARTNAME))
-                                                    _FAMILYDES = string.Empty;
+                                                if (doorConfig != null)
+                                                {
+                                                    _PARTNAME = doorConfig.PARTNAME;
+                                                    if (string.IsNullOrEmpty(_PARTNAME))
+                                                        _FAMILYDES = string.Empty;
+                                                }
+                                                return _PARTNAME;
                                             }
-                                            return _PARTNAME;
-                                        }
-                                        set
-                                        {
-                                            _PARTNAME = value;
-                                            if (doorConfig != null)
+                                            set
                                             {
-                                                doorConfig.PARTNAME = _PARTNAME;
-                                                PART_Class part = PrApiCalls.getPart(doorConfig.PARTNAME, ref errMsg);
-                                                //FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
-                                                FAMILYDES = part.FAMILYDES;         //familyOfPart.FAMILYDES;
-                                                doorConfig.FAMILYNAME = part.FAMILYNAME;  //[NonSerialized]
-                                                                                          //doorConfig.FAMILY = PrApiCalls.getFAMILY(part.FAMILYNAME, ref errMsg);
-                                                doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
-                                                doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
-                                                doorConfig.borderColors["MPARTNAME"] = (!(string.IsNullOrEmpty(value)) ? string.Empty : "redBorder");
-                                                UiLogic.applyPartDefaults(doorConfig);
+                                                _PARTNAME = value;
+                                                if (doorConfig != null)
+                                                {
+                                                    doorConfig.PARTNAME = _PARTNAME;
+                                                    PART_Class part = PrApiCalls.getPart(doorConfig.PARTNAME, ref errMsg);
+                                                    //FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
+                                                    FAMILYDES = part.FAMILYDES;         //familyOfPart.FAMILYDES;
+                                                    doorConfig.FAMILYNAME = part.FAMILYNAME;  //[NonSerialized]
+                                                                                              //doorConfig.FAMILY = PrApiCalls.getFAMILY(part.FAMILYNAME, ref errMsg);
+                                                    doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
+                                                    doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
+                                                    doorConfig.borderColors["MPARTNAME"] = (!(string.IsNullOrEmpty(value)) ? string.Empty : "redBorder");
+                                                    UiLogic.applyPartDefaults(doorConfig);
+                                                }
                                             }
-                                        }
 
-        }
-                                    }
-                                    @*
-                                        <td>
-                                        <select name="dlstOpenMode">
-                                        <option>בחר צורת פתיחה</option>
-                                        <option>החוצה</option>
-                                        <option>פנימה</option>
-                                        </select>
-                                        </td>
+                                          }
+                                        }
                                     *@
+                                    <td>
+                                        <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]">
+                                            @if (PrApiCalls.lstModels != null)
+                                            {
+                                                @foreach (Model_Class m in PrApiCalls.lstModels)
+                                                {
+                                                    <option value="@m.TRSH_MODELNAME">@m.TRSH_MODELDES</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    @code{
+                                        protected string _TRSH_MODELNAME = string.Empty;
+                                        protected string TRSH_MODELNAME
+                                        {
+                                            get
+                                            {
+                                                if (doorConfig != null)
+                                                {
+                                                    _TRSH_MODELNAME = doorConfig.TRSH_MODELNAME;
+                                                }
+                                                return _TRSH_MODELNAME;
+                                            }
+                                            set
+                                            {
+                                                _TRSH_MODELNAME = value;
+                                                if (doorConfig != null)
+                                                {
+                                                    doorConfig.TRSH_MODELNAME = value;
+                                                }
+                                            }
+                                        }
+                                    }
+
+
                                     <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
                                         <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]">
                                             <option></option>

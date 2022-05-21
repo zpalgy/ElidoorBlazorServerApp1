@@ -26,6 +26,13 @@ namespace BlazorServerApp1.Data
         public static DataTable dtConfFields;
         public static DataTable dtDefaults;
 
+        public static List<WingsNum_Class> lstWingsNum = new List<WingsNum_Class>();
+        public static DataTable dtWingsNum = new DataTable();
+        public static List<Model_Class> lstModels = new List<Model_Class>();
+        public static DataTable dtModels = new DataTable();
+        public static List<Decoration_Class> lstDecorations = new List<Decoration_Class>();
+        public static DataTable dtDecorations = new DataTable();
+
         public static List<PART_Class> lstParts = new List<PART_Class>();
         public static DataTable dtParts = new DataTable();
         public static List<TRSH_COLOR_Class> lstColors = new List<TRSH_COLOR_Class>();
@@ -270,6 +277,150 @@ namespace BlazorServerApp1.Data
                     CUSTOMER_Class val1 = val.value[0];
                     return val1;
 
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+
+        public static List<WingsNum_Class> getAllWingsNum(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "TRSH_WINGSNUM,TRSH_WINGNUMCODE,TRSH_WINGNUMDES";
+                request.Resource = string.Format("TRSH_WINGSNUM?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesWingsNum_Class val = JsonConvert.DeserializeObject<ValuesWingsNum_Class>(response.Content);
+
+                    List<WingsNum_Class> val1 = new List<WingsNum_Class>();  //val.value;
+                    WingsNum_Class emptyWnum = new WingsNum_Class();
+                    emptyWnum.TRSH_WINGSNUM = 0;
+                    val1.Add(emptyWnum);
+                    foreach (WingsNum_Class wNum in val.value)
+                    {
+                        val1.Add(wNum);
+                    }
+                    return val1;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+
+        public static List<Model_Class> getAllModels(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "TRSH_MODEL,TRSH_MODELNAME,TRSH_MODELDES,TRSH_MEAGEDNAME,TRSH_MEAGEDDES,TRSH_DOOR_HWCATCODE,TRSH_DOOR_HWCAT";
+                request.Resource = string.Format("TRSH_MODELS?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesModel_Class val = JsonConvert.DeserializeObject<ValuesModel_Class>(response.Content);
+
+                    List<Model_Class> val1 = new List<Model_Class>();  //val.value;
+                    Model_Class emptyModel = new Model_Class();
+                    emptyModel.TRSH_MODEL = 0;
+                    val1.Add(emptyModel);
+                    foreach (Model_Class model in val.value)
+                    {
+                        val1.Add(model);
+                    }
+                    return val1;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+
+        public static List<Decoration_Class> getAllDecorations(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "TRSH_DECORATION,DECORATIONSIDE";
+                request.Resource = string.Format("TRSH_DECORATION?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesDecoration_Class val = JsonConvert.DeserializeObject<ValuesDecoration_Class>(response.Content);
+
+                    List<Decoration_Class> val1 = new List<Decoration_Class>();  //val.value;
+                    Decoration_Class emptyDecor = new Decoration_Class();
+                    emptyDecor.TRSH_DECORATION = 0;
+                    val1.Add(emptyDecor);
+                    foreach (Decoration_Class decor in val.value)
+                    {
+                        val1.Add(decor);
+                    }
+                    return val1;
                 }
                 else
                 {
@@ -580,6 +731,14 @@ namespace BlazorServerApp1.Data
                 if (dtConfFields == null)
                     return;
                 dtDefaults = getDefaults(ref errMsg);
+
+                lstWingsNum = getAllWingsNum(ref errMsg);
+                dtWingsNum = lstWingsNum.ToDataTable<WingsNum_Class>();
+                lstModels = getAllModels(ref errMsg);
+                dtModels = lstModels.ToDataTable<Model_Class>();
+                lstDecorations = getAllDecorations(ref errMsg);
+                dtDecorations = lstDecorations.ToDataTable<Decoration_Class>();
+
                 lstParts = getAllParts(ref errMsg);
                 dtParts = lstParts.ToDataTable<PART_Class>();
                 lstColors = getColors(ref errMsg);
