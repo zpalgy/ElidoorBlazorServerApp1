@@ -104,17 +104,25 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 3)]
         public string PARTDES { get; set; }
         [DataMember(Order = 4)]
-        public string MPARTNAME { get; set; }
+        public int TRSH_MODEL { get; set; }
         [DataMember(Order = 5)]
-        public string MPARTDES { get; set; }
+        public string TRSH_MODELDES { get; set; }
         [DataMember(Order = 6)]
-        public int FAMILY { get; set; }
+        public int TRSH_WINGSNUM { get; set; }
         [DataMember(Order = 7)]
+        public string TRSH_WINGSNUMDES { get; set; }
+        //[DataMember(Order = 8)]
+        //public string MPARTNAME { get; set; }
+        //[DataMember(Order = 9)]
+        //public string MPARTDES { get; set; }
+        [DataMember(Order = 10)]
+        public int FAMILY { get; set; }
+        [DataMember(Order = 11)]
         public string FAMILYNAME { get; set; }
-        [DataMember(Order = 8)]
+        [DataMember(Order = 12)]
         public string FAMILYDES { get; set; }
-        [DataMember(Order = 9)]
-        public int TRSH_DOOR_HWCATCODE { get; set; }
+       // [DataMember(Order = 13)]
+       // public int TRSH_DOOR_HWCATCODE { get; set; }
     }
     public class ValuesFamilyParts
     {
@@ -540,9 +548,9 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 1)]
         public int TRSH_WINGSNUM { get; set; }
         [DataMember(Order = 2)]
-        public string TRSH_WINGNUMCODE { get; set; }
+        public string TRSH_WINGSNUMCODE { get; set; }
             [DataMember(Order = 3)]
-        public string TRSH_WINGNUMDES { get; set; }
+        public string TRSH_WINGSNUMDES { get; set; }
     }
     public class ValuesWingsNum_Class
     {
@@ -621,12 +629,15 @@ namespace BlazorServerApp1.Data
         #endregion form header
 
         #region door header
-        
+
         [DataMember(Order = 12), Order]
-        public string WINGSNUM { get; set; }  // one, one and half, double 
+        public string TRSH_WINGSNUMCODE { get; set; }  // '1','1.5','2'
+
         [DataMember(Order = 13), Order]
-        public string OPENMODE { get; set; }  // in,out  D-40   >> moved to Movingwing
+        public string TRSH_WINGSNUMDES { get; set; }  // כנף, כנף וחצי, דו כנפי
         [DataMember(Order = 14), Order]
+        public string OPENMODE { get; set; }  // in,out  D-40   >> moved to Movingwing
+        [DataMember(Order = 15), Order]
         public string COMPLIENTDOOR { get; set; }  // Y | N | '' D-920
         //[DataMember(Order = 23), Order]
         //public int PART { get; set; }  //D-20
@@ -634,22 +645,22 @@ namespace BlazorServerApp1.Data
         //*******************************
         // new field TRSH_MODELNAME
         //[TODO]  - check that it works on sendToPriority ***
-        [DataMember(Order = 15), Order] 
-        public string TRSH_MODELNAME { get; set; }
+        [DataMember(Order = 16), Order] 
+        public string TRSH_MODELNAME { get; set; }    // MLI, 1029, 1040, ...
         //***********************************************
-        [DataMember(Order = 16), Order]
+        [DataMember(Order = 17), Order]
         public string PARTNAME { get; set; }  //D-20
         //[DataMember(Order = 24), Order]
         //public string PARTDES { get; set; }
-        [DataMember(Order = 17), Order]
+        [DataMember(Order = 18), Order]
         public int FAMILY { get; set; }  // D-10
         //[DataMember(Order = 22), Order]
         //public string FAMILYDES { get; set; }
         [NonSerialized]
         public string FAMILYNAME = string.Empty;
-        [DataMember(Order = 18), Order]
-        public int TRSH_DOOR_HWCATCODE { get; set; }
         [DataMember(Order = 19), Order]
+        public int TRSH_DOOR_HWCATCODE { get; set; }
+        [DataMember(Order = 20), Order]
         public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
         #endregion door header
 

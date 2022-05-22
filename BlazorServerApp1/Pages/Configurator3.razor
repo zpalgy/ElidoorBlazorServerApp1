@@ -400,7 +400,7 @@
                         {
                             if (doorConfig != null)
                             {
-                                _WingsNum = doorConfig.WINGSNUM;
+                                _WingsNum = doorConfig.TRSH_WINGSNUMDES;
                             }
                             return _WingsNum;
                         }
@@ -408,7 +408,7 @@
                         {
                             _WingsNum = value;
                             if (doorConfig != null)
-                                doorConfig.WINGSNUM = _WingsNum;
+                                doorConfig.TRSH_WINGSNUMDES = _WingsNum;
 
                             //disableStaticWing =  (_WingsNum == "כנף");
                         }
@@ -485,8 +485,8 @@
                                 FAMILYDES = part.FAMILYDES;         //familyOfPart.FAMILYDES;
                                 doorConfig.FAMILYNAME = part.FAMILYNAME;  //[NonSerialized]
                                 //doorConfig.FAMILY = PrApiCalls.getFAMILY(part.FAMILYNAME, ref errMsg);
-                                doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
-                                doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
+                                //doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
+                                //doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
                                 UiLogic.applyPartDefaults(doorConfig);
                             }
                         }

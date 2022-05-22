@@ -44,6 +44,9 @@ namespace BlazorServerApp1.Data
         }
         public static bool hideFld(DoorConfig doorConfig, string fldName)
         {
+            if (fldName.ToUpper() == "PARTNAME" || fldName.ToUpper() == "FAMILYNAME")
+                return true;  // hardcoded -these fields are temporarily not visible 22/05/2022
+
             //debug
             if (fldName == "ExtColor" || fldName == "thExtColor")
             {
@@ -160,7 +163,7 @@ namespace BlazorServerApp1.Data
                 string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
                 string fldDes = tabFields[r]["FIELDDES"].ToString();
                 borderColor = string.Empty;
-                if (fldName == "EXTCOLORID")
+                if (fldName == "FAMILYNAME")
                 {
                     int x = 17;
                 }
@@ -274,7 +277,7 @@ namespace BlazorServerApp1.Data
             if (t > -1 && t < tabNames.Length - 1)
             {
                 string nextTab = tabNames[t + 1];
-                if (nextTab == "staticwing" && doorConfig.WINGSNUM == "כנף")
+                if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
                 {
                     nextTab = tabNames[t + 3];  // staticwing TAB is diabled - skip it and skip hinges tab
                 }

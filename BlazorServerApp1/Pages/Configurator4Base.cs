@@ -17,7 +17,7 @@ namespace BlazorServerApp1.Pages
 				int t = Array.IndexOf(UiLogic.tabNames, tabName);
 				string prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
 				string prevText = (t > 0 ? UiLogic.tabTexts[t - 1] : string.Empty);
-				if (prevTab.ToLower() == "staticwing" && doorConfig.WINGSNUM == "כנף")
+				if (prevTab.ToLower() == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
 				{
 					prevTab = UiLogic.tabNames[t - 2];
 					prevText = UiLogic.tabTexts[t - 2];

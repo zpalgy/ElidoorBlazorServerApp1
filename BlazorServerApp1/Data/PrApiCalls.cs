@@ -304,7 +304,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_WINGSNUM,TRSH_WINGNUMCODE,TRSH_WINGNUMDES";
+                string fields = "TRSH_WINGSNUM,TRSH_WINGSNUMCODE,TRSH_WINGSNUMDES";
                 request.Resource = string.Format("TRSH_WINGSNUM?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -393,6 +393,55 @@ namespace BlazorServerApp1.Data
             }
         }
 
+        public static Model_Class  getModel(string TRSH_MODELNAME, ref string errMsg)
+        {
+            Model_Class model = new Model_Class();
+            string query = string.Format("TRSH_MODELNAME = '{0}'", TRSH_MODELNAME);
+            DataRow[] rowsModels = dtModels.Select(query);
+            if (rowsModels.Length > 0)
+            {
+                model.TRSH_MODEL = int.Parse(rowsModels[0]["TRSH_MODEL"].ToString());
+                model.TRSH_MODELNAME = TRSH_MODELNAME;
+                model.TRSH_MODELDES = rowsModels[0]["TRSH_MODELDES"].ToString();
+                model.TRSH_DOOR_HWCAT = rowsModels[0]["TRSH_DOOR_HWCAT"].ToString();
+                model.TRSH_DOOR_HWCATCODE = int.Parse(rowsModels[0]["TRSH_DOOR_HWCATCODE"].ToString());
+                model.TRSH_MEAGEDNAME = rowsModels[0]["TRSH_MEAGEDNAME"].ToString();
+            }
+            return model;
+        }
+        public static string getPARTNAMEbyModelWings(DoorConfig doorConfig, ref string errMsg)
+        {
+            int TRSH_MODEL = 0;
+            int TRSH_WINGSNUM = 0;
+
+            if (doorConfig != null)
+            {
+                string query = string.Format("TRSH_MODELNAME = '{0}'", doorConfig.TRSH_MODELNAME);
+                DataRow[] rowsModels = dtModels.Select(query);
+                if (rowsModels.Length > 0)
+                {
+                     TRSH_MODEL = int.Parse(rowsModels[0]["TRSH_MODEL"].ToString());
+                }
+                query = string.Format("TRSH_WINGSNUMDES='{0}'", doorConfig.TRSH_WINGSNUMDES);
+                DataRow[] rowsWingsNum = dtWingsNum.Select(query);
+                if (rowsWingsNum.Length > 0)
+                {
+                     TRSH_WINGSNUM = int.Parse(rowsWingsNum[0]["TRSH_WINGSNUM"].ToString());
+                }
+                if (TRSH_MODEL > 0 && TRSH_WINGSNUM > 0)
+                {
+                    query = String.Format("TRSH_MODEL = {0} AND TRSH_WINGSNUM = {1}", TRSH_MODEL, TRSH_WINGSNUM);
+                    DataRow[] rowsParts = dtParts.Select(query);
+                    if (rowsParts.Length > 0)
+                    {
+                        string PARTNAME = rowsParts[0]["PARTNAME"].ToString();
+                        return PARTNAME;
+                    }
+                }
+            }
+            
+            return string.Empty;  // error !
+        }
         public static List<Decoration_Class> getAllDecorations(ref string errMsg)
         {
             try
@@ -448,9 +497,9 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string filter = "TYPE eq 'P' and ISMPART ne 'Y' and MPARTNAME ne ''";
-                string fields = "PARTNAME,PARTDES,MPARTNAME,MPARTDES,FAMILYDES";
-
+                string filter = "TYPE eq 'P' and TRSH_MODEL ne 0 and TRSH_WINGSNUM ne 0";
+                //string fields = "PARTNAME,PARTDES,MPARTNAME,MPARTDES,FAMILYDES";
+                string fields = "PARTNAME,PARTDES,TRSH_MODEL,TRSH_MODELDES,TRSH_WINGSNUM,TRSH_WINGSNUMDES";
                 request.Resource = string.Format("LOGPART?$filter={0}&$select={1}", filter, fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -670,51 +719,51 @@ namespace BlazorServerApp1.Data
         }
 
 
-        public static int getDoorHwCatCode(string PARTNAME, ref string errMsg)
-        {
-            try
-            {
-                RestClient restClient = new RestClient();
-                initRestClient(restClient);
-                RestRequest request = new RestRequest();
-                string fields = "PARTNAME,TRSH_DOOR_HWCATCODE";
-                request.Resource = string.Format("LOGPART?$filter=PARTNAME eq '{0}'&$select={1}", PARTNAME, fields);
-                IRestResponse response = restClient.Execute(request);
-                if (response.IsSuccessful)
-                {
-                    var settings = new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Include,
-                        MissingMemberHandling = MissingMemberHandling.Ignore
-                    };
-                    ValuesPART_Class val = JsonConvert.DeserializeObject<ValuesPART_Class>(response.Content);
-                    if (val == null || val.value == null)
-                        return 0;
-                    else if (val != null && val.value != null && val.value.Count == 0)
-                    {
-                        myLogger.log.Error(string.Format("PARTNAME {0} has no TRSH_DOOR_HWCATCODE", PARTNAME));
-                        return 0;
-                    }
-                    return val.value[0].TRSH_DOOR_HWCATCODE;
-                }
-                else
-                {
-                    if (response.StatusDescription.ToLower() == "not found")
-                    {
-                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
-                        myLogger.log.Error(errMsg);
-                        return 0;
-                    }
-                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
-                    return 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
-                return 0;
-            }
-        }
+        //public static int getDoorHwCatCode(string PARTNAME, ref string errMsg)
+        //{
+        //    try
+        //    {
+        //        RestClient restClient = new RestClient();
+        //        initRestClient(restClient);
+        //        RestRequest request = new RestRequest();
+        //        string fields = "PARTNAME,TRSH_DOOR_HWCATCODE";
+        //        request.Resource = string.Format("LOGPART?$filter=PARTNAME eq '{0}'&$select={1}", PARTNAME, fields);
+        //        IRestResponse response = restClient.Execute(request);
+        //        if (response.IsSuccessful)
+        //        {
+        //            var settings = new JsonSerializerSettings
+        //            {
+        //                NullValueHandling = NullValueHandling.Include,
+        //                MissingMemberHandling = MissingMemberHandling.Ignore
+        //            };
+        //            ValuesPART_Class val = JsonConvert.DeserializeObject<ValuesPART_Class>(response.Content);
+        //            if (val == null || val.value == null)
+        //                return 0;
+        //            else if (val != null && val.value != null && val.value.Count == 0)
+        //            {
+        //                myLogger.log.Error(string.Format("PARTNAME {0} has no TRSH_DOOR_HWCATCODE", PARTNAME));
+        //                return 0;
+        //            }
+        //            return val.value[0].TRSH_DOOR_HWCATCODE;
+        //        }
+        //        else
+        //        {
+        //            if (response.StatusDescription.ToLower() == "not found")
+        //            {
+        //                errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+        //                myLogger.log.Error(errMsg);
+        //                return 0;
+        //            }
+        //            errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+        //            return 0;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+        //        return 0;
+        //    }
+        //}
 
         #region get tables data from priority
         public static void InitInMemoryDataSources(ref string errMsg)
@@ -1999,47 +2048,47 @@ namespace BlazorServerApp1.Data
                 return null;
             }
         }
-        public static string getMeagedOfPart(string PARTNAME, ref string errMsg)
-        {
-            try
-            {
-                RestClient restClient = new RestClient();
-                initRestClient(restClient);
-                RestRequest request = new RestRequest();
-                string fields = "PARTNAME,MPARTNAME";
-                request.Resource = string.Format("LOGPART?$filter=PARTNAME eq '{0}'&$select={1}", PARTNAME, fields);
-                IRestResponse response = restClient.Execute(request);
-                if (response.IsSuccessful)
-                {
-                    var settings = new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Include,
-                        MissingMemberHandling = MissingMemberHandling.Ignore
-                    };
-                    ValuesPART_Class val = JsonConvert.DeserializeObject<ValuesPART_Class>(response.Content);
-                    //List<PART_Class> val1 = new List<PART_Class>();  //val.value;
-                    return val.value[0].MPARTNAME;
-                }
-                else
-                {
-                    if (response.StatusDescription.ToLower() == "not found")
-                    {
-                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
-                        myLogger.log.Error(errMsg);
-                        return string.Empty;
-                    }
-                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
-                    return string.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
+        //public static string getMeagedOfPart(string PARTNAME, ref string errMsg)
+        //{
+        //    try
+        //    {
+        //        RestClient restClient = new RestClient();
+        //        initRestClient(restClient);
+        //        RestRequest request = new RestRequest();
+        //        string fields = "PARTNAME,MPARTNAME";
+        //        request.Resource = string.Format("LOGPART?$filter=PARTNAME eq '{0}'&$select={1}", PARTNAME, fields);
+        //        IRestResponse response = restClient.Execute(request);
+        //        if (response.IsSuccessful)
+        //        {
+        //            var settings = new JsonSerializerSettings
+        //            {
+        //                NullValueHandling = NullValueHandling.Include,
+        //                MissingMemberHandling = MissingMemberHandling.Ignore
+        //            };
+        //            ValuesPART_Class val = JsonConvert.DeserializeObject<ValuesPART_Class>(response.Content);
+        //            //List<PART_Class> val1 = new List<PART_Class>();  //val.value;
+        //            return val.value[0].MPARTNAME;
+        //        }
+        //        else
+        //        {
+        //            if (response.StatusDescription.ToLower() == "not found")
+        //            {
+        //                errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+        //                myLogger.log.Error(errMsg);
+        //                return string.Empty;
+        //            }
+        //            errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+        //            return string.Empty;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                errMsg = string.Format("Unexpected error: {0} - check whether you can connect to Priority server.  Stacktrace : {1}", ex.Message, ex.StackTrace);
-                myLogger.log.Error(errMsg);
-                return string.Empty;
-            }
-        }
+        //        errMsg = string.Format("Unexpected error: {0} - check whether you can connect to Priority server.  Stacktrace : {1}", ex.Message, ex.StackTrace);
+        //        myLogger.log.Error(errMsg);
+        //        return string.Empty;
+        //    }
+        //}
         #endregion form fields
         #region get last TRSH_DOORCONFIG
         public static string getLastREFERENCE(ref string errMsg)

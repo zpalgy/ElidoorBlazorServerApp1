@@ -7,7 +7,7 @@
 			<button type="button"
 					class="btn @GetButtonClass(tabPage)"
 					@onclick=@( () => ActivatePage(tabPage) )
-					disabled="@disableTab(@tabPage.Text, doorConfig.WINGSNUM)">
+					disabled="@disableTab(@tabPage.Text, doorConfig.TRSH_WINGSNUMDES)">
 				@tabPage.Text
 			</button>
 		}
@@ -64,7 +64,7 @@
 			int t = Array.IndexOf(UiLogic.tabNames, page.TabName);
 			string prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
 			string prevText = (t > 0 ? UiLogic.tabTexts[t - 1] : string.Empty); 
-			if (prevTab.ToLower() == "staticwing" && disableTab(prevText, doorConfig.WINGSNUM))
+			if (prevTab.ToLower() == "staticwing" && disableTab(prevText, doorConfig.TRSH_WINGSNUMDES))
 			{
 				prevTab = UiLogic.tabNames[t - 2];
 				prevText = UiLogic.tabTexts[t - 2];
