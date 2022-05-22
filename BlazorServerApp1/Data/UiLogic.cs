@@ -163,16 +163,14 @@ namespace BlazorServerApp1.Data
                 string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
                 string fldDes = tabFields[r]["FIELDDES"].ToString();
                 borderColor = string.Empty;
-                if (fldName == "FAMILYNAME")
-                {
-                    int x = 17;
-                }
+                
                 if (!hideFld(doorConfig, controlThName)
                     && !controlName.StartsWith("chkb")
                     && !doorFldIsFilled(doorConfig, fldName, fldDataType)
                     && fldName.ToUpper() != "REFERENCE"
                     && fldName.ToUpper() != "FORMDATE"
-                    && fldName.ToUpper() != "INSTALLADDRESS")
+                    && fldName.ToUpper() != "INSTALLADDRESS"
+                    && fldName.ToUpper() != "FAMILYNAME")
                 {
                     borderColor = "redBorder";
                     doorConfig.borderColors[fldName] = "redBorder";

@@ -1030,6 +1030,7 @@ namespace BlazorServerApp1.Data
             btnClasses = new Dictionary<string, string>();
             btnClasses["restart"] = "buttonRed";
             btnClasses["general"] =
+            btnClasses["selectprod"] =
             btnClasses["proddes"] = "button";
 
             foreach (string tabName in UiLogic.tabNames)

@@ -40,10 +40,12 @@
         CultureInfo hebrew;
         CultureInfo english;
 
-        Type dyncompType = typeof(Index);
+        Type dyncompType = typeof(Movingwing);   //typeof(Index);
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
         bool showProducts = false;
+        //bool showDivDoorTitle = false;
+        bool hideDoorTitle = true;
 
         protected override async Task OnInitializedAsync()
         {
@@ -63,6 +65,7 @@
         english = new CultureInfo("en-US", false);
 
         showProducts = false;
+        hideDoorTitle = true;
         }
 
         void showTabPage(Type pageType, string tabName)
@@ -73,6 +76,7 @@
             pageParams["doorConfig"] = doorConfig;
             if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
                 pageParams.Remove("disableLogo");
+            showDynComp = true;
             dyncompType = pageType;
             //doorConfig.btnClasses[tabName] = "buttonActive";
             doorConfig.markButton(tabName);
@@ -115,9 +119,9 @@
                         </tr>
                         <tr>
                             <td>
-                                <button name="btnProdDes" class="@doorConfig.btnClasses["proddes"]"
+                                <button name="btnSelectProd" class="@doorConfig.btnClasses["selectprod"]"
                                         onclick="@showProdButtons">
-                                    פרטי המוצר
+                                    בחירת מוצר
                                 </button>
                             </td>
                             @{
@@ -136,6 +140,31 @@
                                 }
                             }
                         </tr>
+                        <tr>
+                            <td>
+                                <button name="btnProdDes" class="@doorConfig.btnClasses["proddes"]"
+                                        onclick="@showDoorTitle">
+                                    תאור מוצר
+                                </button>
+                            </td>
+                             @{
+                                void showDoorTitle()
+                                {
+                                    if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+                                    {
+                                        msgCaption = string.Empty;
+                                        errMsg2 = string.Format("שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה");
+                                        // Js.InvokeVoidAsync("alert", errMsg);
+                                        msgClass = "modal-body centeredMsg";
+                                        openMsgBox = true;
+                                        return;
+                                    }
+                                    hideDoorTitle = false;
+                                }
+                            }
+                        </tr>
+
+
                         @{
                             bool showTabs = false;
                         }
@@ -157,7 +186,9 @@
                                                     pageParams["disableLogo"] = disableLogo;
                                                     showTabPage(typeof(Movingwing), "movinwing");
                                                     doorConfig.btnClasses["general"] =
-                                                    doorConfig.btnClasses["proddes"] = "buttonDisabled";
+                                                    doorConfig.btnClasses["selectprod"] = 
+                                                    doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
+                                                    doorConfig.btnClasses["movingwing"] = "buttonActive";
                                                 }
                                             }
                                         </tr>
@@ -449,7 +480,7 @@
                                                 doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
                                             }
                                             //
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
                                         }
                                     }
         }
@@ -492,7 +523,7 @@
                                                 disableLogo = true;
                                                 doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
                                             }
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
                                             //
                                         }
 
@@ -586,10 +617,11 @@
                                                 {
                                                     pageParams["doorConfig"] = doorConfig;
                                                     pageParams["disableLogo"] = disableLogo;
-                                                    dyncompType = typeof(Movingwing);
+                                                    //dyncompType = typeof(Movingwing);
                                                     hideDivDoor = false;
-                                                    doorConfig.btnClasses["general"] =
-                                                    doorConfig.btnClasses["proddes"] = "buttonLostFocus";
+                                                    doorConfig.btnClasses["general"] =   //"buttonLostFocus";
+                                                    doorConfig.btnClasses["selectprod"] = "buttonFilled"; 
+                                                    doorConfig.btnClasses["proddes"] = "buttonActive";
                                                     //doorConfig.btnClasses["movingwing"] = "buttonActive";
                                                     //doorConfig.markButton("movingwing");
                                                 }
@@ -621,7 +653,7 @@
 
                     <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
-                        <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+                        <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px" hidden="@hideDoorTitle">
                             <table id="tblDoorTitle">
                                 <tr>
                                     <th id="thWingsNum">מיפתח</th>
@@ -921,7 +953,7 @@
                                 showMw = false;
                                 }
                             *@
-                            showDynComp = (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME));
+                            //showDynComp = (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME));
                         }
 
                         @if (showDynComp)
