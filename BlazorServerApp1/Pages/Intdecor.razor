@@ -66,7 +66,7 @@
 <h3>דקורציה פנים</h3>
 <table id="intDecorL1">
     <tr>
-        <th id="thIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">גוון מעטה פנים</th>
+        @* <th id="thIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">גוון מעטה פנים</th>   ==> Movingwing L2  *@ 
         <th id="thIntCPlateHTDmndClr" hidden="@UiLogic.hideFld(doorConfig, "thIntCPlateHTDmndClr")">(גוון לוח מרכזי מעטה פנים (הייטק\יהלום</th>
         <th id="thIntPerifProfileClr" hidden="@UiLogic.hideFld(doorConfig, "thIntPerifProfileClr")">גוון פרופיל היקפי מעטה פנים</th>
         <th id="thIntSideCntrPlateClr" hidden="@UiLogic.hideFld(doorConfig, "thIntSideCntrPlateClr")">גוון לוח צידי\אמצעי מעטה פנימי</th>
@@ -85,7 +85,6 @@
                     }
                 }
             </select>
-        </td>
         @code
         {
             protected int _IntColor = 0;
@@ -111,6 +110,7 @@
                 }
             }
         }
+        </td>
         <td id="tdIntCPlateHTDmndClr" hidden="@UiLogic.hideFld(doorConfig, "thIntCPlateHTDmndClr")">
             <select name="dlstIntCPlateHTDmndClr" @bind="IntCPlateHTDmndClr"
                     class="@doorConfig.borderColors["INTCPLATEHTDMNDCLRID"]">

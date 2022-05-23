@@ -1740,6 +1740,9 @@ namespace BlazorServerApp1.Data
                     emptyHandle.HANDLENAME = " ";
                     emptyHandle.HANDLEDES = " ";
                     val1.Add(emptyHandle);
+                    HANDLE_Class noHandle = new HANDLE_Class();
+                    noHandle.HANDLENAME = noHandle.HANDLEDES = "ללא";  // new per CU request 23/05/2022
+
                     foreach (HANDLE_Class handle in val.value)
                     {
                         val1.Add(handle);

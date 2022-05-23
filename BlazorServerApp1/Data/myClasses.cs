@@ -144,9 +144,15 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 1)]
         public int TRSH_COLORID { get; set; }
         [DataMember(Order = 2)]
-        public string TRSH_COLORNAME { get; set; }
+        public int TRSH_COLORTYPE { get; set; }
         [DataMember(Order = 3)]
+        public string TRSH_COLORTYPEDES { get; set; }
+        [DataMember(Order = 4)]
+        public string TRSH_COLORNAME { get; set; }
+        [DataMember(Order = 5)]
         public string TRSH_COLORDES { get; set; }
+        [DataMember(Order = 6)]
+        public string TRSH_TEXTURE { get; set; }
     }
     public class ValuesTRSH_COLOR_Class
     {
@@ -673,7 +679,7 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 40), Order]
         public string DECORFORMAT { get; set; }      // D-60
         [DataMember(Order = 41), Order]
-        public string TWOCOLORS { get; set; }  // Y | N | '' D-70
+        public string COLORSNUM { get; set; }  // was D-70  string TwoColors  (boolean)   Y | N | '' D-72,  now:  ללא ,1,2
         [DataMember(Order = 42), Order]
         public int DOORWIDTH { get; set; }           // D-80
         [DataMember(Order = 43), Order]
@@ -704,16 +710,23 @@ namespace BlazorServerApp1.Data
         //public string CYLINDERDES { get; set; }
         [DataMember(Order = 65), Order]
         public string ELECTRICAPPARATUS { get; set; } // Y, N, ''  D-910
+
         [DataMember(Order = 66), Order]
+        public string HASLOCK { get; set; }   // D-932  Y | N | "" - boolean
+        [DataMember(Order = 67), Order]
         public string LOCKNAME { get; set; }   // D-930
         //[DataMember(Order = 67), Order]
         //public string LOCKDES { get; set; }
-        [DataMember(Order = 68), Order]
-        public string DRIL4TWOSIDESIDS { get; set; }   //D-980  Y, N ,'' - // previous טבלת ניקוב לפירזול  300  Dril 4 two sides IDS      ניקוב שני צדדים IDS
         [DataMember(Order = 69), Order]
-        public string RAFAFAONMOVINGWING { get; set; }  // D-1010
+        public string DRIL4TWOSIDESIDS { get; set; }   //D-980  Y, N ,'' - // previous טבלת ניקוב לפירזול  300  Dril 4 two sides IDS      ניקוב שני צדדים IDS
         [DataMember(Order = 70), Order]
+        public string RAFAFAONMOVINGWING { get; set; }  // D-1010
+        [DataMember(Order = 71), Order]
         public string LCDEYE { get; set; }  // Y, N, ''  //D-1030
+        [DataMember(Order = 72), Order]
+        public string VENTS { get; set; }
+        [DataMember(Order = 73), Order]
+        public string CATDOOR { get; set; }
         #endregion moving wing
 
         #region Ext Decoration (extdecor )
@@ -1031,6 +1044,7 @@ namespace BlazorServerApp1.Data
             btnClasses["restart"] = "buttonRed";
             btnClasses["general"] =
             btnClasses["selectprod"] =
+            btnClasses["btnDoor"] =
             btnClasses["proddes"] = "button";
 
             foreach (string tabName in UiLogic.tabNames)

@@ -195,8 +195,6 @@ namespace BlazorServerApp1.Data
             string sval;
             int ival;
 
-            
-
             Type objType = doorConfig.GetType();
             PropertyInfo[] props = objType.GetProperties();
             //string[] propNames = props.Select(i => i.Name).ToArray();
@@ -208,6 +206,12 @@ namespace BlazorServerApp1.Data
                 else if (fldName == "HINGE4HEIGHT" && doorConfig.HINGESNUM < 4)
                     return true;
                 else if (fldName == "HINGE3HEIGHT" && doorConfig.HINGESNUM < 3)
+                    return true;
+                else if (fldName == "DOORCOLORID" && doorConfig.COLORSNUM != "1")
+                    return true;
+                else if (fldName == "EXTCOLORID" && doorConfig.COLORSNUM != "2")
+                    return true;
+                else if (fldName == "INTCOLORID" && doorConfig.COLORSNUM != "2")
                     return true;
 
                 //  debug
@@ -1108,6 +1112,10 @@ namespace BlazorServerApp1.Data
             }
         }
 
+        public static string colorTypeAndDes(TRSH_COLOR_Class c)
+        {
+            return string.Format("{0} {1}", c.TRSH_COLORTYPEDES, c.TRSH_COLORDES);
+        }
         //static List<string> lstThNames = new List<string>();
         //static List<string> lstTdNames = new List<string>();
         //public static void getThTdNames(Control rootCtl, ref List<string> lstThNames, ref List<string> lstTdNames)
@@ -1214,6 +1222,7 @@ namespace BlazorServerApp1.Data
         //    }
         //}
         #endregion conf fields
+
         #region sync doorConfig with Form
         //public static void syncTabsWithDoorConfig(DoorConfig doorConfig, Control dvTab, Label lblMsg)
         //{

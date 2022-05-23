@@ -71,7 +71,7 @@
         <tr>
             <th id="thPassim" hidden="@UiLogic.hideFld(doorConfig, "Passim")">פסים שקועים\בולטים</th>
             <th id="thTiletype" hidden="@UiLogic.hideFld(doorConfig, "Tiletype")">סוג אריח</th>
-            <th id="thExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">גוון מעטה חוץ</th>
+           @* <th id="thExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">גוון מעטה חוץ</th>  - ==> movingwing L2*@
             <th id="thGridColor" hidden="@UiLogic.hideFld(doorConfig, "thGridColor")">גוון סורג</th>
             <th id="thVitrageClrByCtlg" hidden="@UiLogic.hideFld(doorConfig, "thVitrageClrByCtlg")">גוון ויטראז' לפי קטלוג</th>
             <th id="thExtSepLinesClr" hidden="@UiLogic.hideFld(doorConfig, "thExtSepLinesClr")"> גוון פסי הפרדה מעטה חוץ</th>
@@ -87,8 +87,7 @@
                         <option>בולטים</option>
                         <option>שקועים</option>
                     </select>
-        </td>
-        @code
+         @code
         {
 			protected string _Passim = string.Empty;
             protected string Passim
@@ -113,7 +112,7 @@
                 }
             }
         }
-
+		</td>
         <td id="tdTiletype" hidden="@UiLogic.hideFld(doorConfig, "Tiletype")" >
             <select name="dlstTiletype"  @bind="TileName" class= "@doorConfig.borderColors["TILENAME"]" >
                 @if (PrApiCalls.lstTileTypes != null)
@@ -124,7 +123,6 @@
                     }
                 }
             </select>
-        </td>
         @code
         {
 			protected string _TileName = string.Empty;
@@ -150,7 +148,9 @@
                 }
             }
         }
-        <td id="tdExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")" >
+        </td>
+      @*
+		<td id="tdExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")" >
             <select name="dlstExtColor" @bind="ExtColor" class= "@doorConfig.borderColors["EXTCOLORID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
@@ -160,7 +160,6 @@
                     }
                 }
             </select>
-         </td>
          @code
         {
 				protected int _ExtColor = 0;
@@ -185,7 +184,9 @@
 						}
                     }
                 }
-        }   
+        }
+		</td>
+     *@
          <td id="tdGridColor" hidden="@UiLogic.hideFld(doorConfig, "tdGridColor")" >
             <select name="dlstGridColor"  @bind="GridColor" class= "@doorConfig.borderColors["GRIDCOLORID"]" >
                 @if (PrApiCalls.lstColors != null)

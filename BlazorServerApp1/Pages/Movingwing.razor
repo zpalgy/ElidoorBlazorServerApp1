@@ -27,6 +27,10 @@
     private string msgCaption = "שגיאה";
     string msgClass = "modal-body redMessage";
 
+    private bool disableColor = true;
+    private bool disableExtColor = true;
+    private bool disableIntColor = true;
+
     async void IDisposable.Dispose()
     {
         //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
@@ -41,7 +45,6 @@
         //    Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'כנף נעה' י");
         //}
         //Js.InvokeVoidAsync("alert", string.Format("in Movingwing:Dispose doorConfig.DRIL4TWOSIDESIDS = {0}", doorConfig.DRIL4TWOSIDESIDS)); //debug
-
     }
 
     protected override async Task OnInitializedAsync()
@@ -65,7 +68,7 @@
     <tr>
         <td>
             <div class="tabPageTitle">
-                <h1 class="rightLeftMargin" >כנף נעה</h1>
+                <h1 class="rightLeftMargin">כנף נעה</h1>
             </div>
         </td>
     </tr>
@@ -74,15 +77,111 @@
 
 <table id="MovingWingL1">
     <tr>
-
-        <th id="thOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">כיוון פתיחה (R,L)</th>
-        @*  <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th> *@
-        <th id="thTwoColors" hidden="@UiLogic.hideFld(doorConfig, "TwoColors")">צביעה בשני צבעים</th>
-        <th id="thDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">רוחב דלת</th>
-        <th id="thDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">גובה דלת</th>
-        <th id="thDoorColor" hidden="@UiLogic.hideFld(doorConfig, "thDoorColor")">גוון דלת</th>
+        <th id="thDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">רוחב כנף</th>
+        <th id="thDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">גובה כנף</th>
+        <th id="thOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">צד פתיחה</th>   @* ימין\שמאל*@
+        <th id="thOpenMode">פתיחה</th>   @* פנימה\החוצה *@
+        @*  <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>  moved to Configurator4.razor divDoorTitle*@
+        <th id="thColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">מספר גוונים</th>
+        <th id="thWingColor" hidden="@UiLogic.hideFld(doorConfig, "thDoorColor")">גוון</th>
     </tr>
     <tr>
+        <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
+            <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" />
+        </td>
+        @code
+        {
+            protected int _DoorWidth = 0;
+            protected int DoorWidth
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _DoorWidth = doorConfig.DOORWIDTH;
+                    }
+                    return _DoorWidth;
+                }
+                set
+                {
+                    _DoorWidth = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.DOORWIDTH = _DoorWidth;
+                        doorConfig.borderColors["DOORWIDTH"] = (value != 0 ? string.Empty : "redBorder");
+                        //[TODO] implement the following lines
+                        //if (chkbComplient.Checked)
+                        //     txtWindowWidth.Text = calcWindowWidth();
+                        if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
+                        {
+                            string errMsg = string.Empty;
+                            doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
+                            if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                            {
+                                //Js.InvokeVoidAsync("alert", errMsg);
+                                errMsg3 = errMsg;
+                                openMsgBox = true;
+                            }
+                        }
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
+                }
+            }
+        }
+
+        <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
+            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" />
+            @code
+            {
+                protected int _DoorHeight = 0;
+                protected int DoorHeight
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _DoorHeight = doorConfig.DOORHEIGHT;
+                        }
+                        return _DoorHeight;
+                    }
+                    set
+                    {
+                        _DoorHeight = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.DOORHEIGHT = _DoorHeight;
+                            doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
+                            //[TODO] implement the following lines
+                            //if (chkbComplient.Checked)
+                            //     txtWindowWidth.Text = calcWindowWidth();
+                            if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
+                            {
+                                errMsg2 = string.Empty;
+                                setHingesAndWindowsData(doorConfig, ref errMsg2);
+                                if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
+                                {
+                                    //Js.InvokeVoidAsync("alert", errMsg2);
+                                    //msgClass = "modal-body redMessage";
+                                    errMsg3 = errMsg2;
+                                    openMsgBox = true;
+                                }
+                            }
+
+                            errMsg2 = string.Empty;
+                            doorConfig.WINDOWHEIGHT = calcWindowHeight(doorConfig, ref errMsg2);
+                            if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
+                            {
+                                //Js.InvokeVoidAsync("alert", errMsg2);
+                                errMsg3 = errMsg2;
+                                openMsgBox = true;
+                            }
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
+                    }
+                }
+            }
+        </td>
+
         <td id="tdOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">
             <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "dlstOpenSide")"
                     class="@doorConfig.borderColors["OPENSIDE"]">
@@ -129,170 +228,134 @@
             </select>
             </td>
         *@
-        @code {
+        @*
+            @code {
             protected string _DecorFormat = string.Empty;
             protected string DecorFormat
             {
-                get
-                {
-                    if (doorConfig != null)
-                    {
-                        // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
-                        _DecorFormat = doorConfig.DECORFORMAT;
-                    }
-                    return _DecorFormat;
-                }
-                set
-                {
-                    _DecorFormat = value;
-                    if (doorConfig != null)
-                    {
-                        doorConfig.DECORFORMAT = _DecorFormat;
-                        doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                    }
-                }
-            }
-
-        }
-        <td id="tdTwoColors" hidden="@UiLogic.hideFld(doorConfig, "TwoColors")">
-            <input type="checkbox" name="chkbTwoColors" @bind="TwoColors" />
-        </td>
-        @code
-        {
-            protected bool _TwoColors = false;
-            protected bool TwoColors
+            get
             {
-                get
-                {
-                    if (doorConfig != null)
-                    {
-                        _TwoColors = (doorConfig.TWOCOLORS == "Y");
-                    }
-                    return _TwoColors;
-                }
-                set
-                {
-                    _TwoColors = value;
-                    if (doorConfig != null)
-                    {
-                        doorConfig.TWOCOLORS = (_TwoColors ? "Y" : "");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                    }
-                }
-            }
-
-        }
-        <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
-            <input name="txtDoorWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" />
-        </td>
-        @code
-        {
-            protected int _DoorWidth = 0;
-            protected int DoorWidth
+            if (doorConfig != null)
             {
-                get
+            // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
+            _DecorFormat = doorConfig.DECORFORMAT;
+            }
+            return _DecorFormat;
+            }
+            set
+            {
+            _DecorFormat = value;
+            if (doorConfig != null)
+            {
+            doorConfig.DECORFORMAT = _DecorFormat;
+            doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+            }
+            }
+            }
+            }
+        *@
+        <td id="tdOpenMode">
+            <select name="dlstOpenMode" @bind="openMode">
+                <option></option>
+                <option>פנימה</option>
+                <option>החוצה</option>
+            </select>
+            @code
+            {
+                protected string _openMode = string.Empty;
+                protected string openMode
                 {
-                    if (doorConfig != null)
+                    get
                     {
-                        _DoorWidth = doorConfig.DOORWIDTH;
-                    }
-                    return _DoorWidth;
-                }
-                set
-                {
-                    _DoorWidth = value;
-                    if (doorConfig != null)
-                    {
-                        doorConfig.DOORWIDTH = _DoorWidth;
-                        doorConfig.borderColors["DOORWIDTH"] = (value != 0 ? string.Empty : "redBorder");
-                        //[TODO] implement the following lines
-                        //if (chkbComplient.Checked)
-                        //     txtWindowWidth.Text = calcWindowWidth();
-                        if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
+                        if (doorConfig != null)
                         {
-                            string errMsg = string.Empty;
-                            doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
-                            if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                            _openMode = doorConfig.OPENMODE;
+                        }
+                        return _openMode;
+                    }
+                    set
+                    {
+                        _openMode = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.OPENMODE = _openMode;
+                            doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
+                    }
+                }
+            }
+        </td>
+
+        <td id="tdColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">
+            <select name="dlstColorsNum"  @bind="ColorsNum" >
+                <option></option>
+                <option>ללא</option>
+                <option>1</option>
+                <option>2</option>
+            </select>
+
+            @code
+            {
+                protected string _ColorsNum = string.Empty;
+                protected string ColorsNum
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _ColorsNum = doorConfig.COLORSNUM;
+                        }
+                        return _ColorsNum;
+                    }
+                    set
+                    {
+                        _ColorsNum = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.COLORSNUM = _ColorsNum;
+                            switch (_ColorsNum.Trim())
                             {
-                                //Js.InvokeVoidAsync("alert", errMsg);
-                                errMsg3 = errMsg;
-                                openMsgBox = true;
+                                case "":
+                                case "ללא":
+                                    disableColor = disableExtColor = disableIntColor = true;
+                                    doorConfig.DOORCOLORID = doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
+                                    doorConfig.INTCOLORDES = string.Empty;
+                                    break;
+                                case "1":
+                                    disableColor = false;
+                                    disableExtColor = true;
+                                    disableIntColor = true;
+                                    doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
+                                    doorConfig.INTCOLORDES = string.Empty;
+                                    break;
+                                case "2":
+                                    disableColor = true;
+                                    disableExtColor = disableIntColor = false;
+                                    doorConfig.DOORCOLORID = 0;
+                                    break;
                             }
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
-            }
-        }
 
-        <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
-            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" />
+            }
         </td>
-        @code
-        {
-            protected int _DoorHeight = 0;
-            protected int DoorHeight
-            {
-                get
-                {
-                    if (doorConfig != null)
-                    {
-                        _DoorHeight = doorConfig.DOORHEIGHT;
-                    }
-                    return _DoorHeight;
-                }
-                set
-                {
-                    _DoorHeight = value;
-                    if (doorConfig != null)
-                    {
-                        doorConfig.DOORHEIGHT = _DoorHeight;
-                        doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
-                        //[TODO] implement the following lines
-                        //if (chkbComplient.Checked)
-                        //     txtWindowWidth.Text = calcWindowWidth();
-                        if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
-                        {
-                            errMsg2 = string.Empty;
-                            setHingesAndWindowsData(doorConfig, ref errMsg2);
-                            if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
-                            {
-                                //Js.InvokeVoidAsync("alert", errMsg2);
-                                //msgClass = "modal-body redMessage";
-                                errMsg3 = errMsg2;
-                                openMsgBox = true;
-                            }
-                        }
-
-                        errMsg2 = string.Empty;
-                        doorConfig.WINDOWHEIGHT = calcWindowHeight(doorConfig, ref errMsg2);
-                        if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
-                        {
-                            //Js.InvokeVoidAsync("alert", errMsg2);
-                            errMsg3 = errMsg2;
-                            openMsgBox = true;
-                        }
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                    }
-                }
-            }
-        }
-
 
 
 
         <td id="tdDoorColor" hidden="@UiLogic.hideFld(doorConfig, "DoorColor")">
-            <select name="dlstDoorColor" @bind="DoorColorId" class="@doorConfig.borderColors["DOORCOLORID"]">
+            <select name="dlstDoorColor" @bind="DoorColorId" class="@doorConfig.borderColors["DOORCOLORID"]" disabled="@disableColor">
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
                     {
-                        <option value="@c.TRSH_COLORID">@c.TRSH_COLORDES</option>
+                        <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
                     }
                 }
             </select>
-        </td>
         @code
         {
 
@@ -318,51 +381,103 @@
                     }
                 }
             }
-
         }
+        </td>
     </tr>
 </table>
 <!-- end table MovingWingL1 -->
 <br />
 <table id="MovingWingL2">
     <tr>
-        <th id="thTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">מנגנון תגבור</th>
-        <th id="thLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">גובה ניקוב / מרכז לשונית</th>
-        <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th>
+        @* <th id="thTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">מנגנון תגבור</th> *@
+        <th id="thExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">גוון חוץ</th>  @* was in Extdecor.razor *@
+        <th id="thIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">גוון פנים</th>  @* was in Intdecor.razor L1  *@
+        <th id="thLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">גובה ניקוב</th>
+
+        @* <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th> *@
+
         <th id="thHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">פירזול</th>
-        <th id="thHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">פירזול בצבע</th>
-        <th id="thDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">ניקוב פירזול</th>
+        <th id="thHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">צבע פירזול</th>
+        <th id="thDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">ניקוב לפירזול</th>
     </tr>
     <tr>
-
-        <td id="tdTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">
-            <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus" />
-        </td>
-        @code
-        {
-            protected bool _TurboApparatus = false;
-            protected bool TurboApparatus
-            {
-                get
+        <td id="tdExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">
+            <select name="dlstExtColor" @bind="ExtColor" class="@doorConfig.borderColors["EXTCOLORID"]"
+                    disabled="@disableExtColor">
+                @if (PrApiCalls.lstColors != null)
                 {
-                    if (doorConfig != null)
+                    @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
                     {
-                        _TurboApparatus = (doorConfig.TURBOAPPARATUS == "Y");
+                        <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
                     }
-                    return _TurboApparatus;
                 }
-                set
+            </select>
+            @code
+            {
+                protected int _ExtColor = 0;
+                protected int ExtColor
                 {
-                    _TurboApparatus = value;
-                    if (doorConfig != null)
+                    get
                     {
-                        doorConfig.TURBOAPPARATUS = (_TurboApparatus ? "Y" : "");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        if (doorConfig != null)
+                        {
+                            _ExtColor = doorConfig.EXTCOLORID;
+                        }
+                        return _ExtColor;
+                    }
+                    set
+                    {
+                        _ExtColor = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.EXTCOLORID = _ExtColor;
+                            doorConfig.borderColors["EXTCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        }
                     }
                 }
             }
+        </td>
 
-        }
+        <td id="tdIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">
+            <select name="dlstIntColor" @bind="IntColor" class="@doorConfig.borderColors["INTCOLORID"]"
+                    disabled="@disableIntColor">
+                @if (PrApiCalls.lstColors != null)
+                {
+                    @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+                    {
+                        <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
+                    }
+                }
+            </select>
+            @code
+            {
+                protected int _IntColor = 0;
+                protected int IntColor
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _IntColor = doorConfig.INTCOLORID;
+                        }
+                        return _IntColor;
+                    }
+                    set
+                    {
+                        _IntColor = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.INTCOLORID = _IntColor;
+                            doorConfig.borderColors["INTCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "intdecor");
+                        }
+                    }
+                }
+            }
+        </td>
+
+
         <td id="tdLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">
             <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" />
         </td>
@@ -391,34 +506,7 @@
                 }
             }
         }
-        <td id="tdLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">
-            <input type="checkbox" name="chkbLogo" @bind="Logo" disabled="@disableLogo" />
-        </td>
-        @code
-        {
-            protected bool _Logo = false;
-            protected bool Logo
-            {
-                get
-                {
-                    if (doorConfig != null)
-                    {
-                        _Logo = (doorConfig.LOGO == "Y");
-                    }
-                    return _Logo;
-                }
-                set
-                {
-                    _Logo = value;
-                    if (doorConfig != null)
-                    {
-                        doorConfig.LOGO = (_Logo ? "Y" : "");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                    }
-                }
-            }
 
-        }
         <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
             <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]">
                 @{
@@ -466,7 +554,7 @@
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
                     {
-                        <option value="@c.TRSH_COLORID">@c.TRSH_COLORDES</option>
+                        <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
                     }
                 }
             </select>
@@ -541,10 +629,23 @@
     <tr>
         <th id="thCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">צילינדר</th>
         <th id="thElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">מנגנון חשמלי</th>
-        <th id="thLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">מנעול</th>
-        <th id="thTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">ניקוב שני צדדים IDS</th>
-        <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">תוספת רפפה עשן/פתח איוורור בכנף הנעה</th>
-        <th id="thLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEyer")">LCD עינית</th>
+        <th id="thTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">מנגנון תגבור</th>
+        <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th>
+        <th id="thHasLock" hidden="@UiLogic.hideFld(doorConfig, "HasLock")">מנעול</th>
+        @* <th id="thTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">ניקוב שני צדדים IDS</th> *@
+        @{
+            bool h = UiLogic.hideFld(doorConfig, "thHandle");
+        }
+
+        @if (!h)
+        {
+            <th id="thHandle">ידית אומנויות</th>
+        }
+
+        <th id="thVents" hidden="@UiLogic.hideFld(doorConfig, "Ventilation")">פתחי אוורור</th>
+        <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">רפפת עשן</th>
+        <th id="thCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">פתח לחתול</th>
+        @* <th id="thLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEyer")">LCD עינית</th> *@
     </tr>
     <tr>
         <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
@@ -585,18 +686,23 @@
         }
 
         <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
-            <input type="checkbox" name="chkbElectricApparatus" @bind="ElectricApparatus" />
+            <select name="dlstElectricApparatus" @bind="ElectricApparatus" class="@doorConfig.borderColors["ELECTRICAPPARATUS"]">
+                <option></option>
+                <option>ללא</option>
+                <option>R</option>
+                <option>L</option>
+            </select>
         </td>
         @code
         {
-            protected bool _ElectricApparatus = false;
-            protected bool ElectricApparatus
+            protected string _ElectricApparatus = string.Empty;
+            protected string ElectricApparatus
             {
                 get
                 {
                     if (doorConfig != null)
                     {
-                        _ElectricApparatus = (doorConfig.ELECTRICAPPARATUS == "Y");
+                        _ElectricApparatus = doorConfig.ELECTRICAPPARATUS;
                     }
                     return _ElectricApparatus;
                 }
@@ -604,11 +710,71 @@
                 {
                     _ElectricApparatus = value;
                     if (doorConfig != null)
-                        doorConfig.ELECTRICAPPARATUS = (_ElectricApparatus ? "Y" : "");
+                    {
+                        doorConfig.ELECTRICAPPARATUS = _ElectricApparatus;
+                        doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
                 }
             }
         }
+        <td id="tdTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">
+            <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus" />
+            @code
+            {
+                protected bool _TurboApparatus = false;
+                protected bool TurboApparatus
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _TurboApparatus = (doorConfig.TURBOAPPARATUS == "Y");
+                        }
+                        return _TurboApparatus;
+                    }
+                    set
+                    {
+                        _TurboApparatus = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.TURBOAPPARATUS = (_TurboApparatus ? "Y" : "");
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
+                    }
+                }
+            }
+        </td>
 
+        <td id="tdLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">
+            <input type="checkbox" name="chkbLogo" @bind="Logo" disabled="@disableLogo" />
+            @code
+            {
+                protected bool _Logo = false;
+                protected bool Logo
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Logo = (doorConfig.LOGO == "Y");
+                        }
+                        return _Logo;
+                    }
+                    set
+                    {
+                        _Logo = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.LOGO = (_Logo ? "Y" : "");
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
+                    }
+                }
+
+            }
+        </td>
+        @*
         <td id="tdLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">
             <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["LOCKNAME"]">
                 @{
@@ -647,91 +813,232 @@
                 }
             }
         }
+        *@
+        
+                <td id="tdHasLock" hidden="@UiLogic.hideFld(doorConfig, "HasLock")">
+                    <input type="checkbox" name="chkbHasLock" @bind="HasLock" />
+                
+                
+                @code
+                {
+	                protected bool _HasLock = false;
+	                protected bool HasLock
+	                {
+		                get
+		                {
+			                if (doorConfig != null)
+			                {
+				                _HasLock = (doorConfig.HASLOCK == "Y");
+			                }
+			                return _HasLock;
+		                }
+		                set
+		                {
+			                _HasLock = value;
+			                if (doorConfig != null)
+				                doorConfig.HASLOCK = (_HasLock ? "Y" : "");
+		                }
+	                }
+                }
+                    </td>
+        
 
         @* if the user choose Dril4Hw == "IDS" then we enable  chkbTwoSidesIDSDril   *@
-        <td id="tdTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">
+        @*
+            <td id="tdTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">
             <input type="checkbox" name="chkbTwoSidesIDSDril" @bind="TwoSidesIDSDril" disabled="@Dril4HwIsNotIDS(doorConfig)" />
-        </td>
-        @code
-        {
+            @code
+            {
             protected bool _TwoSidesIDSDril = false;
             protected bool TwoSidesIDSDril
             {
-                get
-                {
-                    if (doorConfig != null)
+            get
+            {
+            if (doorConfig != null)
+            {
+            _TwoSidesIDSDril = (doorConfig.DRIL4TWOSIDESIDS == "Y");
+            }
+            return _TwoSidesIDSDril;
+            }
+            set
+            {
+            _TwoSidesIDSDril = value;
+            if (doorConfig != null)
+            doorConfig.DRIL4TWOSIDESIDS = (_TwoSidesIDSDril ? "Y" : "");
+            }
+            }
+            }
+            </td>
+        *@
+        @if (!h)
+        {
+            <td id="tdHandle">
+                <select name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["HANDLENAME"]">
+                    @if (PrApiCalls.lstHandles != null)
                     {
-                        _TwoSidesIDSDril = (doorConfig.DRIL4TWOSIDESIDS == "Y");
+                        @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
+                        {
+                            <option value="@c.HANDLENAME">@c.HANDLEDES</option>
+                        }
                     }
-                    return _TwoSidesIDSDril;
-                }
-                set
+                </select>
+           
+                @code
                 {
-                    _TwoSidesIDSDril = value;
-                    if (doorConfig != null)
-                        doorConfig.DRIL4TWOSIDESIDS = (_TwoSidesIDSDril ? "Y" : "");
+                protected string _Handle1 = string.Empty;
+                protected string Handle1
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Handle1 = doorConfig.HANDLENAME;
+                        }
+                        return _Handle1;
+                    }
+                    set
+                    {
+                        _Handle1 = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.HANDLENAME = _Handle1;
+                            // Handle is Optional
+                            //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
+                    }
                 }
             }
+            </td>
         }
+            @* end  tdHandle *@
 
-        <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">
-            <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]">
-                <option> </option>
+        <td id="tdVents" hidden="@UiLogic.hideFld(doorConfig, "Vents")">
+            <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["VENTS"]">
+                <option></option>
+                <option>ללא</option>
                 <option>1</option>
                 <option>2</option>
-                <option>כל הדלת</option>
+                <option>3</option>
             </select>
-        </td>
-        @code
-        {
-            protected string _Rafafa = string.Empty;
-            protected string Rafafa
+            @code
             {
-                get
+                protected string _Vents = string.Empty;
+                protected string Vents
                 {
-                    if (doorConfig != null)
+                    get
                     {
-                        _Rafafa = doorConfig.RAFAFAONMOVINGWING;
+                        if (doorConfig != null)
+                        {
+                            _Rafafa = doorConfig.VENTS;
+                        }
+                        return _Rafafa;
                     }
-                    return _Rafafa;
-                }
-                set
-                {
-                    _Rafafa = value;
-                    if (doorConfig != null)
+                    set
                     {
-                        doorConfig.RAFAFAONMOVINGWING = _Rafafa;
-                        doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        _Vents = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.VENTS = _Vents;
+                            doorConfig.borderColors["VENTS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
                     }
                 }
             }
-        }
-
-        <td id="tdLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEye")">
-            <input type="checkbox" name="chkbLCDEye" @bind="LCDEye" />
         </td>
-        @code
-        {
+        <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">
+            <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]">
+                <option></option>
+                <option>ללא</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+            @code
+            {
+                protected string _Rafafa = string.Empty;
+                protected string Rafafa
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Rafafa = doorConfig.RAFAFAONMOVINGWING;
+                        }
+                        return _Rafafa;
+                    }
+                    set
+                    {
+                        _Rafafa = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.RAFAFAONMOVINGWING = _Rafafa;
+                            doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
+                    }
+                }
+            }
+        </td>
+        <td id="tdCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">
+            <select name="dlstRafafa" @bind="CatDoor" class="@doorConfig.borderColors["CATDOOR"]">
+                <option></option>
+                <option>ללא</option>
+                <option>כן</option>
+            </select>
+            @code
+            {
+                protected string _CatDoor = string.Empty;
+                protected string CatDoor
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _CatDoor = doorConfig.CATDOOR;
+                        }
+                        return _CatDoor;
+                    }
+                    set
+                    {
+                        _CatDoor = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.CATDOOR = _CatDoor;
+                            doorConfig.borderColors["CATDOOR"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
+                    }
+                }
+            }
+        </td>
+        @*
+            <td id="tdLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEye")">
+            <input type="checkbox" name="chkbLCDEye" @bind="LCDEye" />
+            @code
+            {
             protected bool _LCDEye = false;
             protected bool LCDEye
             {
-                get
-                {
-                    if (doorConfig != null)
-                    {
-                        _LCDEye = (doorConfig.LCDEYE == "Y");
-                    }
-                    return _LCDEye;
-                }
-                set
-                {
-                    _LCDEye = value;
-                    if (doorConfig != null)
-                        doorConfig.LCDEYE = (_LCDEye ? "Y" : "");
-                }
+            get
+            {
+            if (doorConfig != null)
+            {
+            _LCDEye = (doorConfig.LCDEYE == "Y");
             }
-        }
+            return _LCDEye;
+            }
+            set
+            {
+            _LCDEye = value;
+            if (doorConfig != null)
+            doorConfig.LCDEYE = (_LCDEye ? "Y" : "");
+            }
+            }
+            }
+            </td>
+        *@
     </tr>
 </table>
 <!-- end table MovingWingL3 -->
