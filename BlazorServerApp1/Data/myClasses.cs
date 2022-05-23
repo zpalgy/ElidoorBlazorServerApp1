@@ -600,6 +600,22 @@ namespace BlazorServerApp1.Data
         public List<Decoration_Class> value { get; set; }
     }
 
+    [DataContract]
+    public class WingWidth_Class
+    {
+        [DataMember(Order = 1)]
+        public int TRSH_WING_WIDTH { get; set; }
+        [DataMember(Order = 2)]
+        public int FROM_WIDTH { get; set; }
+        [DataMember(Order = 3)]
+        public int TO_WIDTH { get; set; }
+        [DataMember(Order = 4)]
+        public int AUTO_WINDOW_WIDTH { get; set; }
+    }
+    public class ValuesWingWidth_Class
+    {
+        public List<WingWidth_Class> value { get; set; }
+    }
 
     [DataContract, Serializable]
     public class DoorConfig

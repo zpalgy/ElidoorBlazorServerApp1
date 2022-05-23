@@ -25,7 +25,9 @@
     string errMsg2 = string.Empty;
     string errMsg3 = "xxxxxxxxxxxxxxxxxx";
     private string msgCaption = "שגיאה";
-    string msgClass = "modal-body redMessage";
+    string msgClass = "modal-body centeredMsg";
+    private string titleClass = string.Empty;
+    string msgHeaderClass = "modal-header";
 
     private bool disableColor = true;
     private bool disableExtColor = true;
@@ -105,25 +107,34 @@
                 set
                 {
                     _DoorWidth = value;
-                    if (doorConfig != null)
+                    if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
                     {
-                        doorConfig.DOORWIDTH = _DoorWidth;
-                        doorConfig.borderColors["DOORWIDTH"] = (value != 0 ? string.Empty : "redBorder");
-                        //[TODO] implement the following lines
-                        //if (chkbComplient.Checked)
-                        //     txtWindowWidth.Text = calcWindowWidth();
-                        if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
+                        msgCaption = string.Empty;
+                        msgClass = "modal-body centeredMsg";
+                        openMsgBox = true;
+                    }
+                    else
+                    {
+                        if (doorConfig != null)
                         {
-                            string errMsg = string.Empty;
-                            doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
-                            if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                            doorConfig.DOORWIDTH = _DoorWidth;
+                            doorConfig.borderColors["DOORWIDTH"] = (value != 0 ? string.Empty : "redBorder");
+                            //[TODO] implement the following lines
+                            //if (chkbComplient.Checked)
+                            //     txtWindowWidth.Text = calcWindowWidth();
+                            if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
                             {
-                                //Js.InvokeVoidAsync("alert", errMsg);
-                                errMsg3 = errMsg;
-                                openMsgBox = true;
+                                string errMsg = string.Empty;
+                                doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
+                                if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                                {
+                                    //Js.InvokeVoidAsync("alert", errMsg);
+                                    errMsg3 = errMsg;
+                                    openMsgBox = true;
+                                }
                             }
+                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
             }
@@ -502,6 +513,20 @@
                         doorConfig.LOCKDRILHEIGHT = _LOckDrilHeight;
                         doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        doorConfig.HINGESNUM = 0;
+                        doorConfig.BACKPINHEIGHT = 0;
+                        doorConfig.HINGE1HEIGHT = 0;
+                        doorConfig.HINGE2HEIGHT = 0;
+                        doorConfig.HINGE3HEIGHT = 0;
+                        doorConfig.HINGE4HEIGHT = 0;
+                        doorConfig.HINGE5HEIGHT = 0;
+                        //
+                        msgHeaderClass = "modal-header redBorder";
+                        msgCaption = "שים לב:";
+                        msgClass = "modal-body centeredMsg";
+                        errMsg2 =  "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית";
+                        openMsgBox = true;
+
                     }
                 }
             }
@@ -982,21 +1007,17 @@
             }
         </td>
         <td id="tdCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">
-            <select name="dlstRafafa" @bind="CatDoor" class="@doorConfig.borderColors["CATDOOR"]">
-                <option></option>
-                <option>ללא</option>
-                <option>כן</option>
-            </select>
+            <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" />
             @code
             {
-                protected string _CatDoor = string.Empty;
-                protected string CatDoor
+                protected bool _CatDoor = false;
+                protected bool CatDoor
                 {
                     get
                     {
                         if (doorConfig != null)
                         {
-                            _CatDoor = doorConfig.CATDOOR;
+                            _CatDoor = (doorConfig.CATDOOR == "Y");
                         }
                         return _CatDoor;
                     }
@@ -1005,8 +1026,8 @@
                         _CatDoor = value;
                         if (doorConfig != null)
                         {
-                            doorConfig.CATDOOR = _CatDoor;
-                            doorConfig.borderColors["CATDOOR"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            doorConfig.CATDOOR = (_CatDoor ? "Y" : "N" );
+                            //doorConfig.borderColors["CATDOOR"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -1044,11 +1065,11 @@
 <!-- end table MovingWingL3 -->
 @if (openMsgBox)
 {
-    <MsgBox Caption="שגיאה"
-        Message="@errMsg3"
+    <MsgBox Caption="@msgCaption"
+        Message="@errMsg2"
         OnClose="OnDialogClose"
-        MsgTitleCssClass="modal-title redTitle"
-        ErrMsgCssClass="modal-body redMessage">
+        MsgTitleCssClass="@titleClass"
+        ErrMsgCssClass="@msgClass">
     </MsgBox>
     @code
     {
@@ -1057,5 +1078,5 @@
         openMsgBox = false;
         errMsg2 = string.Empty;
     }
-	}
+}
 }

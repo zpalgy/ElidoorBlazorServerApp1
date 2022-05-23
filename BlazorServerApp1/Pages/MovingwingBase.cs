@@ -11,6 +11,17 @@ namespace BlazorServerApp1.Pages
 {
     public class MovingwingBase : ComponentBase
     {
+        protected bool wingWidthIsOk(int wingWidth, ref string errMsg)
+        {
+            string query = string.Format("FROM_WIDTH <= {0} AND {0} <= TO_WIDTH", wingWidth);
+            DataRow[] rowsArray = PrApiCalls.dtWingWidth.Select(query);
+            if (rowsArray.Length == 0)
+            {
+                errMsg = "רוחב כנף חורג מהטולרנס שהוגדר נא למלא רוחב כנף מתאים";
+                return false;
+            }
+            return true;
+        }
         protected int calcWindowWidth(DoorConfig doorConfig, ref string errMsg)
         {
             try

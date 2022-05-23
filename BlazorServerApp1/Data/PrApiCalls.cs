@@ -35,6 +35,10 @@ namespace BlazorServerApp1.Data
 
         public static List<PART_Class> lstParts = new List<PART_Class>();
         public static DataTable dtParts = new DataTable();
+
+        public static List<WingWidth_Class> lstWingWidth = new List<WingWidth_Class>();
+        public static DataTable dtWingWidth = new DataTable();
+
         public static List<TRSH_COLOR_Class> lstColors = new List<TRSH_COLOR_Class>();
         public static List<TRSH_COLOR_Class> lstGlassColors4Diamond = new List<TRSH_COLOR_Class>();
         public static List<TRSH_LOCKHINGE_DRILH_Class> lstLock_Hinge_Dril_Heights = new List<TRSH_LOCKHINGE_DRILH_Class>();  // table 230
@@ -442,6 +446,54 @@ namespace BlazorServerApp1.Data
             
             return string.Empty;  // error !
         }
+
+        public static List<WingWidth_Class> getAllWingWidths(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "TRSH_WING_WIDTH,FROM_WIDTH,TO_WIDTH,AUTO_WINDOW_WIDTH";
+                request.Resource = string.Format("TRSH_WING_WIDTH?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesWingWidth_Class val = JsonConvert.DeserializeObject<ValuesWingWidth_Class>(response.Content);
+
+                    List<WingWidth_Class> val1 = new List<WingWidth_Class>();  //val.value;
+                    //WingWidth_Class emptyWWidth = new WingWidth_Class();
+                    //emptyWWidth.TRSH_WINGSNUM = 0;
+                    //val1.Add(emptyWnum);
+                    foreach (WingWidth_Class ww in val.value)
+                    {
+                        val1.Add(ww);
+                    }
+                    return val1;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
         public static List<Decoration_Class> getAllDecorations(ref string errMsg)
         {
             try
@@ -787,6 +839,8 @@ namespace BlazorServerApp1.Data
                 dtModels = lstModels.ToDataTable<Model_Class>();
                 lstDecorations = getAllDecorations(ref errMsg);
                 dtDecorations = lstDecorations.ToDataTable<Decoration_Class>();
+                lstWingWidth = getAllWingWidths(ref errMsg);
+                dtWingWidth = lstWingWidth.ToDataTable<WingWidth_Class>();
 
                 lstParts = getAllParts(ref errMsg);
                 dtParts = lstParts.ToDataTable<PART_Class>();
@@ -991,6 +1045,7 @@ namespace BlazorServerApp1.Data
                     emptyHw.TRSH_HARDWARE = 0;
                     emptyHw.HARDWAREDES = " ";
                     val1.Add(emptyHw);
+
                     foreach (TRSH_HARDWARE_Class hw in val.value)
                     {
                         val1.Add(hw);
@@ -1030,6 +1085,7 @@ namespace BlazorServerApp1.Data
                     emptyHW.TRSH_HARDWARE = 0;
                     emptyHW.HARDWAREDES = " ";
                     lstParHWs.Add(emptyHW);
+
                     for (int r = 0; r < rowsArray.Length; r++)
                     {
                         TRSH_HARDWARE_Class Hw1 = new TRSH_HARDWARE_Class();
@@ -1037,6 +1093,12 @@ namespace BlazorServerApp1.Data
                         Hw1.HARDWAREDES = rowsArray[r]["HARDWAREDES"].ToString();
                         lstParHWs.Add(Hw1);
                     }
+
+                    TRSH_HARDWARE_Class noHw = new TRSH_HARDWARE_Class();
+                    noHw.TRSH_HARDWARE = 999;
+                    noHw.HARDWAREDES = "ללא";
+                    lstParHWs.Add(noHw);
+
                     return lstParHWs;
                 }
                 else
