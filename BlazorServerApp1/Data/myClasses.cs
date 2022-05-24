@@ -622,7 +622,7 @@ namespace BlazorServerApp1.Data
     {
         #region form header
         [DataMember(Order = 1), Order]
-        public string REFERENCE { get; set; }
+        public string REFERENCE { get; set; } = String.Empty;
         //[Required]
         [DataMember(Order = 2), Order]
         public string FORMDATE { get; set; }
@@ -642,8 +642,13 @@ namespace BlazorServerApp1.Data
         //public string CUSTNAME { get; set; }
         //[DataMember(Order = 7), Order]
         //public string CUSTDES { get; set; }
+
         [DataMember(Order = 8), Order]
         public string INSTALLADDRESS { get; set; }
+
+        //[NonSerialized]
+        //public string INSTALLADDRESS;
+
         [DataMember(Order = 9), Order]
         public string SHIPADDRESS { get; set; }
         //[DataMember(Order = 10), Order]
@@ -652,8 +657,8 @@ namespace BlazorServerApp1.Data
 
         #region door header
 
-        [DataMember(Order = 12), Order]
-        public string TRSH_WINGSNUMCODE { get; set; }  // '1','1.5','2'
+        //[DataMember(Order = 12), Order]
+        //public string TRSH_WINGSNUMCODE { get; set; }  // '1','1.5','2'
 
         [DataMember(Order = 13), Order]
         public string TRSH_WINGSNUMDES { get; set; }  // כנף, כנף וחצי, דו כנפי
@@ -670,20 +675,36 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 16), Order] 
         public string TRSH_MODELNAME { get; set; }    // MLI, 1029, 1040, ...
         //***********************************************
-        [DataMember(Order = 17), Order]
-        public string PARTNAME { get; set; }  //D-20
+        //[DataMember(Order = 17), Order]
+        //public string PARTNAME { get; set; }  //D-20
+        [NonSerialized]
+        public string PARTNAME;
+
         //[DataMember(Order = 24), Order]
         //public string PARTDES { get; set; }
-        [DataMember(Order = 18), Order]
-        public int FAMILY { get; set; }  // D-10
+
+        //[DataMember(Order = 18), Order]
+        //public int FAMILY { get; set; }  // D-10
+        [NonSerialized]
+        public int FAMILY;
+
         //[DataMember(Order = 22), Order]
         //public string FAMILYDES { get; set; }
         [NonSerialized]
         public string FAMILYNAME = string.Empty;
-        [DataMember(Order = 19), Order]
-        public int TRSH_DOOR_HWCATCODE { get; set; }
-        [DataMember(Order = 20), Order]
-        public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
+
+        //[DataMember(Order = 19), Order]
+        //public int TRSH_DOOR_HWCATCODE { get; set; }
+
+        [NonSerialized]
+        public int TRSH_DOOR_HWCATCODE;
+
+        //[DataMember(Order = 20), Order]
+        //public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
+
+        [NonSerialized]
+        public string MEASURESDOC;
+
         #endregion door header
 
         #region moving wing
@@ -727,34 +748,66 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 65), Order]
         public string ELECTRICAPPARATUS { get; set; } // Y, N, ''  D-910
 
-        [DataMember(Order = 66), Order]
-        public string HASLOCK { get; set; }   // D-932  Y | N | "" - boolean
-        [DataMember(Order = 67), Order]
-        public string LOCKNAME { get; set; }   // D-930
+        //[DataMember(Order = 66), Order]
+        //public string HASLOCK { get; set; }   // D-932  Y | N | "" - boolean
+
+        [NonSerialized]
+        public string HASLOCK;
+
+
+        //[DataMember(Order = 67), Order]
+        //public string LOCKNAME { get; set; }   // D-930
+
+        [NonSerialized]
+        public string LOCKNAME;
+
         //[DataMember(Order = 67), Order]
         //public string LOCKDES { get; set; }
-        [DataMember(Order = 69), Order]
-        public string DRIL4TWOSIDESIDS { get; set; }   //D-980  Y, N ,'' - // previous טבלת ניקוב לפירזול  300  Dril 4 two sides IDS      ניקוב שני צדדים IDS
+
+        //[DataMember(Order = 69), Order]
+        //public string DRIL4TWOSIDESIDS { get; set; }   //D-980  Y, N ,'' - // previous טבלת ניקוב לפירזול  300  Dril 4 two sides IDS      ניקוב שני צדדים IDS
+
+        [NonSerialized]
+        public string DRIL4TWOSIDESIDS;
+
         [DataMember(Order = 70), Order]
         public string RAFAFAONMOVINGWING { get; set; }  // D-1010
-        [DataMember(Order = 71), Order]
-        public string LCDEYE { get; set; }  // Y, N, ''  //D-1030
+
+        //[DataMember(Order = 71), Order]
+        //public string LCDEYE { get; set; }  // Y, N, ''  //D-1030
+
+        [NonSerialized]
+        public string LCDEYE;
+
         [DataMember(Order = 72), Order]
         public string VENTS { get; set; }
+
         [DataMember(Order = 73), Order]
         public string CATDOOR { get; set; }
+
+        //[NonSerialized]
+        //public string CATDOOR;
+
         #endregion moving wing
 
         #region Ext Decoration (extdecor )
         #region extDecorL1
-        [DataMember(Order = 80), Order]
-        public string LINESFORMAT { get; set; }  //D-90  Shkuim Boltin שקועים \ בולטים 
-        [DataMember(Order = 81), Order]
-        public string TILENAME { get; set; }      // D-100
+        //[DataMember(Order = 80), Order]
+        //public string LINESFORMAT { get; set; }  //D-90  Shkuim Boltin שקועים \ בולטים 
+        [NonSerialized]
+        public string LINESFORMAT;
+
+        //[DataMember(Order = 81), Order]
+        //public string TILENAME { get; set; }      // D-100
+        [NonSerialized]
+        public string TILENAME;
+
         //[DataMember(Order = 82), Order]
         //public string TILEDES { get; set; }
+
         [DataMember(Order = 83), Order]
         public int EXTCOLORID { get; set; }   //D-120
+        
         //[DataMember(Order = 84), Order]
         //public string EXTCOLORDES { get; set; }
         [DataMember(Order = 85), Order]
@@ -791,32 +844,34 @@ namespace BlazorServerApp1.Data
         //public string EXTHTPLATESCLRDES { get; set; }
         [DataMember(Order = 109), Order]
         public int ATTACHEDPLATECLRID { get; set; }  // D-280
-        [DataMember(Order = 110), Order]
-        public string ATTACHEDPLATECLRDES { get; set; }
+        //[DataMember(Order = 110), Order]
+        //public string ATTACHEDPLATECLRDES { get; set; }
+
         [DataMember(Order = 120), Order]
         public int EXTGLASSPLATECLRID { get; set; }  // D-310
-        [DataMember(Order = 121), Order]
+        //[DataMember(Order = 121), Order]
         //public string EXTGLASSPLATECLRDES { get; set; }
-        //[DataMember(Order = 122), Order]
+        [DataMember(Order = 122), Order]
         public int EXTMODERNPLATECLRID { get; set; }  // D-330
-        [DataMember(Order = 123), Order]
-        public string EXTMODERNPLATECLRDES { get; set; }
+        //[DataMember(Order = 123), Order]
+        //public string EXTMODERNPLATECLRDES { get; set; }
+
         [DataMember(Order = 124), Order]
         public int DECORPLATECLRID { get; set; }  //D-350
-        [DataMember(Order = 125), Order]
-        public string DECORPLATECLRDES { get; set; }
+        //[DataMember(Order = 125), Order]
+        //public string DECORPLATECLRDES { get; set; }
         [DataMember(Order = 126), Order]
         public int NIROSTALINESCLRID { get; set; }  //D-360
-        [DataMember(Order = 127), Order]
-        public string NIROSTALINESCLRDES { get; set; }
+        //[DataMember(Order = 127), Order]
+        //public string NIROSTALINESCLRDES { get; set; }
         [DataMember(Order = 128), Order]
         public int EXTNIROSTALINESCLRID { get; set; }  //D-380
-        [DataMember(Order = 129), Order]
-        public string EXTNIROSTALINESCDES { get; set; }
+        //[DataMember(Order = 129), Order]
+        //public string EXTNIROSTALINESCDES { get; set; }
         [DataMember(Order = 130), Order]
         public int EXTINSERTCLRID { get; set; }   // D-410
-        [DataMember(Order = 140), Order]
-        public string EXTINSERTCLRDES { get; set; }
+        //[DataMember(Order = 140), Order]
+        //public string EXTINSERTCLRDES { get; set; }
         [DataMember(Order = 141), Order]
         public string VITRAGEPATTERNONDOOR { get; set; } // Y, N, ''  D-430
         [DataMember(Order = 142), Order]
@@ -894,55 +949,55 @@ namespace BlazorServerApp1.Data
         #region Internal decoration L1
         [DataMember(Order = 189), Order]
         public int INTCOLORID { get; set; }   //D-130
-        [DataMember(Order = 190), Order]
-        public string INTCOLORDES { get; set; }
+        //[DataMember(Order = 190), Order]
+        //public string INTCOLORDES { get; set; }
         [DataMember(Order = 200), Order]
         public int INTCPLATEHTDMNDCLRID { get; set; }  //D-190
-        [DataMember(Order = 201), Order]
-        public string INTCPLATEHTDMNDCLDES { get; set; }
+        //[DataMember(Order = 201), Order]
+        //public string INTCPLATEHTDMNDCLDES { get; set; }
         [DataMember(Order = 202), Order]
         public int INTPERIFPROFILECLRID { get; set; }  //D-200
         //[DataMember(Order = 203), Order]
         //public string INTPERIFPROFILECLDES { get; set; }
         [DataMember(Order = 204), Order]
         public int INTSIDECNTRPLATECLID { get; set; }                  //D-220
-        [DataMember(Order = 205), Order]
-        public string INTSIDECNTRPLATECDES { get; set; }
+        //[DataMember(Order = 205), Order]
+        //public string INTSIDECNTRPLATECDES { get; set; }
         [DataMember(Order = 206), Order]
         public int INTSEPLINESCLRID { get; set; }           //D-230
-        [DataMember(Order = 207), Order]
-        public string INTSEPLINESCLRDES { get; set; }
+        //[DataMember(Order = 207), Order]
+        //public string INTSEPLINESCLRDES { get; set; }
         [DataMember(Order = 208), Order]
         public int INTMODERNCPLATECLRID { get; set; }      //D-240
-        [DataMember(Order = 209), Order]
-        public string INTMODERNCPLATECLDES { get; set; }
+        //[DataMember(Order = 209), Order]
+        //public string INTMODERNCPLATECLDES { get; set; }
         [DataMember(Order = 210), Order]
         public int INTCGRIDCLRID { get; set; }  //D-290
-        [DataMember(Order = 220), Order]
-        public string INTCGRIDCLRDES { get; set; }
+        //[DataMember(Order = 220), Order]
+        //public string INTCGRIDCLRDES { get; set; }
         #endregion Internal decoration L1
 
         #region Internal decoration L2
         [DataMember(Order = 221), Order]
         public int INTHTPLATESCLRID { get; set; }  //D-300
-        [DataMember(Order = 222), Order]
-        public string INTHTPLATESCLRDES { get; set; }
+        //[DataMember(Order = 222), Order]
+        //public string INTHTPLATESCLRDES { get; set; }
         [DataMember(Order = 223), Order]
         public int INTGLASSPLATECLRID { get; set; }  //D-320
         //[DataMember(Order = 224), Order]
         //public string INTGLASSPLATECLRDES { get; set; }
         [DataMember(Order = 225), Order]
         public int INTMODERNPLATECLRID { get; set; }  //D-340
-        [DataMember(Order = 226), Order]
-        public string INTMODERNPLATECLRDES { get; set; }
+        //[DataMember(Order = 226), Order]
+        //public string INTMODERNPLATECLRDES { get; set; }
         [DataMember(Order = 227), Order]
         public int INTNIROSTALINESCLRID { get; set; } //D-370
-        [DataMember(Order = 228), Order]
-        public string INTNIROSTALINESCLDES { get; set; }
+        //[DataMember(Order = 228), Order]
+        //public string INTNIROSTALINESCLDES { get; set; }
         [DataMember(Order = 229), Order]
         public int INTINSERTCLRID { get; set; }   //D-420
-        [DataMember(Order = 230), Order]
-        public string INTINSERTCLRDES { get; set; }
+        //[DataMember(Order = 230), Order]
+        //public string INTINSERTCLRDES { get; set; }
         [DataMember(Order = 240), Order]
         public string INTCPLATE4HTDMNDNAME { get; set; }  //D-710
         [DataMember(Order = 241), Order]
@@ -1038,6 +1093,7 @@ namespace BlazorServerApp1.Data
         //[NonSerialized]
         public Dictionary<string, string> borderColors { get; set; } 
         public Dictionary<string, string> btnClasses { get; set; }
+        public Dictionary<string, bool> disabledFlds { get; set; }
 
         public void initBorderColors()
         {
@@ -1053,6 +1109,7 @@ namespace BlazorServerApp1.Data
                 borderColors.Add(pinfo.Name, string.Empty);
             }
             initBtnClasses();
+            disabledFlds = new Dictionary<string, bool>();
         }
         public void initBtnClasses()
         {

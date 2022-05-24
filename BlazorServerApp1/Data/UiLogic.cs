@@ -29,6 +29,7 @@ namespace BlazorServerApp1.Data
         public static string[] propNames;
         
         public static string borderColor = string.Empty;
+        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "FORMDATE", "INSTALLADDRESS", "FAMILYNAME" };
         //public static string currentMeaged = string.Empty;
         //public static string decoreSideCode = string.Empty;
 
@@ -166,11 +167,11 @@ namespace BlazorServerApp1.Data
                 
                 if (!hideFld(doorConfig, controlThName)
                     && !controlName.StartsWith("chkb")
-                    && !doorFldIsFilled(doorConfig, fldName, fldDataType)
-                    && fldName.ToUpper() != "REFERENCE"
-                    && fldName.ToUpper() != "FORMDATE"
-                    && fldName.ToUpper() != "INSTALLADDRESS"
-                    && fldName.ToUpper() != "FAMILYNAME")
+                    && !doorFldIsFilled(doorConfig, fldName, fldDataType))
+                    //&& fldName.ToUpper() != "REFERENCE"
+                    //&& fldName.ToUpper() != "FORMDATE"
+                    //&& fldName.ToUpper() != "INSTALLADDRESS"
+                    //&& fldName.ToUpper() != "FAMILYNAME")
                 {
                     borderColor = "redBorder";
                     doorConfig.borderColors[fldName] = "redBorder";
@@ -194,6 +195,11 @@ namespace BlazorServerApp1.Data
             string errMsg = string.Empty;
             string sval;
             int ival;
+
+            if (optionalFields.Contains(fldName))
+                return true;
+            if (doorConfig.disabledFlds.ContainsKey(fldName))
+                return true;
 
             Type objType = doorConfig.GetType();
             PropertyInfo[] props = objType.GetProperties();

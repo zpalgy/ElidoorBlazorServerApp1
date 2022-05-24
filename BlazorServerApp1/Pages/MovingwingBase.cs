@@ -159,5 +159,15 @@ namespace BlazorServerApp1.Pages
             }
             return true;
         }
+        protected void clearHingesMeasures(DoorConfig doorConfig)
+        {
+            doorConfig.HINGESNUM = 0;
+            doorConfig.BACKPINHEIGHT = 0;
+            doorConfig.HINGE1HEIGHT = 0;
+            doorConfig.HINGE2HEIGHT = 0;
+            doorConfig.HINGE3HEIGHT = 0;
+            doorConfig.HINGE4HEIGHT = 0;
+            doorConfig.HINGE5HEIGHT = 0;
+        }
     }
-    }
+}

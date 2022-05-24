@@ -1,4 +1,5 @@
 ﻿@using BlazorServerApp1.Data
+@using System.Data;
 
 @page "/Movingwing"
 
@@ -64,6 +65,7 @@
         //    if (!string.IsNullOrEmpty(doorConfigJson2))
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
         //}
+        doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
     }
   }
 <br />
@@ -332,19 +334,26 @@
                                 case "":
                                 case "ללא":
                                     disableColor = disableExtColor = disableIntColor = true;
+                                    doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;
                                     doorConfig.DOORCOLORID = doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
-                                    doorConfig.INTCOLORDES = string.Empty;
+                                    //doorConfig.INTCOLORDES = string.Empty;
                                     break;
                                 case "1":
                                     disableColor = false;
+                                    doorConfig.disabledFlds["DOORCOLORID"] = false;
                                     disableExtColor = true;
+                                    doorConfig.disabledFlds["EXTCOLORID"] = true;
                                     disableIntColor = true;
+                                    doorConfig.disabledFlds["INTCOLORID"] = true;
+
                                     doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
-                                    doorConfig.INTCOLORDES = string.Empty;
+                                    //doorConfig.INTCOLORDES = string.Empty;
                                     break;
                                 case "2":
                                     disableColor = true;
+                                    doorConfig.disabledFlds["DOORCOLORID"] = true;
                                     disableExtColor = disableIntColor = false;
+                                    doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
                                     doorConfig.DOORCOLORID = 0;
                                     break;
                             }
@@ -359,7 +368,8 @@
 
 
         <td id="tdDoorColor" hidden="@UiLogic.hideFld(doorConfig, "DoorColor")">
-            <select name="dlstDoorColor" @bind="DoorColorId" class="@doorConfig.borderColors["DOORCOLORID"]" disabled="@disableColor">
+            <select name="dlstDoorColor" @bind="DoorColorId" class="@doorConfig.borderColors["DOORCOLORID"]" 
+                          disabled="@doorConfig.disabledFlds["DOORCOLORID"]">
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -415,7 +425,7 @@
     <tr>
         <td id="tdExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">
             <select name="dlstExtColor" @bind="ExtColor" class="@doorConfig.borderColors["EXTCOLORID"]"
-                    disabled="@disableExtColor">
+                    disabled="@doorConfig.disabledFlds["EXTCOLORID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -453,7 +463,7 @@
 
         <td id="tdIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">
             <select name="dlstIntColor" @bind="IntColor" class="@doorConfig.borderColors["INTCOLORID"]"
-                    disabled="@disableIntColor">
+                    disabled="@doorConfig.disabledFlds["INTCOLORID"]">
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -514,14 +524,7 @@
                         doorConfig.LOCKDRILHEIGHT = _LOckDrilHeight;
                         doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                        doorConfig.HINGESNUM = 0;
-                        doorConfig.BACKPINHEIGHT = 0;
-                        doorConfig.HINGE1HEIGHT = 0;
-                        doorConfig.HINGE2HEIGHT = 0;
-                        doorConfig.HINGE3HEIGHT = 0;
-                        doorConfig.HINGE4HEIGHT = 0;
-                        doorConfig.HINGE5HEIGHT = 0;
-                        //
+                        clearHingesMeasures(doorConfig);
                         msgBorder1Style = "border:solid;border-color:red;";
                         msgHeaderClass = "modal-header redBorder";
                         msgCaption = "שים לב:";
@@ -529,7 +532,6 @@
                         msgClass = "modal-body centeredMsg";
                         errMsg2 =  "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית";
                         openMsgBox = true;
-
                     }
                 }
             }
@@ -576,11 +578,17 @@
                 }
             }
         </td>
+        @{
+            List<TRSH_COLOR_Class> tmpLstColors = new List<TRSH_COLOR_Class>(PrApiCalls.lstColors);
+            tmpLstColors.Insert(1, new TRSH_COLOR_Class() { TRSH_COLORID = 99999, TRSH_COLORDES = "ללא"  });
+            //DataTable tmpDtColors = new DataTable();
+            //tmpDtColors = tmpLstColors.ToDataTable<TRSH_COLOR_Class>();
+        }
         <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
             <select name="dlstHwColor" @bind="HwColorId" class="@doorConfig.borderColors["HWCOLORID"]">
                 @if (PrApiCalls.lstColors != null)
                 {
-                    @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+                    @foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)
                     {
                         <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
                     }
