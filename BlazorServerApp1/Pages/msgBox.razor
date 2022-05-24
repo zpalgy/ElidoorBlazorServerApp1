@@ -1,11 +1,11 @@
 ﻿@* ref: https://medium.com/informatics/blazor-server-project-6-how-to-create-reusable-modal-dialog-component-e2fdc612089b *@
 
 <div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-          @*  <div class="modal-header"> *@
-              <div class="@msgHeaderClass" >
-                <h4 class="@MsgTitleCssClass">@Caption</h4>
+    <div class="modal-dialog" style="@Border1Style">
+    <div class="modal-dialog" style="border:solid;border-color:black;margin:10px">
+        <div class="modal-content" >
+              <div class="modal-header centeredMsg" >
+                <h4 class="@MsgTitleCssClass" style="margin-right: 170px;" >@Caption</h4>
 
                 @*  CU asked to remove the close X from the messageBox *@
                 @*
@@ -17,7 +17,7 @@
                     </button>
                 }
                 *@
-            </div>
+              </div>
             @* div class="modal-body redMessage" *@
 
             <div class="@ErrMsgCssClass">
@@ -88,6 +88,7 @@
         </div>
     </div>
 </div>
+</div>
 @code {
     [Parameter]
     public string Caption { get; set; }
@@ -106,7 +107,7 @@
     [Parameter]
     public string ErrMsgCssClass { get; set; }   //= "modal-body redMessage";
     [Parameter]
-    public string msgHeaderClass { get; set; }  // = "modal-header"
+    public string  Border1Style { get; set; }  // e.g. "border:solid;border-color:red" , default is empty.String .
 
     private Task Cancel()
     {

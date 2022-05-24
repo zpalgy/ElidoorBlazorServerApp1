@@ -22,8 +22,8 @@
         private bool openMsgBox = false;
         private string errMsg2 = string.Empty;
         private string msgCaption = "שגיאה";
-        private string msgClass = "modal-body redMessage";
-        private string titleClass = "modal-title redTitle";
+        private string ErrMsgCssClass = "modal-body";    //"modal-body redMessage";
+        private string MsgTitleCssClass = "modal-title";  //"modal-title redTitle";
         private bool openYesNo = false;
 
         protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
@@ -107,8 +107,8 @@
                                     openYesNo = true;
                                     msgCaption = string.Empty;
                                     errMsg2 = "תחילת שאלון חדש ?";
-                                    titleClass = string.Empty;
-                                    msgClass = "centeredMsg"; //string.Empty;
+                                    MsgTitleCssClass = string.Empty;
+                                    ErrMsgCssClass = "centeredMsg"; //string.Empty;
                                                               // the actual restart is done in the YesNo section of MsgBox control
                                 }
                             }
@@ -130,10 +130,11 @@
                                 {
                                     if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
                                     {
-                                        msgCaption = string.Empty;
+                                        msgCaption = string.Empty;  // just for debug 
+                                        //MsgTitleCssClass = 
                                         errMsg2 = string.Format("שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה");
                                         // Js.InvokeVoidAsync("alert", errMsg);
-                                        msgClass = "modal-body centeredMsg";
+                                        ErrMsgCssClass = "modal-body centeredMsg";
                                         openMsgBox = true;
                                         return;
                                     }
@@ -156,7 +157,7 @@
                                         msgCaption = string.Empty;
                                         errMsg2 = string.Format("שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה");
                                         // Js.InvokeVoidAsync("alert", errMsg);
-                                        msgClass = "modal-body centeredMsg";
+                                        ErrMsgCssClass = "modal-body centeredMsg";
                                         openMsgBox = true;
                                         return;
                                     }
@@ -401,7 +402,7 @@
                                             {
                                                 if (!string.IsNullOrEmpty(PrApiCalls.getReference(_reference, ref errMsg)))
                                                 {
-                                                    msgClass = "modal-body centeredMsg";
+                                                    ErrMsgCssClass = "modal-body centeredMsg";
                                                     errMsg2 = "אסמכתא עם מספר זה כבר קיימת במערכת";
                                                     openMsgBox = true;
                                                     txtReference.FocusAsync();
@@ -1072,7 +1073,7 @@
                                         //Js.InvokeVoidAsync("alert", errMsg);
                                         msgCaption = "שגיאה";
                                         errMsg2 = errMsg;
-                                        msgClass = "modal-body redMessage";
+                                        ErrMsgCssClass = "modal-body redMessage";
                                         openMsgBox = true;
 
                                         myLogger.log.Info("Api call failed : " + errMsg);
@@ -1083,8 +1084,8 @@
                                         errMsg2 = string.Format("השאלון {0} נשמר בהצלחה, השאלון האחרון במערכת הוא {1}   י", doorConfig.REFERENCE, lastREFERENCE);
                                         //Js.InvokeVoidAsync("alert", errMsg2);
                                         msgCaption = "הודעה";
-                                        titleClass = "modal-title greenTitle";
-                                        msgClass = "modal-body greenMessage";
+                                        MsgTitleCssClass = "modal-title greenTitle";
+                                        ErrMsgCssClass = "modal-body greenMessage";
                                         openMsgBox = true;
 
                                         //UiLogic.ClearAllControls();
@@ -1130,8 +1131,8 @@
     <MsgBox Caption="@msgCaption"
         Message="@errMsg2"
         OnClose="OnDialogClose"
-        MsgTitleCssClass="@titleClass"
-        ErrMsgCssClass="@msgClass">
+        MsgTitleCssClass="@MsgTitleCssClass"
+        ErrMsgCssClass="@ErrMsgCssClass">
     </MsgBox>
     @code
     {
@@ -1148,8 +1149,8 @@
         Type="MsgBox.Category.YesNo"
         Message="@errMsg2"
         OnClose="OnCloseYesNo"
-        MsgTitleCssClass="@titleClass"
-        ErrMsgCssClass="@msgClass">
+        MsgTitleCssClass="@MsgTitleCssClass"
+        ErrMsgCssClass="@ErrMsgCssClass">
     </MsgBox>
     @code
     {

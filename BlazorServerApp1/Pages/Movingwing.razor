@@ -26,8 +26,9 @@
     string errMsg3 = "xxxxxxxxxxxxxxxxxx";
     private string msgCaption = "שגיאה";
     string msgClass = "modal-body centeredMsg";
-    private string titleClass = string.Empty;
+    private string MsgTitleCssClass = string.Empty;
     string msgHeaderClass = "modal-header";
+    string msgBorder1Style = string.Empty;
 
     private bool disableColor = true;
     private bool disableExtColor = true;
@@ -521,8 +522,10 @@
                         doorConfig.HINGE4HEIGHT = 0;
                         doorConfig.HINGE5HEIGHT = 0;
                         //
+                        msgBorder1Style = "border:solid;border-color:red;";
                         msgHeaderClass = "modal-header redBorder";
                         msgCaption = "שים לב:";
+                        MsgTitleCssClass = "centeredMsg";
                         msgClass = "modal-body centeredMsg";
                         errMsg2 =  "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית";
                         openMsgBox = true;
@@ -1068,8 +1071,10 @@
     <MsgBox Caption="@msgCaption"
         Message="@errMsg2"
         OnClose="OnDialogClose"
-        MsgTitleCssClass="@titleClass"
-        ErrMsgCssClass="@msgClass">
+        MsgTitleCssClass="@MsgTitleCssClass"
+        ErrMsgCssClass="@msgClass"
+        Border1Style = "@msgBorder1Style"
+    >
     </MsgBox>
     @code
     {

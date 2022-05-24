@@ -1086,6 +1086,11 @@ namespace BlazorServerApp1.Data
                     emptyHW.HARDWAREDES = " ";
                     lstParHWs.Add(emptyHW);
 
+                    TRSH_HARDWARE_Class noHw = new TRSH_HARDWARE_Class();
+                    noHw.TRSH_HARDWARE = 999;
+                    noHw.HARDWAREDES = "ללא";
+                    lstParHWs.Add(noHw);
+
                     for (int r = 0; r < rowsArray.Length; r++)
                     {
                         TRSH_HARDWARE_Class Hw1 = new TRSH_HARDWARE_Class();
@@ -1094,10 +1099,7 @@ namespace BlazorServerApp1.Data
                         lstParHWs.Add(Hw1);
                     }
 
-                    TRSH_HARDWARE_Class noHw = new TRSH_HARDWARE_Class();
-                    noHw.TRSH_HARDWARE = 999;
-                    noHw.HARDWAREDES = "ללא";
-                    lstParHWs.Add(noHw);
+                    
 
                     return lstParHWs;
                 }
