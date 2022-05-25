@@ -45,7 +45,9 @@
         bool showDynComp = false;
         bool showProducts = false;
         //bool showDivDoorTitle = false;
-        bool hideDoorTitle = true;
+        //bool hideDoorTitle = true;
+        //bool hideBtnExtDecor = false;
+        //bool hideBtnIntDecor = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -83,6 +85,7 @@
         }
         else
         {
+            ErrMsgCssClass = "modal-body centeredMsg";
             openMsgBox = true;
         }
         }
@@ -109,7 +112,7 @@
                                     errMsg2 = "תחילת שאלון חדש ?";
                                     MsgTitleCssClass = string.Empty;
                                     ErrMsgCssClass = "centeredMsg"; //string.Empty;
-                                                              // the actual restart is done in the YesNo section of MsgBox control
+                                                                    // the actual restart is done in the YesNo section of MsgBox control
                                 }
                             }
                         </tr>
@@ -130,8 +133,8 @@
                                 {
                                     if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
                                     {
-                                        msgCaption = string.Empty;  // just for debug 
-                                        //MsgTitleCssClass = 
+                                        msgCaption = string.Empty;  // just for debug
+                                                                    //MsgTitleCssClass =
                                         errMsg2 = string.Format("שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה");
                                         // Js.InvokeVoidAsync("alert", errMsg);
                                         ErrMsgCssClass = "modal-body centeredMsg";
@@ -155,7 +158,7 @@
                                     if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
                                     {
                                         msgCaption = string.Empty;
-                                        errMsg2 = string.Format("שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה");
+                                        errMsg2 = UiLogic.requiredFieldsAreEmpty;  //"שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
                                         // Js.InvokeVoidAsync("alert", errMsg);
                                         ErrMsgCssClass = "modal-body centeredMsg";
                                         openMsgBox = true;
@@ -196,16 +199,17 @@
                                         </tr>
                                         <tr>
                                             @{
-                                                bool disableEd = false;
-                                                //disableEd = !ActivatePage("extdecor", doorConfig, ref errMsg2);
+                                                bool disableBtnExtDecor = false;
+                                                //disableBtnExtDecor = !ActivatePage("extdecor", doorConfig, ref errMsg2);
                                                 // 12/05/2022 : at present btnextdecor is always ENABLED
                                                 //[TODO] when leaving Movingwing check whether it is filled.
                                                 //  if it's not filled DISABLE btnextdecor
+
                                             }
 
                                             <td>
                                                 <button name="btnextdecor" class="@doorConfig.btnClasses["extdecor"]" @onclick="showExtdecor"
-                                                    disabled="@disableEd">
+                                                    disabled="@disableBtnExtDecor" hidden="@hideBtnExtDecor" >
                                                     פרטי דקורציה חוץ
                                                 </button>
                                             </td>
@@ -220,7 +224,7 @@
                                         <tr>
                                             <td>
                                                 <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]"
-                                                    @onclick="showIntdecor">
+                                                    @onclick="showIntdecor" hidden="@hideBtnIntDecor">
                                                     פרטי דקורציה פנים
                                                 </button>
                                             </td>
@@ -606,30 +610,30 @@
                                         <button name="btnDoor" @onclick="btnDoorClicked" class="@doorConfig.btnClasses["btnDoor"]">דלת</button>
                                         @code
                                         {
-                                            private void btnDoorClicked()
-                                            {
-                                                if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
-                                                {
-                                                    errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
-                                                    // Js.InvokeVoidAsync("alert", errMsg);
-                                                    openMsgBox = true;
-                                                    return;
-                                                }
-                                                else
-                                                {
-                                                    pageParams["doorConfig"] = doorConfig;
-                                                    pageParams["disableLogo"] = disableLogo;
-                                                    //dyncompType = typeof(Movingwing);
-                                                    hideDivDoor = false;
-                                                    doorConfig.btnClasses["general"] =   //"buttonLostFocus";
-                                                    doorConfig.btnClasses["selectprod"] = "buttonFilled";
-                                                    doorConfig.btnClasses["proddes"] = "buttonActive";
-                                                    //doorConfig.btnClasses["movingwing"] = "buttonActive";
-                                                    //doorConfig.markButton("movingwing");
-                                                    doorConfig.btnClasses["btnDoor"] = "buttonActive";
-                                                }
-                                            }
+        private void btnDoorClicked()
+        {
+                                        if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+                                        {
+                                            errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
+                                            // Js.InvokeVoidAsync("alert", errMsg);
+                                            openMsgBox = true;
+                                            return;
                                         }
+                                        else
+                                        {
+                                            pageParams["doorConfig"] = doorConfig;
+                                            pageParams["disableLogo"] = disableLogo;
+                                            //dyncompType = typeof(Movingwing);
+                                            hideDivDoor = false;
+                                            doorConfig.btnClasses["general"] =   //"buttonLostFocus";
+                                            doorConfig.btnClasses["selectprod"] = "buttonFilled";
+                                            doorConfig.btnClasses["proddes"] = "buttonActive";
+                                            //doorConfig.btnClasses["movingwing"] = "buttonActive";
+                                            //doorConfig.markButton("movingwing");
+                                            doorConfig.btnClasses["btnDoor"] = "buttonActive";
+                                        }
+        }
+                                    }
                                 </td>
                                 <!-- end tdBtnDoor -->
                                 <td>
@@ -706,7 +710,22 @@
                                         {
                                             _WingsNum = value;
                                             if (doorConfig != null)
+                                            {
                                                 doorConfig.TRSH_WINGSNUMDES = _WingsNum;
+                                                if (!string.IsNullOrEmpty(value) && (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME)))
+                                                {
+                                                    doorConfig.PARTNAME = PrApiCalls.getPARTNAMEbyModelWings(doorConfig, ref errMsg);
+                                                    if (string.IsNullOrEmpty(doorConfig.PARTNAME))
+                                                    {
+                                                        errMsg2 = "לא קיים פריט  עם הדגם והמיפתח שציינת";
+                                                        openMsgBox = true;
+                                                        dlstModelName.FocusAsync();
+                                                    }
+                                                    // get PART FAMILY
+                                                    FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
+                                                    doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
+                                                }
+                                            }
 
                                             //disableStaticWing =  (_WingsNum == "כנף");
                                         }
@@ -773,7 +792,7 @@
                                         </select>
                                     </td>
                                     @code {
-                                        private ElementReference dlstModelName;
+        private ElementReference dlstModelName;
         protected string _TRSH_MODELNAME = string.Empty;
         protected string TRSH_MODELNAME
         {
@@ -804,8 +823,8 @@
                                                         openMsgBox = true;
                                                         dlstModelName.FocusAsync();
                                                     }
-                                                    // get PART FAMILY 
-                                                    FamilyOfPart_Class familyOfPart =  PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
+                                                    // get PART FAMILY
+                                                    FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
                                                     doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
                                                 }
                                             }
@@ -825,14 +844,14 @@
                                         </select>
                                     </td>
                                     @code {
-        protected string _DecorFormat = string.Empty;
+                                        protected string _DecorFormat = string.Empty;
         protected string DecorFormat
         {
                                         get
                                         {
                                             if (doorConfig != null)
                                             {
-                                                // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
+                                            // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
                                                 _DecorFormat = doorConfig.DECORFORMAT;
                                             }
                                             return _DecorFormat;
@@ -846,6 +865,24 @@
                                                 doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle", "proddes", "movingwing");
+                                                switch (_DecorFormat)
+                                                {
+                                                    case "ללא":
+                                                        hideBtnExtDecor = hideBtnIntDecor = true;
+                                                        break;
+                                                    case "חוץ":
+                                                        hideBtnExtDecor = false;  //show
+                                                        hideBtnIntDecor = true;  
+                                                        break;
+                                                    case "פנים":
+                                                        hideBtnExtDecor = true;
+                                                        hideBtnIntDecor = false;  //show
+                                                        break;
+                                                    case "דו צדדי":
+                                                        hideBtnExtDecor = false;
+                                                        hideBtnIntDecor = false;  //show
+                                                        break;
+                                                }
                                             }
                                         }
         }
@@ -1060,23 +1097,20 @@
                                     string prevText = "נילווים";
                                     if (!UiLogic.tabPageIsFilled(prevTab, doorConfig))
                                     {
-                                        errMsg2 = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
-                                        // Js.InvokeVoidAsync("alert", errMsg);
+                                        errMsg2 = UiLogic.requiredFieldsAreEmpty; //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
+                                                                                  // Js.InvokeVoidAsync("alert", errMsg);
                                         openMsgBox = true;
-                                        //return;
                                     }
 
                                     if (!string.IsNullOrEmpty(doorConfig.FAMILYNAME))
                                         doorConfig.FAMILY = PrApiCalls.getFAMILY(doorConfig.FAMILYNAME, ref errMsg);
-                                    if (doorConfig.REFERENCE == null)
-                                    {
-                                        doorConfig.REFERENCE = string.Empty;
-                                    }
+
+                                    clear9999Fields();
                                     var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
 
                                     if (response != System.Net.HttpStatusCode.Created)
                                     {
-                                        //myMessageBox.Show(Page, errMsg);
+                                    //myMessageBox.Show(Page, errMsg);
                                         //UiLogic.displayErrMsg(lblMsg, "Api call failed : " + errMsg);
                                         //Js.InvokeVoidAsync("alert", errMsg);
                                         msgCaption = "שגיאה";
@@ -1099,6 +1133,19 @@
                                         //UiLogic.ClearAllControls();
                                         //doorConfig = new DoorConfig();
                                     }
+        }
+        void clear9999Fields()
+        {
+                                    if (doorConfig.REFERENCE == null)
+                                    {
+                                        doorConfig.REFERENCE = string.Empty;
+                                    }
+                                    if (doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone)
+                                        doorConfig.TRSH_HARDWARE = 0;
+                                    if (doorConfig.HWCOLORID == UiLogic.IdOfNone)
+                                        doorConfig.HWCOLORID = 0;
+                                    if (doorConfig.CYLINDERNAME == UiLogic.NameOfNone)
+                                        doorConfig.CYLINDERNAME = string.Empty;
         }
                                 }
                                 <td>
@@ -1168,7 +1215,16 @@
         {
             UiLogic.clearDoorConfig(doorConfig);
             showProducts = false;
+            hideDoorTitle = true;
             showDynComp = false;
+            hideDivDoor = true;
+
+
+            doorConfig.btnClasses["restart"] = "buttonRed";
+            doorConfig.btnClasses["general"] = "buttonActive";
+            doorConfig.btnClasses["selectprod"] =
+            doorConfig.btnClasses["btnDoor"] =
+            doorConfig.btnClasses["proddes"] = "button";
         }
         openYesNo = false;
         errMsg2 = string.Empty;

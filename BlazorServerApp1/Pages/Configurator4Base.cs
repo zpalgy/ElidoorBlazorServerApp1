@@ -8,6 +8,10 @@ namespace BlazorServerApp1.Pages
 {
 	public class Configurator4Base : ComponentBase
 	{
+		protected bool hideDoorTitle = true;
+		protected bool hideBtnExtDecor = false;
+		protected bool hideBtnIntDecor = false;
+
 		public bool ActivatePage(string tabName, DoorConfig doorConfig, ref string errMsg)
 		{
 			errMsg = string.Empty;
@@ -22,7 +26,26 @@ namespace BlazorServerApp1.Pages
 					prevTab = UiLogic.tabNames[t - 2];
 					prevText = UiLogic.tabTexts[t - 2];
 				}
-                if (t == 0)
+				if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor )
+                {
+					if (hideBtnExtDecor)
+                    {
+						prevTab = UiLogic.tabNames[t - 3];
+						prevText = UiLogic.tabTexts[t - 3];
+					}
+					else
+                    {
+						prevTab = UiLogic.tabNames[t - 2];
+						prevText = UiLogic.tabTexts[t - 2];
+					}
+                }
+				if (prevTab.ToLower() == "intdecor" && hideBtnExtDecor)
+				{
+					prevTab = UiLogic.tabNames[t - 2];
+					prevText = UiLogic.tabTexts[t - 2];
+				}
+
+				if (t == 0)
                 {
 					//ActivePage = page;
 					return true;
@@ -34,7 +57,7 @@ namespace BlazorServerApp1.Pages
 					else
 					{
 						//string prevTabText = UiLogic.tabTexts[t - 1];
-						errMsg = string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
+						errMsg = UiLogic.requiredFieldsAreEmpty;   //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
 						// Js.InvokeVoidAsync("alert", errMsg);
 						//openMsgBox = true;
 						return false;

@@ -621,14 +621,16 @@ namespace BlazorServerApp1.Data
     public class DoorConfig
     {
         #region form header
-        [DataMember(Order = 1), Order]
+        [DataMember(Order = 1)]
+        public int TRSH_DOORCONFIG = 0; // { get; set; }
+        [DataMember(Order = 2), Order]
         public string REFERENCE { get; set; } = String.Empty;
         //[Required]
-        [DataMember(Order = 2), Order]
-        public string FORMDATE { get; set; }
         [DataMember(Order = 3), Order]
-        public string FORMFILLER { get; set; }
+        public string FORMDATE { get; set; }
         [DataMember(Order = 4), Order]
+        public string FORMFILLER { get; set; }
+        [DataMember(Order = 5), Order]
         public int AGENT { get; set; }
         //[DataMember(Order = 5), Order]
         //public string AGENTCODE { get; set; }
@@ -675,35 +677,35 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 16), Order] 
         public string TRSH_MODELNAME { get; set; }    // MLI, 1029, 1040, ...
         //***********************************************
-        //[DataMember(Order = 17), Order]
-        //public string PARTNAME { get; set; }  //D-20
-        [NonSerialized]
-        public string PARTNAME;
+        [DataMember(Order = 17), Order]
+        public string PARTNAME { get; set; }  //D-20
+        //[NonSerialized]
+        //public string PARTNAME;
 
         //[DataMember(Order = 24), Order]
         //public string PARTDES { get; set; }
 
-        //[DataMember(Order = 18), Order]
-        //public int FAMILY { get; set; }  // D-10
-        [NonSerialized]
-        public int FAMILY;
+        [DataMember(Order = 18), Order]
+        public int FAMILY { get; set; }  // D-10
+        //[NonSerialized]
+        //public int FAMILY;
 
         //[DataMember(Order = 22), Order]
         //public string FAMILYDES { get; set; }
         [NonSerialized]
-        public string FAMILYNAME = string.Empty;
+        public string FAMILYNAME = string.Empty;   // TRSH_DOORCONFIG.FAMILYNAME does not exist in Priority 
 
-        //[DataMember(Order = 19), Order]
-        //public int TRSH_DOOR_HWCATCODE { get; set; }
+        [DataMember(Order = 19), Order]
+        public int TRSH_DOOR_HWCATCODE { get; set; }
 
-        [NonSerialized]
-        public int TRSH_DOOR_HWCATCODE;
+        //[NonSerialized]
+        //public int TRSH_DOOR_HWCATCODE;
 
-        //[DataMember(Order = 20), Order]
-        //public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
+        [DataMember(Order = 20), Order]
+        public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
 
-        [NonSerialized]
-        public string MEASURESDOC;
+        //[NonSerialized]
+        //public string MEASURESDOC;
 
         #endregion door header
 
@@ -748,36 +750,36 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 65), Order]
         public string ELECTRICAPPARATUS { get; set; } // Y, N, ''  D-910
 
-        //[DataMember(Order = 66), Order]
-        //public string HASLOCK { get; set; }   // D-932  Y | N | "" - boolean
+        [DataMember(Order = 66), Order]
+        public string HASLOCK { get; set; }   // D-932  Y | N | "" - boolean
 
-        [NonSerialized]
-        public string HASLOCK;
+        //[NonSerialized]
+        //public string HASLOCK;
 
 
-        //[DataMember(Order = 67), Order]
-        //public string LOCKNAME { get; set; }   // D-930
+        [DataMember(Order = 67), Order]
+        public string LOCKNAME { get; set; }   // D-930
 
-        [NonSerialized]
-        public string LOCKNAME;
+        //[NonSerialized]
+        //public string LOCKNAME;
 
         //[DataMember(Order = 67), Order]
         //public string LOCKDES { get; set; }
 
-        //[DataMember(Order = 69), Order]
-        //public string DRIL4TWOSIDESIDS { get; set; }   //D-980  Y, N ,'' - // previous טבלת ניקוב לפירזול  300  Dril 4 two sides IDS      ניקוב שני צדדים IDS
+        [DataMember(Order = 69), Order]
+        public string DRIL4TWOSIDESIDS { get; set; }   //D-980  Y, N ,'' - // previous טבלת ניקוב לפירזול  300  Dril 4 two sides IDS      ניקוב שני צדדים IDS
 
-        [NonSerialized]
-        public string DRIL4TWOSIDESIDS;
+        //[NonSerialized]
+        //public string DRIL4TWOSIDESIDS;
 
         [DataMember(Order = 70), Order]
         public string RAFAFAONMOVINGWING { get; set; }  // D-1010
 
-        //[DataMember(Order = 71), Order]
-        //public string LCDEYE { get; set; }  // Y, N, ''  //D-1030
+        [DataMember(Order = 71), Order]
+        public string LCDEYE { get; set; }  // Y, N, ''  //D-1030
 
-        [NonSerialized]
-        public string LCDEYE;
+        //[NonSerialized]
+        //public string LCDEYE;
 
         [DataMember(Order = 72), Order]
         public string VENTS { get; set; }
@@ -792,15 +794,15 @@ namespace BlazorServerApp1.Data
 
         #region Ext Decoration (extdecor )
         #region extDecorL1
-        //[DataMember(Order = 80), Order]
-        //public string LINESFORMAT { get; set; }  //D-90  Shkuim Boltin שקועים \ בולטים 
-        [NonSerialized]
-        public string LINESFORMAT;
+        [DataMember(Order = 80), Order]
+        public string LINESFORMAT { get; set; }  //D-90  Shkuim Boltin שקועים \ בולטים 
+        //[NonSerialized]
+        //public string LINESFORMAT;
 
-        //[DataMember(Order = 81), Order]
-        //public string TILENAME { get; set; }      // D-100
-        [NonSerialized]
-        public string TILENAME;
+        [DataMember(Order = 81), Order]
+        public string TILENAME { get; set; }      // D-100
+        //[NonSerialized]
+        //public string TILENAME;
 
         //[DataMember(Order = 82), Order]
         //public string TILEDES { get; set; }
@@ -1090,7 +1092,7 @@ namespace BlazorServerApp1.Data
         public string COMMENTS { get; set; } = string.Empty;
         [NonSerialized]
         public string meaged = string.Empty;
-        //[NonSerialized]
+        
         public Dictionary<string, string> borderColors { get; set; } 
         public Dictionary<string, string> btnClasses { get; set; }
         public Dictionary<string, bool> disabledFlds { get; set; }

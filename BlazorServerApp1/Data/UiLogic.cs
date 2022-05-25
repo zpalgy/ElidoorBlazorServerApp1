@@ -30,6 +30,10 @@ namespace BlazorServerApp1.Data
         
         public static string borderColor = string.Empty;
         public static List<string> optionalFields = new List<string>(){ "REFERENCE", "FORMDATE", "INSTALLADDRESS", "FAMILYNAME" };
+
+        public static int IdOfNone = 99999;
+        public static string NameOfNone = "9999999";
+        public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
         //public static string currentMeaged = string.Empty;
         //public static string decoreSideCode = string.Empty;
 

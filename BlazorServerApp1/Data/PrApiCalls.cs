@@ -1087,7 +1087,7 @@ namespace BlazorServerApp1.Data
                     lstParHWs.Add(emptyHW);
 
                     TRSH_HARDWARE_Class noHw = new TRSH_HARDWARE_Class();
-                    noHw.TRSH_HARDWARE = 999;
+                    noHw.TRSH_HARDWARE = UiLogic.IdOfNone;
                     noHw.HARDWAREDES = "ללא";
                     lstParHWs.Add(noHw);
 
@@ -1185,7 +1185,7 @@ namespace BlazorServerApp1.Data
                     val1.Add(emptyCylinder);
 
                     CYLINDER_Class noCylinder = new CYLINDER_Class();
-                    noCylinder.CYLINDERNAME = "9999999";
+                    noCylinder.CYLINDERNAME = UiLogic.NameOfNone;//"9999999";
                     noCylinder.CYLINDERDES = "ללא";
                     val1.Add(noCylinder);
                     foreach (CYLINDER_Class cyl in val.value)
@@ -2245,9 +2245,13 @@ namespace BlazorServerApp1.Data
 
                 //doorConfig.FORMDATE = "2022-02-24";  // just for test 
                 //doorConfig.REFERENCE = "XXXX";
+                doorConfig.TRSH_DOORCONFIG = 0;
+
+               // doorConfig.HANDLE4DIAMONDNAME = "33001";  debug 
+
                 string payload = JsonSerializer<DoorConfig>(doorConfig);
 
-                int xl = payload.Length;    //2373 
+                int xl = payload.Length;    //2373
 
                 //payload = "{ \"REFERENCE\":\"\",\"FORMDATE\":\"2022-05-24\",\"FORMFILLER\":\"x\",\"AGENT\":0,\"CUST\":1,\"INSTALLADDRESS\":null}";   // just to DEBUG !
                                                                                                                                                      // this works !
@@ -2256,7 +2260,7 @@ namespace BlazorServerApp1.Data
 //""TRSH_WINGSNUMDES"":""כנף""}";   // works
 //--------------------
                 string payload21 =
-@"{""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""INSTALLADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
+@"{""TRSH_DOORCONFIG"":0,""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""INSTALLADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
 ""TRSH_WINGSNUMDES"":""כנף""" +
                 
 @",""OPENMODE"":null,""COMPLIENTDOOR"":""Y"",""TRSH_MODELNAME"":""MLI"",""LOCKDRILHEIGHT"":0,""OPENSIDE"":null,""DECORFORMAT"":null,""COLORSNUM"":null," +
@@ -2273,29 +2277,24 @@ namespace BlazorServerApp1.Data
 @",""PROFILE4WINDOWNAME"":null,""DECORFRAME"":null,""GLASS4WINDOWID"":0,""GRID_ID"":0,""VITRAGENAME"":null,""JAPANESEWINDOW"":null,""PLATESFOR7504"":null" +
 @",""EXTCPLATE4HTDMNDNAME"":null,""EXTSIDE_C_PLATENAME"":null,""DECORGRIDPLATEDES"":null,""GRID4HT1084NAME"":null,""EXTGRIDCPLATEDES"":null" +
 @",""EXTHTPLATENAME"":null,""VITRAGE4DIAMONDNAME"":null,""EXTVITRAGE4DIAMONDQ"":0,""INTERPLATESSPACE"":0,""EXTFINMODERNCPLATE"":null" +
-@",""EXTFINMODERNSEPLINE"":null,""EXTFINMODERNPLATE"":null" + "}";
+@",""EXTFINMODERNSEPLINE"":null,""EXTFINMODERNPLATE"":null,""INTCOLORID"":0,""INTSIDE_C_PLATE"":null,""INTGRIDCPLATE"":null,""INTHTPLATE"":null" +
+@",""CENTRALCOLCLRID"":0,""SHALVANIACLRID"":0,""INTPERIFPROFILECLRID"":0,""INTSIDECNTRPLATECLID"":0,""INTSEPLINESCLRID"":0" +
+@",""INTMODERNCPLATECLRID"":0,""INTCGRIDCLRID"":0,""INTHTPLATESCLRID"":0,""INTGLASSPLATECLRID"":0,""INTMODERNPLATECLRID"":0,""INTNIROSTALINESCLRID"":0" +
+@",""INTINSERTCLRID"":0,""INTCPLATE4HTDMNDNAME"":null,""INTCPLATEHTDMNDCLRID"":0,""INTVITRAGE4DIAMONDQ"":0,""INTFINMODERNCPLATE"":null" +
+@",""INTFINMODERNSEPLINE"":null,""INTFINMODERNPLATE"":null,""CENTRALCOLCLRDES"":null" +
+@",""HANDLE4DIAMONDNAME"":null" + 
+"}";
                 //Works !
                 int xl2 = payload21.Length;   // = 1343 
 
-//@",""HANDLE4DIAMONDNAME"":""N"""
-//+ "}";  //Fails 
+                // problematic fields :
+                // ""HANDLE4DIAMONDNAME"":""N""   or ""aaaa""
+                // ""HANDLE4DIAMONDNAME"":null works fine 
 
 
-//@",""HANDLE4DIAMONDNAME"":""N""" + "}";
-// Fails
-//,""INTCOLORID"":0,""INTCPLATEHTDMNDCLRID"":0" + "}";
-// Fails !!
-//@",""INTPERIFPROFILECLRID"":0,""INTSIDECNTRPLATECLID"":0,""INTSEPLINESCLRID"":0,""INTMODERNCPLATECLRID"":0,""INTCGRIDCLRID"":0,""INTHTPLATESCLRID"":0" + "}";
-
-                //   Fails !!
-                //@",""INTGLASSPLATECLRID"":0,""INTMODERNPLATECLRID"":0,""INTNIROSTALINESCLRID"":0,""INTINSERTCLRID"":0,""INTCPLATE4HTDMNDNAME"":null" + "}";
-                //   Fails !!
-
-                //@",""INTSIDE_C_PLATE"":null,""INTGRIDCPLATE"":null,""INTHTPLATE"":null,""INTVITRAGE4DIAMONDQ"":0,""INTFINMODERNCPLATE"":null" + "}";
-                // Fails !!
 
 
-                //"INTFINMODERNSEPLINE":null,"INTFINMODERNPLATE":null,"CENTRALCOLCLRID":0,"CENTRALCOLCLRDES":null,"SHALVANIACLRID":0" + "}";
+
 
                 //{"REFERENCE":null,"FORMDATE":"24-02-2022",  wrong date format - fails
                 //"REFERENCE":null,"FORMDATE":"2022-02-24","FORMFILLER":null,"AGENT":0,"CUST":1, - works
