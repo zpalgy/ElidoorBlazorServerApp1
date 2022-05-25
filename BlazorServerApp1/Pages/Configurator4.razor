@@ -197,7 +197,7 @@
                                                 }
                                             }
                                         </tr>
-                                        <tr>
+                                        <tr hidden="@hideBtnExtDecor">
                                             @{
                                                 bool disableBtnExtDecor = false;
                                                 //disableBtnExtDecor = !ActivatePage("extdecor", doorConfig, ref errMsg2);
@@ -221,7 +221,7 @@
                                             }
 
                                         </tr>
-                                        <tr>
+                                        <tr hidden="@hideBtnIntDecor">
                                             <td>
                                                 <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]"
                                                     @onclick="showIntdecor" hidden="@hideBtnIntDecor">
