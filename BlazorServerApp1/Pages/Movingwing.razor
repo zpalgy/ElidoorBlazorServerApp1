@@ -16,6 +16,10 @@
 
     [Parameter]
     public bool disableLogo { get; set; }
+
+    [Parameter]
+    public Configurator4 config4 { get; set; }
+
 }
 
 @code {
@@ -34,7 +38,7 @@
     private bool disableColor = true;
     private bool disableExtColor = true;
     private bool disableIntColor = true;
-
+      
     async void IDisposable.Dispose()
     {
         //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
@@ -67,6 +71,8 @@
         //}
         doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
     }
+
+
   }
 <br />
 <table>
@@ -1012,6 +1018,16 @@
                             doorConfig.RAFAFAONMOVINGWING = _Rafafa;
                             doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            UiLogic.try2UpdateBtnClass(doorConfig, "movingwing");
+                            
+                            //debug
+                            
+                            // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+                            // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+
+                                doorConfig.btnClasses["hinges"] = "buttonActive";
+                                config4.RefreshState();
+                            // end debug 
                         }
                     }
                 }

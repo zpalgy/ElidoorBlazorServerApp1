@@ -51,23 +51,34 @@
 
         protected override async Task OnInitializedAsync()
         {
-        doorConfig = new DoorConfig();
-        doorConfig.initBorderColors();
-        doorConfig.btnClasses["general"] = "buttonActive";
+            doorConfig = new DoorConfig();
+            doorConfig.initBorderColors();
+            doorConfig.btnClasses["general"] = "buttonActive";
 
-        formDate = DateTime.Now;
-        UiLogic.initPropNames(doorConfig);
-        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+            formDate = DateTime.Now;
+            UiLogic.initPropNames(doorConfig);
+            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                   // dyncompType = typeof(Extdecor);
+            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+            pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+                                                       // dyncompType = typeof(Extdecor);
 
-        hebrew = new CultureInfo("he-IL", false);
-        english = new CultureInfo("en-US", false);
+            // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+            // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+            pageParams.Add("config4", this);
 
-        showProducts = false;
-        hideDoorTitle = true;
+            hebrew = new CultureInfo("he-IL", false);
+            english = new CultureInfo("en-US", false);
+
+            showProducts = false;
+            hideDoorTitle = true;
+
+            //myService.RefreshRequested += RefreshMe;
+
+        }
+        private void RefreshMe()
+        {
+            StateHasChanged();
         }
 
         void showTabPage(Type pageType, string tabName)
@@ -88,6 +99,12 @@
             ErrMsgCssClass = "modal-body centeredMsg";
             openMsgBox = true;
         }
+        }
+        //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+        //  the 2nd answer
+        public void RefreshState()
+        {
+            this.StateHasChanged();
         }
     }
 
@@ -319,7 +336,7 @@
                                 <td id="tdDate">
                                     <input type="date" name="txtDate" @bind="formDate" />
                                     @code {
-        // public DoorConfig? doorConfig; // = new DoorConfig();
+                                        // public DoorConfig? doorConfig; // = new DoorConfig();
 
         private DateTime _formDate = DateTime.Now;
         protected DateTime formDate
@@ -340,7 +357,8 @@
                                                 doorConfig.initBorderColors();
                                             }
                                             doorConfig.FORMDATE = Helper.formatDate4Rest(_formDate);
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                         }
         }
                                     }
@@ -351,7 +369,7 @@
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" />
                                     @code {
-        protected string _formFiller;
+                                        protected string _formFiller;
         protected string formFiller
         {
                                         get
@@ -368,7 +386,8 @@
                                             {
                                                 doorConfig.FORMFILLER = _formFiller;
                                                 doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                                //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
                                         }
         }
@@ -414,7 +433,8 @@
                                                 else
                                                     doorConfig.REFERENCE = _reference;
 
-                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                                //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
                                         }
         }
@@ -486,7 +506,8 @@
                                                 doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
                                             }
                                             //
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
+                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                         }
                                     }
         }
@@ -529,8 +550,8 @@
                                                 disableLogo = true;
                                                 doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
                                             }
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
-                                            //
+                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                         }
 
                                     }
@@ -561,7 +582,8 @@
                                             doorConfig.INSTALLADDRESS = _InstallAddress;
                                             //
                                             //doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                         }
                                     }
         }
@@ -589,7 +611,8 @@
                                         {
                                             doorConfig.SHIPADDRESS = _ShipAddress;
                                             doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                         }
                                     }
         }
@@ -864,7 +887,8 @@
                                                 doorConfig.DECORFORMAT = _DecorFormat;
                                                 doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                                                UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle", "proddes", "movingwing");
+                                                //UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle", "proddes", "movingwing");
+                                                UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
                                                 switch (_DecorFormat)
                                                 {
                                                     case "ללא":
@@ -1002,8 +1026,15 @@
                         @if (showDynComp)
                         {
                             <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-                                <DynamicComponent Type="@dyncompType" Parameters="@pageParams" />
+                                <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
+                                @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
                             </div>
+                        }
+                        @code{
+                            protected void DoRefresh()
+                            {
+                                this.StateHasChanged();
+                            }
                         }
                         @*
                             <div id="divTabControl"  >

@@ -186,12 +186,71 @@ namespace BlazorServerApp1.Data
             }
             return isFilled;
         }
-        public static void try2UpdateBtnClass(DoorConfig doorConfig, string tabName, string tabBtn, string nextTabBtn )
+        public static void try2UpdateBtnClass(DoorConfig doorConfig, string tabName) //  , string tabBtn, string nextTabBtn )
         {
+            string tabBtnCssName = getTabBtnCssName(doorConfig, tabName);
+            string nextTabBtnCssName = getNextTabBtnCssName(doorConfig, tabBtnCssName);
             if (UiLogic.tabPageIsFilled(tabName, doorConfig))
             {
-                doorConfig.btnClasses[tabBtn] = "buttonFilled";
-                doorConfig.btnClasses[nextTabBtn] = "buttonActive";
+                doorConfig.btnClasses[tabBtnCssName] = "buttonFilled";
+                doorConfig.btnClasses[nextTabBtnCssName] = "buttonActive";
+            }
+        }
+        public static string getNextTabName(DoorConfig doorConfig, string tabName)
+        {
+            string nextTab = string.Empty;
+            
+            int t = Array.IndexOf(tabNames, tabName);
+            if (t > -1 && t < tabNames.Length - 1)
+            {
+                nextTab = tabNames[t + 1];
+                if (   (nextTab == "extdecor" && doorConfig.DECORFORMAT == "פנים")
+                    || (nextTab == "intdecor" && doorConfig.DECORFORMAT == "חוץ")
+                    || (nextTab == "hinges")
+                    )
+                {
+                    int t1 = Array.IndexOf(tabNames, nextTab);
+                    nextTab = tabNames[t1 + 1];   // staticwing TAB is diabled - skip it and skip hinges tab
+                }
+                if (nextTab == "extdecor" && doorConfig.DECORFORMAT == "ללא")
+                {
+                    int t2 = Array.IndexOf(tabNames, nextTab);
+                    nextTab = tabNames[t2 + 2];
+                }
+                if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
+                {
+                    int t3 = Array.IndexOf(tabNames, nextTab);
+                    nextTab = tabNames[t3 + 1];
+                }
+            }
+            return nextTab;
+        }
+        public static string getTabBtnCssName (DoorConfig doorConfig, string tabName)
+        {
+            switch (tabName)
+            {
+                case "divHeader":
+                    return "general";
+                case "divProducts":
+                    return "selectprod";
+                case "divDoorTitle":
+                    return "proddes";
+                default:
+                    return tabName;   // movingwing, extdecor ....
+            }
+        }
+        public static string getNextTabBtnCssName (DoorConfig doorConfig, string tabBtnCssName)
+        {
+            switch (tabBtnCssName)
+            {
+                case "general":
+                 return "selectprod";
+                case "selectprod":
+                    return "proddes";
+                case "proddes":
+                    return "movingwing";
+                default:
+                    return getNextTabName(doorConfig, tabBtnCssName);  // movingwing, extdecor ....
             }
         }
         public static bool doorFldIsFilled(DoorConfig doorConfig, string fldName, string fldDataType)
@@ -288,15 +347,16 @@ namespace BlazorServerApp1.Data
             int t = Array.IndexOf(tabNames, tabName);
             if (t > -1 && t < tabNames.Length - 1)
             {
-                string nextTab = tabNames[t + 1];
-                if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
-                {
-                    nextTab = tabNames[t + 3];  // staticwing TAB is diabled - skip it and skip hinges tab
-                }
-                if (nextTab == "hinges")
-                {
-                    nextTab = tabNames[t + 2];
-                }
+                //string nextTab = tabNames[t + 1];
+                //if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
+                //{
+                //    nextTab = tabNames[t + 3];  // staticwing TAB is diabled - skip it and skip hinges tab
+                //}
+                //if (nextTab == "hinges")
+                //{
+                //    nextTab = tabNames[t + 2];
+                //}
+                string nextTab = getNextTabName(doorConfig, tabName); 
                 string query = string.Format("CONFIG_SUBFORM = '{0}'", nextTab.ToLower());
                 DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
                 for (int r = 0; r < tabFields.Length; r++)
