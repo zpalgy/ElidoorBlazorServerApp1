@@ -525,18 +525,21 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 2)]
         public int TRSH_NUM { get; set; }
         [DataMember(Order = 3)]
-        public string PARTNAME { get; set; }
+        public string TRSH_MODELNAME { get; set; }
         [DataMember(Order = 4)]
-        public string FIELDCODE { get; set; }
+        public string TRSH_MEAGEDNAME { get; set; }
+
         [DataMember(Order = 5)]
-        public string CONFIG_FIELDNAME { get; set; }  //e.g. dlstPARTNAME
+        public string FIELDCODE { get; set; }
         [DataMember(Order = 6)]
-        public string FIELDNAME { get; set; }  //e.g. PARTNAME
+        public string CONFIG_FIELDNAME { get; set; }  //e.g. dlstPARTNAME
         [DataMember(Order = 7)]
-        public string CONFIG_TDNAME { get; set; }
+        public string FIELDNAME { get; set; }  //e.g. PARTNAME
         [DataMember(Order = 8)]
-        public string FIELDDATATYPE { get; set; }
+        public string CONFIG_TDNAME { get; set; }
         [DataMember(Order = 9)]
+        public string FIELDDATATYPE { get; set; }
+        [DataMember(Order = 10)]
         public string DEFVAL { get; set; }
         [DataMember(Order = 10)]
         public string VAL_LOCKED { get; set; }

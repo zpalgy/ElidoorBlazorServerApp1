@@ -176,6 +176,9 @@ a {
 {
     border-color: red;
 }
+.blackBorder {
+    border-color: black;
+}
 .tabHeader {
     float:right;
     border:solid;

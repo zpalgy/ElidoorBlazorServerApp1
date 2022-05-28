@@ -70,6 +70,11 @@
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
         //}
         doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
+        
+        // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
+        if (doorConfig.ELECTRICAPPARATUS == null)
+            doorConfig.ELECTRICAPPARATUS = string.Empty;
+        doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? string.Empty : "redBorder");
     }
 
 
@@ -276,7 +281,7 @@
             }
         *@
         <td id="tdOpenMode">
-            <select name="dlstOpenMode" @bind="openMode">
+            <select name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]">
                 <option></option>
                 <option>פנימה</option>
                 <option>החוצה</option>
@@ -309,7 +314,7 @@
         </td>
 
         <td id="tdColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">
-            <select name="dlstColorsNum"  @bind="ColorsNum" >
+            <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]">
                 <option></option>
                 <option>ללא</option>
                 <option>1</option>
@@ -363,6 +368,7 @@
                                     doorConfig.DOORCOLORID = 0;
                                     break;
                             }
+                            doorConfig.borderColors["COLORSNUM"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -578,6 +584,7 @@
                         {
                             doorConfig.TRSH_HARDWARE = _Hw;
                             doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? string.Empty : "redBorder");
+                            doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }

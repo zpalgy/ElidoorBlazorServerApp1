@@ -10,7 +10,7 @@
 
 @inject IJSRuntime Js
 
-<EditForm Model=@doorConfig>
+<EditForm Model=@doorConfig  OnSubmit="submitForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
     @*  <h3>Configurator4</h3> *@
@@ -51,34 +51,37 @@
 
         protected override async Task OnInitializedAsync()
         {
-            doorConfig = new DoorConfig();
-            doorConfig.initBorderColors();
-            doorConfig.btnClasses["general"] = "buttonActive";
+        if (doorConfig != null)
+            return;
 
-            formDate = DateTime.Now;
-            UiLogic.initPropNames(doorConfig);
-            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+        doorConfig = new DoorConfig();
+        doorConfig.initBorderColors();
+        doorConfig.btnClasses["general"] = "buttonActive";
 
-            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-            pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                       // dyncompType = typeof(Extdecor);
+        formDate = DateTime.Now;
+        UiLogic.initPropNames(doorConfig);
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-            // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
-            // the 2nd answer : Update Parent State by calling it's StateHasChanged method
-            pageParams.Add("config4", this);
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+                                                   // dyncompType = typeof(Extdecor);
 
-            hebrew = new CultureInfo("he-IL", false);
-            english = new CultureInfo("en-US", false);
+        // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+        // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+        pageParams.Add("config4", this);
 
-            showProducts = false;
-            hideDoorTitle = true;
+        hebrew = new CultureInfo("he-IL", false);
+        english = new CultureInfo("en-US", false);
 
-            //myService.RefreshRequested += RefreshMe;
+        showProducts = false;
+        hideDoorTitle = true;
+
+        //myService.RefreshRequested += RefreshMe;
 
         }
         private void RefreshMe()
         {
-            StateHasChanged();
+        StateHasChanged();
         }
 
         void showTabPage(Type pageType, string tabName)
@@ -104,7 +107,11 @@
         //  the 2nd answer
         public void RefreshState()
         {
-            this.StateHasChanged();
+        this.StateHasChanged();
+        }
+        void submitForm()
+        {
+        int x = 17;
         }
     }
 
@@ -124,12 +131,12 @@
                             @{
                                 void restart()
                                 {
-                                    openYesNo = true;
                                     msgCaption = string.Empty;
                                     errMsg2 = "תחילת שאלון חדש ?";
                                     MsgTitleCssClass = string.Empty;
                                     ErrMsgCssClass = "centeredMsg"; //string.Empty;
                                                                     // the actual restart is done in the YesNo section of MsgBox control
+                                    openYesNo = true;
                                 }
                             }
                         </tr>
@@ -182,6 +189,7 @@
                                         return;
                                     }
                                     hideDoorTitle = false;
+                                    UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
                                 }
                             }
                         </tr>
@@ -206,6 +214,7 @@
                                                 void showMw()
                                                 {
                                                     pageParams["disableLogo"] = disableLogo;
+                                                    UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
                                                     showTabPage(typeof(Movingwing), "movinwing");
                                                     doorConfig.btnClasses["general"] =
                                                     doorConfig.btnClasses["selectprod"] =
@@ -325,7 +334,7 @@
             </td>
             <td id="tdMainForm">
                 <div id="divMainForm" dir="rtl" class="mainFormDiv">
-                    <div id="divHeader" dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+                    <div id="divHeader" dir="rtl" >  @* style="border: solid; border-color: black; border-radius: 10px" *@
                         <table id="tblLine1">
                             <tr>
                                 <th>תאריך</th>
@@ -365,9 +374,14 @@
                                 </td>
                                 <!-- end tdDate-->
                                 <td id="tdFormFiller">
-                                    <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
+                                    @* <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
                                            @onfocus="@( () => formFillerHasFocus() )"
-                                           @onblur="@( () => formFillerLostFocus() )" />
+                                           @onblur="@( () => formFillerLostFocus() )" /> 
+                                    *@
+                                    <InputText name="txtFormFiller" @bind-Value="formFiller" 
+                                    dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
+                                    onkeypress="return event.keyCode!=13"/>
+
                                     @code {
                                         protected string _formFiller;
         protected string formFiller
@@ -385,7 +399,7 @@
                                             if (doorConfig != null)
                                             {
                                                 doorConfig.FORMFILLER = _formFiller;
-                                                doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blackBorder" : "redBorder");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
@@ -403,10 +417,12 @@
                                 </td>
                                 <!-- end tdFormFiller -->
                                 <td id="tdReference">
-                                    <input name="txtReference" @bind="reference" @ref="txtReference" />
-                                    @code {
+                                    @* <input name="txtReference" @bind="reference" @ref="txtReference" /> *@
+                                    <InputText name="txtReference" @bind-Value="reference" 
+                                    onkeypress="return event.keyCode!=13" />
 
-        private ElementReference txtReference;
+                                    @code {
+        //private ElementReference txtReference;
         protected string _reference;
         protected string reference
         {
@@ -428,7 +444,7 @@
                                                     ErrMsgCssClass = "modal-body centeredMsg";
                                                     errMsg2 = "אסמכתא עם מספר זה כבר קיימת במערכת";
                                                     openMsgBox = true;
-                                                    txtReference.FocusAsync();
+                                                    //txtReference.FocusAsync();
                                                 }
                                                 else
                                                     doorConfig.REFERENCE = _reference;
@@ -560,7 +576,9 @@
                                 @* end CUST *@
 
                                 <td>
-                                    <input dir="rtl" @bind="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]" />
+                                    @* <input dir="rtl" @bind="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]" /> *@
+                                    <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]" 
+                                      onkeypress="return event.keyCode!=13"/>
                                 </td>
                                 @code {
         protected string _InstallAddress = string.Empty;
@@ -590,7 +608,9 @@
                                 }
                                 @* end Address  *@
                                 <td>
-                                    <input dir="rtl" @bind="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]" />
+                                    @* <input dir="rtl" @bind="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]" /> *@
+                                    <InputText dir="rtl"  @bind-Value="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]"
+                                    onkeypress="return event.keyCode!=13"   />
                                 </td>
                                 @code {
         protected string _ShipAddress = string.Empty;
@@ -699,7 +719,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <select name="dlstWingsNum" @bind="WingsNum">
+                                        <select name="dlstWingsNum" @bind="WingsNum" class="@doorConfig.borderColors["TRSH_WINGSNUMDES"]" >
                                             @*
                                                 <option>בחר סוג מיפתח</option>
                                                 <option>כנף</option>
@@ -748,6 +768,7 @@
                                                     FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
                                                     doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
                                                 }
+                                                doorConfig.borderColors["TRSH_WINGSNUMDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                                             }
 
                                             //disableStaticWing =  (_WingsNum == "כנף");
@@ -815,7 +836,7 @@
                                         </select>
                                     </td>
                                     @code {
-        private ElementReference dlstModelName;
+                                        private ElementReference dlstModelName;
         protected string _TRSH_MODELNAME = string.Empty;
         protected string TRSH_MODELNAME
         {
@@ -829,6 +850,7 @@
                                         }
                                         set
                                         {
+                                            int dbg = 0;
                                             _TRSH_MODELNAME = value;
                                             if (doorConfig != null)
                                             {
@@ -850,6 +872,9 @@
                                                     FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
                                                     doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
                                                 }
+                                                UiLogic.applyModelDefaults(doorConfig);
+                                                dbg = doorConfig.TRSH_HARDWARE;
+                                                UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
                                             }
                                         }
         }
@@ -1088,7 +1113,10 @@
                             </tr>
                             <tr>
                                 <td id="tdComments">
-                                    <input name="txtComments" size="120" @bind="Comments" AutoCompleteType="Disabled" />
+                                   @*  <input name="txtComments" size="120" @bind="Comments" AutoCompleteType="Disabled" /> *@
+                                   <InputText name="txtComments"  size="120" @bind-Value="Comments" AutoCompleteType="Disabled"
+                                    dir="rtl"  onkeypress="return event.keyCode!=13"
+                                    />
                                 </td>
                                 @code
                                 {

@@ -1159,7 +1159,17 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-
+        public static int getDril4HwOfHw (DoorConfig doorConfig)
+        {
+            if (doorConfig != null)
+            {
+                string query = string.Format("TRSH_HARDWARE={0}", doorConfig.TRSH_HARDWARE);
+                DataRow[] dril4HwRows = dtHardwares.Select(query);
+                if (dril4HwRows.Length > 0)
+                    return int.Parse(dril4HwRows[0]["DRIL4HW"].ToString());
+            }
+            return 0;
+        }
         public static List<CYLINDER_Class> getCylinders(ref string errMsg)
         {
             try
@@ -1809,8 +1819,10 @@ namespace BlazorServerApp1.Data
                     emptyHandle.HANDLENAME = " ";
                     emptyHandle.HANDLEDES = " ";
                     val1.Add(emptyHandle);
+                    
                     HANDLE_Class noHandle = new HANDLE_Class();
                     noHandle.HANDLENAME = noHandle.HANDLEDES = "ללא";  // new per CU request 23/05/2022
+                    val1.Add(noHandle);
 
                     foreach (HANDLE_Class handle in val.value)
                     {
@@ -2039,7 +2051,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "LINENUM,TRSH_NUM,PARTNAME,FIELDCODE,CONFIG_FIELDNAME,FIELDNAME,CONFIG_TDNAME,FIELDDATATYPE,DEFVAL,VAL_LOCKED,WRONGVAL";
+                string fields = "LINENUM,TRSH_NUM,TRSH_MODELNAME,TRSH_MEAGEDNAME,FIELDCODE,CONFIG_FIELDNAME,FIELDNAME,CONFIG_TDNAME,FIELDDATATYPE,DEFVAL,VAL_LOCKED,WRONGVAL";
                 request.Resource = string.Format("TRSH_DEFAULTS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)

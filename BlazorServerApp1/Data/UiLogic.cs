@@ -53,7 +53,7 @@ namespace BlazorServerApp1.Data
                 return true;  // hardcoded -these fields are temporarily not visible 22/05/2022
 
             //debug
-            if (fldName == "ExtColor" || fldName == "thExtColor")
+            if (fldName == "Cylinder" || fldName == "ColorsNum")
             {
                 int x = 17;
             }
@@ -84,7 +84,7 @@ namespace BlazorServerApp1.Data
             //configFldName = configFldName.ToUpper();
             if (doorConfig != null)
             {
-                string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
+                string query = string.Format("TRSH_MODELNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.TRSH_MODELNAME, configFldName);
                 DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
                 if (rowsDefVal.Length > 0)
                 {
@@ -105,7 +105,7 @@ namespace BlazorServerApp1.Data
                 if (string.IsNullOrEmpty(doorConfig.PARTNAME))
                     return false;
 
-                string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
+                string query = string.Format("TRSH_MODELNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.TRSH_MODELNAME, configFldName);
                 DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
 
                 for (int r = 0; r < rowsDefVal.Length; r++)
@@ -159,6 +159,11 @@ namespace BlazorServerApp1.Data
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
             int fieldsNum = tabFields.Length;
             bool isFilled = true;  
+
+            if (tabName == "movingwing")
+            {
+                int x = 17; //debug
+            }
 
             for (int r = 0; r< fieldsNum; r++)
             {
@@ -283,8 +288,8 @@ namespace BlazorServerApp1.Data
                 else if (fldName == "INTCOLORID" && doorConfig.COLORSNUM != "2")
                     return true;
 
-                //  debug
-                if (fldName == "EXTCOLORID")
+                //  debug            ELECTRICAPPARATUS
+                if (fldName == "ELECTRICAPPARATUS")
 				{
 					int x = 17;
 				}
@@ -613,13 +618,14 @@ namespace BlazorServerApp1.Data
                 return false;
             }
         }
-        public static void applyPartDefaults(DoorConfig doorConfig)
+
+        public static void applyModelDefaults(DoorConfig doorConfig)
         {
             try
             {
-                if (doorConfig != null && !string.IsNullOrEmpty(doorConfig.PARTNAME))
+                if (doorConfig != null && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
                 {
-                    string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
+                    string query = string.Format("TRSH_MODELNAME = '{0}'", doorConfig.TRSH_MODELNAME);
                     DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
                     string errMsg = string.Empty;
                     for (int r = 0; r < rowsDefVal.Length; r++)
@@ -640,7 +646,35 @@ namespace BlazorServerApp1.Data
                 return;
             }
         }
+        #region todel
+        public static void applyPartDefaults(DoorConfig doorConfig)
+        {
+            try
+            {
+                if (doorConfig != null && !string.IsNullOrEmpty(doorConfig.PARTNAME))
+                {
+                    string query = string.Format("TRSH_MODELNAME = '{0}'", doorConfig.TRSH_MODELNAME);
+                    DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+                    string errMsg = string.Empty;
+                    for (int r = 0; r < rowsDefVal.Length; r++)
+                    {
+                        string defval = rowsDefVal[r]["DEFVAL"].ToString();
 
+                        // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
+                        string configFldName = rowsDefVal[r]["CONFIG_FIELDNAME"].ToString();
+                        ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
+                        UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return;
+            }
+        }
+        #endregion todel
         public static void applyFldDefault(DoorConfig doorConfig, string fldName)
         {
             try
@@ -650,11 +684,16 @@ namespace BlazorServerApp1.Data
                 //string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
                 if (doorConfig != null) 
                 {
-                    if (!string.IsNullOrEmpty(doorConfig.PARTNAME))
+                    //if (!string.IsNullOrEmpty(doorConfig.PARTNAME))
+                    if (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
                     {
 
                         //string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
-                        string query = string.Format("PARTNAME = '{0}' AND FIELDNAME = '{1}'", doorConfig.PARTNAME, fldName);
+                        if (fldName == "TRSH_HARDWARE")
+                        {
+                            int x = 17;
+                        }
+                        string query = string.Format("TRSH_MODELNAME = '{0}' AND FIELDNAME = '{1}'", doorConfig.TRSH_MODELNAME, fldName);
                         DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
                         string errMsg = string.Empty;
                         for (int r = 0; r < rowsDefVal.Length; r++)
@@ -667,13 +706,14 @@ namespace BlazorServerApp1.Data
                             UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
                         }
                     }
-                    else // field was not found in the DEFAULTs that depend on PARTNAME, maybe it has a general default that does not depend on PARTNAME
+                    else // field was not found in the DEFAULTs that depend on MODEL (PARTNAME), maybe it has a general default that does not depend on MODEL (PARTNAME)
                     {
                         //if (fldName == "COMPLIENTDOOR")
                         //{
                         //    int x = 17;
                         //}
-                        string query = string.Format("(PARTNAME = '' OR PARTNAME IS NULL) AND FIELDNAME = '{0}'", fldName);  //default that does not depend on PARTNAME
+                        //string query = string.Format("(PARTNAME = '' OR PARTNAME IS NULL) AND FIELDNAME = '{0}'", fldName);  //default that does not depend on PARTNAME
+                        string query = string.Format("(TRSH_MODELNAME = '' OR TRSH_MODELNAME IS NULL) AND FIELDNAME = '{0}'", fldName);  //default that does not depend on MODEL
                         DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
                         string errMsg = string.Empty;
                         for (int r = 0; r < rowsDefVal.Length; r++)
@@ -1108,6 +1148,10 @@ namespace BlazorServerApp1.Data
                 for (int p = 0; p < propNames.Length; p++)
                 {
                     fldName = propNames[p];
+                    if (fldName == "ELECTRICAPPARATUS")
+                    {
+                        int x = 17;
+                    }
                     applyFldDefault(doorConfig, fldName);
                 }
             }
