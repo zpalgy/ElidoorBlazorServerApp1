@@ -175,9 +175,11 @@ a {
 .redBorder 
 {
     border-color: red;
+    outline: none;
 }
 .blackBorder {
     border-color: black;
+    outline: none;
 }
 .tabHeader {
     float:right;

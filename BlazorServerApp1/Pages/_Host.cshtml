@@ -5,4 +5,9 @@
     Layout = "_Layout";
 }
 
+@*
 <component type="typeof(App)" render-mode="ServerPrerendered" />
+    commented the above line : ref : https://stackoverflow.com/questions/58075628/why-are-blazor-lifecycle-methods-getting-executed-twice
+*@
+
+<component type="typeof(App)" render-mode="Server" />

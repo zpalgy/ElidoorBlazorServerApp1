@@ -378,8 +378,11 @@
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" /> 
                                     *@
+                                    @{
+                                       // doorConfig.borderColors["FORMFILLER"] = "form-control " + doorConfig.borderColors["FORMFILLER"];
+                                    }
                                     <InputText name="txtFormFiller" @bind-Value="formFiller" 
-                                    dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
+                                    dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]" style="outline:none"
                                     onkeypress="return event.keyCode!=13"/>
 
                                     @code {
@@ -418,7 +421,7 @@
                                 <!-- end tdFormFiller -->
                                 <td id="tdReference">
                                     @* <input name="txtReference" @bind="reference" @ref="txtReference" /> *@
-                                    <InputText name="txtReference" @bind-Value="reference" 
+                                    <InputText name="txtReference" @bind-Value="reference" style="outline:none"
                                     onkeypress="return event.keyCode!=13" />
 
                                     @code {
@@ -577,7 +580,7 @@
 
                                 <td>
                                     @* <input dir="rtl" @bind="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]" /> *@
-                                    <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]" 
+                                    <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]"  style="outline:none"
                                       onkeypress="return event.keyCode!=13"/>
                                 </td>
                                 @code {
@@ -609,7 +612,7 @@
                                 @* end Address  *@
                                 <td>
                                     @* <input dir="rtl" @bind="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]" /> *@
-                                    <InputText dir="rtl"  @bind-Value="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]"
+                                    <InputText dir="rtl"  @bind-Value="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]"  style="outline:none"
                                     onkeypress="return event.keyCode!=13"   />
                                 </td>
                                 @code {
@@ -1114,7 +1117,7 @@
                             <tr>
                                 <td id="tdComments">
                                    @*  <input name="txtComments" size="120" @bind="Comments" AutoCompleteType="Disabled" /> *@
-                                   <InputText name="txtComments"  size="120" @bind-Value="Comments" AutoCompleteType="Disabled"
+                                   <InputText name="txtComments"  size="120" @bind-Value="Comments" AutoCompleteType="Disabled" style="outline:none"
                                     dir="rtl"  onkeypress="return event.keyCode!=13"
                                     />
                                 </td>
