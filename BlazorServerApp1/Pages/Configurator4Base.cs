@@ -23,20 +23,20 @@ namespace BlazorServerApp1.Pages
 				string prevText = (t > 0 ? UiLogic.tabTexts[t - 1] : string.Empty);
 				if (prevTab.ToLower() == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
 				{
-					prevTab = UiLogic.tabNames[t - 2];
+					prevTab = UiLogic.tabNames[t - 2];   //intdecor
 					prevText = UiLogic.tabTexts[t - 2];
 				}
 				if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor )
                 {
-					if (hideBtnExtDecor)
+					if (!hideBtnExtDecor)
                     {
-						prevTab = UiLogic.tabNames[t - 3];
+						prevTab = UiLogic.tabNames[t - 3];  //extdecor
 						prevText = UiLogic.tabTexts[t - 3];
 					}
 					else
                     {
-						prevTab = UiLogic.tabNames[t - 2];
-						prevText = UiLogic.tabTexts[t - 2];
+						prevTab = UiLogic.tabNames[t - 4];  //movingwing
+						prevText = UiLogic.tabTexts[t - 4];
 					}
                 }
 				if (prevTab.ToLower() == "intdecor" && hideBtnExtDecor)

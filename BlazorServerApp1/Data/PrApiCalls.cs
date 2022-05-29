@@ -264,6 +264,9 @@ namespace BlazorServerApp1.Data
         {
             try
             {
+                if (CUST == 0)
+                    return null;
+
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();

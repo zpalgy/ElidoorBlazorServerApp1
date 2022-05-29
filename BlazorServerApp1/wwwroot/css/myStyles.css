@@ -181,6 +181,10 @@ a {
     border-color: black;
     outline: none;
 }
+
+input:focus, select:focus, .inputstyle:focus {
+    border: 1px solid blue;
+}
 .tabHeader {
     float:right;
     border:solid;

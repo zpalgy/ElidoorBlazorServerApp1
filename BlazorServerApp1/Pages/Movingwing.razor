@@ -103,12 +103,14 @@
     </tr>
     <tr>
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
-            <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" />
-        </td>
+           @*  <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" /> *@
+             <InputText name="txtWingWidth" type="number"  @bind-Value="DoorWidth"  class="@doorConfig.borderColors["DOORWIDTH"]" 
+              style="outline:none" onkeypress="return event.keyCode!=13"/>
+
         @code
         {
             protected int _DoorWidth = 0;
-            protected int DoorWidth
+            protected string DoorWidth
             {
                 get
                 {
@@ -116,12 +118,18 @@
                     {
                         _DoorWidth = doorConfig.DOORWIDTH;
                     }
-                    return _DoorWidth;
+                    return _DoorWidth.ToString();
                 }
                 set
                 {
-                    _DoorWidth = value;
-                    if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
+                    if (!int.TryParse(value,out _DoorWidth))
+                    {
+                        msgCaption = string.Empty;
+                        errMsg2 = "ספרות בלבד";
+                        msgClass = "modal-body centeredMsg";
+                        openMsgBox = true;
+                    }
+                    else if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
                     {
                         msgCaption = string.Empty;
                         msgClass = "modal-body centeredMsg";
@@ -132,7 +140,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.DOORWIDTH = _DoorWidth;
-                            doorConfig.borderColors["DOORWIDTH"] = (value != 0 ? string.Empty : "redBorder");
+                            doorConfig.borderColors["DOORWIDTH"] = (string.IsNullOrEmpty(value) || value == "0" ? "redBorder" : string.Empty );
                             //[TODO] implement the following lines
                             //if (chkbComplient.Checked)
                             //     txtWindowWidth.Text = calcWindowWidth();
@@ -153,13 +161,16 @@
                 }
             }
         }
-
+        </td>
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
-            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" />
+           @* <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" />  *@
+            <InputText name="txtDoorHeight" type="number" @bind-Value="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]"
+             style="outline:none" onkeypress="return event.keyCode!=13"/>
+
             @code
             {
                 protected int _DoorHeight = 0;
-                protected int DoorHeight
+                protected string DoorHeight
                 {
                     get
                     {
@@ -167,15 +178,22 @@
                         {
                             _DoorHeight = doorConfig.DOORHEIGHT;
                         }
-                        return _DoorHeight;
+                        return _DoorHeight.ToString();
                     }
                     set
                     {
-                        _DoorHeight = value;
-                        if (doorConfig != null)
+                        //_DoorHeight = value;
+                        if (!int.TryParse(value,out _DoorHeight))
+                        {
+                            msgCaption = string.Empty;
+                            errMsg2 = "ספרות בלבד";
+                            msgClass = "modal-body centeredMsg";
+                            openMsgBox = true;
+                        }
+                        else if (doorConfig != null)
                         {
                             doorConfig.DOORHEIGHT = _DoorHeight;
-                            doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
+                            doorConfig.borderColors["DOORHEIGHT"] = (value != "0" ? string.Empty : "redBorder");
                             //[TODO] implement the following lines
                             //if (chkbComplient.Checked)
                             //     txtWindowWidth.Text = calcWindowWidth();
@@ -190,6 +208,9 @@
                                     errMsg3 = errMsg2;
                                     openMsgBox = true;
                                 }
+                                doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? string.Empty : "redBorder");  //update borderColor
+                                                                         // of dlstLOCKDRILHEIGHT if its value was changed after DoorHeight was processsed
+                                this.StateHasChanged(); 
                             }
 
                             errMsg2 = string.Empty;
@@ -513,28 +534,37 @@
 
 
         <td id="tdLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">
-            <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" />
-        </td>
+            @* <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" />  *@
+        <InputText name="txtLockDrilHeight" type="number" @bind-Value="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"
+              style="outline:none" onkeypress="return event.keyCode!=13"/>
+                    
         @code
         {
-            protected int _LOckDrilHeight = 0;
-            protected int LockDrilHeight
+            protected int _LockDrilHeight = 0;
+            protected string LockDrilHeight
             {
                 get
                 {
                     if (doorConfig != null)
                     {
-                        _LOckDrilHeight = doorConfig.LOCKDRILHEIGHT;
+                        _LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
                     }
-                    return _LOckDrilHeight;
+                    return _LockDrilHeight.ToString();
                 }
                 set
                 {
-                    _LOckDrilHeight = value;
-                    if (doorConfig != null)
+                    //_LOckDrilHeight = value;
+                     if (!int.TryParse(value,out _LockDrilHeight))
                     {
-                        doorConfig.LOCKDRILHEIGHT = _LOckDrilHeight;
-                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
+                        msgCaption = string.Empty;
+                        errMsg2 = "ספרות בלבד";
+                        msgClass = "modal-body centeredMsg";
+                        openMsgBox = true;
+                    }
+                        else if (doorConfig != null)
+                    {
+                        doorConfig.LOCKDRILHEIGHT = _LockDrilHeight;
+                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != "0" ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         clearHingesMeasures(doorConfig);
                         msgBorder1Style = "border:solid;border-color:red;";
@@ -548,7 +578,7 @@
                 }
             }
         }
-
+        </td>
         <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
             <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]">
                 @{
@@ -585,6 +615,7 @@
                             doorConfig.TRSH_HARDWARE = _Hw;
                             doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? string.Empty : "redBorder");
                             doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
+                            doorConfig.borderColors["DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -1032,7 +1063,7 @@
                             // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
                             // the 2nd answer : Update Parent State by calling it's StateHasChanged method
 
-                                doorConfig.btnClasses["hinges"] = "buttonActive";
+                               // doorConfig.btnClasses["hinges"] = "buttonActive";
                                 config4.RefreshState();
                             // end debug 
                         }

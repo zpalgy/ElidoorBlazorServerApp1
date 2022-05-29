@@ -361,7 +361,12 @@ namespace BlazorServerApp1.Data
                 //{
                 //    nextTab = tabNames[t + 2];
                 //}
-                string nextTab = getNextTabName(doorConfig, tabName); 
+                string nextTab = getNextTabName(doorConfig, tabName);
+                if (nextTab == "hinges")
+                {
+                    t = Array.IndexOf(tabNames, "hinges");
+                    nextTab = tabNames[t + 1];
+                }
                 string query = string.Format("CONFIG_SUBFORM = '{0}'", nextTab.ToLower());
                 DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
                 for (int r = 0; r < tabFields.Length; r++)
@@ -396,6 +401,7 @@ namespace BlazorServerApp1.Data
                 applyFldDefault(doorConfig, fldname);
             }
             doorConfig.initBorderColors();
+            UiLogic.tabPageIsFilled("divHeader", doorConfig);  //set redborder on Required fields in divHeader
         }
         public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
         {

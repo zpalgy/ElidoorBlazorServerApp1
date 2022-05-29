@@ -499,7 +499,7 @@
                                     </select>
                                 </td>
                                 @code {
-        private int _AGENT = 0;
+                                    private int _AGENT = 0;
         protected int AGENT
         {
                                     get
@@ -517,16 +517,19 @@
                                             doorConfig.AGENT = _AGENT;
                                             doorConfig.borderColors["AGENT"] = (value != 0 ? string.Empty : "redBorder");
                                             //
-                                            CUSTOMER_Class agent = PrApiCalls.getCustomer((int)doorConfig.AGENT, ref errMsg);
-                                            ShipAddress = string.Format("{0} {1} {2}", agent.ADDRESS, agent.ADDRESS2, agent.ADDRESS3);
-                                            if (!string.IsNullOrEmpty(agent.TRSH_LOGO) && agent.TRSH_LOGO == "Y")
+                                            if (_AGENT != 0)
                                             {
-                                                disableLogo = true;
-                                                doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                                                CUSTOMER_Class agent = PrApiCalls.getCustomer((int)doorConfig.AGENT, ref errMsg);
+                                                ShipAddress = string.Format("{0} {1} {2}", agent.ADDRESS, agent.ADDRESS2, agent.ADDRESS3);
+                                                if (!string.IsNullOrEmpty(agent.TRSH_LOGO) && agent.TRSH_LOGO == "Y")
+                                                {
+                                                    disableLogo = true;
+                                                    doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                                                }
+                                                //
+                                                //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
+                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
-                                            //
-                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                         }
                                     }
         }
@@ -543,7 +546,7 @@
                                     </select>
                                 </td>
                                 @code {
-        public bool disableLogo = false;
+                                    public bool disableLogo = false;
         private int _CUST = 0;
         protected int CUST
         {
@@ -560,21 +563,25 @@
                                         if (doorConfig != null)
                                         {
                                             doorConfig.CUST = _CUST;
-                                            // set Address and Logo based on CUST
-                                            CUSTOMER_Class cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
-                                            //InstallAddress = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3); - NOT required field
                                             doorConfig.borderColors["CUST"] = (value != 0 ? string.Empty : "redBorder");
-                                            if (!string.IsNullOrEmpty(cust.TRSH_LOGO) && cust.TRSH_LOGO == "Y")
+                                            if (_CUST != 0)
                                             {
-                                                disableLogo = true;
-                                                doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                                                // set Address and Logo based on CUST
+                                                CUSTOMER_Class cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
+                                                //InstallAddress = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3); - NOT required field
+
+                                                if (!string.IsNullOrEmpty(cust.TRSH_LOGO) && cust.TRSH_LOGO == "Y")
+                                                {
+                                                    disableLogo = true;
+                                                    doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                                                }
+                                                //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
+                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
-                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                         }
 
                                     }
-        }
+                                   }
                                 }
                                 @* end CUST *@
 
@@ -876,14 +883,38 @@
                                                     doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
                                                 }
                                                 UiLogic.applyModelDefaults(doorConfig);
+                                                applyDecorFormat2Btns();
                                                 dbg = doorConfig.TRSH_HARDWARE;
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
                                             }
                                         }
-        }
+                                      }
+}
+
+                                    @code
+                                    {
+                                        protected void applyDecorFormat2Btns()
+                                        {
+                                            switch (doorConfig.DECORFORMAT)
+                                            {
+                                                case "ללא":
+                                                    hideBtnExtDecor = hideBtnIntDecor = true;
+                                                    break;
+                                                case "חוץ":
+                                                    hideBtnExtDecor = false;  //show
+                                                    hideBtnIntDecor = true;
+                                                    break;
+                                                case "פנים":
+                                                    hideBtnExtDecor = true;
+                                                    hideBtnIntDecor = false;  //show
+                                                    break;
+                                                case "דו צדדי":
+                                                    hideBtnExtDecor = false;
+                                                    hideBtnIntDecor = false;  //show
+                                                    break;
+                                            }
+                                      }
                                     }
-
-
                                     <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
                                         <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]">
                                             <option></option>
@@ -917,24 +948,25 @@
                                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle", "proddes", "movingwing");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
-                                                switch (_DecorFormat)
-                                                {
-                                                    case "ללא":
-                                                        hideBtnExtDecor = hideBtnIntDecor = true;
-                                                        break;
-                                                    case "חוץ":
-                                                        hideBtnExtDecor = false;  //show
-                                                        hideBtnIntDecor = true;  
-                                                        break;
-                                                    case "פנים":
-                                                        hideBtnExtDecor = true;
-                                                        hideBtnIntDecor = false;  //show
-                                                        break;
-                                                    case "דו צדדי":
-                                                        hideBtnExtDecor = false;
-                                                        hideBtnIntDecor = false;  //show
-                                                        break;
-                                                }
+                                                applyDecorFormat2Btns();
+                                                //switch (_DecorFormat)
+                                                //{
+                                                //    case "ללא":
+                                                //        hideBtnExtDecor = hideBtnIntDecor = true;
+                                                //        break;
+                                                //    case "חוץ":
+                                                //        hideBtnExtDecor = false;  //show
+                                                //        hideBtnIntDecor = true;  
+                                                //        break;
+                                                //    case "פנים":
+                                                //        hideBtnExtDecor = true;
+                                                //        hideBtnIntDecor = false;  //show
+                                                //        break;
+                                                //    case "דו צדדי":
+                                                //        hideBtnExtDecor = false;
+                                                //        hideBtnIntDecor = false;  //show
+                                                //        break;
+                                                //}
                                             }
                                         }
         }
@@ -1162,6 +1194,7 @@
                                         errMsg2 = UiLogic.requiredFieldsAreEmpty; //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
                                                                                   // Js.InvokeVoidAsync("alert", errMsg);
                                         openMsgBox = true;
+                                        //return;
                                     }
 
                                     if (!string.IsNullOrEmpty(doorConfig.FAMILYNAME))

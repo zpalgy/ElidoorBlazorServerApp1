@@ -59,7 +59,8 @@ namespace BlazorServerApp1.Pages
         {
             try
             {
-                string query = string.Format("PARTNAME='{0}'", doorConfig.PARTNAME);
+                //string query = string.Format("PARTNAME='{0}'", doorConfig.PARTNAME);
+                string query = string.Format("PARTNAME='{0}'", doorConfig.TRSH_MODELNAME);  //temporary till we update the TRSH_WINDOWHEIGHT table in priority
                 DataRow[] rowsArray = PrApiCalls.dtWindowHeights.Select(query);
                 if (rowsArray.Length == 0)
                 {
