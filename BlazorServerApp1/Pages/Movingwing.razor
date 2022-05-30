@@ -197,7 +197,7 @@
                     }
                     set
                     {
-                        //_DoorHeight = value;
+                        _DoorHeight = value;
                     //if (!int.TryParse(value,out _DoorHeight))
                         //{
                         //    msgCaption = string.Empty;
@@ -223,7 +223,7 @@
                                     errMsg3 = errMsg2;
                                     openMsgBox = true;
                                     value = _DoorHeight = 0;
-                                    txtDoorHeight.FocusAsync();
+                                    //txtDoorHeight.FocusAsync();
                                     this.StateHasChanged(); 
                                 }
                                 else

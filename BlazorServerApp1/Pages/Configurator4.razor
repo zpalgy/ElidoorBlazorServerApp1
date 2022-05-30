@@ -46,6 +46,7 @@
         bool showProducts = false;
 
         string YNissue = string.Empty;
+        private bool ansYes = false;
 
         //bool showDivDoorTitle = false;
         //bool hideDoorTitle = true;
@@ -890,6 +891,24 @@
                                             _TRSH_MODELNAME = value;
                                             if (doorConfig != null)
                                             {
+                                                if (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
+                                                {
+                                                    msgCaption = string.Empty;
+                                                    errMsg2 = "שינוי הנתונים ימחק את כל הנתונים שמולאו בלשוניות הבאות ?";
+                                                    MsgTitleCssClass = string.Empty;
+                                                    ErrMsgCssClass = "centeredMsg"; //string.Empty;
+                                                                                    // the actual restart is done in the YesNo section of MsgBox control
+                                                    YNissue = "clear";
+                                                    openYesNo = true;
+                                                    if (!ansYes)
+                                                    {
+                                                        return;
+                                                    }
+                                                    else
+                                                    {
+                                                        UiLogic.clearFollowingTabFields(doorConfig, "divDoorTitle");
+                                                    }
+                                                }
                                                 doorConfig.TRSH_MODELNAME = value;
                                                 Model_Class model = PrApiCalls.getModel(doorConfig.TRSH_MODELNAME, ref errMsg);
                                                 doorConfig.meaged = model.TRSH_MEAGEDNAME;
@@ -1334,12 +1353,14 @@
     {
         if (isYes)   // yesNo here is just for btnRestart !
         {
+            ansYes = true;
             switch (YNissue)
             {
                 case "restart":
                     doRestart();
                     break;
                 case "clear":
+                
                 break;
 
             }
