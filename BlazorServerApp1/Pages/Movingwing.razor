@@ -103,33 +103,36 @@
     </tr>
     <tr>
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
-           @*  <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" /> *@
-             <InputText name="txtWingWidth" type="number"  @bind-Value="DoorWidth"  class="@doorConfig.borderColors["DOORWIDTH"]" 
-              style="outline:none" onkeypress="return event.keyCode!=13"/>
+             <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" onkeypress="return event.keyCode!=13" /> 
+             @*<InputText name="txtWingWidth" type="number"  @bind-Value="DoorWidth"  class="@doorConfig.borderColors["DOORWIDTH"]" 
+              style="outline:none" onkeypress="return event.keyCode!=13"/>*@
 
         @code
         {
-            protected int _DoorWidth = 0;
-            protected string DoorWidth
-            {
-                get
+                protected int _DoorWidth = 0;
+                protected int DoorWidth
                 {
-                    if (doorConfig != null)
+                    get
                     {
-                        _DoorWidth = doorConfig.DOORWIDTH;
+                        if (doorConfig != null)
+                        {
+                            _DoorWidth = doorConfig.DOORWIDTH;
+                        }
+                        // return _DoorWidth.ToString();
+                        return _DoorWidth;
                     }
-                    return _DoorWidth.ToString();
-                }
                 set
                 {
-                    if (!int.TryParse(value,out _DoorWidth))
-                    {
-                        msgCaption = string.Empty;
-                        errMsg2 = "ספרות בלבד";
-                        msgClass = "modal-body centeredMsg";
-                        openMsgBox = true;
-                    }
-                    else if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
+                    //if (!int.TryParse(value,out _DoorWidth))
+                    //{
+                    //    msgCaption = string.Empty;
+                    //    errMsg2 = "ספרות בלבד";
+                    //    msgClass = "modal-body centeredMsg";
+                    //    openMsgBox = true;
+                    //}
+                    //else if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
+                    
+                    if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
                     {
                         msgCaption = string.Empty;
                         msgClass = "modal-body centeredMsg";
@@ -140,7 +143,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.DOORWIDTH = _DoorWidth;
-                            doorConfig.borderColors["DOORWIDTH"] = (string.IsNullOrEmpty(value) || value == "0" ? "redBorder" : string.Empty );
+                            doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
                             //[TODO] implement the following lines
                             //if (chkbComplient.Checked)
                             //     txtWindowWidth.Text = calcWindowWidth();
@@ -163,14 +166,16 @@
         }
         </td>
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
-           @* <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" />  *@
-            <InputText name="txtDoorHeight" type="number" @bind-Value="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]"
+           <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
+           onkeypress="return event.keyCode!=13"   />  
+            @* <InputText name="txtDoorHeight" type="number" @bind-Value="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]"
              style="outline:none" onkeypress="return event.keyCode!=13"/>
+             *@
 
             @code
             {
                 protected int _DoorHeight = 0;
-                protected string DoorHeight
+                protected int DoorHeight
                 {
                     get
                     {
@@ -178,22 +183,23 @@
                         {
                             _DoorHeight = doorConfig.DOORHEIGHT;
                         }
-                        return _DoorHeight.ToString();
+                        return _DoorHeight; //_DoorHeight.ToString();
                     }
                     set
                     {
                         //_DoorHeight = value;
-                        if (!int.TryParse(value,out _DoorHeight))
-                        {
-                            msgCaption = string.Empty;
-                            errMsg2 = "ספרות בלבד";
-                            msgClass = "modal-body centeredMsg";
-                            openMsgBox = true;
-                        }
-                        else if (doorConfig != null)
+                        //if (!int.TryParse(value,out _DoorHeight))
+                        //{
+                        //    msgCaption = string.Empty;
+                        //    errMsg2 = "ספרות בלבד";
+                        //    msgClass = "modal-body centeredMsg";
+                        //    openMsgBox = true;
+                        // }
+                        //else if (doorConfig != null)
+                        if (doorConfig != null)
                         {
                             doorConfig.DOORHEIGHT = _DoorHeight;
-                            doorConfig.borderColors["DOORHEIGHT"] = (value != "0" ? string.Empty : "redBorder");
+                            doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
                             //[TODO] implement the following lines
                             //if (chkbComplient.Checked)
                             //     txtWindowWidth.Text = calcWindowWidth();
@@ -207,11 +213,16 @@
                                     //msgClass = "modal-body redMessage";
                                     errMsg3 = errMsg2;
                                     openMsgBox = true;
+                                    this.StateHasChanged(); 
                                 }
                                 doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? string.Empty : "redBorder");  //update borderColor
                                                                          // of dlstLOCKDRILHEIGHT if its value was changed after DoorHeight was processsed
-                                this.StateHasChanged(); 
+                                this.StateHasChanged();
+                                
                             }
+
+                            @*
+                               The following code lines are actually inside setHingesAndWindowsData
 
                             errMsg2 = string.Empty;
                             doorConfig.WINDOWHEIGHT = calcWindowHeight(doorConfig, ref errMsg2);
@@ -221,6 +232,7 @@
                                 errMsg3 = errMsg2;
                                 openMsgBox = true;
                             }
+                            *@
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -534,27 +546,29 @@
 
 
         <td id="tdLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">
-            @* <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" />  *@
-        <InputText name="txtLockDrilHeight" type="number" @bind-Value="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"
-              style="outline:none" onkeypress="return event.keyCode!=13"/>
+             <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" 
+             onkeypress="return event.keyCode!=13"
+             />  
+       @* <InputText name="txtLockDrilHeight" type="number" @bind-Value="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"
+             *@ style="outline:none" onkeypress="return event.keyCode!=13"/>
                     
         @code
         {
-            protected int _LockDrilHeight = 0;
-            protected string LockDrilHeight
-            {
-                get
+                protected int _LockDrilHeight = 0;
+                protected int LockDrilHeight
                 {
-                    if (doorConfig != null)
+                    get
                     {
-                        _LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
+                        if (doorConfig != null)
+                        {
+                            _LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
+                        }
+                        return _LockDrilHeight; //.ToString();
                     }
-                    return _LockDrilHeight.ToString();
-                }
                 set
                 {
-                    //_LOckDrilHeight = value;
-                     if (!int.TryParse(value,out _LockDrilHeight))
+                    _LockDrilHeight = value;
+                    @* if (!int.TryParse(value,out _LockDrilHeight))
                     {
                         msgCaption = string.Empty;
                         errMsg2 = "ספרות בלבד";
@@ -562,9 +576,11 @@
                         openMsgBox = true;
                     }
                         else if (doorConfig != null)
+                    *@
+                    if (doorConfig != null)
                     {
                         doorConfig.LOCKDRILHEIGHT = _LockDrilHeight;
-                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != "0" ? string.Empty : "redBorder");
+                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         clearHingesMeasures(doorConfig);
                         msgBorder1Style = "border:solid;border-color:red;";
