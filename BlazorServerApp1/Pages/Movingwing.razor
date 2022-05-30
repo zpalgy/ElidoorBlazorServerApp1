@@ -105,10 +105,12 @@
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
              <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" onkeypress="return event.keyCode!=13" /> 
              @*<InputText name="txtWingWidth" type="number"  @bind-Value="DoorWidth"  class="@doorConfig.borderColors["DOORWIDTH"]" 
-              style="outline:none" onkeypress="return event.keyCode!=13"/>*@
+              style="outline:none" onkeypress="return event.keyCode!=13"/>
+             *@
 
         @code
         {
+                private ElementReference txtWingWidth;
                 protected int _DoorWidth = 0;
                 protected int DoorWidth
                 {
@@ -121,49 +123,56 @@
                         // return _DoorWidth.ToString();
                         return _DoorWidth;
                     }
-                set
-                {
+                    set
+                    {
+                        _DoorWidth = value;
                     //if (!int.TryParse(value,out _DoorWidth))
-                    //{
-                    //    msgCaption = string.Empty;
-                    //    errMsg2 = "ספרות בלבד";
-                    //    msgClass = "modal-body centeredMsg";
-                    //    openMsgBox = true;
-                    //}
-                    //else if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
-                    
-                    if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
-                    {
-                        msgCaption = string.Empty;
-                        msgClass = "modal-body centeredMsg";
-                        openMsgBox = true;
-                    }
-                    else
-                    {
-                        if (doorConfig != null)
+                        //{
+                        //    msgCaption = string.Empty;
+                        //    errMsg2 = "ספרות בלבד";
+                        //    msgClass = "modal-body centeredMsg";
+                        //    openMsgBox = true;
+                        //}
+                        //else if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
+
+                        if (!wingWidthIsOk(value, ref errMsg2))
                         {
-                            doorConfig.DOORWIDTH = _DoorWidth;
+                            msgCaption = string.Empty;
+                            msgClass = "modal-body centeredMsg";
+                            openMsgBox = true;
+                            value = _DoorWidth = 0;
+                            txtWingWidth.FocusAsync();
                             doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
-                            //[TODO] implement the following lines
-                            //if (chkbComplient.Checked)
-                            //     txtWindowWidth.Text = calcWindowWidth();
-                            if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
+                            this.StateHasChanged();
+                        }
+                        else
+                        {
+                            if (doorConfig != null)
                             {
-                                string errMsg = string.Empty;
-                                doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
-                                if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                                doorConfig.DOORWIDTH = _DoorWidth;
+                                doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
+
+                                if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
                                 {
-                                    //Js.InvokeVoidAsync("alert", errMsg);
-                                    errMsg3 = errMsg;
-                                    openMsgBox = true;
+                                    string errMsg = string.Empty;
+                                    doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
+                                    if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                                    {
+                                        //Js.InvokeVoidAsync("alert", errMsg);
+                                        errMsg3 = errMsg;
+                                        openMsgBox = true;
+                                        value = _DoorWidth = 0;
+                                        txtWingWidth.FocusAsync();
+                                        this.StateHasChanged();
+                                    }
                                 }
+                                doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
+                                UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                             }
-                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
                 }
-            }
-        }
+}
         </td>
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
@@ -174,6 +183,7 @@
 
             @code
             {
+                private ElementReference txtDoorHeight;
                 protected int _DoorHeight = 0;
                 protected int DoorHeight
                 {
@@ -188,7 +198,7 @@
                     set
                     {
                         //_DoorHeight = value;
-                        //if (!int.TryParse(value,out _DoorHeight))
+                    //if (!int.TryParse(value,out _DoorHeight))
                         //{
                         //    msgCaption = string.Empty;
                         //    errMsg2 = "ספרות בלבד";
@@ -199,7 +209,6 @@
                         if (doorConfig != null)
                         {
                             doorConfig.DOORHEIGHT = _DoorHeight;
-                            doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
                             //[TODO] implement the following lines
                             //if (chkbComplient.Checked)
                             //     txtWindowWidth.Text = calcWindowWidth();
@@ -213,14 +222,18 @@
                                     //msgClass = "modal-body redMessage";
                                     errMsg3 = errMsg2;
                                     openMsgBox = true;
+                                    value = _DoorHeight = 0;
+                                    txtDoorHeight.FocusAsync();
                                     this.StateHasChanged(); 
                                 }
-                                doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? string.Empty : "redBorder");  //update borderColor
+                                else
+                                {
+                                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? string.Empty : "redBorder");  //update borderColor
                                                                          // of dlstLOCKDRILHEIGHT if its value was changed after DoorHeight was processsed
-                                this.StateHasChanged();
-                                
+                                    this.StateHasChanged();
+                                }
                             }
-
+                            doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
                             @*
                                The following code lines are actually inside setHingesAndWindowsData
 
@@ -550,7 +563,8 @@
              onkeypress="return event.keyCode!=13"
              />  
        @* <InputText name="txtLockDrilHeight" type="number" @bind-Value="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"
-             *@ style="outline:none" onkeypress="return event.keyCode!=13"/>
+              style="outline:none" onkeypress="return event.keyCode!=13"/>
+       *@
                     
         @code
         {
@@ -565,10 +579,10 @@
                         }
                         return _LockDrilHeight; //.ToString();
                     }
-                set
-                {
-                    _LockDrilHeight = value;
-                    @* if (!int.TryParse(value,out _LockDrilHeight))
+                    set
+                    {
+                        _LockDrilHeight = value;
+                        @* if (!int.TryParse(value,out _LockDrilHeight))
                     {
                         msgCaption = string.Empty;
                         errMsg2 = "ספרות בלבד";
@@ -577,20 +591,24 @@
                     }
                         else if (doorConfig != null)
                     *@
-                    if (doorConfig != null)
-                    {
-                        doorConfig.LOCKDRILHEIGHT = _LockDrilHeight;
-                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                        clearHingesMeasures(doorConfig);
-                        msgBorder1Style = "border:solid;border-color:red;";
-                        msgHeaderClass = "modal-header redBorder";
-                        msgCaption = "שים לב:";
-                        MsgTitleCssClass = "centeredMsg";
-                        msgClass = "modal-body centeredMsg";
-                        errMsg2 =  "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית";
-                        openMsgBox = true;
-                    }
+                        if (doorConfig != null)
+                        {
+                            msgBorder1Style = "border:solid;border-color:red;";
+                            //msgHeaderClass = "modal-header redBorder";
+                            msgCaption = "שים לב:";
+                            MsgTitleCssClass = "centeredMsg";
+                            msgClass = "modal-body centeredMsg";
+                            errMsg2 = "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית";
+                            openMsgBox = true;
+                            this.StateHasChanged();
+                            if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
+                            { 
+                                doorConfig.LOCKDRILHEIGHT = _LockDrilHeight;
+                                UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                                clearHingesMeasures(doorConfig);
+                            }
+                            doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
+                        }
                 }
             }
         }

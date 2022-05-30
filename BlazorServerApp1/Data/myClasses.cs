@@ -1166,5 +1166,7 @@ namespace BlazorServerApp1.Data
         public string SessionId { get; set; }
         public string compName { get; set; }
     }
-   
+
+    
+
 }

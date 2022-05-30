@@ -20,8 +20,8 @@ namespace BlazorServerApp1.Data
     public static class UiLogic
     {
         #region local arrays and tables
-        public static string[] tabNames = new string[] {"movingwing", "extdecor", "intdecor", "staticwing", "hinges", "handle", "accessories" };
-        public static string[] tabTexts = new string[] { "כנף נעה", "פרטי דקורציה חוץ", "פרטי דקורציה פנים", "כנף קבועה", "פרטי צירים", "ידית אומנותית", "נילווים" };
+        public static string[] tabNames = new string[] { "divDoorTitle", "movingwing", "extdecor", "intdecor", "staticwing", "hinges", "handle", "accessories" };
+        public static string[] tabTexts = new string[] { "כותרת דלת", "כנף נעה", "פרטי דקורציה חוץ", "פרטי דקורציה פנים", "כנף קבועה", "פרטי צירים", "ידית אומנותית", "נילווים" };
         public static string[] Fields2Keep = new string[] { "txtWindowWidth", "txtWindowHeight", "txtOpenDirection",  "txtLockDrilHeight",
                                                             "txtBackPinHeight", "txtHingesNum",
                                                             "txtHinge1Height","txtHinge2Height","txtHinge3Height","txtHinge4Height","txtHinge5Height"};
@@ -135,23 +135,20 @@ namespace BlazorServerApp1.Data
                     doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
             }
         }
-        //public static bool setHideFld(int i)
+        
+        //public static void initTabNames()
         //{
-        //    return true;
+        //    DataView view = new DataView(PrApiCalls.dtConfFields);
+        //    DataTable dtTabs = view.ToTable(true, "CONFIG_SUBFORM");
+        //    List<string> lstTabNames = new List<string>();
+        //    //tabNames = new string[] { };
+        //    //borderColor = string.Empty;
+        //    for (int i = 0; i < dtTabs.Rows.Count; i++)
+        //    {
+        //        lstTabNames.Add(dtTabs.Rows[i]["CONFIG_SUBFORM"].ToString());
+        //    }
+        //    tabNames = lstTabNames.ToArray();
         //}
-        public static void initTabNames()
-        {
-            DataView view = new DataView(PrApiCalls.dtConfFields);
-            DataTable dtTabs = view.ToTable(true, "CONFIG_SUBFORM");
-            List<string> lstTabNames = new List<string>();
-            //tabNames = new string[] { };
-            //borderColor = string.Empty;
-            for (int i = 0; i < dtTabs.Rows.Count; i++)
-            {
-                lstTabNames.Add(dtTabs.Rows[i]["CONFIG_SUBFORM"].ToString());
-            }
-            tabNames = lstTabNames.ToArray();
-        }
 
         public static bool tabPageIsFilled (string tabName, DoorConfig doorConfig)
         {

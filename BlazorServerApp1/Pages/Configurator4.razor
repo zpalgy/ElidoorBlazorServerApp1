@@ -44,6 +44,9 @@
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
         bool showDynComp = false;
         bool showProducts = false;
+
+        string YNissue = string.Empty;
+
         //bool showDivDoorTitle = false;
         //bool hideDoorTitle = true;
         //bool hideBtnExtDecor = false;
@@ -81,7 +84,7 @@
         }
         private void RefreshMe()
         {
-        StateHasChanged();
+            StateHasChanged();
         }
 
         void showTabPage(Type pageType, string tabName)
@@ -107,7 +110,22 @@
         //  the 2nd answer
         public void RefreshState()
         {
-        this.StateHasChanged();
+            this.StateHasChanged();
+        }
+        private void doRestart()
+        {
+            UiLogic.clearDoorConfig(doorConfig);
+            showProducts = false;
+            hideDoorTitle = true;
+            showDynComp = false;
+            hideDivDoor = true;
+
+
+            doorConfig.btnClasses["restart"] = "buttonRed";
+            doorConfig.btnClasses["general"] = "buttonActive";
+            doorConfig.btnClasses["selectprod"] =
+            doorConfig.btnClasses["btnDoor"] =
+            doorConfig.btnClasses["proddes"] = "button";
         }
         void submitForm()
         {
@@ -136,6 +154,7 @@
                                     MsgTitleCssClass = string.Empty;
                                     ErrMsgCssClass = "centeredMsg"; //string.Empty;
                                                                     // the actual restart is done in the YesNo section of MsgBox control
+                                    YNissue = "restart";
                                     openYesNo = true;
                                 }
                             }
@@ -1315,18 +1334,15 @@
     {
         if (isYes)   // yesNo here is just for btnRestart !
         {
-            UiLogic.clearDoorConfig(doorConfig);
-            showProducts = false;
-            hideDoorTitle = true;
-            showDynComp = false;
-            hideDivDoor = true;
+            switch (YNissue)
+            {
+                case "restart":
+                    doRestart();
+                    break;
+                case "clear":
+                break;
 
-
-            doorConfig.btnClasses["restart"] = "buttonRed";
-            doorConfig.btnClasses["general"] = "buttonActive";
-            doorConfig.btnClasses["selectprod"] =
-            doorConfig.btnClasses["btnDoor"] =
-            doorConfig.btnClasses["proddes"] = "button";
+            }
         }
         openYesNo = false;
         errMsg2 = string.Empty;
