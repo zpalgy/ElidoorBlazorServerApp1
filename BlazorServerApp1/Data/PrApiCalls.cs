@@ -2262,7 +2262,16 @@ namespace BlazorServerApp1.Data
                 //doorConfig.REFERENCE = "XXXX";
                 doorConfig.TRSH_DOORCONFIG = 0;
 
-               // doorConfig.HANDLE4DIAMONDNAME = "33001";  debug 
+                // doorConfig.HANDLE4DIAMONDNAME = "33001";  debug 
+                //debug 
+                //UiLogic.clearDoorConfig(doorConfig, false);  //works  without defaults
+                //UiLogic.clearDoorConfig(doorConfig, true);  // fails with defaults 
+                //doorConfig.TILENAME = "";     //"224" fails because it does not exist in TRSH_TILETYPES.TILENAME  (the U key of that table ) - should be : 990141
+                //doorConfig.VITRAGENAME = "";  //"ויטראז לדגם 5515";  - fails  because it does not exists in TRSH_VITRAGE.VITRAGENAME ( The U key of that table )
+                                                // - should be V5515 
+
+                // end debug  
+
 
                 string payload = JsonSerializer<DoorConfig>(doorConfig);
 

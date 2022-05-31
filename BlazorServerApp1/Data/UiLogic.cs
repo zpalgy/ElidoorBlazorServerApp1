@@ -154,7 +154,6 @@ namespace BlazorServerApp1.Data
             string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
             int fieldsNum = tabFields.Length;
-            bool isFilled = true;
 
             for (int r = 0; r < fieldsNum; r++)
             {
@@ -172,7 +171,7 @@ namespace BlazorServerApp1.Data
                     return true;
                 }
             }
-            return isFilled;
+            return false;  // if we're here no field was non-empty 
         }
         public static bool tabPageIsFilled (string tabName, DoorConfig doorConfig)
         {
@@ -468,7 +467,7 @@ namespace BlazorServerApp1.Data
                 }
             }
         }
-        public static void clearDoorConfig (DoorConfig doorConfig)
+        public static void clearDoorConfig (DoorConfig doorConfig, bool applyDefaults=true)
         {
             string errMsg = string.Empty;
             doorConfig.PARTNAME = string.Empty;
@@ -487,8 +486,8 @@ namespace BlazorServerApp1.Data
                 string dataType = row["FIELDDATATYPE"].ToString();
                 if (dataType != "Date" && fldname != "PARTNAME")
                     clearConfField(doorConfig, fldname, dataType, ref errMsg);
-                
-                applyFldDefault(doorConfig, fldname);
+                if (applyDefaults)
+                    applyFldDefault(doorConfig, fldname);
             }
             doorConfig.initBorderColors();
             UiLogic.tabPageIsFilled("divHeader", doorConfig);  //set redborder on Required fields in divHeader
