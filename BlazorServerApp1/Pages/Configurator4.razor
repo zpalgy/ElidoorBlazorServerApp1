@@ -891,7 +891,7 @@
                                             _TRSH_MODELNAME = value;
                                             if (doorConfig != null)
                                             {
-                                                if (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
+                                                if (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME) && UiLogic.tabPageIsNotEmpty("movingwing", doorConfig))
                                                 {
                                                     msgCaption = string.Empty;
                                                     errMsg2 = "שינוי הנתונים ימחק את כל הנתונים שמולאו בלשוניות הבאות ?";

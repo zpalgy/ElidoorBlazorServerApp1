@@ -135,7 +135,7 @@ namespace BlazorServerApp1.Data
                     doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
             }
         }
-        
+
         //public static void initTabNames()
         //{
         //    DataView view = new DataView(PrApiCalls.dtConfFields);
@@ -149,7 +149,31 @@ namespace BlazorServerApp1.Data
         //    }
         //    tabNames = lstTabNames.ToArray();
         //}
+        public static bool tabPageIsNotEmpty(string tabName, DoorConfig doorConfig)
+        {
+            string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
+            DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
+            int fieldsNum = tabFields.Length;
+            bool isFilled = true;
 
+            for (int r = 0; r < fieldsNum; r++)
+            {
+                string fldName = tabFields[r]["FIELDNAME"].ToString();
+                string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
+                string controlName = tabFields[r]["CONFIG_FIELDNAME"].ToString();
+                string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
+                string fldDes = tabFields[r]["FIELDDES"].ToString();
+                borderColor = string.Empty;
+
+                if (!hideFld(doorConfig, controlThName)
+                    && !controlName.StartsWith("chkb")
+                    &&  doorFldIsNotEmpty(doorConfig, fldName, fldDataType))
+                {
+                    return true;
+                }
+            }
+            return isFilled;
+        }
         public static bool tabPageIsFilled (string tabName, DoorConfig doorConfig)
         {
             string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
@@ -253,6 +277,75 @@ namespace BlazorServerApp1.Data
                     return "movingwing";
                 default:
                     return getNextTabName(doorConfig, tabBtnCssName);  // movingwing, extdecor ....
+            }
+        }
+        public static bool doorFldIsNotEmpty(DoorConfig doorConfig, string fldName, string fldDataType)
+        {
+            string errMsg = string.Empty;
+            string sval;
+            int ival;
+
+            Type objType = doorConfig.GetType();
+            PropertyInfo[] props = objType.GetProperties();
+            //string[] propNames = props.Select(i => i.Name).ToArray();
+            try
+            { 
+                //  debug            ELECTRICAPPARATUS
+                if (fldName == "ELECTRICAPPARATUS")
+                {
+                    int x = 17;
+                }
+                //
+
+                int p = Array.IndexOf(propNames, fldName);
+                if (p >= 0)
+                {
+                    var val = props[p].GetValue(doorConfig);
+                    if (val == null)
+                        return false;
+                    else
+                    {
+                        switch (fldDataType)
+                        {
+                            case "CHAR":
+                            case "RCHAR":
+                                sval = val.ToString();
+                                // commented on 03/05/2022 ללא is not the empty value because it is in the defaults table
+                                //                  note לא that is also in the defaults table appears also in pair with חוץ 
+                                //                     and in that case I use חוץ  as the default value.  (e.g. doors : 1082, 2002 etc. )
+                                //                     note also that the value פנים does not appear in the defaults table for field D-60 DECORFORMAT
+                                //                    so I updated the code accordingly.
+                                //                    i.e. DECORFORMAT is not filled when it's value is empty as all the other fields.
+                                //
+                                //if ( (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
+                                //    || (fldName == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
+                                //-- 
+                                if (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
+                                    return false;
+                                else
+                                    return true;
+
+                            case "INT":
+                                ival = int.Parse(val.ToString());
+                                return (ival != 0);
+                            default:
+                                return false;
+                        }
+                    }
+                }
+                else
+                {
+                    errMsg = string.Format("Error: field: {0}, dataType {1}  Not found in DoorConfig class !", fldName, fldDataType);
+                    myLogger.log.Error(errMsg);
+                    throw new Exception(errMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format("Unexpected error: fldname = {0} , error: {1} .  Stacktrace : {2}", fldName, ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return false;
+                //displayErrMsg(lblMsg, errMsg);
             }
         }
         public static bool doorFldIsFilled(DoorConfig doorConfig, string fldName, string fldDataType)
