@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <BlazorLinkOnBuild>false</BlazorLinkOnBuild>
   </PropertyGroup>
-
+	
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
   <ItemGroup>
