@@ -118,10 +118,12 @@
                 {
                     get
                     {
-                        if (doorConfig != null  && doorConfig.DOORWIDTH > 0 )
+                        if (doorConfig != null && doorConfig.DOORWIDTH > 0)
                         {
                             _DoorWidth = doorConfig.DOORWIDTH;
                         }
+                        else
+                            _DoorWidth = null;
                         // return _DoorWidth.ToString();
                         return _DoorWidth;
                     }
@@ -141,6 +143,7 @@
                         {
                             msgCaption = string.Empty;
                             msgClass = "modal-body centeredMsg";
+                            // the error text is in errMsg2 which was populated in wingWidthIsOk(...) 
                             openMsgBox = true;
                             value = _DoorWidth = 0;
                             txtWingWidth.FocusAsync();
@@ -151,7 +154,7 @@
                         {
                             if (doorConfig != null)
                             {
-                                doorConfig.DOORWIDTH = (int)_DoorWidth;
+                                doorConfig.DOORWIDTH = (_DoorWidth != null ? (int)_DoorWidth : 0);
                                 doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
 
                                 if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
@@ -192,10 +195,13 @@
                 {
                     get
                     {
-                         if (doorConfig != null  && doorConfig.DOORHEIGHT > 0)
+                        if (doorConfig != null && doorConfig.DOORHEIGHT > 0)
                         {
                             _DoorHeight = doorConfig.DOORHEIGHT;
                         }
+                        else
+                            _DoorHeight = null;
+
                         return _DoorHeight; //_DoorHeight.ToString();
                     }
                     set
@@ -211,7 +217,7 @@
                         //else if (doorConfig != null)
                         if (doorConfig != null)
                         {
-                            doorConfig.DOORHEIGHT = (int)_DoorHeight;
+                            doorConfig.DOORHEIGHT = (_DoorHeight != null ? (int)_DoorHeight : 0);
                             //[TODO] implement the following lines
                             //if (chkbComplient.Checked)
                             //     txtWindowWidth.Text = calcWindowWidth();
@@ -224,8 +230,9 @@
                                     //Js.InvokeVoidAsync("alert", errMsg2);
                                     //msgClass = "modal-body redMessage";
                                     //errMsg3 = errMsg2;
+                                    value = _DoorHeight = doorConfig.DOORHEIGHT = 0;
+
                                     openMsgBox = true;
-                                    value = _DoorHeight = 0;
                                     //txtDoorHeight.FocusAsync();
                                     doorConfig.borderColors["DOORHEIGHT"] = "redBorder";
                                     this.StateHasChanged(); 
