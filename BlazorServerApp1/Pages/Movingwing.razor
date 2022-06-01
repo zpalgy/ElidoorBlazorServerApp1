@@ -561,15 +561,18 @@
                     
         @code
         {
-                protected int _LockDrilHeight = 0;
-                protected int LockDrilHeight
+                protected int? _LockDrilHeight;
+                protected int? LockDrilHeight
                 {
                     get
                     {
-                        if (doorConfig != null)
+                        if (doorConfig != null && doorConfig.LOCKDRILHEIGHT > 0)
                         {
                             _LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
                         }
+                        else
+                            _LockDrilHeight = null;
+
                         return _LockDrilHeight; //.ToString();
                     }
                     set
@@ -596,7 +599,7 @@
                             this.StateHasChanged();
                             if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
                             { 
-                                doorConfig.LOCKDRILHEIGHT = _LockDrilHeight;
+                                doorConfig.LOCKDRILHEIGHT = (int)_LockDrilHeight;
                                 UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                                 clearHingesMeasures(doorConfig);
                             }
