@@ -179,7 +179,7 @@
         </td>
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
-           onkeypress="return event.keyCode!=13"   />  
+           onkeypress="return event.keyCode!=13" @ref="txtDoorHeight"  />  
             @* <InputText name="txtDoorHeight" type="number" @bind-Value="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]"
              style="outline:none" onkeypress="return event.keyCode!=13"/>
              *@
@@ -187,12 +187,12 @@
             @code
             {
                 private ElementReference txtDoorHeight;
-                protected int _DoorHeight = 0;
-                protected int DoorHeight
+                protected int? _DoorHeight;
+                protected int? DoorHeight
                 {
                     get
                     {
-                        if (doorConfig != null)
+                         if (doorConfig != null  && doorConfig.DOORHEIGHT > 0)
                         {
                             _DoorHeight = doorConfig.DOORHEIGHT;
                         }
@@ -211,7 +211,7 @@
                         //else if (doorConfig != null)
                         if (doorConfig != null)
                         {
-                            doorConfig.DOORHEIGHT = _DoorHeight;
+                            doorConfig.DOORHEIGHT = (int)_DoorHeight;
                             //[TODO] implement the following lines
                             //if (chkbComplient.Checked)
                             //     txtWindowWidth.Text = calcWindowWidth();
