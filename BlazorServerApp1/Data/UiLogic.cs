@@ -29,7 +29,8 @@ namespace BlazorServerApp1.Data
         public static string[] propNames;
         
         public static string borderColor = string.Empty;
-        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "FORMDATE", "INSTALLADDRESS", "FAMILYNAME" };
+        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "ENDCUSTDES", "FORMDATE", "INSTALLADDRESS", "FAMILYNAME",
+                              "VENTS", "RAFAFAONMOVINGWING" };
 
         public static int IdOfNone = 99999;
         public static string NameOfNone = "9999999";

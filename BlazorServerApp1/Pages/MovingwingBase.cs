@@ -170,5 +170,7 @@ namespace BlazorServerApp1.Pages
             doorConfig.HINGE4HEIGHT = 0;
             doorConfig.HINGE5HEIGHT = 0;
         }
+
+        
     }
 }

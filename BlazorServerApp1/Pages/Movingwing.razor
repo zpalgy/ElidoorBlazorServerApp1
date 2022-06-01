@@ -26,7 +26,7 @@
     @inject NavigationManager NavigationManager;
 
 
-    private bool openMsgBox = false;
+    protected bool openMsgBox = false;
     string errMsg2 = string.Empty;
     string errMsg3 = "xxxxxxxxxxxxxxxxxx";
     private string msgCaption = "שגיאה";
@@ -38,6 +38,7 @@
     private bool disableColor = true;
     private bool disableExtColor = true;
     private bool disableIntColor = true;
+    
       
     async void IDisposable.Dispose()
     {
@@ -69,7 +70,7 @@
         //    if (!string.IsNullOrEmpty(doorConfigJson2))
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
         //}
-        doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
+        doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;  // initialize colors as disabled.
         
         // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
         if (doorConfig.ELECTRICAPPARATUS == null)
@@ -159,10 +160,11 @@
                                     if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
                                     {
                                         //Js.InvokeVoidAsync("alert", errMsg);
-                                        errMsg3 = errMsg;
+                                        errMsg2 = errMsg;
                                         openMsgBox = true;
                                         value = _DoorWidth = 0;
                                         txtWingWidth.FocusAsync();
+                                        doorConfig.borderColors["DOORWIDTH"] = "redBorder";
                                         this.StateHasChanged();
                                     }
                                 }
@@ -220,10 +222,11 @@
                                 {
                                     //Js.InvokeVoidAsync("alert", errMsg2);
                                     //msgClass = "modal-body redMessage";
-                                    errMsg3 = errMsg2;
+                                    //errMsg3 = errMsg2;
                                     openMsgBox = true;
                                     value = _DoorHeight = 0;
                                     //txtDoorHeight.FocusAsync();
+                                    doorConfig.borderColors["DOORHEIGHT"] = "redBorder";
                                     this.StateHasChanged(); 
                                 }
                                 else
@@ -287,45 +290,7 @@
 
             }
         </td>
-        @*
-            <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
-            <select name="dlstDecorFormat" @bind="DecorFormat" class= "@doorConfig.borderColors["DECORFORMAT"]" >
-            <option></option>
-            <option>ללא</option>
-            <option>חוץ</option>
-            <option>פנים</option>
-            <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
-            <!-- see Helper.DecorFormat2Code(...) method -->
-            </select>
-            </td>
-        *@
-        @*
-            @code {
-            protected string _DecorFormat = string.Empty;
-            protected string DecorFormat
-            {
-            get
-            {
-            if (doorConfig != null)
-            {
-            // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
-            _DecorFormat = doorConfig.DECORFORMAT;
-            }
-            return _DecorFormat;
-            }
-            set
-            {
-            _DecorFormat = value;
-            if (doorConfig != null)
-            {
-            doorConfig.DECORFORMAT = _DecorFormat;
-            doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-            }
-            }
-            }
-            }
-        *@
+       
         <td id="tdOpenMode">
             <select name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]">
                 <option></option>
@@ -512,8 +477,27 @@
                         {
                             doorConfig.EXTCOLORID = _ExtColor;
                             doorConfig.borderColors["EXTCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                            compareExtIntColors();
                             UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
                         }
+                    }
+                }
+                protected void compareExtIntColors()
+                {
+                    if (doorConfig.COLORSNUM == "2" && doorConfig.EXTCOLORID != 0 && doorConfig.INTCOLORID != 0
+                         && doorConfig.EXTCOLORID == doorConfig.INTCOLORID)
+                    {
+                        errMsg2 = "בחרת 2 גוונים: גוון החוץ וגוון הפנים חייבים להיות שונים";
+                        openMsgBox = true;
+                        //txtDoorHeight.FocusAsync();
+                        doorConfig.borderColors["EXTCOLORID"] = doorConfig.borderColors["INTCOLORID"] = "redBorder";
+                        this.StateHasChanged(); 
+                    }
+                    else
+                    {
+                        doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? string.Empty : "redBorder");
+                        doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? string.Empty : "redBorder");
+                        this.StateHasChanged(); 
                     }
                 }
             }
@@ -550,6 +534,7 @@
                         {
                             doorConfig.INTCOLORID = _IntColor;
                             doorConfig.borderColors["INTCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                            compareExtIntColors();
                             UiLogic.clearFollowingTabFields(doorConfig, "intdecor");
                         }
                     }
@@ -1054,7 +1039,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.VENTS = _Vents;
-                            doorConfig.borderColors["VENTS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                           // doorConfig.borderColors["VENTS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -1088,7 +1073,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.RAFAFAONMOVINGWING = _Rafafa;
-                            doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            //doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                             UiLogic.try2UpdateBtnClass(doorConfig, "movingwing");
                             

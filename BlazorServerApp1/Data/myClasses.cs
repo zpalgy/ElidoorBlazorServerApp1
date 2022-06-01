@@ -642,11 +642,12 @@ namespace BlazorServerApp1.Data
 
         //[Required]      
         [DataMember(Order = 6), Order]
-        public int CUST { get; set; }
+        public string ENDCUSTDES { get; set; }
+        //public int CUST { get; set; }
         //[DataMember(Order = 6), Order]
         //public string CUSTNAME { get; set; }
         //[DataMember(Order = 7), Order]
-        //public string CUSTDES { get; set; }
+
 
         [DataMember(Order = 8), Order]
         public string INSTALLADDRESS { get; set; }
@@ -1115,6 +1116,7 @@ namespace BlazorServerApp1.Data
             }
             initBtnClasses();
             disabledFlds = new Dictionary<string, bool>();
+            disabledFlds["REFERENCE"] = true;    // 01/06/2022
         }
         public void initBtnClasses()
         {

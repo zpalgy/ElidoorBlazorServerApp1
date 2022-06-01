@@ -265,7 +265,7 @@
         {
                     get {
                         if (doorConfig != null)
-                            _CUST = doorConfig.CUST;
+                            _CUST = 17;//doorConfig.CUST;
 
                         return _CUST; 
                     }
@@ -274,15 +274,15 @@
                         _CUST = value;
                         if (doorConfig != null)
                         {
-                            doorConfig.CUST = _CUST;
+                           // doorConfig.CUST = _CUST;
                             // set Address and Logo based on CUST
-                            CUSTOMER_Class cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
-                            Address = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3);
-                            if (!string.IsNullOrEmpty(cust.TRSH_LOGO) && cust.TRSH_LOGO == "Y")
-                            {
-                                disableLogo = true;
-                                doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
-                            }
+                          //  CUSTOMER_Class cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
+                          //  Address = string.Format("{0} {1} {2}", cust.ADDRESS, cust.ADDRESS2, cust.ADDRESS3);
+                          //  if (!string.IsNullOrEmpty(cust.TRSH_LOGO) && cust.TRSH_LOGO == "Y")
+                          //  {
+                          //      disableLogo = true;
+                          //      doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                          //  }
                             //
                         }
 
