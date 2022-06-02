@@ -63,8 +63,7 @@
     /* text-wrap: normal; */
     text-align: center;
     transition-duration: 0.4s;
-    background: linear-gradient(45deg, red, blue);
-    color : yellow;
+    background: white; /* /linear-gradient(45deg, red, blue); */
 }
 
 

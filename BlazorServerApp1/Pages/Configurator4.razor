@@ -113,7 +113,7 @@
         //  the 2nd answer
         public void RefreshState()
         {
-        this.StateHasChanged();
+            this.StateHasChanged();
         }
         private void doRestart()
         {
@@ -739,19 +739,19 @@
                                 </td>
                                 <!-- end tdBtnDoor -->
                                 <td>
-                                    <button name="btnLintel" class="button" disabled="@doorConfig.disabledFlds["btnLintel"]">משקוף</button>
+                                    <button name="btnLintel" class="@doorConfig.btnClasses["btnLintel"]"  disabled="@doorConfig.disabledFlds["btnLintel"]" >משקוף</button>
                                 </td>
                                 <td>
-                                    <button name="btnCover" class="button"  disabled="@doorConfig.disabledFlds["btnCover"]" >חיפוי</button>
+                                    <button name="btnCover" class="@doorConfig.btnClasses["btnCover"]"  disabled="@doorConfig.disabledFlds["btnCover"]" >חיפוי</button>
                                 </td>
                                 <td>
-                                    <button name="btnSideUnit" class="button" disabled="@doorConfig.disabledFlds["btnSideUnit"]" >יחידת צד</button>
+                                    <button name="btnSideUnit" class="@doorConfig.btnClasses["btnSideUnit"]" disabled="@doorConfig.disabledFlds["btnSideUnit"]" >יחידת צד</button>
                                 </td>
                                 <td>
-                                    <button name="btnECabinet" class="button"  disabled="@doorConfig.disabledFlds["btnECabinet"]" >ארון חשמל</button>
+                                    <button name="btnECabinet" class="@doorConfig.btnClasses["btnECabinet"]"  disabled="@doorConfig.disabledFlds["btnECabinet"]" >ארון חשמל</button>
                                 </td>
                                 <td>
-                                    <button name="btnShelves" class="button"  disabled="@doorConfig.disabledFlds["btnShelves"]" >מדפים</button>
+                                    <button name="btnShelves" class="@doorConfig.btnClasses["btnShelves"]"  disabled="@doorConfig.disabledFlds["btnShelves"]" >מדפים</button>
                                 </td>
                             </tr>
                         </table>

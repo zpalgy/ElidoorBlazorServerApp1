@@ -1134,6 +1134,7 @@ namespace BlazorServerApp1.Data
             btnClasses["selectprod"] =
             btnClasses["btnDoor"] =
             btnClasses["proddes"] = "button";
+            btnClasses["btnLintel"] = btnClasses["btnCover"] = btnClasses["btnSideUnit"] = btnClasses["btnECabinet"] = btnClasses["btnShelves"] = "buttonDisabled";
 
             foreach (string tabName in UiLogic.tabNames)
             {

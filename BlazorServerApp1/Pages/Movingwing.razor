@@ -158,7 +158,6 @@
                             if (doorConfig != null)
                             {
                                 doorConfig.DOORWIDTH = (_DoorWidth != null ? (int)_DoorWidth : 0);
-                                doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
 
                                 if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
                                 {
@@ -176,7 +175,9 @@
                                     }
                                 }
                                 doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
+                                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
                                 UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                                config4.RefreshState();
                             }
                         }
                     }

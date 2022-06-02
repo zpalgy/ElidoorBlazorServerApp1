@@ -279,6 +279,24 @@ namespace BlazorServerApp1.Data
                     return getNextTabName(doorConfig, tabBtnCssName);  // movingwing, extdecor ....
             }
         }
+        
+        public static void disableTabFlds(DoorConfig doorConfig, string tabName)
+        {
+            string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
+            DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
+            int fieldsNum = tabFields.Length;
+
+            for (int r = 0; r < fieldsNum; r++)
+            {
+                string fldName = tabFields[r]["FIELDNAME"].ToString();
+                string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
+                string controlName = tabFields[r]["CONFIG_FIELDNAME"].ToString();
+                string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
+                string fldDes = tabFields[r]["FIELDDES"].ToString();
+
+                doorConfig.disabledFlds[fldName] = true;
+            }
+        }
         public static bool doorFldIsNotEmpty(DoorConfig doorConfig, string fldName, string fldDataType)
         {
             string errMsg = string.Empty;
