@@ -29,5 +29,31 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script>
+     function invokeTabKey(Elements) {
+        // get the active element when Enter was pressed and 
+        // if it is an input, focus the next input
+        // NOTE: You cannot really trigger the browser event -
+        //       even if you do, the browser won't execute the action 
+        //       (such as focusing the next input) so you have to define the action
+        var currE = document.activeElement;
+        alert(currE.name + " " + Elements[1]);
+        for (var i = 0; i < Elements.length-1; i++) 
+        {
+           if (Elelements[i] == currE.name) 
+           {
+              var next = document.getElementByName(Elements[i + 1]);
+              alert(next.name);
+              if (next && next.focus) 
+              {
+                        next.focus();
+              }
+              break;
+           }
+        }
+    }
+   </script>
+    
+
 </body>
 </html>

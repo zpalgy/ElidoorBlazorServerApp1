@@ -70,12 +70,15 @@
         //    if (!string.IsNullOrEmpty(doorConfigJson2))
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
         //}
+
         doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;  // initialize colors as disabled.
         
         // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
         if (doorConfig.ELECTRICAPPARATUS == null)
             doorConfig.ELECTRICAPPARATUS = string.Empty;
         doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? string.Empty : "redBorder");
+
+        //Js.InvokeVoidAsync("SayHelloJS");
     }
 
 

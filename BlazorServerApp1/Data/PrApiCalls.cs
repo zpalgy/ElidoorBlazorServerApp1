@@ -2185,7 +2185,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_DOORCONFIG,REFERENCE,FORMDATE,FORMFILLER,CUSTDES,PARTNAME";
+                string fields = "TRSH_DOORCONFIG,REFERENCE,FORMDATE,FORMFILLER,ENDCUSTDES,PARTNAME";
                 request.Resource = string.Format("TRSH_DOORCONFIG?$orderby=TRSH_DOORCONFIG desc&$select={0}&$top=1", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)

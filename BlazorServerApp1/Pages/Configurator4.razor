@@ -82,6 +82,8 @@
 
         //myService.RefreshRequested += RefreshMe;
 
+        //Js.InvokeVoidAsync("SayHelloJS");
+
         }
         private void RefreshMe()
         {
@@ -220,16 +222,16 @@
                         }
                         @if (!hideDivDoor)
                         {
-                                    <tr>
-                                        <td>
-                                            <table id="tblTabButtons">
-                                                <tr>
-                                                    <td>
-                                                        <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
+                                            <tr>
+                                                <td>
+                                                    <table id="tblTabButtons">
+                                                        <tr>
+                                                            <td>
+                                                                <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
                                                     @onclick=@( () => @showMw())>
-                                                            כנף נעה
-                                                        </button>
-                                                    </td>
+                                                                    כנף נעה
+                                                                </button>
+                                                            </td>
                                             @{
                                                 void showMw()
                                                 {
@@ -242,8 +244,8 @@
                                                     doorConfig.btnClasses["movingwing"] = "buttonActive";
                                                 }
                                             }
-                                                </tr>
-                                                <tr hidden="@hideBtnExtDecor">
+                                                        </tr>
+                                                        <tr hidden="@hideBtnExtDecor">
                                             @{
                                                 bool disableBtnExtDecor = false;
                                                 //disableBtnExtDecor = !ActivatePage("extdecor", doorConfig, ref errMsg2);
@@ -253,12 +255,12 @@
 
                                             }
 
-                                                    <td>
-                                                        <button name="btnextdecor" class="@doorConfig.btnClasses["extdecor"]" @onclick="showExtdecor"
+                                                            <td>
+                                                                <button name="btnextdecor" class="@doorConfig.btnClasses["extdecor"]" @onclick="showExtdecor"
                                                     disabled="@disableBtnExtDecor" hidden="@hideBtnExtDecor" >
-                                                            פרטי דקורציה חוץ
-                                                        </button>
-                                                    </td>
+                                                                    פרטי דקורציה חוץ
+                                                                </button>
+                                                            </td>
                                             @{
                                                 void showExtdecor()
                                                 {
@@ -266,85 +268,85 @@
                                                 }
                                             }
 
-                                                </tr>
-                                                <tr hidden="@hideBtnIntDecor">
-                                                    <td>
-                                                        <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]"
+                                                        </tr>
+                                                        <tr hidden="@hideBtnIntDecor">
+                                                            <td>
+                                                                <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]"
                                                     @onclick="showIntdecor" hidden="@hideBtnIntDecor">
-                                                            פרטי דקורציה פנים
-                                                        </button>
-                                                    </td>
+                                                                    פרטי דקורציה פנים
+                                                                </button>
+                                                            </td>
                                             @{
                                                 void showIntdecor()
                                                 {
                                                     showTabPage(typeof(Intdecor), "intdecor");
                                                 }
                                             }
-                                                </tr>
-                                                <tr>
+                                                        </tr>
+                                                        <tr>
                                             @{
                                                 bool disableSw = false;
                                                 disableSw = (doorConfig.TRSH_WINGSNUMDES == "כנף");
                                             }
-                                                    <td>
-                                                        <button name="btnstaticwing" class="@doorConfig.btnClasses["staticwing"]" disabled="@disableSw"
+                                                            <td>
+                                                                <button name="btnstaticwing" class="@doorConfig.btnClasses["staticwing"]" disabled="@disableSw"
                                                     @onclick="showStaticwing">
-                                                            כנף קבועה
-                                                        </button>
-                                                    </td>
+                                                                    כנף קבועה
+                                                                </button>
+                                                            </td>
                                             @{
                                                 void showStaticwing()
                                                 {
                                                     showTabPage(typeof(Staticwing), "staticwing");
                                                 }
                                             }
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <button name="btnhinges" class="@doorConfig.btnClasses["hinges"]"
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <button name="btnhinges" class="@doorConfig.btnClasses["hinges"]"
                                                     @onclick="showHinges">
-                                                            פרטי צירים
-                                                        </button>
-                                                    </td>
+                                                                    פרטי צירים
+                                                                </button>
+                                                            </td>
                                             @{
                                                 void showHinges()
                                                 {
                                                     showTabPage(typeof(Hinges), "hinges");
                                                 }
                                             }
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <button name="btnhandle" class="@doorConfig.btnClasses["handle"]"
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <button name="btnhandle" class="@doorConfig.btnClasses["handle"]"
                                                     @onclick="showHandle">
-                                                            ידיות אומנותיות
-                                                        </button>
-                                                    </td>
+                                                                    ידיות אומנותיות
+                                                                </button>
+                                                            </td>
                                             @{
                                                 void showHandle()
                                                 {
                                                     showTabPage(typeof(Handle), "handle");
                                                 }
                                             }
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <button name="btnaccessories" class="@doorConfig.btnClasses["accessories"]"
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <button name="btnaccessories" class="@doorConfig.btnClasses["accessories"]"
                                                     @onclick="showAccessories">
-                                                            נילווים
-                                                        </button>
-                                                    </td>
+                                                                    נילווים
+                                                                </button>
+                                                            </td>
                                             @{
                                                 void showAccessories()
                                                 {
                                                     showTabPage(typeof(Accessories), "accessories");
                                                 }
                                             }
-                                                </tr>
-                                            </table>
-                                            <!-- end tblTabButtons -->
-                                    </td>
-                                    </tr>
+                                                        </tr>
+                                                    </table>
+                                                    <!-- end tblTabButtons -->
+                                            </td>
+                                            </tr>
                         }
 
                     </table>
@@ -397,20 +399,19 @@
                                      <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" 
-                                           onkeypress="return event.keyCode!=13" /> 
+                                           onkeypress="@KeyPressHandler"
+                                           />
+                                           @* onkeypress="return event.keyCode!=13" *@
+                                           
 
                                     @{
-                // doorConfig.borderColors["FORMFILLER"] = "form-control " + doorConfig.borderColors["FORMFILLER"];
+                                        // doorConfig.borderColors["FORMFILLER"] = "form-control " + doorConfig.borderColors["FORMFILLER"];
                                     }
-                                    @*<InputText name="txtFormFiller" @bind-Value="formFiller" 
-                                    dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]" style="outline:none"
-                                    onkeypress="return event.keyCode!=13"/>
-                                    *@
 
                                     @code {
-        protected string _formFiller;
-        protected string formFiller
-        {
+                                        protected string _formFiller;
+                                        protected string formFiller
+                                        {
                                         get
                                         {
                                             if (doorConfig != null)
@@ -429,15 +430,27 @@
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
                                         }
-        }
-        void formFillerHasFocus()
-        {
-                                        // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
-        }
-        void formFillerLostFocus()
-        {
-                                        //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
-        }
+                                        }
+                                        string[] Elements = {"txtFormFiller", "dlstCustDes", "txtEndCustDes", "txtInstallAddress", "ShipAddress"  };
+                                        //async Task KeyPressHandler(KeyboardEventArgs e)
+                                        bool KeyPressHandler(KeyboardEventArgs e)
+                                        {
+                                            if(e.Key.ToLowerInvariant() == "enter")
+                                            {
+                                            //await Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
+                                                Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
+                                                return false;  // event.keyCode!=13
+                                            }
+                                            return true;       // event.keyCode!=13 
+                                        }
+                                        void formFillerHasFocus()
+                                        {
+                                                                        // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+                                        }
+                                        void formFillerLostFocus()
+                                        {
+                                                                        //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+                                        }
                                     }
                                 </td>
                                 <!-- end tdFormFiller -->
@@ -517,7 +530,7 @@
                                         {
                                             @foreach (CUSTOMER_Class c in lstCustomers)
                                             {
-                                                                <option value="@c.CUST">@c.CUSTDES</option>
+                                                  <option value="@c.CUST">@c.CUSTDES</option>
                                             }
                                         }
                                     </select>
@@ -603,7 +616,8 @@
                                 @* end ENDCUSTDES *@
                                  </td>
                                 <td>
-                                    <input dir="rtl" @bind="InstallAddress" size="40" class="@doorConfig.borderColors["INSTALLADDRESS"]" onkeypress="return event.keyCode!=13" /> 
+                                    <input name="txtInstallAddress" dir="rtl" @bind="InstallAddress" size="40" class="@doorConfig.borderColors["INSTALLADDRESS"]" 
+                                               onkeypress="return event.keyCode!=13" /> 
                                     @* <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]"  style="outline:none"
                                       onkeypress="return event.keyCode!=13"/>
                                       *@
@@ -636,7 +650,7 @@
                                 }
                                 @* end Address  *@
                                 <td>
-                                    <input dir="rtl" @bind="ShipAddress" size="60" class="@doorConfig.borderColors["SHIPADDRESS"]" 
+                                    <input name="txtShipAddress" dir="rtl" @bind="ShipAddress" size="60" class="@doorConfig.borderColors["SHIPADDRESS"]" 
                                     onkeypress="return event.keyCode!=13" /> 
                                     @* <InputText dir="rtl"  @bind-Value="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]"  style="outline:none"
                                     onkeypress="return event.keyCode!=13"   />
@@ -676,20 +690,20 @@
                     <!--end of divHeader -->
                     @if (showProducts)
                     {
-                                <div id="divProducts" class="div1">
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <div class="tabPageTitle">
-                                                    <h1 class="rightLeftMargin">בחירת מוצר</h1>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <table id="tblProducts">
-                                        <tr>
-                                            <td id="tdBtnDoor">
-                                                <button name="btnDoor" @onclick="btnDoorClicked" class="@doorConfig.btnClasses["btnDoor"]">דלת</button>
+                                        <div id="divProducts" class="div1">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <div class="tabPageTitle">
+                                                            <h1 class="rightLeftMargin">בחירת מוצר</h1>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table id="tblProducts">
+                                                <tr>
+                                                    <td id="tdBtnDoor">
+                                                        <button name="btnDoor" @onclick="btnDoorClicked" class="@doorConfig.btnClasses["btnDoor"]">דלת</button>
                                         @code
                                         {
         private void btnDoorClicked()
@@ -737,7 +751,7 @@
                         </table>
                         <!--end tblProducts -->
                     </div>
-                                <!-- end divProducts -->
+                                        <!-- end divProducts -->
                     }  @* end if (showProducts) *@
 
                     <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
@@ -769,7 +783,7 @@
                                             {
                                                 @foreach (WingsNum_Class wn in PrApiCalls.lstWingsNum)
                                                 {
-                                                                    <option value="@wn.TRSH_WINGSNUMDES">@wn.TRSH_WINGSNUMDES</option>
+                                                                                    <option value="@wn.TRSH_WINGSNUMDES">@wn.TRSH_WINGSNUMDES</option>
                                                 }
                                             }
                                         </select>
@@ -871,7 +885,7 @@
                                             {
                                                 @foreach (Model_Class m in PrApiCalls.lstModels)
                                                 {
-                                                                    <option value="@m.TRSH_MODELNAME">@m.TRSH_MODELDES</option>
+                                                                                    <option value="@m.TRSH_MODELNAME">@m.TRSH_MODELDES</option>
                                                 }
                                             }
                                         </select>
@@ -1135,10 +1149,10 @@
 
                         @if (showDynComp)
                         {
-                                    <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-                                        <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
+                                            <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+                                                <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
                                 @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
-                                    </div>
+                                            </div>
                         }
                         @code {
         protected void DoRefresh()
@@ -1328,12 +1342,12 @@
 
 @if (openMsgBox)
 {
-            <MsgBox Caption="@msgCaption"
+                    <MsgBox Caption="@msgCaption"
         Message="@errMsg2"
         OnClose="OnDialogClose"
         MsgTitleCssClass="@MsgTitleCssClass"
         ErrMsgCssClass="@ErrMsgCssClass">
-            </MsgBox>
+                    </MsgBox>
     @code
     {
     private void OnDialogClose()
@@ -1345,13 +1359,13 @@
 }
 @if (openYesNo)
 {
-            <MsgBox Caption="@msgCaption"
+                    <MsgBox Caption="@msgCaption"
         Type="MsgBox.Category.YesNo"
         Message="@errMsg2"
         OnClose="OnCloseYesNo"
         MsgTitleCssClass="@MsgTitleCssClass"
         ErrMsgCssClass="@ErrMsgCssClass">
-            </MsgBox>
+                    </MsgBox>
     @code
     {
     private void OnCloseYesNo(bool isYes)
@@ -1365,7 +1379,7 @@
                     doRestart();
                     break;
                 case "clear":
-                    
+
                     break;
 
             }
