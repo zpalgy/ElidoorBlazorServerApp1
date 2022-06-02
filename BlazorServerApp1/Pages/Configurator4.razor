@@ -778,7 +778,8 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <select name="dlstWingsNum" @bind="WingsNum" class="@doorConfig.borderColors["TRSH_WINGSNUMDES"]" >
+                                        <select name="dlstWingsNum" @bind="WingsNum" class="@doorConfig.borderColors["TRSH_WINGSNUMDES"]" 
+                                              disabled="@doorConfig.disabledFlds["TRSH_WINGSNUMDES"]" >
                                             @*
                                                 <option>בחר סוג מיפתח</option>
                                                 <option>כנף</option>
@@ -836,57 +837,11 @@
         }
 
                                     }
-                                    @*
-                                        <td>
-                                        <select name="dlstPARTNAME" @bind="PARTNAME" class="@doorConfig.borderColors["PARTNAME"]">
-                                        @if (PrApiCalls.lstParts != null)
-                                        {
-                                        @foreach (PART_Class p in PrApiCalls.lstParts)
-                                        {
-                                        <option value="@p.PARTNAME">@p.PARTDES</option>
-                                        }
-                                        }
-                                        </select>
-                                        </td>
-                                        @code
-                                        {
-                                        protected string _PARTNAME = string.Empty;
-                                        protected string PARTNAME
-                                        {
-                                        get
-                                        {
-                                        if (doorConfig != null)
-                                        {
-                                        _PARTNAME = doorConfig.PARTNAME;
-                                        if (string.IsNullOrEmpty(_PARTNAME))
-                                        _FAMILYDES = string.Empty;
-                                        }
-                                        return _PARTNAME;
-                                        }
-                                        set
-                                        {
-                                        _PARTNAME = value;
-                                        if (doorConfig != null)
-                                        {
-                                        doorConfig.PARTNAME = _PARTNAME;
-                                        PART_Class part = PrApiCalls.getPart(doorConfig.PARTNAME, ref errMsg);
-                                        //FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
-                                        FAMILYDES = part.FAMILYDES;         //familyOfPart.FAMILYDES;
-                                        doorConfig.FAMILYNAME = part.FAMILYNAME;  //[NonSerialized]
-                                        //doorConfig.FAMILY = PrApiCalls.getFAMILY(part.FAMILYNAME, ref errMsg);
-                                        doorConfig.meaged = part.MPARTNAME;  //PrApiCalls.getMeagedOfPart(PARTNAME, ref errMsg);
-                                        doorConfig.TRSH_DOOR_HWCATCODE = part.TRSH_DOOR_HWCATCODE;    //PrApiCalls.getDoorHwCatCode(doorConfig.PARTNAME, ref errMsg);
-                                        doorConfig.borderColors["MPARTNAME"] = (!(string.IsNullOrEmpty(value)) ? string.Empty : "redBorder");
-                                        UiLogic.applyPartDefaults(doorConfig);
-                                        }
-                                        }
-
-                                        }
-                                        }
-                                    *@
+                                    
                                     <td>
                                         <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
-                                              @ref="dlstModelName">
+                                              disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" @ref="dlstModelName"   >
+                                            
                                             @if (PrApiCalls.lstModels != null)
                                             {
                                                 @foreach (Model_Class m in PrApiCalls.lstModels)
@@ -986,7 +941,8 @@
         }
                                     }
                                     <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
-                                        <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]">
+                                        <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]"
+                                         disabled="@doorConfig.disabledFlds["DECORFORMAT"]"  >
                                             <option></option>
                                             <option>ללא</option>
                                             <option>חוץ</option>
@@ -1045,7 +1001,7 @@
 
 
                                     <td>
-                                        <input type="checkbox" name="chkbComplient" @bind="Complient" />
+                                        <input type="checkbox" name="chkbComplient" @bind="Complient" disabled="@doorConfig.disabledFlds["COMPLIENTDOOR"]" />
                                     </td>
                                     @code
                                     {
@@ -1070,7 +1026,7 @@
                                     }
 
                                     <td>
-                                        <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" />
+                                        <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" disabled="@doorConfig.disabledFlds["MEASURESDOC"]" />
                                     </td>
                                     @code
                                     {
@@ -1128,30 +1084,6 @@
                         <br />
                         <br />
                         <br />
-                        @{
-                            //Type dyncompType = typeof(Movingwing);
-                            //Dictionary<string, object> mwParams = new Dictionary<string, object>();
-                            //pageParams.Add("doorConfig", doorConfig);
-                            //pageParams.Add("disableLogo", disableLogo);
-                            //pageParams["disableLogo"] = disableLogo;
-                            //bool showDynComp = false;
-
-                            @*
-                                openMsgBox = false;
-                                errMsg2 = string.Empty;
-                                if (doorConfig.CUST == null || doorConfig.CUST == 0)
-                                errMsg2 += "חובה לציין לקוח";
-                                if (string.IsNullOrEmpty(doorConfig.PARTNAME))
-                                errMsg2 += " חובה לציין דגם , ";
-                                if (!string.IsNullOrEmpty(errMsg2))
-                                {
-                                //Js.InvokeVoidAsync("alert", errMsg);
-                                openMsgBox = true;
-                                showMw = false;
-                                }
-                            *@
-                            //showDynComp = (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME));
-                        }
 
                         @if (showDynComp)
                         {
@@ -1161,53 +1093,12 @@
                                             </div>
                         }
                         @code {
-        protected void DoRefresh()
-        {
-                            this.StateHasChanged();
-        }
+                            protected void DoRefresh()
+                            {
+                                                this.StateHasChanged();
+                            }
                         }
-                        @*
-                            <div id="divTabControl"  >
-                            <TabControl doorConfig="doorConfig">
-                            <TabPage Text="כנף נעה" TabName="movingwing">
-                            <div id="divMovingWing" class="myDiv">
-                            <Movingwing doorConfig="@doorConfig" disableLogo="@disableLogo"></Movingwing>
-                            </div>
-                            </TabPage>
-                            <TabPage Text="פרטי דקורציה חוץ" TabName="extdecor">
-                            <div id="divExtDecor" class="myDiv">
-                            <Extdecor doorConfig="@doorConfig" MovingwingIsFull="@MovinwingIsFull" />
-                            </div>
-                            </TabPage>
-                            <TabPage Text="פרטי דקורציה פנים" TabName="intdecor">
-                            <div id="divIntDecor" class="myDiv">
-                            <Intdecor doorConfig="@doorConfig" ExtdecorIsFull="@ExtdecorIsFull" />
-                            </div>
-                            </TabPage>
-                            <TabPage Text="כנף קבועה" TabName="staticwing">
-                            <div id="divStaticWing" class="myDiv">
-                            <Staticwing doorConfig="@doorConfig" />
-                            </div>
-                            </TabPage>
-                            <TabPage Text="פרטי צירים" TabName="hinges">
-                            <div id="divHinges" class="myDiv">
-                            <Hinges doorConfig="@doorConfig" />
-                            </div>
-                            </TabPage>
-                            <TabPage Text="ידית אומנותית" TabName="handle">
-                            <div id="divHandles" class="myDiv">
-                            <Handle doorConfig="@doorConfig" />
-                            </div>
-                            </TabPage>
-                            <TabPage Text="נילווים" TabName="accessories">
-                            <div id="divAccessories" class="myDiv">
-                            <Accessories doorConfig="@doorConfig" />
-                            </div>
-                            </TabPage>
-                            </TabControl>
-                            </div>
-                            <!-- end divTabControl -->
-                        *@
+                        
                     </div>
                     <!-- end divDoor -->
 
