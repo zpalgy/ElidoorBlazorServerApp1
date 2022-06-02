@@ -1113,10 +1113,13 @@ namespace BlazorServerApp1.Data
                     int x = 17;
                 }
                 borderColors.Add(pinfo.Name, string.Empty);
+                disabledFlds[pinfo.Name] = false;
             }
             initBtnClasses();
             disabledFlds = new Dictionary<string, bool>();
-            disabledFlds["REFERENCE"] = true;    // 01/06/2022
+            disabledFlds["REFERENCE"] = true;    // 01/06/2022     
+            disabledFlds["btnDoor"] = false;
+
         }
         public void initBtnClasses()
         {

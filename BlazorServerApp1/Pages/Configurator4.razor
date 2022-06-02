@@ -365,7 +365,7 @@
                             </tr>
                             <tr id="trHeaderL1Controls">
                                 <td id="tdDate">
-                                    <input type="date" name="txtDate" @bind="formDate" />
+                                    <input type="date" name="txtDate" @bind="formDate" disabled="@doorConfig.disabledFlds["FORMDATE"]" />
                                     @code {
         // public DoorConfig? doorConfig; // = new DoorConfig();
 
@@ -397,6 +397,7 @@
                                 <!-- end tdDate-->
                                 <td id="tdFormFiller">
                                      <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
+                                           disabled="@doorConfig.disabledFlds["FORMFILLER"]"
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" 
                                            onkeypress="@KeyPressHandler"
@@ -455,7 +456,7 @@
                                 </td>
                                 <!-- end tdFormFiller -->
                                 <td id="tdReference">
-                                    <input name="txtReference" @bind="reference" @ref="txtReference" disabled=@true /> 
+                                    <input name="txtReference" @bind="reference" @ref="txtReference" disabled=@true />   @* 01/06/2022 at preset always disabled *@
 
                                     @* <InputText name="txtReference" @bind-Value="reference" style="outline:none"
                                     onkeypress="return event.keyCode!=13" />
@@ -525,7 +526,7 @@
                                         }
                                         </select>
                                     *@
-                                    <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]">
+                                    <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" >
                                         @if (lstCustomers != null)
                                         {
                                             @foreach (CUSTOMER_Class c in lstCustomers)
@@ -585,6 +586,7 @@
                                     </select>
                                     *@
                                      <input name="txtEndCustDes" @bind="ENDCUSTDES" dir="rtl" class="@doorConfig.borderColors["ENDCUSTDES"]" 
+                                       disabled="@doorConfig.disabledFlds["ENDCUSTDES"]"
                                        onkeypress="return event.keyCode!=13" />
 
                                 @code {
@@ -617,6 +619,7 @@
                                  </td>
                                 <td>
                                     <input name="txtInstallAddress" dir="rtl" @bind="InstallAddress" size="40" class="@doorConfig.borderColors["INSTALLADDRESS"]" 
+                                               disabled="@doorConfig.disabledFlds["INSTALLADDRESS"]"
                                                onkeypress="return event.keyCode!=13" /> 
                                     @* <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]"  style="outline:none"
                                       onkeypress="return event.keyCode!=13"/>
@@ -651,6 +654,7 @@
                                 @* end Address  *@
                                 <td>
                                     <input name="txtShipAddress" dir="rtl" @bind="ShipAddress" size="60" class="@doorConfig.borderColors["SHIPADDRESS"]" 
+                                    disabled="@doorConfig.disabledFlds["SHIPADDRESS"]"
                                     onkeypress="return event.keyCode!=13" /> 
                                     @* <InputText dir="rtl"  @bind-Value="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]"  style="outline:none"
                                     onkeypress="return event.keyCode!=13"   />
@@ -703,7 +707,9 @@
                                             <table id="tblProducts">
                                                 <tr>
                                                     <td id="tdBtnDoor">
-                                                        <button name="btnDoor" @onclick="btnDoorClicked" class="@doorConfig.btnClasses["btnDoor"]">דלת</button>
+                                                        <button name="btnDoor" @onclick="btnDoorClicked" class="@doorConfig.btnClasses["btnDoor"]"
+                                                        disabled="@doorConfig.disabledFlds["btnDoor"]"
+                                                        >דלת</button>
                                         @code
                                         {
         private void btnDoorClicked()
@@ -733,19 +739,19 @@
                                 </td>
                                 <!-- end tdBtnDoor -->
                                 <td>
-                                    <button name="btnLintel" class="button">משקוף</button>
+                                    <button name="btnLintel" class="button" disabled="@doorConfig.disabledFlds["btnLintel"]">משקוף</button>
                                 </td>
                                 <td>
-                                    <button name="btnCover" class="button">חיפוי</button>
+                                    <button name="btnCover" class="button"  disabled="@doorConfig.disabledFlds["btnCover"]" >חיפוי</button>
                                 </td>
                                 <td>
-                                    <button name="btnSideUnit" class="button">יחידת צד</button>
+                                    <button name="btnSideUnit" class="button" disabled="@doorConfig.disabledFlds["btnSideUnit"]" >יחידת צד</button>
                                 </td>
                                 <td>
-                                    <button name="btnECabinet" class="button">ארון חשמל</button>
+                                    <button name="btnECabinet" class="button"  disabled="@doorConfig.disabledFlds["btnECabinet"]" >ארון חשמל</button>
                                 </td>
                                 <td>
-                                    <button name="btnShelves" class="button">מדפים</button>
+                                    <button name="btnShelves" class="button"  disabled="@doorConfig.disabledFlds["btnShelves"]" >מדפים</button>
                                 </td>
                             </tr>
                         </table>
