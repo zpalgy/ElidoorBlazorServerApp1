@@ -1106,6 +1106,8 @@ namespace BlazorServerApp1.Data
             Type objType = this.GetType();
             PropertyInfo[] props = objType.GetProperties();
             borderColors = new Dictionary<string, string>();
+            disabledFlds = new Dictionary<string, bool>();
+
             foreach (PropertyInfo pinfo in props)
             {
                 if (pinfo.Name == "CUST")
@@ -1113,12 +1115,15 @@ namespace BlazorServerApp1.Data
                     int x = 17;
                 }
                 borderColors.Add(pinfo.Name, string.Empty);
-                disabledFlds[pinfo.Name] = false;
+                //if (!disabledFlds.ContainsKey(pinfo.Name))
+                //    disabledFlds.Add(pinfo.Name, false);
+                //else
+                   disabledFlds[pinfo.Name] = false;
             }
             initBtnClasses();
-            disabledFlds = new Dictionary<string, bool>();
             disabledFlds["REFERENCE"] = true;    // 01/06/2022     
             disabledFlds["btnDoor"] = false;
+            disabledFlds["btnLintel"] = disabledFlds["btnCover"] = disabledFlds["btnSideUnit"] = disabledFlds["btnECabinet"] = disabledFlds["btnShelves"] = true;
 
         }
         public void initBtnClasses()

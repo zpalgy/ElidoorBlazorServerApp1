@@ -356,7 +356,7 @@ namespace BlazorServerApp1.Data
 
             if (optionalFields.Contains(fldName))
                 return true;
-            if (doorConfig.disabledFlds.ContainsKey(fldName))
+            if (doorConfig.disabledFlds.ContainsKey(fldName) && doorConfig.disabledFlds[fldName])
                 return true;
 
             Type objType = doorConfig.GetType();

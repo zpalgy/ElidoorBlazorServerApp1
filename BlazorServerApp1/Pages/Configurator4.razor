@@ -55,35 +55,35 @@
 
         protected override async Task OnInitializedAsync()
         {
-        if (doorConfig != null)
-            return;
+            if (doorConfig != null)
+                return;
 
-        doorConfig = new DoorConfig();
-        doorConfig.initBorderColors();
-        doorConfig.btnClasses["general"] = "buttonActive";
+            doorConfig = new DoorConfig();
+            doorConfig.initBorderColors();
+            doorConfig.btnClasses["general"] = "buttonActive";
 
-        formDate = DateTime.Now;
-        UiLogic.initPropNames(doorConfig);
-        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+            formDate = DateTime.Now;
+            UiLogic.initPropNames(doorConfig);
+            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                   // dyncompType = typeof(Extdecor);
+            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+            pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+                                                       // dyncompType = typeof(Extdecor);
 
-        // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
-        // the 2nd answer : Update Parent State by calling it's StateHasChanged method
-        pageParams.Add("config4", this);
+            // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+            // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+            pageParams.Add("config4", this);
 
-        hebrew = new CultureInfo("he-IL", false);
-        english = new CultureInfo("en-US", false);
+            hebrew = new CultureInfo("he-IL", false);
+            english = new CultureInfo("en-US", false);
 
-        showProducts = false;
-        hideDoorTitle = true;
+            showProducts = false;
+            hideDoorTitle = true;
 
-        //myService.RefreshRequested += RefreshMe;
+            //myService.RefreshRequested += RefreshMe;
 
-        //Js.InvokeVoidAsync("SayHelloJS");
-
+            //Js.InvokeVoidAsync("SayHelloJS");
+            UiLogic.tabPageIsFilled("divHeader", doorConfig);
         }
         private void RefreshMe()
         {
