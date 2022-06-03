@@ -400,7 +400,7 @@
                                            disabled="@doorConfig.disabledFlds["FORMFILLER"]"
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" 
-                                           onkeypress="@KeyPressHandler"
+                                           onkeypress="return event.keyCode!=13"
                                            />
                                            @* onkeypress="return event.keyCode!=13" *@
                                            
@@ -436,7 +436,7 @@
                                         //async Task KeyPressHandler(KeyboardEventArgs e)
                                         bool KeyPressHandler(KeyboardEventArgs e)
                                         {
-                                            if(e.Key.ToLowerInvariant() == "enter")
+                                        if(e.Key.ToLowerInvariant() == "enter")
                                             {
                                             //await Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
                                                 Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
