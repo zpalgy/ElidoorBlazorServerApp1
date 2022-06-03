@@ -77,5 +77,6 @@ namespace BlazorServerApp1.Pages
 
 			}
 		}
+		
 	}
 }

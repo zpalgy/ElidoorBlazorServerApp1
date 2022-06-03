@@ -55,6 +55,7 @@
 
         protected override async Task OnInitializedAsync()
         {
+            initERefs();
             if (doorConfig != null)
                 return;
 
@@ -152,7 +153,7 @@
                             @{
                                 void restart()
                                 {
-                                    if (!DoRestart2)  // test 3/06/2022  - works fine !!!
+                                    if (!RestartClicked)  // test 3/06/2022  - works fine !!!
                                         return;              // test
 
                                     msgCaption = string.Empty;
@@ -400,7 +401,7 @@
                                 <!-- end tdDate-->
                                 <td id="tdFormFiller">
                                      <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
-                                           disabled="@doorConfig.disabledFlds["FORMFILLER"]"
+                                           disabled="@doorConfig.disabledFlds["FORMFILLER"]" @ref="txtFormFiller"
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" 
                                            onkeypress="@KeyPressHandler"
@@ -414,6 +415,7 @@
                                     }
 
                                     @code {
+                                        ElementReference txtFormFiller;
                                         protected string _formFiller;
                                         protected string formFiller
                                         {
@@ -438,9 +440,27 @@
                                         }
                                         }
                                         string[] Elements = {"txtFormFiller", "dlstCustDes", "txtEndCustDes", "txtInstallAddress", "ShipAddress"  };
+                                        ElementReference dlstCustDes;
+                                        //ElementReference txtEndCustDes;
+                                        ElementReference txtInstallAddress;
+                                        ElementReference txtShipAddress;
+
+                                        ElementReference[]  initERefs()
+                                        {
+                                        string x = txtFormFiller.ToString();
+                                        List<ElementReference> lstRefs = new List<ElementReference>();
+                                            lstRefs.Add(txtFormFiller);
+                                            lstRefs.Add(dlstCustDes);
+                                            lstRefs.Add(txtEndCustDes);
+                                            lstRefs.Add(txtInstallAddress);
+                                            lstRefs.Add(txtShipAddress);
+                                            return lstRefs.ToArray();
+		                                }
+                                        
+
         //--------------
         // this does not work as expected 
-                        bool DoRestart2 = true;  //test 3/06/2022
+                                        bool RestartClicked = true;  // initialize 
                                         async Task KeyPressHandler(KeyboardEventArgs e)
                                         //bool KeyPressHandler(KeyboardEventArgs e)
                                         {
@@ -449,7 +469,7 @@
                                             //await Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
                                             //   Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
                                             //    return false;  // event.keyCode!=13
-                                            DoRestart2 = false;
+                                            RestartClicked = false;
                                             txtEndCustDes.FocusAsync();
                                         }
                                             //return true;       // event.keyCode!=13 
