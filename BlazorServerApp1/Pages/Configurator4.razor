@@ -152,6 +152,9 @@
                             @{
                                 void restart()
                                 {
+                                    if (!DoRestart2)  // test 3/06/2022  - works fine !!!
+                                        return;              // test
+
                                     msgCaption = string.Empty;
                                     errMsg2 = "תחילת שאלון חדש ?";
                                     MsgTitleCssClass = string.Empty;
@@ -400,10 +403,11 @@
                                            disabled="@doorConfig.disabledFlds["FORMFILLER"]"
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" 
-                                           onkeypress="return event.keyCode!=13"
+                                           onkeypress="@KeyPressHandler"
                                            />
                                            @* onkeypress="return event.keyCode!=13" *@
-                                           
+                                           @* onkeypress="@KeyPressHandler" *@
+
 
                                     @{
                                         // doorConfig.borderColors["FORMFILLER"] = "form-control " + doorConfig.borderColors["FORMFILLER"];
@@ -429,21 +433,28 @@
                                                 doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blackBorder" : "redBorder");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                                txtEndCustDes.FocusAsync();  //works - just a test ! 3/06/2022
                                             }
                                         }
                                         }
                                         string[] Elements = {"txtFormFiller", "dlstCustDes", "txtEndCustDes", "txtInstallAddress", "ShipAddress"  };
-                                        //async Task KeyPressHandler(KeyboardEventArgs e)
-                                        bool KeyPressHandler(KeyboardEventArgs e)
+        //--------------
+        // this does not work as expected 
+                        bool DoRestart2 = true;  //test 3/06/2022
+                                        async Task KeyPressHandler(KeyboardEventArgs e)
+                                        //bool KeyPressHandler(KeyboardEventArgs e)
                                         {
                                         if(e.Key.ToLowerInvariant() == "enter")
-                                            {
+                                        {
                                             //await Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
-                                                Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
-                                                return false;  // event.keyCode!=13
-                                            }
-                                            return true;       // event.keyCode!=13 
+                                            //   Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
+                                            //    return false;  // event.keyCode!=13
+                                            DoRestart2 = false;
+                                            txtEndCustDes.FocusAsync();
                                         }
+                                            //return true;       // event.keyCode!=13 
+                                        }
+                                        //-------------------
                                         void formFillerHasFocus()
                                         {
                                                                         // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
@@ -587,10 +598,12 @@
                                     *@
                                      <input name="txtEndCustDes" @bind="ENDCUSTDES" dir="rtl" class="@doorConfig.borderColors["ENDCUSTDES"]" 
                                        disabled="@doorConfig.disabledFlds["ENDCUSTDES"]"
-                                       onkeypress="return event.keyCode!=13" />
+                                       onkeypress="return event.keyCode!=13"
+                                       @ref="txtEndCustDes"/>
 
                                 @code {
-        // public bool disableLogo = false;
+                                        // public bool disableLogo = false;
+        ElementReference txtEndCustDes;
         private string _ENDCUSTDES = string.Empty;
         protected string ENDCUSTDES
         {

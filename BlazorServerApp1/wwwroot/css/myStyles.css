@@ -186,7 +186,7 @@ a {
 }
 
 input:focus, select:focus, .inputstyle:focus {
-    border: 1px solid blue;
+    border: 3px solid blue;
 }
 .tabHeader {
     float:right;
