@@ -48,6 +48,7 @@
         string YNissue = string.Empty;
         private bool ansYes = false;
 
+        protected string fieldName;
         //bool showDivDoorTitle = false;
         //bool hideDoorTitle = true;
         //bool hideBtnExtDecor = false;
@@ -55,37 +56,45 @@
 
         protected override async Task OnInitializedAsync()
         {
-            initERefs();
-            if (doorConfig != null)
-                return;
+        initERefs();
+        if (doorConfig != null)
+            return;
 
-            doorConfig = new DoorConfig();
-            doorConfig.initBorderColors();
-            doorConfig.btnClasses["general"] = "buttonActive";
+        doorConfig = new DoorConfig();
+        doorConfig.initBorderColors();
+        doorConfig.btnClasses["general"] = "buttonActive";
 
-            formDate = DateTime.Now;
-            UiLogic.initPropNames(doorConfig);
-            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+        formDate = DateTime.Now;
+        UiLogic.initPropNames(doorConfig);
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-            pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                       // dyncompType = typeof(Extdecor);
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+                                                   // dyncompType = typeof(Extdecor);
 
-            // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
-            // the 2nd answer : Update Parent State by calling it's StateHasChanged method
-            pageParams.Add("config4", this);
+        // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+        // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+        pageParams.Add("config4", this);
 
-            hebrew = new CultureInfo("he-IL", false);
-            english = new CultureInfo("en-US", false);
+        hebrew = new CultureInfo("he-IL", false);
+        english = new CultureInfo("en-US", false);
 
-            showProducts = false;
-            hideDoorTitle = true;
+        showProducts = false;
+        hideDoorTitle = true;
 
-            //myService.RefreshRequested += RefreshMe;
+        //myService.RefreshRequested += RefreshMe;
 
-            //Js.InvokeVoidAsync("SayHelloJS");
-            UiLogic.tabPageIsFilled("divHeader", doorConfig);
+        //Js.InvokeVoidAsync("SayHelloJS");
+        UiLogic.tabPageIsFilled("divHeader", doorConfig);
+
         }
+
+         protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender && doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+                doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+        }
+
         private void RefreshMe()
         {
         StateHasChanged();
@@ -371,7 +380,7 @@
                                 <td id="tdDate">
                                     <input type="date" name="txtDate" @bind="formDate" disabled="@doorConfig.disabledFlds["FORMDATE"]" />
                                     @code {
-        // public DoorConfig? doorConfig; // = new DoorConfig();
+                                        // public DoorConfig? doorConfig; // = new DoorConfig();
 
         private DateTime _formDate = DateTime.Now;
         protected DateTime formDate
@@ -396,16 +405,20 @@
                                             UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                         }
         }
-                                    }
+}
                                 </td>
                                 <!-- end tdDate-->
+                                
                                 <td id="tdFormFiller">
-                                     <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
-                                           disabled="@doorConfig.disabledFlds["FORMFILLER"]" @ref="txtFormFiller"
+                                    @{
+                                        int i = Array.IndexOf(UiLogic.propNames, "FORMFILLER");
+                                        <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
+                                           disabled="@doorConfig.disabledFlds["FORMFILLER"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i]]"
                                            @onfocus="@( () => formFillerHasFocus() )"
                                            @onblur="@( () => formFillerLostFocus() )" 
                                            onkeypress="@KeyPressHandler"
                                            />
+                                     }
                                            @* onkeypress="return event.keyCode!=13" *@
                                            @* onkeypress="@KeyPressHandler" *@
 
@@ -415,6 +428,7 @@
                                     }
 
                                     @code {
+                                        
                                         ElementReference txtFormFiller;
                                         protected string _formFiller;
                                         protected string formFiller
@@ -435,7 +449,11 @@
                                                 doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blackBorder" : "redBorder");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
-                                                txtEndCustDes.FocusAsync();  //works - just a test ! 3/06/2022
+                                                //txtEndCustDes.FocusAsync();  //works - just a test ! 3/06/2022
+                                                
+                                                //test debug
+                                                //if (doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+                                                //    doorConfig.dicRefs["FORMFILLER"].FocusAsync();
                                             }
                                         }
                                         }
@@ -557,7 +575,10 @@
                                         }
                                         </select>
                                     *@
-                                    <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" >
+                                    @{
+                                        int j = Array.IndexOf(UiLogic.propNames, "AGENT");
+                                        <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" 
+                                            @ref="doorConfig.dicRefs[UiLogic.propNames[j]]"       >
                                         @if (lstCustomers != null)
                                         {
                                             @foreach (CUSTOMER_Class c in lstCustomers)
@@ -566,9 +587,10 @@
                                             }
                                         }
                                     </select>
+                                    }
                                 </td>
                                 @code {
-        public bool disableLogo = false;
+                                    public bool disableLogo = false;
         private int _AGENT = 0;
         protected int AGENT
         {
@@ -616,11 +638,12 @@
                                         }
                                     </select>
                                     *@
+                                    @{ int j1 = Array.IndexOf(UiLogic.propNames, "ENDCUSTDES");
                                      <input name="txtEndCustDes" @bind="ENDCUSTDES" dir="rtl" class="@doorConfig.borderColors["ENDCUSTDES"]" 
                                        disabled="@doorConfig.disabledFlds["ENDCUSTDES"]"
                                        onkeypress="return event.keyCode!=13"
-                                       @ref="txtEndCustDes"/>
-
+                                       @ref="doorConfig.dicRefs[UiLogic.propNames[j1]]" />
+                                     }
                                 @code {
                                         // public bool disableLogo = false;
         ElementReference txtEndCustDes;

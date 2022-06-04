@@ -48,6 +48,10 @@ namespace BlazorServerApp1.Data
             PropertyInfo[] props = objType.GetProperties();
             propNames = props.Select(i => i.Name).ToArray();
         }
+        public static int getIndOfProp(string prop)
+        {
+            return Array.IndexOf(propNames, prop);
+        }
         public static bool hideFld(DoorConfig doorConfig, string fldName)
         {
             if (fldName.ToUpper() == "PARTNAME" || fldName.ToUpper() == "FAMILYNAME")

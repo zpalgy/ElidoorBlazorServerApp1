@@ -5,6 +5,7 @@ using System.Web;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorServerApp1.Data
 {
@@ -1100,6 +1101,7 @@ namespace BlazorServerApp1.Data
         public Dictionary<string, string> borderColors { get; set; } 
         public Dictionary<string, string> btnClasses { get; set; }
         public Dictionary<string, bool> disabledFlds { get; set; }
+        public Dictionary<string, ElementReference> dicRefs = new Dictionary<string, ElementReference>();
 
         public void initBorderColors()
         {
@@ -1108,6 +1110,7 @@ namespace BlazorServerApp1.Data
             borderColors = new Dictionary<string, string>();
             disabledFlds = new Dictionary<string, bool>();
 
+            ElementReference er;
             foreach (PropertyInfo pinfo in props)
             {
                 if (pinfo.Name == "CUST")

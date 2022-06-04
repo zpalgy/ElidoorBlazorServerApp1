@@ -2008,7 +2008,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "FIELDID,FIELDCODE,CONFIG_THNAME,CONFIG_TDNAME,CONFIG_FIELDNAME,FIELDNAME,FIELDDES,FIELDDATATYPE,CONFIG_SUBFORM";
+                string fields = "FIELDID,FIELDCODE,CONFIG_THNAME,CONFIG_TDNAME,CONFIG_FIELDNAME,FIELDNAME,FIELDDES,FIELDDATATYPE,CONFIG_SUBFORM,TABINDEX";
                 request.Resource = string.Format("TRSH_CONF_FIELDS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
