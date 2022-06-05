@@ -49,6 +49,7 @@
         private bool ansYes = false;
 
         protected string fieldName;
+        protected string currPropName = string.Empty;
         protected int currPropInd;
         //bool showDivDoorTitle = false;
         //bool hideDoorTitle = true;
@@ -493,8 +494,12 @@
                                             // string nextFldName = Uilogic.getNexPropName(Uilogic.propNames[currPropInd]);
                                             //int j = Array.Indexof(UiLogic.propNames, nextFldName);
                                             int j = 0;
-                                            if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
-                                                doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                            if (currPropName == "TRSH_MODELNAME" ) {
+                                                if (doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+                                                            doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+                                                //  if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+                                              //  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                            }
                                         }
                                             //return true;       // event.keyCode!=13 
                                         }
@@ -914,9 +919,13 @@
                                     }
                                     
                                     <td>
-                                         @{ int i7 = Array.IndexOf(UiLogic.propNames, "TRSH_MODELNAME");
-                                        <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
-                                              disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" @ref="doorConfig.dicRefs[UiLogic.propNames[i7]]"   >
+                                         @{
+                                            int i7 = Array.IndexOf(UiLogic.propNames, "TRSH_MODELNAME");
+                                            currPropInd = i7;
+                                            currPropName = "TRSH_MODELNAME";
+                                            <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
+                                              disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" @ref="doorConfig.dicRefs[UiLogic.propNames[i7]]"  
+                                                onkeypress="@KeyPressHandler" >
                                             
                                             @if (PrApiCalls.lstModels != null)
                                             {
