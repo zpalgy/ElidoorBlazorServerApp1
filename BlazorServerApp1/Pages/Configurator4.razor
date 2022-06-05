@@ -478,25 +478,37 @@
                                         return lstRefs.ToArray();
 		                                }
 
-
-                                        //--------------
-        // this does not work as expected 
                                         bool RestartClicked = true;  // initialize 
                                         async Task KeyPressHandler(KeyboardEventArgs e)
                                         //bool KeyPressHandler(KeyboardEventArgs e)
                                         {
                                         if(e.Key.ToLowerInvariant() == "enter")
                                         {
-                                        //await Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
-                                            //   Js.InvokeVoidAsync("invokeTabKey", (object)Elements);
-                                            //    return false;  // event.keyCode!=13
                                             RestartClicked = false;
+                                             
+                                            // find Next field in tabPage - here "divHeader"
+                                            // 1. populate a DataTable of (TABINDEX, FIELNAME) with visible enabled fields in the TabPage 
+                                            //      this shoud be done once per TABPAGE for divHeader it can be done in OnInitializedAsync
+                                            //      for other tabs it can be done when the Meaged and DECORFORMAT are applied, i.e. 
+                                            //      after both TRSH_WINGSNUMDES and TRSH_MODELNAME are set, i.e. when PARTNAME is retrieved.
+                                            // 2. sort the DataTable by TABINDEX
+                                            // 2. Find the row of currPropName 
+                                            // 3. The Next field is that at the row that follows it. (TABINDEX of that field i snot allways TABINDEX + 1
+                                            //        due to field visibility and disabled  property)
+
                                             // string nextFldName = Uilogic.getNexPropName(Uilogic.propNames[currPropInd]);
                                             //int j = Array.Indexof(UiLogic.propNames, nextFldName);
-                                            int j = 0;
+                                           
+                                            // foreach field of the TabPage do :  
+                                            //         check that !bool hideFld(DoorConfig doorConfig, string fldName)
+                                            //         check that !doorConfig.disabledFlds.ContainsKey(fldName)  
+                                            //            or doorConfig.disabledFlds.ContainsKey(fldName) && !doorConfig.disabledFlds[fldName]  
+                                            //         remove from teh DataTable any field that does not conform with these conditions 
+
+
                                             if (currPropName == "TRSH_MODELNAME" ) {
                                                 if (doorConfig.dicRefs.ContainsKey("FORMFILLER"))
-                                                            doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+                                                            doorConfig.dicRefs["FORMFILLER"].FocusAsync();   //work fine 
                                                 //  if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
                                               //  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
                                             }
@@ -869,7 +881,7 @@
                                             {
                                                 @foreach (WingsNum_Class wn in PrApiCalls.lstWingsNum)
                                                 {
-                                                                                    <option value="@wn.TRSH_WINGSNUMDES">@wn.TRSH_WINGSNUMDES</option>
+                                                     <option value="@wn.TRSH_WINGSNUMDES">@wn.TRSH_WINGSNUMDES</option>
                                                 }
                                             }
                                         </select>
