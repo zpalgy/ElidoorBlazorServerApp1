@@ -27,6 +27,7 @@ namespace BlazorServerApp1.Data
                                                             "txtHinge1Height","txtHinge2Height","txtHinge3Height","txtHinge4Height","txtHinge5Height"};
         public static string[] prodButtonIDs; //= new Button[] { new Button()};
         public static string[] propNames;
+        public static int[] propIndex;
         
         public static string borderColor = string.Empty;
         public static List<string> optionalFields = new List<string>(){ "REFERENCE", "ENDCUSTDES", "FORMDATE", "INSTALLADDRESS", "FAMILYNAME",
@@ -47,6 +48,9 @@ namespace BlazorServerApp1.Data
             Type objType = doorConfig.GetType();
             PropertyInfo[] props = objType.GetProperties();
             propNames = props.Select(i => i.Name).ToArray();
+            //List<int> lstPropIndices = new List<int>();
+            //for (int i = 0; i < propNames.Length; i++)
+            //    lstPropIndices.Add(i);
         }
         public static int getIndOfProp(string prop)
         {
