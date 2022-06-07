@@ -3,6 +3,7 @@
 @using BlazorServerApp1.Pages
 @using BlazorServerApp1.Data
 @using System.Globalization;
+@using System.Data;
 
 @* @page "/Configurator4" *@
 
@@ -55,51 +56,67 @@
         //bool hideDoorTitle = true;
         //bool hideBtnExtDecor = false;
         //bool hideBtnIntDecor = false;
+        DataTable dtDivHeader;
+        DataTable dtDivDoorTitle;
+        DataTable dtDivHeaderDoorTitle;
+
 
         protected override async Task OnInitializedAsync()
         {
-        initERefs();
-        if (doorConfig != null)
-            return;
+            if (doorConfig != null)
+                return;
 
-        doorConfig = new DoorConfig();
-        doorConfig.initBorderColors();
-        doorConfig.btnClasses["general"] = "buttonActive";
+            doorConfig = new DoorConfig();
+            doorConfig.initBorderColors();
+            doorConfig.btnClasses["general"] = "buttonActive";
 
-        formDate = DateTime.Now;
-        UiLogic.initPropNames(doorConfig);
-        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+            formDate = DateTime.Now;
+            UiLogic.initPropNames(doorConfig);
+            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                   // dyncompType = typeof(Extdecor);
+            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+            pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+                                                       // dyncompType = typeof(Extdecor);
 
-        // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
-        // the 2nd answer : Update Parent State by calling it's StateHasChanged method
-        pageParams.Add("config4", this);
+            // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+            // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+            pageParams.Add("config4", this);
 
-        hebrew = new CultureInfo("he-IL", false);
-        english = new CultureInfo("en-US", false);
+            hebrew = new CultureInfo("he-IL", false);
+            english = new CultureInfo("en-US", false);
 
-        showProducts = false;
-        hideDoorTitle = true;
+            showProducts = false;
+            hideDoorTitle = true;
 
-        //myService.RefreshRequested += RefreshMe;
 
-        //Js.InvokeVoidAsync("SayHelloJS");
-        UiLogic.tabPageIsFilled("divHeader", doorConfig);
+            //myService.RefreshRequested += RefreshMe;
+
+            //Js.InvokeVoidAsync("SayHelloJS");
+            UiLogic.tabPageIsFilled("divHeader", doorConfig);
 
         }
 
-         protected override void OnAfterRender(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
-            if (firstRender && doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
-                doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+            string errMsg = string.Empty;
+            if (firstRender && doorConfig != null)
+            {
+                dtDivHeader = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
+
+                if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+                    doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+            }
+        }
+        protected DataTable  uniteHeaderDoorTitleFlds()
+        {
+             dtDivDoorTitle = UiLogic.getTabFields("divDoorTitle", doorConfig, ref errMsg2);
+             var result =  dtDivHeader.AsEnumerable().Union(dtDivDoorTitle.AsEnumerable()).OrderBy (d => d.Field<int>("TABINDEX"));
+             return  result.CopyToDataTable();
         }
 
         private void RefreshMe()
         {
-        StateHasChanged();
+            StateHasChanged();
         }
 
         void showTabPage(Type pageType, string tabName)
@@ -129,22 +146,22 @@
         }
         private void doRestart()
         {
-        UiLogic.clearDoorConfig(doorConfig);
-        showProducts = false;
-        hideDoorTitle = true;
-        showDynComp = false;
-        hideDivDoor = true;
+            UiLogic.clearDoorConfig(doorConfig);
+            showProducts = false;
+            hideDoorTitle = true;
+            showDynComp = false;
+            hideDivDoor = true;
 
 
-        doorConfig.btnClasses["restart"] = "buttonRed";
-        doorConfig.btnClasses["general"] = "buttonActive";
-        doorConfig.btnClasses["selectprod"] =
-        doorConfig.btnClasses["btnDoor"] =
-        doorConfig.btnClasses["proddes"] = "button";
+            doorConfig.btnClasses["restart"] = "buttonRed";
+            doorConfig.btnClasses["general"] = "buttonActive";
+            doorConfig.btnClasses["selectprod"] =
+            doorConfig.btnClasses["btnDoor"] =
+            doorConfig.btnClasses["proddes"] = "button";
         }
         void submitForm()
         {
-        int x = 17;
+            int x = 17;
         }
     }
 
@@ -227,6 +244,7 @@
                                     }
                                     hideDoorTitle = false;
                                     UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
+                                    dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
                                 }
                             }
                         </tr>
@@ -414,13 +432,13 @@
                                 <td id="tdFormFiller">
                                     @{
                                         int i1 = Array.IndexOf(UiLogic.propNames, "FORMFILLER");
-                                        currPropInd = i1;
+
                                         <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
                                            disabled="@doorConfig.disabledFlds["FORMFILLER"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i1]]"
                                                @onfocus="@( () => formFillerHasFocus() )"
                                                @onblur="@( () => formFillerLostFocus() )" 
-                                           onkeypress="@KeyPressHandler"
-                                               />
+                                               onkeypress="@KeyPressHandler" >
+                                              </input >
                                      }
                                            @* onkeypress="return event.keyCode!=13" *@
                                            @* onkeypress="@KeyPressHandler" *@
@@ -433,11 +451,12 @@
                                     @code {
 
                                         ElementReference txtFormFiller;
-                                                                    protected string _formFiller;
+                                                                                                protected string _formFiller;
                                         protected string formFiller
                                         {
                                         get
                                         {
+                                        //currPropName = "FORMFILLER";
                                             if (doorConfig != null)
                                                 _formFiller = doorConfig.FORMFILLER;
 
@@ -445,6 +464,7 @@
                                         }
                                         set
                                         {
+                                        // currPropName = "FORMFILLER";
                                             _formFiller = value;
                                             if (doorConfig != null)
                                             {
@@ -452,45 +472,27 @@
                                                 doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blackBorder" : "redBorder");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
-                                                //txtEndCustDes.FocusAsync();  //works - just a test ! 3/06/2022
-
-                                                //test debug
-                                                //if (doorConfig.dicRefs.ContainsKey("FORMFILLER"))
-                                                //    doorConfig.dicRefs["FORMFILLER"].FocusAsync();
                                             }
                                         }
                                         }
                                         string[] Elements = {"txtFormFiller", "dlstCustDes", "txtEndCustDes", "txtInstallAddress", "ShipAddress"  };
-                                        ElementReference dlstCustDes;
-                                        //ElementReference txtEndCustDes;
-                                        ElementReference txtInstallAddress;
                                         ElementReference txtShipAddress;
 
-                                        ElementReference[]  initERefs()
-                                        {
-                                        string x = txtFormFiller.ToString();
-                                        List<ElementReference> lstRefs = new List<ElementReference>();
-                                        lstRefs.Add(txtFormFiller);
-                                        lstRefs.Add(dlstCustDes);
-                                        lstRefs.Add(txtEndCustDes);
-                                        lstRefs.Add(txtInstallAddress);
-                                        lstRefs.Add(txtShipAddress);
-                                        return lstRefs.ToArray();
-		                                }
-
                                         bool RestartClicked = true;  // initialize 
+
                                         async Task KeyPressHandler(KeyboardEventArgs e)
                                         //bool KeyPressHandler(KeyboardEventArgs e)
                                         {
+                                            //DataTable dtTabFlds = new DataTable();
                                         if(e.Key.ToLowerInvariant() == "enter")
                                         {
                                             RestartClicked = false;
-                                             
-                                            // find Next field in tabPage - here "divHeader"
-                                            // 1. populate a DataTable of (TABINDEX, FIELNAME) with visible enabled fields in the TabPage 
+
+                                                // find Next field in tabPage - here "divHeader"
+                                            // 1. populate a DataTable of (TABINDEX, FIELDNAME) with visible enabled fields in the TabPage 
                                             //      this shoud be done once per TABPAGE for divHeader it can be done in OnInitializedAsync
-                                            //      for other tabs it can be done when the Meaged and DECORFORMAT are applied, i.e. 
-                                            //      after both TRSH_WINGSNUMDES and TRSH_MODELNAME are set, i.e. when PARTNAME is retrieved.
+                                                //      for other tabs it can be done when the Meaged and DECORFORMAT are applied, i.e. 
+                                        //      after both TRSH_WINGSNUMDES and TRSH_MODELNAME are set, i.e. when PARTNAME is retrieved.
                                             // 2. sort the DataTable by TABINDEX
                                             // 2. Find the row of currPropName 
                                             // 3. The Next field is that at the row that follows it. (TABINDEX of that field i snot allways TABINDEX + 1
@@ -498,23 +500,43 @@
 
                                             // string nextFldName = Uilogic.getNexPropName(Uilogic.propNames[currPropInd]);
                                             //int j = Array.Indexof(UiLogic.propNames, nextFldName);
-                                           
+
                                             // foreach field of the TabPage do :  
                                             //         check that !bool hideFld(DoorConfig doorConfig, string fldName)
                                             //         check that !doorConfig.disabledFlds.ContainsKey(fldName)  
                                             //            or doorConfig.disabledFlds.ContainsKey(fldName) && !doorConfig.disabledFlds[fldName]  
                                             //         remove from teh DataTable any field that does not conform with these conditions 
 
-
-                                            if (currPropName == "TRSH_MODELNAME" ) {
-                                                if (doorConfig.dicRefs.ContainsKey("FORMFILLER"))
-                                                            doorConfig.dicRefs["FORMFILLER"].FocusAsync();   //work fine 
-                                                //  if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
-                                              //  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                            //  test
+                                            //if (currPropName == "TRSH_MODELNAME" ) {
+                                            //    if (doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+                                            //                doorConfig.dicRefs["FORMFILLER"].FocusAsync();   //work fine 
+                                            //    if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+                                            //                doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                            int j = 0;
+                                            DataTable dtTabFlds = new DataTable();
+                                            string currTabName = UiLogic.getTabOfField(currPropName);
+                                            switch (currTabName)
+                                            {
+                                                case "divHeader":
+                                                    dtTabFlds = dtDivHeader;
+                                                    break;
+                                                case "divDoorTile" :
+                                                    dtTabFlds = dtDivHeaderDoorTitle;
+                                                    break;
+                                            }
+                                            string nextfld = UiLogic.getNextTabFld(dtTabFlds, currPropName);
+                                            if (!string.IsNullOrEmpty(nextfld))
+                                            {
+                                                j = Array.IndexOf(UiLogic.propNames, nextfld);
+                                                if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+                                                    doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                                return;
                                             }
                                         }
+                                    }
                                             //return true;       // event.keyCode!=13 
-                                        }
+                                        
                                         //-------------------
                                         void formFillerHasFocus()
                                         {
@@ -602,7 +624,7 @@
                                     @{
                                         int i2 = Array.IndexOf(UiLogic.propNames, "AGENT");
                                             <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" 
-                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"       >
+                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"   onkeypress="@KeyPressHandler"    >
                                             @if (lstCustomers != null)
                                         {
                                                 @foreach (CUSTOMER_Class c in lstCustomers)
@@ -620,6 +642,7 @@
         {
                                     get
                                     {
+                                        currPropName = "AGENT";
                                         if (doorConfig != null)
                                             _AGENT = doorConfig.AGENT;
 
@@ -667,13 +690,13 @@
                                     *@
                                     @{
                                         int i3 = Array.IndexOf(UiLogic.propNames, "ENDCUSTDES");
-                                        currPropInd = i3;
+                                        //currPropInd = i3;
                                         <input name="txtEndCustDes" @bind="ENDCUSTDES" dir="rtl" class="@doorConfig.borderColors["ENDCUSTDES"]" 
                                        disabled="@doorConfig.disabledFlds["ENDCUSTDES"]"
                                         onkeypress="@KeyPressHandler"
                                            @ref="doorConfig.dicRefs[UiLogic.propNames[i3]]" />
                                      }
-                                @code {
+                                    @code {
                                         // public bool disableLogo = false;
         ElementReference txtEndCustDes;
         private string _ENDCUSTDES = string.Empty;
@@ -681,6 +704,7 @@
         {
                                         get
                                         {
+                                            currPropName = "ENDCUSTDES";
                                             if (doorConfig != null)
                                                 _ENDCUSTDES = doorConfig.ENDCUSTDES;
 
@@ -706,18 +730,19 @@
                                      @{ int i4 = Array.IndexOf(UiLogic.propNames, "INSTALLADDRESS");
                                         <input name="txtInstallAddress" dir="rtl" @bind="InstallAddress" size="40" class="@doorConfig.borderColors["INSTALLADDRESS"]" 
                                                disabled="@doorConfig.disabledFlds["INSTALLADDRESS"]"
-                                               onkeypress="return event.keyCode!=13"   @ref="doorConfig.dicRefs[UiLogic.propNames[i4]]"/> 
+                                               onkeypress="@KeyPressHandler"   @ref="doorConfig.dicRefs[UiLogic.propNames[i4]]"/> 
                                      }
                                     @* <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]"  style="outline:none"
                                       onkeypress="return event.keyCode!=13"/>
                                       *@
                                 </td>
                                 @code {
-        protected string _InstallAddress = string.Empty;
+                                    protected string _InstallAddress = string.Empty;
         protected string InstallAddress
         {
                                     get
                                     {
+                                        currPropName = "INSTALLADDRESS";
                                         if (doorConfig != null)
                                         {
                                             _InstallAddress = doorConfig.INSTALLADDRESS;
@@ -743,18 +768,19 @@
                                      @{ int i5 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
                                         <input name="txtShipAddress" dir="rtl" @bind="ShipAddress" size="60" class="@doorConfig.borderColors["SHIPADDRESS"]" 
                                         disabled="@doorConfig.disabledFlds["SHIPADDRESS"]"
-                                        onkeypress="return event.keyCode!=13" @ref="doorConfig.dicRefs[UiLogic.propNames[i5]]" /> 
+                                        onkeypress="@KeyPressHandler"  @ref="doorConfig.dicRefs[UiLogic.propNames[i5]]" /> 
                                     }
                                     @* <InputText dir="rtl"  @bind-Value="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]"  style="outline:none"
                                     onkeypress="return event.keyCode!=13"   />
                                     *@
                                 </td>
                                 @code {
-        protected string _ShipAddress = string.Empty;
+                                    protected string _ShipAddress = string.Empty;
         protected string ShipAddress
         {
                                     get
                                     {
+                                        currPropName = "SHIPADDRESS";
                                         if (doorConfig != null)
                                         {
                                             _ShipAddress = doorConfig.SHIPADDRESS;
@@ -869,7 +895,8 @@
                                     <td>
                                          @{ int i6 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
                                         <select name="dlstWingsNum" @bind="WingsNum" class="@doorConfig.borderColors["TRSH_WINGSNUMDES"]" 
-                                              disabled="@doorConfig.disabledFlds["TRSH_WINGSNUMDES"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i6]]" >
+                                              disabled="@doorConfig.disabledFlds["TRSH_WINGSNUMDES"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i6]]" 
+                                              onkeypress="@KeyPressHandler" >
                                               
                                             @*
                                                 <option>בחר סוג מיפתח</option>
@@ -889,12 +916,13 @@
                                     </td>
                                     @code
                                     {
-        //protected bool disableStaticWing = false;
+                                        //protected bool disableStaticWing = false;
         protected string _WingsNum = string.Empty;
         protected string WingsNum
         {
                                         get
                                         {
+                                            currPropName = "TRSH_WINGSNUMDES";
                                             if (doorConfig != null)
                                             {
                                                 _WingsNum = doorConfig.TRSH_WINGSNUMDES;
@@ -933,8 +961,7 @@
                                     <td>
                                          @{
                                             int i7 = Array.IndexOf(UiLogic.propNames, "TRSH_MODELNAME");
-                                            currPropInd = i7;
-                                            currPropName = "TRSH_MODELNAME";
+                                            //currPropInd = i7;
                                             <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
                                               disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" @ref="doorConfig.dicRefs[UiLogic.propNames[i7]]"  
                                                 onkeypress="@KeyPressHandler" >
@@ -956,6 +983,7 @@
         {
                                         get
                                         {
+                                            currPropName = "TRSH_MODELNAME";
                                             if (doorConfig != null)
                                             {
                                                 _TRSH_MODELNAME = doorConfig.TRSH_MODELNAME;
@@ -965,6 +993,7 @@
                                         set
                                         {
                                             int dbg = 0;
+                                            //currPropName = "TRSH_MODELNAME";
                                             _TRSH_MODELNAME = value;
                                             if (doorConfig != null)
                                             {
@@ -1041,7 +1070,8 @@
                                     <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
                                          @{ int i8 = Array.IndexOf(UiLogic.propNames, "DECORFORMAT");
                                         <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]"
-                                         disabled="@doorConfig.disabledFlds["DECORFORMAT"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i8]]" >
+                                         disabled="@doorConfig.disabledFlds["DECORFORMAT"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i8]]" 
+                                         onkeypress="@KeyPressHandler" >
                                             <option></option>
                                             <option>ללא</option>
                                             <option>חוץ</option>
@@ -1052,11 +1082,12 @@
                                         }
                                     </td>
                                     @code {
-        protected string _DecorFormat = string.Empty;
+                                        protected string _DecorFormat = string.Empty;
         protected string DecorFormat
         {
                                         get
                                         {
+                                            currPropName = "DECORFORMAT";
                                             if (doorConfig != null)
                                             {
                                                 // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
@@ -1085,16 +1116,18 @@
                                     <td>
                                          @{ int i9 = Array.IndexOf(UiLogic.propNames, "COMPLIENTDOOR");
                                              <input type="checkbox" name="chkbComplient" @bind="Complient" disabled="@doorConfig.disabledFlds["COMPLIENTDOOR"]" 
-                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i9]]" />
+                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i9]]" 
+                                                onkeypress="@KeyPressHandler" />
                                         }
                                     </td>
                                     @code
                                     {
-        protected bool _Complient = false;
+                                        protected bool _Complient = false;
         protected bool Complient
         {
                                         get
                                         {
+                                            currPropName = "COMPLIENTDOOR";
                                             if (doorConfig != null)
                                             {
                                                 _Complient = (doorConfig.COMPLIENTDOOR == "Y");
@@ -1113,16 +1146,17 @@
                                     <td>
                                           @{ int i10 = Array.IndexOf(UiLogic.propNames, "MEASURESDOC");
                                         <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" disabled="@doorConfig.disabledFlds["MEASURESDOC"]" 
-                                             @ref="doorConfig.dicRefs[UiLogic.propNames[i10]]"  />
+                                             @ref="doorConfig.dicRefs[UiLogic.propNames[i10]]"  onkeypress="@KeyPressHandler" />
                                         }
                                     </td>
                                     @code
                                     {
-        protected bool _MeasuresDoc = false;
+                                        protected bool _MeasuresDoc = false;
         protected bool MeasuresDoc
         {
                                         get
                                         {
+                                            currPropName = "MEASURESDOC";
                                             if (doorConfig != null)
                                             {
                                                 _MeasuresDoc = (doorConfig.MEASURESDOC == "Y");

@@ -20,11 +20,11 @@ namespace BlazorServerApp1.Data
     public static class UiLogic
     {
         #region local arrays and tables
-        public static string[] tabNames = new string[] { "divDoorTitle", "movingwing", "extdecor", "intdecor", "staticwing", "hinges", "handle", "accessories" };
-        public static string[] tabTexts = new string[] { "כותרת דלת", "כנף נעה", "פרטי דקורציה חוץ", "פרטי דקורציה פנים", "כנף קבועה", "פרטי צירים", "ידית אומנותית", "נילווים" };
-        public static string[] Fields2Keep = new string[] { "txtWindowWidth", "txtWindowHeight", "txtOpenDirection",  "txtLockDrilHeight",
-                                                            "txtBackPinHeight", "txtHingesNum",
-                                                            "txtHinge1Height","txtHinge2Height","txtHinge3Height","txtHinge4Height","txtHinge5Height"};
+        public static string[] tabNames = new string[] { "divHeader", "divDoorTitle", "movingwing", "extdecor", "intdecor", "staticwing", "hinges", "handle", "accessories" };
+        public static string[] tabTexts = new string[] { "כותרת שאלון", "כותרת דלת", "כנף נעה", "פרטי דקורציה חוץ", "פרטי דקורציה פנים", "כנף קבועה", "פרטי צירים", "ידית אומנותית", "נילווים" };
+        //public static string[] Fields2Keep = new string[] { "txtWindowWidth", "txtWindowHeight", "txtOpenDirection",  "txtLockDrilHeight",
+        //                                                    "txtBackPinHeight", "txtHingesNum",
+        //                                                    "txtHinge1Height","txtHinge2Height","txtHinge3Height","txtHinge4Height","txtHinge5Height"};
         public static string[] prodButtonIDs; //= new Button[] { new Button()};
         public static string[] propNames;
         public static int[] propIndex;
@@ -1089,31 +1089,70 @@ namespace BlazorServerApp1.Data
         //        return;
         //    }
         //}
-        //public static DataRow[] getTabConfFields(string tabid, Label lblMsg)
-        //{
-        //    try
-        //    {
-        //        string query = string.Format("CONFIG_SUBFORM ='{0}'", tabid);
-        //        DataRow[] rowsArray = PrApiCalls.dtConfFields.Select(query);
-        //        if (rowsArray.Length > 0)
-        //            return rowsArray;
-        //        else
-        //        {
-        //            string errMsg2 = string.Format("שגיאה: לא נמצאו שדות קונפיגורטור ללשונית {0} - אנא פנה למנהל המערכת", tabid);
-        //            myLogger.log.Error(errMsg2);
-        //            UiLogic.displayErrMsg(lblMsg, errMsg2);
-        //            return null;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
-        //        myLogger.log.Error(errMsg);
-        //        UiLogic.displayErrMsg(lblMsg, errMsg);
-        //        return null;
-        //    }
-        //}
+        public static DataTable getTabFields(string tabName, DoorConfig doorConfig, ref string errMsg)
+        {
+            try
+            {
+                string query = string.Format("CONFIG_SUBFORM ='{0}'", tabName);
+                DataRow[] rowsArray = PrApiCalls.dtConfFields.Select(query);
+                List<ConfField_Class> lstTabFlds = new List<ConfField_Class>();
+                if (rowsArray.Length > 0)
+                {
+                    for (int r=0;r<rowsArray.Length;r++)
+                    {
+                        string fldName = rowsArray[r]["FIELDNAME"].ToString();
+                        if (!hideFld(doorConfig, fldName) && !disableFld(doorConfig, fldName))
+                        {
+                            ConfField_Class confFld = new ConfField_Class();
+                            confFld.FIELDNAME = fldName;
+                            confFld.TABINDEX = int.Parse(rowsArray[r]["TABINDEX"].ToString());
+                            lstTabFlds.Add(confFld);
+                        }
+                    }
+                    lstTabFlds.Sort((f, q) => f.TABINDEX.CompareTo(q.TABINDEX));
+                    return lstTabFlds.ToDataTable<ConfField_Class>();
+                }
+                else
+                {
+                    errMsg = string.Format("שגיאה: לא נמצאו שדות קונפיגורטור ללשונית {0} - אנא פנה למנהל המערכת", tabName);
+                    myLogger.log.Error(errMsg);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return null;
+            }
+        }
+        public static string getTabOfField(string fldName)
+        {
+            string query = string.Format("FIELDNAME='{0}'", fldName);
+            DataRow[] rowsArray = PrApiCalls.dtConfFields.Select(query);
+            if (rowsArray.Length > 0)
+            {
+                return rowsArray[0]["CONFIG_SUBFORM"].ToString();
+            }
+            else
+                return string.Empty;
+        }
 
+        public static string getNextTabFld(DataTable dtTabFields, string fldName)
+        {
+            string query = string.Format("FIELDNAME='{0}'", fldName);
+            DataRow[] rowsArray = dtTabFields.Select(query);
+            int rowIndex = -1;
+            if (rowsArray.Length > 0)
+            {
+                rowIndex = dtTabFields.Rows.IndexOf(rowsArray[0]);
+                if (rowIndex < dtTabFields.Rows.Count)
+                    return dtTabFields.Rows[rowIndex + 1]["FIELDNAME"].ToString();
+                else
+                    return String.Empty;
+            }
+            return String.Empty;
+        }
         #endregion clear tab and conf fields
 
         #region conf fields

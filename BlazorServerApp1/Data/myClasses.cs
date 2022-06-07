@@ -460,13 +460,15 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 5)]
         public string FIELDDATATYPE { get; set; }
         [DataMember(Order = 6)]
-        public string FIELDNAME { get; set; }
+        public string FIELDNAME { get; set; }  // e.e AGENT, TRSH_MODELNAME - properties of DoorConfig class
         [DataMember(Order = 7)]
         public string FIELDCODE { get; set; }
         [DataMember(Order = 8)]
         public string FIELDDES { get; set; }
         [DataMember(Order = 9)]
         public string CONFIG_SUBFORM { get; set; }
+        [DataMember(Order = 10)]
+        public int TABINDEX { get; set; }
     }
 
     public class ValuesConfField_Class
