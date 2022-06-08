@@ -5,8 +5,9 @@
 #divMainContainer{
     display:inline-block;
 }
-    */
+*/
 
+/* buttons */
 #divMainMenuButtons, divMainForm {
     display: inline-block;
 }
@@ -15,9 +16,10 @@
     width: 120px;
     height: 50px;
     color: white;
-    background-color : rgb(255, 50, 0);
-    border-color: blue;
+    background-color: rgb(255, 50, 0);
+    border-color: darkblue;
     /* text-wrap: normal; */
+    font-weight: bold;
     text-align: center;
     transition-duration: 0.4s;
 }
@@ -25,18 +27,19 @@
     width: 120px;
     height: 50px;
     color: blue;
-    border-color: blue;
+    border-color: darkblue;
     /* text-wrap: normal; */
+    font-weight:bolder;
     text-align:center;
     transition-duration: 0.4s;
 }
 .buttonActive {
     width: 120px;
     height: 50px;
-    color: black;
-    font-weight: bold;
-    border-color: blue;
+    color: white;
+    border-color: darkblue;
     /* text-wrap: normal; */
+    font-weight:bolder;
     text-align: center;
     transition-duration: 0.4s;
     background-color: rgb(0,120,255);
@@ -51,6 +54,7 @@
     font-weight: bold;
     border-color: blue;
     /* text-wrap: normal; */
+    font-weight:bold;
     text-align: center;
     transition-duration: 0.4s;
     background-color: rgb(0, 200, 255);
@@ -66,6 +70,10 @@
     background: white; /* /linear-gradient(45deg, red, blue); */
 }
 
+.button:hover {
+    background-color: blueviolet;
+    color: yellow;
+}
 
 .float-right {
     float:right;
@@ -73,13 +81,16 @@
 
 .tabPageTitle {
     float: right;
-    color:mediumpurple;
-    border:solid;
-    border-color:mediumpurple;
+    color:blue;
+    font-weight:bold;
+    font-size:16px;
+   /* border:solid;
+    border-color:mediumpurple; 
     margin-top:10px;
     margin-bottom:10px;
     margin-right:30px;
     margin-left:30px;
+    */
 }
 .rightLeftMargin {
     margin-right: 40px;
@@ -94,10 +105,7 @@
 	  float: right;
 }
 
-.button:hover {
-        background-color: blueviolet;
-        color: yellow;
-}
+
 
 input /* asp:TextBox */
 {
@@ -142,14 +150,18 @@ th, td {
     float: none;
     display: inline-block;
 }
-.tabDiv {
+/*
+    .tabDiv {
     display: inline-block;
     border: solid;
     border-color: black;
-    /* width:2100px; */
-    /* height:200px; */
-    width: auto;
+    -- 
+    --width:2100px; 
+    --height:200px; 
+    --
+     width: auto; 
 }
+*/
 
 .menuButtonsDiv {
     display: inline-block;
@@ -162,13 +174,16 @@ th, td {
     /*border: solid;
     border-color: black; */
     min-height: 1200px;
-    min-width: 2000px;
+    min-width: 1000px;
 }
 .div1 {
     border: solid; 
     border-color: black; 
     border-radius: 10px;
 }
+
+
+
 .hideproducts {
     display: none;
 }
@@ -188,6 +203,8 @@ a {
 input:focus, select:focus, .inputstyle:focus {
     border: 3px solid blue;
 }
+
+/*
 .tabHeader {
     float:right;
     border:solid;
@@ -195,6 +212,7 @@ input:focus, select:focus, .inputstyle:focus {
     border-color:mediumpurple;
     color: mediumpurple;
 }
+*/
 
 /*
 .redTitle {

@@ -301,7 +301,7 @@
                     {
                         if (doorConfig != null)
                         {
-                            _Address = doorConfig.INSTALLADDRESS;
+                            _Address = doorConfig.TMPSHIPADDRESS;
                         }
                         return _Address;
                     }
@@ -309,7 +309,7 @@
                     {
                         _Address = value;
                         if (doorConfig != null)
-                            doorConfig.INSTALLADDRESS = _Address;
+                            doorConfig.TMPSHIPADDRESS = _Address;
                     }
         }
      }

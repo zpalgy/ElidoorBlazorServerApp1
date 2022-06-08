@@ -13,6 +13,9 @@ builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddLocalization();
 
+builder.Services.AddHttpContextAccessor();  //ref:  https://stackoverflow.com/questions/60264657/get-current-user-in-a-blazor-component
+                                            // see also : https://tutorialslink.com/Articles/How-do-you-get-current-user-details-in-a-Blazor-component/2219
+                                            //builder.Services.AddScoped<CurrentCorporateUserService>();  
 
 var app = builder.Build();
 

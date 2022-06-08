@@ -636,30 +636,30 @@ namespace BlazorServerApp1.Data
         public string FORMDATE { get; set; }
         [DataMember(Order = 4), Order]
         public string FORMFILLER { get; set; }
-        [DataMember(Order = 5), Order]
+        [DataMember(Order = 5)]
+        public string CUSTORDNAME { get; set; }
+
+        [DataMember(Order = 6), Order]
         public int AGENT { get; set; }
         //[DataMember(Order = 5), Order]
         //public string AGENTCODE { get; set; }
         //[DataMember(Order = 5), Order]
         //public string AGENTNAME { get; set; }
+       
 
         //[Required]      
-        [DataMember(Order = 6), Order]
+        [DataMember(Order = 7), Order]
         public string ENDCUSTDES { get; set; }
         //public int CUST { get; set; }
         //[DataMember(Order = 6), Order]
         //public string CUSTNAME { get; set; }
         //[DataMember(Order = 7), Order]
-
-
+        
         [DataMember(Order = 8), Order]
-        public string INSTALLADDRESS { get; set; }
-
-        //[NonSerialized]
-        //public string INSTALLADDRESS;
-
-        [DataMember(Order = 9), Order]
         public string SHIPADDRESS { get; set; }
+        [DataMember(Order = 9), Order]
+        public string TMPSHIPADDRESS { get; set; }
+
         //[DataMember(Order = 10), Order]
         //public string ADDRESS3 { get; set; }
         #endregion form header
@@ -1183,6 +1183,21 @@ namespace BlazorServerApp1.Data
         public string compName { get; set; }
     }
 
-    
+    // ref: https://stackoverflow.com/questions/60264657/get-current-user-in-a-blazor-component
+    //public class CurrentCorporateUserService : CorporateUserService
+    //{
+    //    private readonly IHttpContextAccessor _httpContextAccessor;
 
-}
+    //    public CurrentCorporateUserService(IHttpContextAccessor httpContextAccessor,
+    //        MyDbContext context) : base(context)
+    //    {
+    //        _httpContextAccessor = httpContextAccessor;
+    //    }
+
+    //    public CorporateUser GetCurrentUser()
+    //    {
+    //        return base.GetUserByUsername(_httpContextAccessor.HttpContext.User.Identity.Name.Substring(8));
+    //    }
+    //}
+
+    }

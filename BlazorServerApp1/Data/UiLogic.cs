@@ -30,7 +30,7 @@ namespace BlazorServerApp1.Data
         public static int[] propIndex;
         
         public static string borderColor = string.Empty;
-        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "ENDCUSTDES", "FORMDATE", "INSTALLADDRESS", "FAMILYNAME",
+        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "ENDCUSTDES", "FORMDATE", "TMPSHIPADDRESS", "FAMILYNAME",
                               "VENTS", "RAFAFAONMOVINGWING" };
 
         public static int IdOfNone = 99999;
@@ -208,7 +208,7 @@ namespace BlazorServerApp1.Data
                     && !doorFldIsFilled(doorConfig, fldName, fldDataType))
                     //&& fldName.ToUpper() != "REFERENCE"
                     //&& fldName.ToUpper() != "FORMDATE"
-                    //&& fldName.ToUpper() != "INSTALLADDRESS"
+                    //&& fldName.ToUpper() != "TMPSHIPADDRESS"
                     //&& fldName.ToUpper() != "FAMILYNAME")
                 {
                     borderColor = "redBorder";

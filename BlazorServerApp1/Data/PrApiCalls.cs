@@ -2277,14 +2277,14 @@ namespace BlazorServerApp1.Data
 
                 int xl = payload.Length;    //2373
 
-                //payload = "{ \"REFERENCE\":\"\",\"FORMDATE\":\"2022-05-24\",\"FORMFILLER\":\"x\",\"AGENT\":0,\"CUST\":1,\"INSTALLADDRESS\":null}";   // just to DEBUG !
+                //payload = "{ \"REFERENCE\":\"\",\"FORMDATE\":\"2022-05-24\",\"FORMFILLER\":\"x\",\"AGENT\":0,\"CUST\":1,\"TMPSHIPADDRESS\":null}";   // just to DEBUG !
                                                                                                                                                      // this works !
 //                string payload2 = @"{
-//                    ""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""INSTALLADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
+//                    ""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""TMPSHIPADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
 //""TRSH_WINGSNUMDES"":""כנף""}";   // works
 //--------------------
                 string payload21 =
-@"{""TRSH_DOORCONFIG"":0,""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""INSTALLADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
+@"{""TRSH_DOORCONFIG"":0,""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""TMPSHIPADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
 ""TRSH_WINGSNUMDES"":""כנף""" +
                 
 @",""OPENMODE"":null,""COMPLIENTDOOR"":""Y"",""TRSH_MODELNAME"":""MLI"",""LOCKDRILHEIGHT"":0,""OPENSIDE"":null,""DECORFORMAT"":null,""COLORSNUM"":null," +
