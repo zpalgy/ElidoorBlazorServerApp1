@@ -521,7 +521,7 @@
                                                 case "divHeader":
                                                     dtTabFlds = dtDivHeader;
                                                     break;
-                                                case "divDoorTile" :
+                                                case "divDoorTitle" :
                                                     dtTabFlds = dtDivHeaderDoorTitle;
                                                     break;
                                             }
@@ -624,7 +624,7 @@
                                     @{
                                         int i2 = Array.IndexOf(UiLogic.propNames, "AGENT");
                                             <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" 
-                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"   onkeypress="@KeyPressHandler"    >
+                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("AGENT") )" onkeypress="@KeyPressHandler"    >
                                             @if (lstCustomers != null)
                                         {
                                                 @foreach (CUSTOMER_Class c in lstCustomers)
@@ -693,7 +693,7 @@
                                         //currPropInd = i3;
                                         <input name="txtEndCustDes" @bind="ENDCUSTDES" dir="rtl" class="@doorConfig.borderColors["ENDCUSTDES"]" 
                                        disabled="@doorConfig.disabledFlds["ENDCUSTDES"]"
-                                        onkeypress="@KeyPressHandler"
+                                        @onfocus="@( () => HasFocus("ENDCUSTDES") )" onkeypress="@KeyPressHandler"
                                            @ref="doorConfig.dicRefs[UiLogic.propNames[i3]]" />
                                      }
                                     @code {
@@ -729,7 +729,7 @@
                                 <td>
                                      @{ int i4 = Array.IndexOf(UiLogic.propNames, "INSTALLADDRESS");
                                         <input name="txtInstallAddress" dir="rtl" @bind="InstallAddress" size="40" class="@doorConfig.borderColors["INSTALLADDRESS"]" 
-                                               disabled="@doorConfig.disabledFlds["INSTALLADDRESS"]"
+                                               disabled="@doorConfig.disabledFlds["INSTALLADDRESS"]"   @onfocus="@( () => HasFocus("INSTALLADDRESS") )"
                                                onkeypress="@KeyPressHandler"   @ref="doorConfig.dicRefs[UiLogic.propNames[i4]]"/> 
                                      }
                                     @* <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]"  style="outline:none"
@@ -767,7 +767,7 @@
                                 <td>
                                      @{ int i5 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
                                         <input name="txtShipAddress" dir="rtl" @bind="ShipAddress" size="60" class="@doorConfig.borderColors["SHIPADDRESS"]" 
-                                        disabled="@doorConfig.disabledFlds["SHIPADDRESS"]"
+                                        disabled="@doorConfig.disabledFlds["SHIPADDRESS"]"  @onfocus="@( () => HasFocus("SHIPADDRESS") )"
                                         onkeypress="@KeyPressHandler"  @ref="doorConfig.dicRefs[UiLogic.propNames[i5]]" /> 
                                     }
                                     @* <InputText dir="rtl"  @bind-Value="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]"  style="outline:none"
@@ -896,7 +896,7 @@
                                          @{ int i6 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
                                         <select name="dlstWingsNum" @bind="WingsNum" class="@doorConfig.borderColors["TRSH_WINGSNUMDES"]" 
                                               disabled="@doorConfig.disabledFlds["TRSH_WINGSNUMDES"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i6]]" 
-                                              onkeypress="@KeyPressHandler" >
+                                               @onfocus="@( () => HasFocus("TRSH_WINGSNUMDES") )" onkeypress="@KeyPressHandler" >
                                               
                                             @*
                                                 <option>בחר סוג מיפתח</option>
@@ -964,7 +964,7 @@
                                             //currPropInd = i7;
                                             <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
                                               disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" @ref="doorConfig.dicRefs[UiLogic.propNames[i7]]"  
-                                                onkeypress="@KeyPressHandler" >
+                                               @onfocus="@( () => HasFocus("TRSH_MODELNAME") )"  onkeypress="@KeyPressHandler" >
                                             
                                             @if (PrApiCalls.lstModels != null)
                                             {
@@ -1071,7 +1071,7 @@
                                          @{ int i8 = Array.IndexOf(UiLogic.propNames, "DECORFORMAT");
                                         <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]"
                                          disabled="@doorConfig.disabledFlds["DECORFORMAT"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i8]]" 
-                                         onkeypress="@KeyPressHandler" >
+                                          @onfocus="@( () => HasFocus("DECORFORMAT") )" onkeypress="@KeyPressHandler" >
                                             <option></option>
                                             <option>ללא</option>
                                             <option>חוץ</option>
@@ -1117,7 +1117,7 @@
                                          @{ int i9 = Array.IndexOf(UiLogic.propNames, "COMPLIENTDOOR");
                                              <input type="checkbox" name="chkbComplient" @bind="Complient" disabled="@doorConfig.disabledFlds["COMPLIENTDOOR"]" 
                                                 @ref="doorConfig.dicRefs[UiLogic.propNames[i9]]" 
-                                                onkeypress="@KeyPressHandler" />
+                                                @onfocus="@( () => HasFocus("COMPLIENTDOOR") )" onkeypress="@KeyPressHandler" />
                                         }
                                     </td>
                                     @code
@@ -1146,7 +1146,8 @@
                                     <td>
                                           @{ int i10 = Array.IndexOf(UiLogic.propNames, "MEASURESDOC");
                                         <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" disabled="@doorConfig.disabledFlds["MEASURESDOC"]" 
-                                             @ref="doorConfig.dicRefs[UiLogic.propNames[i10]]"  onkeypress="@KeyPressHandler" />
+                                             @ref="doorConfig.dicRefs[UiLogic.propNames[i10]]"  
+                                             @onfocus="@( () => HasFocus("MEASURESDOC") )" onkeypress="@KeyPressHandler" />
                                         }
                                     </td>
                                     @code
