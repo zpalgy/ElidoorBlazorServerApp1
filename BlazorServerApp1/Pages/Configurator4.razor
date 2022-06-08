@@ -435,7 +435,7 @@
 
                                         <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
                                            disabled="@doorConfig.disabledFlds["FORMFILLER"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i1]]"
-                                               @onfocus="@( () => formFillerHasFocus() )"
+                                               @onfocus="@( () => HasFocus("FORMFILLER") )"
                                                @onblur="@( () => formFillerLostFocus() )" 
                                                onkeypress="@KeyPressHandler" >
                                               </input >
@@ -535,12 +535,12 @@
                                             }
                                         }
                                     }
-                                            //return true;       // event.keyCode!=13 
-                                        
+                                                    //return true;       // event.keyCode!=13 
+
                                         //-------------------
-                                        void formFillerHasFocus()
+                                        void HasFocus(string currFldName)
                                         {
-                                                                        // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+                                            currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
                                         }
                                         void formFillerLostFocus()
                                         {
@@ -642,7 +642,7 @@
         {
                                     get
                                     {
-                                        currPropName = "AGENT";
+                                        //currPropName = "AGENT";
                                         if (doorConfig != null)
                                             _AGENT = doorConfig.AGENT;
 
@@ -704,7 +704,7 @@
         {
                                         get
                                         {
-                                            currPropName = "ENDCUSTDES";
+                                            //currPropName = "ENDCUSTDES";
                                             if (doorConfig != null)
                                                 _ENDCUSTDES = doorConfig.ENDCUSTDES;
 
@@ -742,7 +742,7 @@
         {
                                     get
                                     {
-                                        currPropName = "INSTALLADDRESS";
+                                        //currPropName = "INSTALLADDRESS";
                                         if (doorConfig != null)
                                         {
                                             _InstallAddress = doorConfig.INSTALLADDRESS;
@@ -780,7 +780,7 @@
         {
                                     get
                                     {
-                                        currPropName = "SHIPADDRESS";
+                                        //currPropName = "SHIPADDRESS";
                                         if (doorConfig != null)
                                         {
                                             _ShipAddress = doorConfig.SHIPADDRESS;
@@ -922,7 +922,7 @@
         {
                                         get
                                         {
-                                            currPropName = "TRSH_WINGSNUMDES";
+                                            //currPropName = "TRSH_WINGSNUMDES";
                                             if (doorConfig != null)
                                             {
                                                 _WingsNum = doorConfig.TRSH_WINGSNUMDES;
@@ -983,7 +983,7 @@
         {
                                         get
                                         {
-                                            currPropName = "TRSH_MODELNAME";
+                                            //currPropName = "TRSH_MODELNAME";
                                             if (doorConfig != null)
                                             {
                                                 _TRSH_MODELNAME = doorConfig.TRSH_MODELNAME;
@@ -1087,7 +1087,7 @@
         {
                                         get
                                         {
-                                            currPropName = "DECORFORMAT";
+                                            //currPropName = "DECORFORMAT";
                                             if (doorConfig != null)
                                             {
                                                 // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
@@ -1127,7 +1127,7 @@
         {
                                         get
                                         {
-                                            currPropName = "COMPLIENTDOOR";
+                                            //currPropName = "COMPLIENTDOOR";
                                             if (doorConfig != null)
                                             {
                                                 _Complient = (doorConfig.COMPLIENTDOOR == "Y");
@@ -1156,7 +1156,7 @@
         {
                                         get
                                         {
-                                            currPropName = "MEASURESDOC";
+                                            //currPropName = "MEASURESDOC";
                                             if (doorConfig != null)
                                             {
                                                 _MeasuresDoc = (doorConfig.MEASURESDOC == "Y");
