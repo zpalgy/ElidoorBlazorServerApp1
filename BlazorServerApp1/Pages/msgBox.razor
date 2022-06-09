@@ -72,16 +72,24 @@
                             </table>
                             <!-- end tblYesNo -->
                         *@
-                        <div class="buttons">
-                        <button type="button" class="btn btnYesNo floatR"
-                        @onclick=@Yes>
-                            כן
-                        </button>
-                        <button type="button" class="btn btnYesNo floatL"
-                        @onclick="@Cancel">
-                            לא
-                        </button>
-                        </div>
+                        @*<div class="buttons"> *@
+                            <table>
+                                <tr>
+                                    <td>
+                            <button type="button" class="btn btnYesNo floatR"
+                            @onclick=@Yes>
+                                כן
+                            </button>
+                            </td>
+                            <td>
+                            <button type="button" class="btn btnYesNo floatL"
+                            @onclick="@Cancel">
+                                לא
+                            </button>
+                            </td>
+                            </tr>
+                            </table>
+                        @*</div> *@
                         break;
                 }
             </div>

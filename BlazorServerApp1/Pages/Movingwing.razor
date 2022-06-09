@@ -27,6 +27,7 @@
 
 
     protected bool openMsgBox = false;
+    private bool openYesNo = false;
     string errMsg2 = string.Empty;
     string errMsg3 = "xxxxxxxxxxxxxxxxxx";
     private string msgCaption = "שגיאה";
@@ -34,6 +35,11 @@
     private string MsgTitleCssClass = string.Empty;
     string msgHeaderClass = "modal-header";
     string msgBorder1Style = string.Empty;
+
+    private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg" 
+    string YNissue = string.Empty;
+    private bool ansYes = false;
+    int newLockDrilHeight = 0;
 
     private bool disableColor = true;
     private bool disableExtColor = true;
@@ -583,24 +589,30 @@
                     {
                         _LockDrilHeight = value;
                         @* if (!int.TryParse(value,out _LockDrilHeight))
-                    {
-                        msgCaption = string.Empty;
-                        errMsg2 = "ספרות בלבד";
-                        msgClass = "modal-body centeredMsg";
-                        openMsgBox = true;
-                    }
-                        else if (doorConfig != null)
-                    *@
+                            {
+                                msgCaption = string.Empty;
+                                errMsg2 = "ספרות בלבד";
+                                msgClass = "modal-body centeredMsg";
+                                openMsgBox = true;
+                            }
+                            else if (doorConfig != null)
+                        *@
                         if (doorConfig != null)
                         {
+                            newLockDrilHeight = (int)value;
                             msgBorder1Style = "border:solid;border-color:red;";
                             //msgHeaderClass = "modal-header redBorder";
                             msgCaption = "שים לב:";
-                            MsgTitleCssClass = "centeredMsg";
-                            msgClass = "modal-body centeredMsg";
-                            errMsg2 = "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית";
-                            openMsgBox = true;
+                            errMsg2 = "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית ,  האם להמשיך ?";
+                            MsgTitleCssClass = string.Empty;  //"centeredMsg";
+                            ErrMsgCssClass = "centeredMsg";   //msgClass = "modal-body centeredMsg";
+                            YNissue = "lockDril";
+                            openYesNo = true;
                             this.StateHasChanged();
+
+                            @*if (!ansYes)
+                                return;
+                            
                             if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
                             { 
                                 doorConfig.LOCKDRILHEIGHT = (int)_LockDrilHeight;
@@ -608,6 +620,7 @@
                                 clearHingesMeasures(doorConfig);
                             }
                             doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
+                            *@
                         }
                 }
             }
@@ -888,7 +901,7 @@
 
             }
         </td>
-        @*
+        
         <td id="tdLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">
             <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["LOCKNAME"]">
                 @{
@@ -927,8 +940,8 @@
                 }
             }
         }
-        *@
         
+        @*
                 <td id="tdHasLock" hidden="@UiLogic.hideFld(doorConfig, "HasLock")">
                     <input type="checkbox" name="chkbHasLock" @bind="HasLock" />
                 
@@ -955,7 +968,7 @@
 	                }
                 }
                     </td>
-        
+        *@
 
         @* if the user choose Dril4Hw == "IDS" then we enable  chkbTwoSidesIDSDril   *@
         @*
@@ -1174,9 +1187,44 @@
     </MsgBox>
     @code
     {
-    private void OnDialogClose()
+        private void OnDialogClose()
+        {
+            openMsgBox = false;
+            errMsg2 = string.Empty;
+        }
+    }
+}
+@if (openYesNo)
+{
+  <MsgBox Caption="@msgCaption"
+        Type="MsgBox.Category.YesNo"
+        Message="@errMsg2"
+        OnClose="OnCloseYesNo"
+        MsgTitleCssClass="@MsgTitleCssClass"
+        ErrMsgCssClass="@ErrMsgCssClass"
+        Border1Style = "@msgBorder1Style" >
+  </MsgBox>
+    @code
     {
-        openMsgBox = false;
+    private void OnCloseYesNo(bool isYes)
+    {
+        if (isYes)   // yesNo here is just for btnRestart !
+        {
+            ansYes = true;
+            switch (YNissue)
+            {
+                case "lockDril":
+                    if (newLockDrilHeight != doorConfig.LOCKDRILHEIGHT)  //(_LockDrilHeight != doorConfig.LOCKDRILHEIGHT )
+                    {
+                        doorConfig.LOCKDRILHEIGHT = newLockDrilHeight;   //(int)_LockDrilHeight;
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        clearHingesMeasures(doorConfig);
+                    }
+                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? string.Empty : "redBorder");
+                    break;
+            }
+        }
+        openYesNo = false;
         errMsg2 = string.Empty;
     }
 }

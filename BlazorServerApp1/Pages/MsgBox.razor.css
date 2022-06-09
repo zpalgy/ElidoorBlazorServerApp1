@@ -56,7 +56,11 @@
 
 /* ref: https://stackoverflow.com/questions/40513763/buttons-equally-space-between-them-horizontally */
 .buttons {
+    /* border: solid;
+       border-color: green;  */
     text-align: justify;
+    /* width:80px;  doesn't work !*/
+    
 }
 
 .buttons:after {
