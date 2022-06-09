@@ -30,7 +30,7 @@ namespace BlazorServerApp1.Data
         public static int[] propIndex;
         
         public static string borderColor = string.Empty;
-        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "ENDCUSTDES", "FORMDATE", "TMPSHIPADDRESS", "FAMILYNAME",
+        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "ENDCUSTDES", "FORMDATE", "CUSTORDNAME", "TMPSHIPADDRESS", "FAMILYNAME",
                               "VENTS", "RAFAFAONMOVINGWING" };
 
         public static int IdOfNone = 99999;
@@ -220,7 +220,7 @@ namespace BlazorServerApp1.Data
             }
             return isFilled;
         }
-        public static void try2UpdateBtnClass(DoorConfig doorConfig, string tabName) //  , string tabBtn, string nextTabBtn )
+        public static bool try2UpdateBtnClass(DoorConfig doorConfig, string tabName) //  , string tabBtn, string nextTabBtn )
         {
             string tabBtnCssName = getTabBtnCssName(doorConfig, tabName);
             string nextTabBtnCssName = getNextTabBtnCssName(doorConfig, tabBtnCssName);
@@ -228,7 +228,10 @@ namespace BlazorServerApp1.Data
             {
                 doorConfig.btnClasses[tabBtnCssName] = "buttonFilled";
                 doorConfig.btnClasses[nextTabBtnCssName] = "buttonActive";
+                return true;
             }
+            else
+                return false;
         }
         public static string getNextTabName(DoorConfig doorConfig, string tabName)
         {
@@ -1142,11 +1145,15 @@ namespace BlazorServerApp1.Data
         {
             string query = string.Format("FIELDNAME='{0}'", fldName);
             DataRow[] rowsArray = dtTabFields.Select(query);
+            if (fldName == "ENDCUSTDES")
+            {
+                int x = 17;
+            }
             int rowIndex = -1;
             if (rowsArray.Length > 0)
             {
                 rowIndex = dtTabFields.Rows.IndexOf(rowsArray[0]);
-                if (rowIndex < dtTabFields.Rows.Count)
+                if (rowIndex < dtTabFields.Rows.Count-1)
                     return dtTabFields.Rows[rowIndex + 1]["FIELDNAME"].ToString();
                 else
                     return String.Empty;
