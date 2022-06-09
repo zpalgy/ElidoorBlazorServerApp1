@@ -21,6 +21,9 @@ namespace BlazorServerApp1.Data
 
         //public static DataTable MeagedFields = new DataTable();  // it's a table that is common to all users !
         //public static DoorConfig doorConfig = new DoorConfig();
+
+        public const int ELIDOOR_COMPLIENT = 1;
+
         public static DataTable dtMeagedFields;
         public static DataTable dtDecorSideFlds;
         public static DataTable dtConfFields;
@@ -32,6 +35,8 @@ namespace BlazorServerApp1.Data
         public static DataTable dtModels = new DataTable();
         public static List<Decoration_Class> lstDecorations = new List<Decoration_Class>();
         public static DataTable dtDecorations = new DataTable();
+        public static List<Complient_Class> lstComplients = new List<Complient_Class>();
+        public static DataTable dtComplients = new DataTable();
 
         public static List<PART_Class> lstParts = new List<PART_Class>();
         public static DataTable dtParts = new DataTable();
@@ -842,6 +847,7 @@ namespace BlazorServerApp1.Data
                 dtModels = lstModels.ToDataTable<Model_Class>();
                 lstDecorations = getAllDecorations(ref errMsg);
                 dtDecorations = lstDecorations.ToDataTable<Decoration_Class>();
+                dtComplients = getComplients(ref errMsg);
                 lstWingWidth = getAllWingWidths(ref errMsg);
                 dtWingWidth = lstWingWidth.ToDataTable<WingWidth_Class>();
 
@@ -2124,6 +2130,55 @@ namespace BlazorServerApp1.Data
                         return null;
                     }
                     errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errMsg = string.Format("Unexpected error: {0} - check whether you can connect to Priority server.  Stacktrace : {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return null;
+            }
+        }
+        public static DataTable getComplients(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "TRSH_COMPLIENT,COMPLIENTDES";
+                request.Resource = string.Format("TRSH_COMPLIENTS?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesComplient_Class val = JsonConvert.DeserializeObject<ValuesComplient_Class>(response.Content);
+                    List <Complient_Class> val1 = new List<Complient_Class>();  //val.value;
+                    foreach (Complient_Class fld in val.value)
+                    {
+                        val1.Add(fld);
+                    }
+                    lstComplients = val1.ToList();
+                    DataTable dt = new DataTable();
+                    dt = val1.ToDataTable<Complient_Class>();  //return val1;
+                    return dt;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    myLogger.log.Error(errMsg);
                     return null;
                 }
             }

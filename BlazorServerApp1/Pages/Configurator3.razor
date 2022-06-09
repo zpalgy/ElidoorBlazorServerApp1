@@ -435,15 +435,15 @@
                         {
                             if (doorConfig != null)
                             {
-                                _Complient = (doorConfig.COMPLIENTDOOR == "Y");
+                               // _Complient = (doorConfig.COMPLIENTDOOR == "Y");
                             }
                             return _Complient;
                         }
                         set
                         {
                             _Complient = value;
-                            if (doorConfig != null)
-                                doorConfig.COMPLIENTDOOR = (_Complient ? "Y" : "");
+                            //if (doorConfig != null)
+                                //doorConfig.COMPLIENTDOOR = (_Complient ? "Y" : "");
                         }
         }
 

@@ -623,6 +623,19 @@ namespace BlazorServerApp1.Data
         public List<WingWidth_Class> value { get; set; }
     }
 
+    [DataContract]
+    public class Complient_Class
+    {
+        [DataMember(Order = 1)]
+        public int TRSH_COMPLIENT { get; set; }
+        [DataMember(Order = 2)]
+        public string COMPLIENTDES { get; set; }
+    }
+    public class ValuesComplient_Class
+    {
+        public List<Complient_Class> value { get; set; }
+    }
+
     [DataContract, Serializable]
     public class DoorConfig
     {
@@ -674,7 +687,8 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 14), Order]
         public string OPENMODE { get; set; }  // in,out  D-40   >> moved to Movingwing
         [DataMember(Order = 15), Order]
-        public string COMPLIENTDOOR { get; set; }  // Y | N | '' D-920
+        //public string COMPLIENTDOOR { get; set; }  // Y | N | '' D-920
+        public int TRSH_COMPLIENT { get; set; }   //D-920 
         //[DataMember(Order = 23), Order]
         //public int PART { get; set; }  //D-20
         //[Required]
@@ -1140,6 +1154,10 @@ namespace BlazorServerApp1.Data
             btnClasses["btnDoor"] =
             btnClasses["proddes"] = "button";
             btnClasses["btnLintel"] = btnClasses["btnCover"] = btnClasses["btnSideUnit"] = btnClasses["btnECabinet"] = btnClasses["btnShelves"] = "buttonDisabled";
+
+            btnClasses["managerapproval"] = "button";
+            btnClasses["save"] = "buttonDisabled";
+
 
             foreach (string tabName in UiLogic.tabNames)
             {

@@ -37,12 +37,7 @@
         protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
         protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
 
-        //BlazorServerApp1.Pages.Configurator3
         protected bool hideDivDoor = true;
-
-        //public bool MovinwingIsFull = false;
-        //public bool ExtdecorIsFull = false;
-        //public bool IntdecorIsFull = false;
 
         public DoorConfig? doorConfig;
         CultureInfo hebrew;
@@ -56,13 +51,10 @@
         string YNissue = string.Empty;
         private bool ansYes = false;
 
-        protected string fieldName;
+        // protected string fieldName;
         protected string currPropName = string.Empty;
         protected int currPropInd;
-        //bool showDivDoorTitle = false;
-        //bool hideDoorTitle = true;
-        //bool hideBtnExtDecor = false;
-        //bool hideBtnIntDecor = false;
+
         DataTable dtDivHeader;
         DataTable dtDivDoorTitle;
         DataTable dtDivHeaderDoorTitle;
@@ -73,155 +65,155 @@
 
         protected override async Task OnInitializedAsync()
         {
-            if (doorConfig != null)
-                return;
+        if (doorConfig != null)
+            return;
 
-            doorConfig = new DoorConfig();
-            doorConfig.initBorderColors();
-            doorConfig.btnClasses["general"] = "buttonActive";
+        doorConfig = new DoorConfig();
+        doorConfig.initBorderColors();
+        doorConfig.btnClasses["general"] = "buttonActive";
 
-            formDate = DateTime.Now;
-            UiLogic.initPropNames(doorConfig);
-            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+        formDate = DateTime.Now;
+        UiLogic.initPropNames(doorConfig);
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
-            pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                       // dyncompType = typeof(Extdecor);
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
+                                                   // dyncompType = typeof(Extdecor);
 
-            // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
-            // the 2nd answer : Update Parent State by calling it's StateHasChanged method
-            pageParams.Add("config4", this);
+        // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+        // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+        pageParams.Add("config4", this);
 
-            hebrew = new CultureInfo("he-IL", false);
-            english = new CultureInfo("en-US", false);
+        hebrew = new CultureInfo("he-IL", false);
+        english = new CultureInfo("en-US", false);
 
-            showProducts = false;
-            hideDoorTitle = true;
+        showProducts = false;
+        hideDoorTitle = true;
 
 
-            //myService.RefreshRequested += RefreshMe;
+        //myService.RefreshRequested += RefreshMe;
 
-            //Js.InvokeVoidAsync("SayHelloJS");
-            UiLogic.tabPageIsFilled("divHeader", doorConfig);
+        //Js.InvokeVoidAsync("SayHelloJS");
+        UiLogic.tabPageIsFilled("divHeader", doorConfig);
 
-            //string UserName = httpContextAccessor.HttpContext.User.Identity.Name;  // httpContextAccessor.HttpContext is null !    
+        //string UserName = httpContextAccessor.HttpContext.User.Identity.Name;  // httpContextAccessor.HttpContext is null !    
 
-            //var authState = await authenticationStateTask;
-            //var user = authState.User;
+        //var authState = await authenticationStateTask;
+        //var user = authState.User;
 
-            //if (user.Identity.IsAuthenticated)
-            //{
-            //    string userIdentity = user.Identity.Name;
-            //}
+        //if (user.Identity.IsAuthenticated)
+        //{
+        //    string userIdentity = user.Identity.Name;
+        //}
         }
 
         protected override void OnAfterRender(bool firstRender)
         {
-            string errMsg = string.Empty;
-            string UserName = string.Empty;
+        string errMsg = string.Empty;
+        string UserName = string.Empty;
 
-            if (firstRender && doorConfig != null)
-            {
-                dtDivHeader = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
-
-                if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
-                    doorConfig.dicRefs["FORMFILLER"].FocusAsync();
-                GetClaimsPrincipalData();
-                if (!string.IsNullOrEmpty(surnameMessage))
-                        doorConfig.FORMFILLER = surnameMessage; 
-
-                if (httpContextAccessor.HttpContext != null)               // it's null 
-                      UserName = httpContextAccessor.HttpContext.User.Identity.Name;
-            }
-        }
-        protected DataTable  uniteHeaderDoorTitleFlds()
+        if (firstRender && doorConfig != null)
         {
-             dtDivDoorTitle = UiLogic.getTabFields("divDoorTitle", doorConfig, ref errMsg2);
-             var result =  dtDivHeader.AsEnumerable().Union(dtDivDoorTitle.AsEnumerable()).OrderBy (d => d.Field<int>("TABINDEX"));
-             return  result.CopyToDataTable();
+            dtDivHeader = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
+
+            if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+                doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+
+            //---- try to get the Username on the client  - at present 09/06/2022 it does not work 
+            //GetClaimsPrincipalData();
+            //if (!string.IsNullOrEmpty(surnameMessage))
+            //        doorConfig.FORMFILLER = surnameMessage; 
+            //
+            //if (httpContextAccessor.HttpContext != null)               // it's null 
+            //      UserName = httpContextAccessor.HttpContext.User.Identity.Name;
+            //--------- end trial to get the client's userName 
+        }
+        }
+        protected DataTable uniteHeaderDoorTitleFlds()
+        {
+        dtDivDoorTitle = UiLogic.getTabFields("divDoorTitle", doorConfig, ref errMsg2);
+        var result = dtDivHeader.AsEnumerable().Union(dtDivDoorTitle.AsEnumerable()).OrderBy(d => d.Field<int>("TABINDEX"));
+        return result.CopyToDataTable();
         }
 
         private void RefreshMe()
         {
-            StateHasChanged();
+        StateHasChanged();
         }
 
         void showTabPage(Type pageType, string tabName)
         {
-            errMsg2 = string.Empty;
-            if (ActivatePage(tabName, doorConfig, ref errMsg2))
-            {
-                pageParams["doorConfig"] = doorConfig;
-                if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
-                    pageParams.Remove("disableLogo");
-                showDynComp = true;
-                dyncompType = pageType;
-                //doorConfig.btnClasses[tabName] = "buttonActive";
-                doorConfig.markButton(tabName);
-            }
-            else
-            {
-                ErrMsgCssClass = "modal-body centeredMsg";
-                openMsgBox = true;
-            }
+        errMsg2 = string.Empty;
+        if (ActivatePage(tabName, doorConfig, ref errMsg2))
+        {
+            pageParams["doorConfig"] = doorConfig;
+            if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
+                pageParams.Remove("disableLogo");
+            showDynComp = true;
+            dyncompType = pageType;
+            //doorConfig.btnClasses[tabName] = "buttonActive";
+            doorConfig.markButton(tabName);
+        }
+        else
+        {
+            ErrMsgCssClass = "modal-body centeredMsg";
+            openMsgBox = true;
+        }
         }
         protected void showMw()
         {
-            pageParams["disableLogo"] = disableLogo;
-            UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
-            showTabPage(typeof(Movingwing), "movinwing");
-            doorConfig.btnClasses["general"] =
-            doorConfig.btnClasses["selectprod"] =
-            doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
-            doorConfig.btnClasses["movingwing"] = "buttonActive";
+        pageParams["disableLogo"] = disableLogo;
+        UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
+        showTabPage(typeof(Movingwing), "movinwing");
+        doorConfig.btnClasses["general"] =
+        doorConfig.btnClasses["selectprod"] =
+        doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
+        doorConfig.btnClasses["movingwing"] = "buttonActive";
         }
 
         //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
         //  the 2nd answer
         public void RefreshState()
         {
-            this.StateHasChanged();
+        this.StateHasChanged();
         }
         private void doRestart()
         {
-            UiLogic.clearDoorConfig(doorConfig);
-            showProducts = false;
-            hideDoorTitle = true;
-            showDynComp = false;
-            hideDivDoor = true;
+        UiLogic.clearDoorConfig(doorConfig);
+        showProducts = false;
+        hideDoorTitle = true;
+        showDynComp = false;
+        hideDivDoor = true;
 
 
-            doorConfig.btnClasses["restart"] = "buttonRed";
-            doorConfig.btnClasses["general"] = "buttonActive";
-            doorConfig.btnClasses["selectprod"] =
-            doorConfig.btnClasses["btnDoor"] =
-            doorConfig.btnClasses["proddes"] = "button";
+        doorConfig.btnClasses["restart"] = "buttonRed";
+        doorConfig.btnClasses["general"] = "buttonActive";
+        doorConfig.btnClasses["selectprod"] =
+        doorConfig.btnClasses["btnDoor"] =
+        doorConfig.btnClasses["proddes"] = "button";
         }
-        void submitForm()
+        void submitForm()  //called when Enter is hit and not caught by onKeypressed event 
         {
-            int x = 17;
+        int x = 17;
         }
 
-        
-    
+        //private async Task GetClaimsPrincipalData()
+        //{
+        //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        //    var user = authState.User;
 
-    private async Task GetClaimsPrincipalData()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            authMessage = $"{user.Identity.Name} is authenticated.";
-            claims = user.Claims;
-            surnameMessage = 
-                $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
-        }
-        else
-        {
-            authMessage = "The user is NOT authenticated.";
-        }
-    }
+        //    if (user.Identity.IsAuthenticated)
+        //    {
+        //        authMessage = $"{user.Identity.Name} is authenticated.";
+        //        claims = user.Claims;
+        //        surnameMessage = 
+        //            $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
+        //    }
+        //    else
+        //    {
+        //        authMessage = "The user is NOT authenticated.";
+        //    }
+        //}
     }
 
 
@@ -233,11 +225,15 @@
                         <tr>
                             <td>
                                 <button name="btnRestart" class="@doorConfig.btnClasses["restart"]"
-                                        onclick="@restart">
+                                        onclick="@restart"   @onfocus="@( () => enableRestart())"  >
                                     התחל מחדש
                                 </button>
                             </td>
                             @{
+                                void enableRestart()
+                                {
+                                    RestartClicked = true;
+                                }
                                 void restart()
                                 {
                                     if (!RestartClicked)  // test 3/06/2022  - works fine !!!
@@ -314,16 +310,16 @@
                         }
                         @if (!hideDivDoor)
                         {
-                                            <tr>
-                                                <td>
-                                                    <table id="tblTabButtons">
-                                                        <tr>
-                                                            <td>
-                                                                <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
+                                                <tr>
+                                                    <td>
+                                                        <table id="tblTabButtons">
+                                                            <tr>
+                                                                <td>
+                                                                    <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
                                                     @onclick=@( () => @showMw())>
-                                                                    כנף נעה
-                                                                </button>
-                                                            </td>
+                                                                        כנף נעה
+                                                                    </button>
+                                                                </td>
                                             @{
                                                 //void showMw()
                                                 //{
@@ -336,8 +332,8 @@
                                                 //    doorConfig.btnClasses["movingwing"] = "buttonActive";
                                                 //}
                                             }
-                                                        </tr>
-                                                        <tr hidden="@hideBtnExtDecor">
+                                                            </tr>
+                                                            <tr hidden="@hideBtnExtDecor">
                                             @{
                                                 bool disableBtnExtDecor = false;
                                                 //disableBtnExtDecor = !ActivatePage("extdecor", doorConfig, ref errMsg2);
@@ -347,12 +343,12 @@
 
                                             }
 
-                                                            <td>
-                                                                <button name="btnextdecor" class="@doorConfig.btnClasses["extdecor"]" @onclick="showExtdecor"
+                                                                <td>
+                                                                    <button name="btnextdecor" class="@doorConfig.btnClasses["extdecor"]" @onclick="showExtdecor"
                                                     disabled="@disableBtnExtDecor" hidden="@hideBtnExtDecor" >
-                                                                    פרטי דקורציה חוץ
-                                                                </button>
-                                                            </td>
+                                                                        פרטי דקורציה חוץ
+                                                                    </button>
+                                                                </td>
                                             @{
                                                 void showExtdecor()
                                                 {
@@ -360,85 +356,107 @@
                                                 }
                                             }
 
-                                                        </tr>
-                                                        <tr hidden="@hideBtnIntDecor">
-                                                            <td>
-                                                                <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]"
+                                                            </tr>
+                                                            <tr hidden="@hideBtnIntDecor">
+                                                                <td>
+                                                                    <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]"
                                                     @onclick="showIntdecor" hidden="@hideBtnIntDecor">
-                                                                    פרטי דקורציה פנים
-                                                                </button>
-                                                            </td>
+                                                                        פרטי דקורציה פנים
+                                                                    </button>
+                                                                </td>
                                             @{
                                                 void showIntdecor()
                                                 {
                                                     showTabPage(typeof(Intdecor), "intdecor");
                                                 }
                                             }
-                                                        </tr>
-                                                        <tr>
+                                                            </tr>
+                                                            <tr>
                                             @{
                                                 bool disableSw = false;
                                                 disableSw = (doorConfig.TRSH_WINGSNUMDES == "כנף");
                                             }
-                                                            <td>
-                                                                <button name="btnstaticwing" class="@doorConfig.btnClasses["staticwing"]" disabled="@disableSw"
+                                                                <td>
+                                                                    <button name="btnstaticwing" class="@doorConfig.btnClasses["staticwing"]" disabled="@disableSw"
                                                     @onclick="showStaticwing">
-                                                                    כנף קבועה
-                                                                </button>
-                                                            </td>
+                                                                        כנף קבועה
+                                                                    </button>
+                                                                </td>
                                             @{
                                                 void showStaticwing()
                                                 {
                                                     showTabPage(typeof(Staticwing), "staticwing");
                                                 }
                                             }
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <button name="btnhinges" class="@doorConfig.btnClasses["hinges"]"
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <button name="btnhinges" class="@doorConfig.btnClasses["hinges"]"
                                                     @onclick="showHinges">
-                                                                    פרטי צירים
-                                                                </button>
-                                                            </td>
+                                                                        פרטי צירים
+                                                                    </button>
+                                                                </td>
                                             @{
                                                 void showHinges()
                                                 {
                                                     showTabPage(typeof(Hinges), "hinges");
                                                 }
                                             }
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <button name="btnhandle" class="@doorConfig.btnClasses["handle"]"
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <button name="btnhandle" class="@doorConfig.btnClasses["handle"]"
                                                     @onclick="showHandle">
-                                                                    ידיות אומנותיות
-                                                                </button>
-                                                            </td>
+                                                                        ידיות אומנותיות
+                                                                    </button>
+                                                                </td>
                                             @{
                                                 void showHandle()
                                                 {
                                                     showTabPage(typeof(Handle), "handle");
                                                 }
                                             }
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <button name="btnaccessories" class="@doorConfig.btnClasses["accessories"]"
-                                                    @onclick="showAccessories">
-                                                                    נילווים
-                                                                </button>
-                                                            </td>
-                                            @{
-                                                void showAccessories()
-                                                {
-                                                    showTabPage(typeof(Accessories), "accessories");
-                                                }
-                                            }
-                                                        </tr>
-                                                    </table>
-                                                    <!-- end tblTabButtons -->
-                                            </td>
-                                            </tr>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <button name="btnaccessories" class="@doorConfig.btnClasses["accessories"]"
+                                                                       @onclick="showAccessories">
+                                                                        נילווים
+                                                                    </button>
+                                                                </td>
+                                                                @{
+                                                                    void showAccessories()
+                                                                    {
+                                                                        showTabPage(typeof(Accessories), "accessories");
+                                                                    }
+                                                                }
+                                                            </tr>
+                                                             <tr>
+                                                                <td>
+                                                                    <button name="btnManagerApproval" class="@doorConfig.btnClasses["managerapproval"]"
+                                                                       @onclick="showManagerApproval">
+                                                                        אישור מנהל
+                                                                    </button>
+                                                                </td>
+                                                                @{
+                                                                    void showManagerApproval() {}
+                                                                }
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <button name="btnSave" class="@doorConfig.btnClasses["save"]"
+                                                                      @onclick="btnSave_Click">
+                                                                        שמירה בפריוריטי
+                                                                    </button>
+                                                                </td>
+                                                                @{
+                                                                    
+                                                                }
+                                                            </tr>
+                                                        </table>
+                                                        <!-- end tblTabButtons -->
+                                                </td>
+                                                </tr>
                         }
 
                     </table>
@@ -449,6 +467,15 @@
             <td id="tdMainForm">
                 <div id="divMainForm" dir="rtl" class="mainFormDiv">
                     <div id="divHeader" dir="rtl"   class="div1" >
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="tabPageTitle">
+                                        <h1 class="rightLeftMargin">פרטים כלליים</h1>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                         <table id="tblLine1">
                             <tr>
                                 <th>תאריך</th>
@@ -460,7 +487,7 @@
                                 <td id="tdDate">
                                     <input type="date" name="txtDate" @bind="formDate" disabled="@doorConfig.disabledFlds["FORMDATE"]" />
                                     @code {
-                                        // public DoorConfig? doorConfig; // = new DoorConfig();
+        // public DoorConfig? doorConfig; // = new DoorConfig();
 
         private DateTime _formDate = DateTime.Now;
         protected DateTime formDate
@@ -488,20 +515,20 @@
 }
                                 </td>
                                 <!-- end tdDate-->
-                                
+
                                 <td id="tdFormFiller">
                                     @{
                                         int i1 = Array.IndexOf(UiLogic.propNames, "FORMFILLER");
 
-                                        <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
+                                            <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
                                            disabled="@doorConfig.disabledFlds["FORMFILLER"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i1]]"
-                                               @onfocus="@( () => HasFocus("FORMFILLER") )"
-                                               @onblur="@( () => formFillerLostFocus() )" 
+                                                   @onfocus="@( () => HasFocus("FORMFILLER") )"
+                                                   @onblur="@( () => formFillerLostFocus() )" 
                                                onkeypress="@KeyPressHandler" >
-                                              </input >
-                                     }
-                                           @* onkeypress="return event.keyCode!=13" *@
-                                           @* onkeypress="@KeyPressHandler" *@
+                                                  </input >
+                                    }
+                                    @* onkeypress="return event.keyCode!=13" *@
+                                    @* onkeypress="@KeyPressHandler" *@
 
 
                                     @{
@@ -510,13 +537,13 @@
 
                                     @code {
 
-                                        //ElementReference txtFormFiller;
-                                        protected string _formFiller;
-                                        protected string formFiller
-                                        {
+        //ElementReference txtFormFiller;
+        protected string _formFiller;
+        protected string formFiller
+        {
                                         get
                                         {
-                                        //currPropName = "FORMFILLER";
+                                            //currPropName = "FORMFILLER";
                                             if (doorConfig != null)
                                                 _formFiller = doorConfig.FORMFILLER;
 
@@ -524,7 +551,7 @@
                                         }
                                         set
                                         {
-                                        // currPropName = "FORMFILLER";
+                                            // currPropName = "FORMFILLER";
                                             _formFiller = value;
                                             if (doorConfig != null)
                                             {
@@ -534,16 +561,16 @@
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
                                         }
-                                        }
-                                                //string[] Elements = {"txtFormFiller", "dlstCustDes", "txtEndCustDes", "txtInstallAddress", "ShipAddress"  };
-                                        //ElementReference txtShipAddress;
+        }
+        //string[] Elements = {"txtFormFiller", "dlstCustDes", "txtEndCustDes", "txtInstallAddress", "ShipAddress"  };
+        //ElementReference txtShipAddress;
 
-                                        bool RestartClicked = true;  // initialize 
+        bool RestartClicked = true;  // initialize 
 
-                                        async Task KeyPressHandler(KeyboardEventArgs e)
-                                        {
-                                            //DataTable dtTabFlds = new DataTable();
-                                        if(e.Key.ToLowerInvariant() == "enter")
+        async Task KeyPressHandler(KeyboardEventArgs e)
+        {
+                                        //DataTable dtTabFlds = new DataTable();
+                                        if (e.Key.ToLowerInvariant() == "enter")
                                         {
                                             RestartClicked = false;
                                             int j = 0;
@@ -554,7 +581,7 @@
                                                 case "divHeader":
                                                     dtTabFlds = dtDivHeader;
                                                     break;
-                                                case "divDoorTitle" :
+                                                case "divDoorTitle":
                                                     dtTabFlds = dtDivHeaderDoorTitle;
                                                     break;
                                             }
@@ -590,17 +617,17 @@
                                                 }
                                             }
                                         }
-                                    }    // end keyPressHandler() 
+        }    // end keyPressHandler() 
 
-                                        //-------------------
-                                        void HasFocus(string currFldName)
-                                        {
-                                            currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
-                                        }
-                                        void formFillerLostFocus()
-                                        {
-                                                                        //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
-                                        }
+        //-------------------
+        void HasFocus(string currFldName)
+        {
+                                        currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+        }
+        void formFillerLostFocus()
+        {
+                                        //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+        }
                                     }
                                 </td>
                                 <!-- end tdFormFiller -->
@@ -608,21 +635,21 @@
                                     @{
                                         int i15 = Array.IndexOf(UiLogic.propNames, "CUSTORDNAME");
 
-                                        <input name="txtCustOrdName" @bind="custOrdName" dir="rtl" class="@doorConfig.borderColors["CUSTORDNAME"]"
+                                            <input name="txtCustOrdName" @bind="custOrdName" dir="rtl" class="@doorConfig.borderColors["CUSTORDNAME"]"
                                            disabled="@doorConfig.disabledFlds["CUSTORDNAME"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i15]]"
-                                               @onfocus="@( () => HasFocus("CUSTORDNAME") )"
+                                                   @onfocus="@( () => HasFocus("CUSTORDNAME") )"
                                                onkeypress="@KeyPressHandler" >
-                                        </input >
-                                     }
+                                            </input >
+                                    }
 
-                                     @code {
+                                    @code {
 
-                                        protected string _custOrdName;
-                                        protected string custOrdName
-                                        {
+        protected string _custOrdName;
+        protected string custOrdName
+        {
                                         get
                                         {
-                                        //currPropName = "FORMFILLER";
+                                            //currPropName = "FORMFILLER";
                                             if (doorConfig != null)
                                                 _custOrdName = doorConfig.CUSTORDNAME;
 
@@ -639,7 +666,7 @@
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
                                         }
-                                        }
+        }
                                         }
                                 </td>
                                 <td id="tdReference">
@@ -716,20 +743,20 @@
                                     *@
                                     @{
                                         int i2 = Array.IndexOf(UiLogic.propNames, "AGENT");
-                                            <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" 
-                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("AGENT") )" onkeypress="@KeyPressHandler"    >
+                                                <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" 
+                                                    @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("AGENT") )" onkeypress="@KeyPressHandler"    >
                                             @if (lstCustomers != null)
-                                        {
-                                                @foreach (CUSTOMER_Class c in lstCustomers)
                                             {
-                                                      <option value="@c.CUST">@c.CUSTDES</option>
+                                                @foreach (CUSTOMER_Class c in lstCustomers)
+                                                {
+                                                                  <option value="@c.CUST">@c.CUSTDES</option>
+                                                }
                                             }
-                                        }
-                                        </select>
+                                            </select>
                                     }
                                 </td>
                                 @code {
-                                    public bool disableLogo = false;
+        public bool disableLogo = false;
         private int _AGENT = 0;
         protected int AGENT
         {
@@ -764,7 +791,7 @@
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
 
                                                 if (doorConfig.dicRefs.ContainsKey("SHIPADDRESS"))
-                                                            doorConfig.dicRefs["SHIPADDRESS"].FocusAsync();
+                                                    doorConfig.dicRefs["SHIPADDRESS"].FocusAsync();
                                             }
                                         }
                                     }
@@ -784,20 +811,20 @@
                                     @{
                                         int i3 = Array.IndexOf(UiLogic.propNames, "ENDCUSTDES");
                                         //currPropInd = i3;
-                                        <input name="txtEndCustDes" @bind="ENDCUSTDES" dir="rtl" class="@doorConfig.borderColors["ENDCUSTDES"]" 
+                                            <input name="txtEndCustDes" @bind="ENDCUSTDES" dir="rtl" class="@doorConfig.borderColors["ENDCUSTDES"]" 
                                        disabled="@doorConfig.disabledFlds["ENDCUSTDES"]"
-                                        @onfocus="@( () => HasFocus("ENDCUSTDES") )" onkeypress="@KeyPressHandler"
-                                           @ref="doorConfig.dicRefs[UiLogic.propNames[i3]]" />
-                                     }
+                                            @onfocus="@( () => HasFocus("ENDCUSTDES") )" onkeypress="@KeyPressHandler"
+                                               @ref="doorConfig.dicRefs[UiLogic.propNames[i3]]" />
+                                    }
                                     @code {
-                                        // public bool disableLogo = false;
+        // public bool disableLogo = false;
         ElementReference txtEndCustDes;
         private string _ENDCUSTDES = string.Empty;
         protected string ENDCUSTDES
         {
                                         get
                                         {
-                                        //currPropName = "ENDCUSTDES";
+                                            //currPropName = "ENDCUSTDES";
                                             if (doorConfig != null)
                                                 _ENDCUSTDES = doorConfig.ENDCUSTDES;
 
@@ -823,7 +850,7 @@
                                  <td>
                                      @{
                                         int i4 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
-                                        <input name="txtShipAddress" dir="rtl" @bind="ShipAddress" size="50" class="@doorConfig.borderColors["SHIPADDRESS"]" 
+                                            <input name="txtShipAddress" dir="rtl" @bind="ShipAddress" size="50" class="@doorConfig.borderColors["SHIPADDRESS"]" 
                                         disabled="@doorConfig.disabledFlds["SHIPADDRESS"]"  @onfocus="@( () => HasFocus("SHIPADDRESS") )"
                                         onkeypress="@KeyPressHandler"  @ref="txtShipAddress" /> 
                                     }
@@ -833,8 +860,8 @@
                                     *@
                                 </td>
                                 @code {
-                                    ElementReference txtShipAddress;
-                                    protected string _ShipAddress = string.Empty;
+        ElementReference txtShipAddress;
+        protected string _ShipAddress = string.Empty;
         protected string ShipAddress
         {
                                     get
@@ -862,22 +889,23 @@
                                 @* end ShipAddress *@
 
                                 <td>
-                                     @{ int i5 = Array.IndexOf(UiLogic.propNames, "TMPSHIPADDRESS");
-                                        <input name="txtTmpShipAddress" dir="rtl" @bind="TmpShipAddress" size="40" class="@doorConfig.borderColors["TMPSHIPADDRESS"]" 
+                                     @{
+                                        int i5 = Array.IndexOf(UiLogic.propNames, "TMPSHIPADDRESS");
+                                            <input name="txtTmpShipAddress" dir="rtl" @bind="TmpShipAddress" size="40" class="@doorConfig.borderColors["TMPSHIPADDRESS"]" 
                                                disabled="@doorConfig.disabledFlds["TMPSHIPADDRESS"]"   @onfocus="@( () => HasFocus("TMPSHIPADDRESS") )"
                                                onkeypress="@KeyPressHandler"   @ref="doorConfig.dicRefs[UiLogic.propNames[i5]]"/> 
-                                     }
+                                    }
                                     @* <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]"  style="outline:none"
                                       onkeypress="return event.keyCode!=13"/>
                                       *@
                                 </td>
                                 @code {
-                                    protected string _TmpShipAddress = string.Empty;
-                                    protected string TmpShipAddress
-                                    {
+        protected string _TmpShipAddress = string.Empty;
+        protected string TmpShipAddress
+        {
                                     get
                                     {
-                                    //currPropName = "TMPSHIPADDRESS";
+                                        //currPropName = "TMPSHIPADDRESS";
                                         if (doorConfig != null)
                                         {
                                             _TmpShipAddress = doorConfig.TMPSHIPADDRESS;
@@ -905,8 +933,8 @@
                                                 doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                                             }
                                             UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
-                                            }
                                         }
+                                    }
         }
                                 }
                                 @* end TmpShipAddress  *@
@@ -918,20 +946,20 @@
                     <!--end of divHeader -->
                     @if (showProducts)
                     {
-                                        <div id="divProducts" class="div1">
-                                            <table>
-                                                <tr>
-                                                    <td>
-                                                        <div class="tabPageTitle">
-                                                            <h1 class="rightLeftMargin">בחירת מוצר</h1>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <table id="tblProducts">
-                                                <tr>
-                                                    <td id="tdBtnDoor">
-                                                        <button name="btnDoor" @onclick="btnDoorClicked" class="@doorConfig.btnClasses["btnDoor"]"
+                                            <div id="divProducts" class="div1">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="tabPageTitle">
+                                                                <h1 class="rightLeftMargin">בחירת מוצר</h1>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table id="tblProducts">
+                                                    <tr>
+                                                        <td id="tdBtnDoor">
+                                                            <button name="btnDoor" @onclick="btnDoorClicked" class="@doorConfig.btnClasses["btnDoor"]"
                                                         disabled="@doorConfig.disabledFlds["btnDoor"]"
                                                         >דלת</button>
                                         @code
@@ -981,12 +1009,21 @@
                         </table>
                         <!--end tblProducts -->
                     </div>
-                                        <!-- end divProducts -->
+                                            <!-- end divProducts -->
                     }  @* end if (showProducts) *@
 
                     <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
                         <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px" hidden="@hideDoorTitle">
+                            <table>
+                            <tr>
+                                <td>
+                                    <div class="tabPageTitle">
+                                        <h1 class="rightLeftMargin">תיאור מוצר</h1>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                             <table id="tblDoorTitle">
                                 <tr>
                                     <th id="thWingsNum">מיפתח</th>
@@ -995,37 +1032,38 @@
                                     @* <th id="thOpenMode">צורת פתיחה</th>  moved to Movingwing.razor  *@
 
                                     <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>
-                                    <th id="thComplient">דלת תואם אלידור</th>
+                                    <th id="thComplient">תואם</th>
                                     <th id="thMeasuresDoc">מצורף נספח מדידה</th>
 
                                     @* <th id="thFamily">סידרה</th> *@
                                 </tr>
                                 <tr>
                                     <td>
-                                         @{ int i6 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
-                                        <select name="dlstWingsNum" @bind="WingsNum" class="@doorConfig.borderColors["TRSH_WINGSNUMDES"]" 
+                                        @{
+                                            int i6 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
+                                            <select name="dlstWingsNum" @bind="WingsNum" class="@doorConfig.borderColors["TRSH_WINGSNUMDES"]" 
                                               disabled="@doorConfig.disabledFlds["TRSH_WINGSNUMDES"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i6]]" 
-                                               @onfocus="@( () => HasFocus("TRSH_WINGSNUMDES") )" onkeypress="@KeyPressHandler" >
-                                              
-                                            @*
+                                                   @onfocus="@( () => HasFocus("TRSH_WINGSNUMDES") )" onkeypress="@KeyPressHandler" >
+
+                                                @*
                                                 <option>בחר סוג מיפתח</option>
                                                 <option>כנף</option>
                                                 <option>כנף וחצי</option>
                                                 <option>דו כנפי</option>
                                             *@
-                                            @if (PrApiCalls.lstWingsNum != null)
-                                            {
-                                                @foreach (WingsNum_Class wn in PrApiCalls.lstWingsNum)
+                                                @if (PrApiCalls.lstWingsNum != null)
                                                 {
-                                                     <option value="@wn.TRSH_WINGSNUMDES">@wn.TRSH_WINGSNUMDES</option>
+                                                    @foreach (WingsNum_Class wn in PrApiCalls.lstWingsNum)
+                                                    {
+                                                                 <option value="@wn.TRSH_WINGSNUMDES">@wn.TRSH_WINGSNUMDES</option>
+                                                    }
                                                 }
-                                            }
-                                        </select>
+                                            </select>
                                         }
                                     </td>
                                     @code
                                     {
-                                        //protected bool disableStaticWing = false;
+        //protected bool disableStaticWing = false;
         protected string _WingsNum = string.Empty;
         protected string WingsNum
         {
@@ -1066,27 +1104,27 @@
         }
 
                                     }
-                                    
+
                                     <td>
                                          @{
                                             int i7 = Array.IndexOf(UiLogic.propNames, "TRSH_MODELNAME");
                                             //currPropInd = i7;
-                                            <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
+                                                <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
                                               disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" @ref="doorConfig.dicRefs[UiLogic.propNames[i7]]"  
-                                               @onfocus="@( () => HasFocus("TRSH_MODELNAME") )"  onkeypress="@KeyPressHandler" >
-                                            
-                                            @if (PrApiCalls.lstModels != null)
-                                            {
-                                                @foreach (Model_Class m in PrApiCalls.lstModels)
+                                                   @onfocus="@( () => HasFocus("TRSH_MODELNAME") )"  onkeypress="@KeyPressHandler" >
+
+                                                @if (PrApiCalls.lstModels != null)
                                                 {
-                                                                                    <option value="@m.TRSH_MODELNAME">@m.TRSH_MODELDES</option>
+                                                    @foreach (Model_Class m in PrApiCalls.lstModels)
+                                                    {
+                                                                                                <option value="@m.TRSH_MODELNAME">@m.TRSH_MODELDES</option>
+                                                    }
                                                 }
-                                            }
-                                        </select>
+                                            </select>
                                         }
                                     </td>
                                     @code {
-                                        private ElementReference dlstModelName;
+        private ElementReference dlstModelName;
         protected string _TRSH_MODELNAME = string.Empty;
         protected string TRSH_MODELNAME
         {
@@ -1177,21 +1215,22 @@
         }
                                     }
                                     <td id="tdDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">
-                                         @{ int i8 = Array.IndexOf(UiLogic.propNames, "DECORFORMAT");
-                                        <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]"
+                                         @{
+                                            int i8 = Array.IndexOf(UiLogic.propNames, "DECORFORMAT");
+                                            <select name="dlstDecorFormat" @bind="DecorFormat" class="@doorConfig.borderColors["DECORFORMAT"]"
                                          disabled="@doorConfig.disabledFlds["DECORFORMAT"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i8]]" 
-                                          @onfocus="@( () => HasFocus("DECORFORMAT") )" onkeypress="@KeyPressHandler" >
-                                            <option></option>
-                                            <option>ללא</option>
-                                            <option>חוץ</option>
-                                            <option>פנים</option>
-                                            <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
-                                            @* see Helper.DecorFormat2Code(...) method *@
-                                        </select>
+                                              @onfocus="@( () => HasFocus("DECORFORMAT") )" onkeypress="@KeyPressHandler" >
+                                                <option></option>
+                                                <option>ללא</option>
+                                                <option>חוץ</option>
+                                                <option>פנים</option>
+                                                <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
+                                                @* see Helper.DecorFormat2Code(...) method *@
+                                            </select>
                                         }
                                     </td>
                                     @code {
-                                        protected string _DecorFormat = string.Empty;
+        protected string _DecorFormat = string.Empty;
         protected string DecorFormat
         {
                                         get
@@ -1223,45 +1262,60 @@
 
 
                                     <td>
-                                         @{ int i9 = Array.IndexOf(UiLogic.propNames, "COMPLIENTDOOR");
-                                             <input type="checkbox" name="chkbComplient" @bind="Complient" disabled="@doorConfig.disabledFlds["COMPLIENTDOOR"]" 
-                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i9]]" 
-                                                @onfocus="@( () => HasFocus("COMPLIENTDOOR") )" onkeypress="@KeyPressHandler" />
+                                         @{
+                                            int i9 = Array.IndexOf(UiLogic.propNames, "TRSH_COMPLIENT");
+                                                 @* <input type="checkbox" name="chkbComplient" @bind="Complient" disabled="@doorConfig.disabledFlds["COMPLIENTDOOR"]" *@
+                                                     <select name="dlstComplient" @bind="TRSH_COMPLIENT" class="@doorConfig.borderColors["TRSH_COMPLIENT"]" 
+                                              disabled="@doorConfig.disabledFlds["TRSH_COMPLIENT"]" @ref="doorConfig.dicRefs[UiLogic.propNames[i9]]"  
+                                                   @onfocus="@( () => HasFocus("TRSH_COMPLIENT") )"  onkeypress="@KeyPressHandler" >
+
+                                                    @if (PrApiCalls.lstComplients != null)
+                                                    {
+                                                        @foreach (Complient_Class m in PrApiCalls.lstComplients)
+                                                        {
+                                                            <option value="@m.TRSH_COMPLIENT">@m.COMPLIENTDES</option>
+                                                        }
+                                                    }
+                                            </select>
+
                                         }
                                     </td>
                                     @code
                                     {
-                                        protected bool _Complient = false;
-        protected bool Complient
+        protected int _TRSH_COMPLIENT = 0;
+        protected int TRSH_COMPLIENT
         {
                                         get
                                         {
-                                            //currPropName = "COMPLIENTDOOR";
                                             if (doorConfig != null)
                                             {
-                                                _Complient = (doorConfig.COMPLIENTDOOR == "Y");
+                                                _TRSH_COMPLIENT = doorConfig.TRSH_COMPLIENT;
                                             }
-                                            return _Complient;
+                                            return _TRSH_COMPLIENT;
                                         }
                                         set
                                         {
-                                            _Complient = value;
+                                            _TRSH_COMPLIENT = value;
                                             if (doorConfig != null)
-                                                doorConfig.COMPLIENTDOOR = (_Complient ? "Y" : "");
+                                            {
+                                                doorConfig.TRSH_COMPLIENT = _TRSH_COMPLIENT;
+                                                doorConfig.borderColors["TRSH_COMPLIENT"] = (value != 0 ? string.Empty : "redBorder");
+                                            }
                                         }
         }
                                     }
 
                                     <td>
-                                          @{ int i10 = Array.IndexOf(UiLogic.propNames, "MEASURESDOC");
-                                        <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" disabled="@doorConfig.disabledFlds["MEASURESDOC"]" 
-                                             @ref="doorConfig.dicRefs[UiLogic.propNames[i10]]"  
-                                             @onfocus="@( () => HasFocus("MEASURESDOC") )" onkeypress="@KeyPressHandler" />
+                                          @{
+                                            int i10 = Array.IndexOf(UiLogic.propNames, "MEASURESDOC");
+                                            <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" disabled="@doorConfig.disabledFlds["MEASURESDOC"]" 
+                                                 @ref="doorConfig.dicRefs[UiLogic.propNames[i10]]"  
+                                                 @onfocus="@( () => HasFocus("MEASURESDOC") )" onkeypress="@KeyPressHandler" />
                                         }
                                     </td>
                                     @code
                                     {
-                                        protected bool _MeasuresDoc = false;
+        protected bool _MeasuresDoc = false;
         protected bool MeasuresDoc
         {
                                         get
@@ -1319,18 +1373,18 @@
 
                         @if (showDynComp)
                         {
-                                            <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-                                                <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
+                                                <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
+                                                    <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
                                 @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
-                                            </div>
+                                                </div>
                         }
                         @code {
-                            protected void DoRefresh()
-                            {
-                                                this.StateHasChanged();
-                            }
+        protected void DoRefresh()
+        {
+                            this.StateHasChanged();
+        }
                         }
-                        
+
                     </div>
                     <!-- end divDoor -->
 
@@ -1440,12 +1494,12 @@
                                     @* <button name="btnClear" @onclick="btnClear_Click">ניקוי טופס</button> *@
                                 </td>
                                 @code {
-        private void btnClear_Click()
-        {
-                                    showProducts = false;
-                                    UiLogic.clearDoorConfig(doorConfig);
-                                    this.StateHasChanged();
-        }
+        //private void btnClear_Click()
+        //{
+        //                            showProducts = false;
+        //                            UiLogic.clearDoorConfig(doorConfig);
+        //                            this.StateHasChanged();
+        //}
                                 }
                             </tr>
                         </table>
@@ -1471,12 +1525,12 @@
 
 @if (openMsgBox)
 {
-                    <MsgBox Caption="@msgCaption"
+                        <MsgBox Caption="@msgCaption"
         Message="@errMsg2"
         OnClose="OnDialogClose"
         MsgTitleCssClass="@MsgTitleCssClass"
         ErrMsgCssClass="@ErrMsgCssClass">
-                    </MsgBox>
+                        </MsgBox>
     @code
     {
     private void OnDialogClose()
@@ -1488,13 +1542,13 @@
 }
 @if (openYesNo)
 {
-                    <MsgBox Caption="@msgCaption"
+                        <MsgBox Caption="@msgCaption"
         Type="MsgBox.Category.YesNo"
         Message="@errMsg2"
         OnClose="OnCloseYesNo"
         MsgTitleCssClass="@MsgTitleCssClass"
         ErrMsgCssClass="@ErrMsgCssClass">
-                    </MsgBox>
+                        </MsgBox>
     @code
     {
     private void OnCloseYesNo(bool isYes)

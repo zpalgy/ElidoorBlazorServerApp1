@@ -159,7 +159,7 @@
                             {
                                 doorConfig.DOORWIDTH = (_DoorWidth != null ? (int)_DoorWidth : 0);
 
-                                if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
+                                if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT)
                                 {
                                     string errMsg = string.Empty;
                                     doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
@@ -225,7 +225,7 @@
                             //[TODO] implement the following lines
                             //if (chkbComplient.Checked)
                             //     txtWindowWidth.Text = calcWindowWidth();
-                            if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.COMPLIENTDOOR == "Y")
+                            if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT)
                             {
                                 errMsg2 = string.Empty;
                                 setHingesAndWindowsData(doorConfig, ref errMsg2);

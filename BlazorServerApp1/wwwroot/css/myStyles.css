@@ -13,8 +13,8 @@
 }
 
 .buttonRed {
-    width: 120px;
-    height: 50px;
+    width: 160px;
+    height: 70px;
     color: white;
     background-color: rgb(255, 50, 0);
     border-color: darkblue;
@@ -24,8 +24,8 @@
     transition-duration: 0.4s;
 }
 .button {
-    width: 120px;
-    height: 50px;
+    width: 160px;
+    height: 70px;
     color: blue;
     border-color: darkblue;
     /* text-wrap: normal; */
@@ -34,8 +34,8 @@
     transition-duration: 0.4s;
 }
 .buttonActive {
-    width: 120px;
-    height: 50px;
+    width: 160px;
+    height: 70px;
     color: white;
     border-color: darkblue;
     /* text-wrap: normal; */
@@ -48,8 +48,8 @@
     background-color: rgb(121, 245, 121);
 }
 .buttonFilled {
-    width: 120px;
-    height: 50px;
+    width: 160px;
+    height: 70px;
     color: black;
     font-weight: bold;
     border-color: blue;
@@ -60,8 +60,8 @@
     background-color: rgb(0, 200, 255);
 }
 .buttonDisabled {
-    width: 120px;
-    height: 50px;
+    width: 160px;
+    height: 70px;
     color: grey;
     border-color: grey;
     /* text-wrap: normal; */
@@ -83,7 +83,7 @@
     float: right;
     color:blue;
     font-weight:bold;
-    font-size:16px;
+    font-size:14px;
    /* border:solid;
     border-color:mediumpurple; 
     margin-top:10px;
@@ -125,7 +125,18 @@ select /* asp:DropDownList */ {
 
 }
 th, td {
-    padding: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    /*
+    margin-top : 5px;
+    margin-bottom : 5px;
+    margin-left: 1px;
+    margin-right : 1px;
+    */
+    font-size: 20px;
+    color: blue;
     text-align: center;
 }
 
