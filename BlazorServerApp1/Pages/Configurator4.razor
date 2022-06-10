@@ -570,13 +570,13 @@
 
                                     @code {
 
-        //ElementReference txtFormFiller;
+                                        //ElementReference txtFormFiller;
         protected string _formFiller;
         protected string formFiller
         {
                                         get
                                         {
-                                            //currPropName = "FORMFILLER";
+                                        //currPropName = "FORMFILLER";
                                             if (doorConfig != null)
                                                 _formFiller = doorConfig.FORMFILLER;
 
@@ -584,7 +584,7 @@
                                         }
                                         set
                                         {
-                                            // currPropName = "FORMFILLER";
+                                        // currPropName = "FORMFILLER";
                                             _formFiller = value;
                                             if (doorConfig != null)
                                             {
@@ -621,20 +621,20 @@
                                             string nextfld = UiLogic.getNextTabFld(dtTabFlds, currPropName);
                                             if (!string.IsNullOrEmpty(nextfld))
                                             {
-                                               // if (nextfld == "SHIPADDRESS")
-                                               // {
-                                               //     //int x = 17;
-                                               //     txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
-                                               //                                   //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-                                               //                                   //  when UiLogic.propNames[j] == "SHIPADDRESS" !!!
-                                               //
-                                               //}
-                                               // else
-                                               // {
-                                                    j = Array.IndexOf(UiLogic.propNames, nextfld);
-                                                    if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
-                                                        doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-                                                    return;
+                                                    // if (nextfld == "SHIPADDRESS")
+                                                    // {
+                                            //     //int x = 17;
+                                            //     txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
+                                                //                                   //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                                //                                   //  when UiLogic.propNames[j] == "SHIPADDRESS" !!!
+                                                //
+                                                //}
+                                                // else
+                                                // {
+                                                j = Array.IndexOf(UiLogic.propNames, nextfld);
+                                                if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+                                                    doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                                return;
                                                 //}
                                             }
                                             else
@@ -650,6 +650,10 @@
                                                         showMw();
                                                 }
                                             }
+                                        }
+                                        else if (e.Key.ToLowerInvariant() == "down")
+                                        {
+                                            int x = 17;
                                         }
         }    // end keyPressHandler() 
 
@@ -779,7 +783,8 @@
                                         int i2 = Array.IndexOf(UiLogic.propNames, "AGENT");
                                                 <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" 
                                                     @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("AGENT") )" 
-                                                    onkeypress="@KeyPressHandler"   >
+                                                    onkeydown="@KeyPressHandler"  >
+                                                @*    onkeypress="@KeyPressHandler"   >  *@
                                             @if (lstCustomers != null)
                                             {
                                                 @foreach (CUSTOMER_Class c in lstCustomers)

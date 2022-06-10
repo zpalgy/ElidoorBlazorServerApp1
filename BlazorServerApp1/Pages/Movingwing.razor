@@ -282,7 +282,7 @@
 
         <td id="tdOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">
             <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "dlstOpenSide")"
-                    class="@doorConfig.borderColors["OPENSIDE"]">
+                    class="@doorConfig.borderColors["OPENSIDE"]"  onkeypress="return event.keyCode!=13" >
                 <option> </option>
                 <option>ימין</option>
                 <option>שמאל</option>
@@ -316,7 +316,8 @@
         </td>
        
         <td id="tdOpenMode">
-            <select name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]">
+            <select name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]"
+             onkeypress="return event.keyCode!=13" >
                 <option></option>
                 <option>פנימה</option>
                 <option>החוצה</option>
@@ -349,7 +350,8 @@
         </td>
 
         <td id="tdColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">
-            <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]">
+            <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]"
+               onkeypress="return event.keyCode!=13" >
                 <option></option>
                 <option>ללא</option>
                 <option>1</option>
@@ -416,7 +418,7 @@
 
         <td id="tdDoorColor" hidden="@UiLogic.hideFld(doorConfig, "DoorColor")">
             <select name="dlstDoorColor" @bind="DoorColorId" class="@doorConfig.borderColors["DOORCOLORID"]" 
-                          disabled="@doorConfig.disabledFlds["DOORCOLORID"]">
+                          disabled="@doorConfig.disabledFlds["DOORCOLORID"]"  onkeypress="return event.keyCode!=13" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -472,7 +474,7 @@
     <tr>
         <td id="tdExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">
             <select name="dlstExtColor" @bind="ExtColor" class="@doorConfig.borderColors["EXTCOLORID"]"
-                    disabled="@doorConfig.disabledFlds["EXTCOLORID"]" >
+                    disabled="@doorConfig.disabledFlds["EXTCOLORID"]"  onkeypress="return event.keyCode!=13" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -529,7 +531,7 @@
 
         <td id="tdIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">
             <select name="dlstIntColor" @bind="IntColor" class="@doorConfig.borderColors["INTCOLORID"]"
-                    disabled="@doorConfig.disabledFlds["INTCOLORID"]">
+                    disabled="@doorConfig.disabledFlds["INTCOLORID"]"  onkeypress="return event.keyCode!=13" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -633,7 +635,7 @@
         }
         </td>
         <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
-            <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]">
+            <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]" onkeypress="return event.keyCode!=13" >
                 @{
                     string errMsg = string.Empty;
                     List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getPartHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
@@ -700,7 +702,7 @@
         }
         <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
             <select name="dlstHwColor" @bind="HwColorId" class="@doorConfig.borderColors["HWCOLORID"]"  
-                 disabled="@doorConfig.disabledFlds["HWCOLORID"]" >
+                 disabled="@doorConfig.disabledFlds["HWCOLORID"]"  onkeypress="return event.keyCode!=13" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)
@@ -738,7 +740,7 @@
 
         <td id="tdDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">
             <select name="dlstDril4Hw" @bind="Dril4Hw" class="@doorConfig.borderColors["DRIL4HW"]"
-              disabled="@doorConfig.disabledFlds["DRIL4HW"]" >
+              disabled="@doorConfig.disabledFlds["DRIL4HW"]" onkeypress="return event.keyCode!=13" >
 
                 @if (PrApiCalls.lstDril4Hw != null)
                 {
@@ -802,7 +804,8 @@
     </tr>
     <tr>
         <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
-            <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]">
+            <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]"
+            onkeypress="return event.keyCode!=13" >
                 @if (PrApiCalls.lstCylinders != null)
                 {
                     @foreach (CYLINDER_Class c in PrApiCalls.lstCylinders)
@@ -839,7 +842,8 @@
         }
 
         <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
-            <select name="dlstElectricApparatus" @bind="ElectricApparatus" class="@doorConfig.borderColors["ELECTRICAPPARATUS"]">
+            <select name="dlstElectricApparatus" @bind="ElectricApparatus" class="@doorConfig.borderColors["ELECTRICAPPARATUS"]"
+                    onkeypress="return event.keyCode!=13" >
                 <option></option>
                 <option>ללא</option>
                 <option>R</option>
@@ -872,7 +876,7 @@
             }
         }
         <td id="tdTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">
-            <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus" />
+            <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus"  onkeypress="return event.keyCode!=13"  />
             @code
             {
                 protected bool _TurboApparatus = false;
@@ -900,7 +904,7 @@
         </td>
 
         <td id="tdLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">
-            <input type="checkbox" name="chkbLogo" @bind="Logo" disabled="@disableLogo" />
+            <input type="checkbox" name="chkbLogo" @bind="Logo" disabled="@disableLogo" onkeypress="return event.keyCode!=13"  />
             @code
             {
                 protected bool _Logo = false;
@@ -929,7 +933,7 @@
         </td>
         
         <td id="tdLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">
-            <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["LOCKNAME"]">
+            <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["LOCKNAME"]" onkeypress="return event.keyCode!=13" >
                 @{
                     List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
                     if (lstPartLocks != null)
@@ -1026,7 +1030,7 @@
         @if (!h)
         {
             <td id="tdHandle">
-                <select name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["HANDLENAME"]">
+                <select name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["HANDLENAME"]" onkeypress="return event.keyCode!=13" >
                     @if (PrApiCalls.lstHandles != null)
                     {
                         @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
@@ -1067,7 +1071,7 @@
             @* end  tdHandle *@
 
         <td id="tdVents" hidden="@UiLogic.hideFld(doorConfig, "Vents")">
-            <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["VENTS"]">
+            <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["VENTS"]" onkeypress="return event.keyCode!=13" >
                 <option></option>
                 <option>ללא</option>
                 <option>1</option>
@@ -1101,7 +1105,7 @@
             }
         </td>
         <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">
-            <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]">
+            <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]" onkeypress="return event.keyCode!=13" >
                 <option></option>
                 <option>ללא</option>
                 <option>1</option>
@@ -1145,7 +1149,7 @@
             }
         </td>
         <td id="tdCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">
-            <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" />
+            <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" onkeypress="return event.keyCode!=13"  />
             @code
             {
                 protected bool _CatDoor = false;
