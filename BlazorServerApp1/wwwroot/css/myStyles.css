@@ -202,12 +202,14 @@ th, td {
     border-radius: 10px;
     border-width : thin;
 }
+/*
 .div1 {
     border: solid;
     border-color: black;
     border-radius: 10px;
     border-width: thin;
 }
+*/
 .divActive {
     border: solid;
     border-color: black;

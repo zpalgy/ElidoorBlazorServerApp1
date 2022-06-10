@@ -164,8 +164,10 @@
         }
         protected void showMw()
         {
-        
+        doorConfig.divClasses["divHeader"] = 
+        doorConfig.divClasses["divProducts"] = 
         doorConfig.divClasses["divDoorTitle"] = "divNotActive";
+        doorConfig.divClasses["dynCompStyle"] = "divActive";
         pageParams["disableLogo"] = disableLogo;
         UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
         showTabPage(typeof(Movingwing), "movinwing");
@@ -282,7 +284,12 @@
                                         openMsgBox = true;
                                         return;
                                     }
-                                    showProducts = true;
+                                    else
+                                    {
+                                        showProducts = true;
+                                        doorConfig.divClasses["divHeader"] = "divNotActive";
+                                        doorConfig.divClasses["divProducts"] = "divActive";
+                                    }
                                 }
                             }
                         </tr>
@@ -309,6 +316,7 @@
                                     UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
                                     dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
                                     doorConfig.divClasses["divDoorTitle"] = "divActive";
+                                    doorConfig.divClasses["divProducts"] = "divNotActive";
                                 }
                             }
                         </tr>
@@ -475,8 +483,8 @@
             </td>
             <td id="tdMainForm">
                 <div id="divMainForm" dir="rtl" class="mainFormDiv">
-                    @* class="@doorConfig.divClasses["divHeader"]" *@
-                    <div id="divHeader" dir="rtl" class="divNotActive"  >
+                    @* class="@doorConfig.divClasses["divHeader"]"   was "divNotActive" *@
+                    <div id="divHeader" dir="rtl" class="@doorConfig.divClasses["divHeader"]"  >
                         <table>
                             <tr>
                                 <td>
@@ -956,8 +964,8 @@
                     </div>
                     <!--end of divHeader -->
                     @if (showProducts)
-                    {                       @* class="@doorConfig.divClasses["divProducts"]" *@
-                                            <div id="divProducts" class="divNotActive">
+                    {                       @* class="@doorConfig.divClasses["divProducts"]"    was class="divNotActive"*@
+                                            <div id="divProducts" class="@doorConfig.divClasses["divProducts"]" >
                                                 <table>
                                                     <tr>
                                                         <td>
@@ -995,10 +1003,12 @@
                                             doorConfig.divClasses["divHeader"] = "divNotActive";
 
                                             doorConfig.btnClasses["proddes"] = "buttonActive";
-                                            doorConfig.divClasses["divProducts"] = "divActive";
-                                            
+                                            //doorConfig.divClasses["divProducts"] = "divNotActive";
+                                            doorConfig.divClasses["divDoorTitle"] = "divActive";
+
                                             doorConfig.btnClasses["btnDoor"] = "buttonActive";
                                             UiLogic.disableTabFlds(doorConfig, "divHeader");
+                                            this.StateHasChanged();
                                         }
         }
                                     }
@@ -1029,10 +1039,9 @@
                     <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
                         @*  style="border: solid; border-color: black; border-radius: 10px" 
-                            class="@doorConfig.divClasses["divDoorTitle"]"
+                            class="@doorConfig.divClasses["divDoorTitle"]"  was class="divNotActive"
                         *@
-
-                        <div id="divDoorTitle" dir="rtl"  class="divNotActive" hidden="@hideDoorTitle">
+                        <div id="divDoorTitle" dir="rtl"  class="@doorConfig.divClasses["divDoorTitle"]"  hidden="@hideDoorTitle">
                             <table>
                             <tr>
                                 <td>
@@ -1391,9 +1400,9 @@
 
                         @if (showDynComp)
                         {
-                            @* style="border: solid; border-color: black; border-radius: 10px"  *@
+                            @*    was class="divNotActive" *@
                             dbgstr = doorConfig.divClasses["dynCompStyle"];
-                            <div dir="rtl" class="divNotActive" >
+                            <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]" >
                                     <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
                                          @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
                             </div>

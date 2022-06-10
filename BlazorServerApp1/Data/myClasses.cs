@@ -1184,7 +1184,7 @@ namespace BlazorServerApp1.Data
                 string btnClass = (tabName1 == tabName ? "buttonActive" : "button");
                 btnClasses[tabName1] = btnClass;
                 string divClass = (tabName1 == tabName ? "divActive" : "divNotActive");
-                divClasses[tabName1] = btnClass;
+                divClasses[tabName1] = divClass;
             }
         }
 
