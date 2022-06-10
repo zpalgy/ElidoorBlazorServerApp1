@@ -113,9 +113,13 @@
         <th id="thWingColor" hidden="@UiLogic.hideFld(doorConfig, "thDoorColor")">גוון</th>
     </tr>
     <tr>
+
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
-             <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" onkeypress="return event.keyCode!=13" 
-                 @ref="txtWingWidth"   /> 
+            @{  int i301 = Array.IndexOf(UiLogic.propNames, "DOORWIDTH");
+                 <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" onkeypress="return event.keyCode!=13" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i301]]"    /> 
+                     @*  @ref="txtWingWidth"  *@
+            }
              @*<InputText name="txtWingWidth" type="number"  @bind-Value="DoorWidth"  class="@doorConfig.borderColors["DOORWIDTH"]" 
               style="outline:none" onkeypress="return event.keyCode!=13"/>
              *@
@@ -256,7 +260,7 @@
                                 }
                             }
                             doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
-                            @*
+                                @*
                                The following code lines are actually inside setHingesAndWindowsData
 
                             errMsg2 = string.Empty;
@@ -596,7 +600,7 @@
                     set
                     {
                         _LockDrilHeight = value;
-                        @* if (!int.TryParse(value,out _LockDrilHeight))
+                            @* if (!int.TryParse(value,out _LockDrilHeight))
                             {
                                 msgCaption = string.Empty;
                                 errMsg2 = "ספרות בלבד";
@@ -618,7 +622,7 @@
                             openYesNo = true;
                             this.StateHasChanged();
 
-                            @*if (!ansYes)
+                                @*if (!ansYes)
                                 return;
                             
                             if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
@@ -642,9 +646,9 @@
 
                     if (lstPartHWs != null)
                     {
-                        @foreach (TRSH_HARDWARE_Class c in lstPartHWs)
+                            @foreach (TRSH_HARDWARE_Class c in lstPartHWs)
                         {
-                            <option value="@c.TRSH_HARDWARE">@c.HARDWAREDES</option>
+                                <option value="@c.TRSH_HARDWARE">@c.HARDWAREDES</option>
                         }
                     }
                 }
@@ -938,9 +942,9 @@
                     List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
                     if (lstPartLocks != null)
                     {
-                        @foreach (TRSH_LOCK_Class c in lstPartLocks)
+                            @foreach (TRSH_LOCK_Class c in lstPartLocks)
                         {
-                            <option value="@c.TRSH_LOCKNAME">@c.TRSH_LOCKDES</option>
+                                <option value="@c.TRSH_LOCKNAME">@c.TRSH_LOCKDES</option>
                         }
                     }
                 }

@@ -166,7 +166,8 @@
             openMsgBox = true;
         }
         }
-        protected void showMw()
+        //protected void showMw()
+        async Task showMw()
         {
         doorConfig.divClasses["divHeader"] = 
         doorConfig.divClasses["divProducts"] = 
@@ -175,6 +176,11 @@
         pageParams["disableLogo"] = disableLogo;
         UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
         showTabPage(typeof(Movingwing), "movinwing");
+
+        StateHasChanged();
+        await Task.Delay(1);
+        await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+
         doorConfig.btnClasses["general"] =
         doorConfig.btnClasses["selectprod"] =
         doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
