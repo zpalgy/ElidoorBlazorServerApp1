@@ -1116,6 +1116,7 @@ namespace BlazorServerApp1.Data
         
         public Dictionary<string, string> borderColors { get; set; } 
         public Dictionary<string, string> btnClasses { get; set; }
+        public Dictionary<string,string>  divClasses { get; set; }
         public Dictionary<string, bool> disabledFlds { get; set; }
         public Dictionary<string, ElementReference> dicRefs = new Dictionary<string, ElementReference>();
 
@@ -1144,6 +1145,8 @@ namespace BlazorServerApp1.Data
             disabledFlds["btnDoor"] = false;
             disabledFlds["btnLintel"] = disabledFlds["btnCover"] = disabledFlds["btnSideUnit"] = disabledFlds["btnECabinet"] = disabledFlds["btnShelves"] = true;
 
+            initDivClasses();
+
         }
         public void initBtnClasses()
         {
@@ -1164,12 +1167,24 @@ namespace BlazorServerApp1.Data
                 btnClasses.Add(tabName, "button");
             }
         }
+        public void initDivClasses()
+        {
+            divClasses = new Dictionary<string, string>();
+            foreach (string tabName in UiLogic.tabNames)
+            {
+                divClasses[tabName] = "divNotActive";
+            }
+            divClasses["divProducts"] = "divNotActive";
+            divClasses["dynCompStyle"] = "divActive";   // the tabpage is shown only when it's active ! 
+        }
         public void markButton (string tabName)
         {
             foreach (string tabName1 in UiLogic.tabNames)
             {
                 string btnClass = (tabName1 == tabName ? "buttonActive" : "button");
                 btnClasses[tabName1] = btnClass;
+                string divClass = (tabName1 == tabName ? "divActive" : "divNotActive");
+                divClasses[tabName1] = btnClass;
             }
         }
 

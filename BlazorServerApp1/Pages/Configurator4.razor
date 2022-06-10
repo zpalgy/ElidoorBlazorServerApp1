@@ -61,6 +61,7 @@
 
         private string authMessage;
         private string surnameMessage;
+        private string dbgstr = string.Empty;
         private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
 
         protected override async Task OnInitializedAsync()
@@ -71,6 +72,7 @@
         doorConfig = new DoorConfig();
         doorConfig.initBorderColors();
         doorConfig.btnClasses["general"] = "buttonActive";
+        doorConfig.divClasses["divHeader"] = "divActive";
 
         formDate = DateTime.Now;
         UiLogic.initPropNames(doorConfig);
@@ -162,6 +164,8 @@
         }
         protected void showMw()
         {
+        
+        doorConfig.divClasses["divDoorTitle"] = "divNotActive";
         pageParams["disableLogo"] = disableLogo;
         UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
         showTabPage(typeof(Movingwing), "movinwing");
@@ -179,18 +183,22 @@
         }
         private void doRestart()
         {
-        UiLogic.clearDoorConfig(doorConfig);
-        showProducts = false;
-        hideDoorTitle = true;
-        showDynComp = false;
-        hideDivDoor = true;
+            UiLogic.clearDoorConfig(doorConfig);
+            showProducts = false;
+            hideDoorTitle = true;
+            showDynComp = false;
+            hideDivDoor = true;
 
 
-        doorConfig.btnClasses["restart"] = "buttonRed";
-        doorConfig.btnClasses["general"] = "buttonActive";
-        doorConfig.btnClasses["selectprod"] =
-        doorConfig.btnClasses["btnDoor"] =
-        doorConfig.btnClasses["proddes"] = "button";
+            doorConfig.btnClasses["restart"] = "buttonRed";
+            doorConfig.btnClasses["general"] = "buttonActive";
+            doorConfig.btnClasses["selectprod"] =
+            doorConfig.btnClasses["btnDoor"] =
+            doorConfig.btnClasses["proddes"] = "button";
+
+            doorConfig.divClasses["divHeader"] = "divActive";
+            doorConfig.divClasses["divProducts"] = 
+            doorConfig.divClasses["divDoorTitle"] = "divNotActive"; 
         }
         void submitForm()  //called when Enter is hit and not caught by onKeypressed event 
         {
@@ -300,6 +308,7 @@
                                     hideDoorTitle = false;
                                     UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
                                     dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
+                                    doorConfig.divClasses["divDoorTitle"] = "divActive";
                                 }
                             }
                         </tr>
@@ -466,7 +475,8 @@
             </td>
             <td id="tdMainForm">
                 <div id="divMainForm" dir="rtl" class="mainFormDiv">
-                    <div id="divHeader" dir="rtl"   class="div1" >
+                    @* class="@doorConfig.divClasses["divHeader"]" *@
+                    <div id="divHeader" dir="rtl" class="div1"  >
                         <table>
                             <tr>
                                 <td>
@@ -744,12 +754,13 @@
                                     @{
                                         int i2 = Array.IndexOf(UiLogic.propNames, "AGENT");
                                                 <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" 
-                                                    @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("AGENT") )" onkeypress="@KeyPressHandler"    >
+                                                    @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("AGENT") )" 
+                                                    onkeypress="@KeyPressHandler"   >
                                             @if (lstCustomers != null)
                                             {
                                                 @foreach (CUSTOMER_Class c in lstCustomers)
                                                 {
-                                                                  <option value="@c.CUST">@c.CUSTDES</option>
+                                                     <option value="@c.CUST">@c.CUSTDES</option>
                                                 }
                                             }
                                             </select>
@@ -945,7 +956,7 @@
                     </div>
                     <!--end of divHeader -->
                     @if (showProducts)
-                    {
+                    {                       @* class="@doorConfig.divClasses["divProducts"]" *@
                                             <div id="divProducts" class="div1">
                                                 <table>
                                                     <tr>
@@ -964,7 +975,7 @@
                                                         >דלת</button>
                                         @code
                                         {
-        private void btnDoorClicked()
+                                        private void btnDoorClicked()
         {
                                         if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
                                         {
@@ -981,10 +992,13 @@
                                             hideDivDoor = false;
                                             doorConfig.btnClasses["general"] =   //"buttonLostFocus";
                                             doorConfig.btnClasses["selectprod"] = "buttonFilled";
+                                            doorConfig.divClasses["divHeader"] = "divNotActive";
+
                                             doorConfig.btnClasses["proddes"] = "buttonActive";
-                                            //doorConfig.btnClasses["movingwing"] = "buttonActive";
-                                            //doorConfig.markButton("movingwing");
-                                            doorConfig.btnClasses["btnDoor"] = "buttonActive backgroundGreen";
+                                            doorConfig.divClasses["divProducts"] = "divActive";
+                                            
+                                            doorConfig.btnClasses["btnDoor"] = "buttonActive";
+                                            UiLogic.disableTabFlds(doorConfig, "divHeader");
                                         }
         }
                                     }
@@ -1014,7 +1028,11 @@
 
                     <div id="divDoor" dir="rtl" hidden="@hideDivDoor">
 
-                        <div id="divDoorTitle" dir="rtl" style="border: solid; border-color: black; border-radius: 10px" hidden="@hideDoorTitle">
+                        @*  style="border: solid; border-color: black; border-radius: 10px" 
+                            class="@doorConfig.divClasses["divDoorTitle"]"
+                        *@
+
+                        <div id="divDoorTitle" dir="rtl"  class="div1" hidden="@hideDoorTitle">
                             <table>
                             <tr>
                                 <td>
@@ -1373,10 +1391,12 @@
 
                         @if (showDynComp)
                         {
-                                                <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px">
-                                                    <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
-                                @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
-                                                </div>
+                            @* style="border: solid; border-color: black; border-radius: 10px"  *@
+                            dbgstr = doorConfig.divClasses["dynCompStyle"];
+                            <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px" >
+                                    <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
+                                         @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
+                            </div>
                         }
                         @code {
         protected void DoRefresh()

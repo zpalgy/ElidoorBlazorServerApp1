@@ -250,7 +250,7 @@
                                 else
                                 {
                                     doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? string.Empty : "redBorder");  //update borderColor
-                                                                         // of dlstLOCKDRILHEIGHT if its value was changed after DoorHeight was processsed
+                                                                                                                                                // of dlstLOCKDRILHEIGHT if its value was changed after DoorHeight was processsed
                                     this.StateHasChanged();
                                 }
                             }
@@ -267,7 +267,12 @@
                                 openMsgBox = true;
                             }
                             *@
-                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            if (doorConfig.DOORHEIGHT > 0)
+                            {
+                                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                                config4.RefreshState();
+                            }
                         }
                     }
                 }
