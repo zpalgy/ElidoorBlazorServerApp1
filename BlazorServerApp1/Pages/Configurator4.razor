@@ -59,10 +59,14 @@
         DataTable dtDivDoorTitle;
         DataTable dtDivHeaderDoorTitle;
 
+        //protected ElementReference dlstWingsNum;
+        //InputSelect dlstWingsNum;
+
         private string authMessage;
         private string surnameMessage;
         private string dbgstr = string.Empty;
         private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -301,7 +305,8 @@
                                 </button>
                             </td>
                             @{
-                                void showDoorTitle()
+                                //void showDoorTitle()
+                                async Task showDoorTitle()
                                 {
                                     if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
                                     {
@@ -317,6 +322,16 @@
                                     dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
                                     doorConfig.divClasses["divDoorTitle"] = "divActive";
                                     doorConfig.divClasses["divProducts"] = "divNotActive";
+                                    //int j = Array.IndexOf(UiLogic.propNames, "TRSH_WINGSNUMDES");
+                                    //doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+
+                                    //ref: https://stackoverflow.com/questions/67360450/how-to-focus-an-element-when-making-it-visible-in-the-same-method-call
+                                    //  thw 1st answer !
+                                    StateHasChanged();
+                                    await Task.Delay(1);
+                                    //await dlstWingsNum.FocusAsync();  // harcoded ElementReference !
+                                    await doorConfig.dicRefs["TRSH_WINGSNUMDES"].FocusAsync();
+
                                 }
                             }
                         </tr>
@@ -606,20 +621,21 @@
                                             string nextfld = UiLogic.getNextTabFld(dtTabFlds, currPropName);
                                             if (!string.IsNullOrEmpty(nextfld))
                                             {
-                                                if (nextfld == "SHIPADDRESS")
-                                                {
-                                                    //int x = 17;
-                                                    txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
-                                                                                  //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-                                                                                  //  when UiLogic.propNames[j] == "SHIPADDRESS" !!!
-                                                }
-                                                else
-                                                {
+                                               // if (nextfld == "SHIPADDRESS")
+                                               // {
+                                               //     //int x = 17;
+                                               //     txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
+                                               //                                   //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                               //                                   //  when UiLogic.propNames[j] == "SHIPADDRESS" !!!
+                                               //
+                                               //}
+                                               // else
+                                               // {
                                                     j = Array.IndexOf(UiLogic.propNames, nextfld);
                                                     if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
                                                         doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
                                                     return;
-                                                }
+                                                //}
                                             }
                                             else
                                             {
@@ -871,7 +887,8 @@
                                         int i4 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
                                             <input name="txtShipAddress" dir="rtl" @bind="ShipAddress" size="50" class="@doorConfig.borderColors["SHIPADDRESS"]" 
                                         disabled="@doorConfig.disabledFlds["SHIPADDRESS"]"  @onfocus="@( () => HasFocus("SHIPADDRESS") )"
-                                        onkeypress="@KeyPressHandler"  @ref="txtShipAddress" /> 
+                                        onkeypress="@KeyPressHandler"  @ref="doorConfig.dicRefs[UiLogic.propNames[i4]]" />
+                                        @*  was  @ref="txtShipAddress"  *@  
                                     }
                                     @* this does not work !! @ref="doorConfig.dicRefs[UiLogic.propNames[i4]]"  *@
                                     @* <InputText dir="rtl"  @bind-Value="ShipAddress" size="80" class="@doorConfig.borderColors["SHIPADDRESS"]"  style="outline:none"
@@ -1011,7 +1028,7 @@
                                             this.StateHasChanged();
                                         }
         }
-                                    }
+}
                                 </td>
                                 <!-- end tdBtnDoor -->
                                 <td>
@@ -1067,12 +1084,15 @@
                                 <tr>
                                     <td>
                                         @{
-                                            int i6 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
+                                            int i6 = Array.IndexOf(UiLogic.propNames, "TRSH_WINGSNUMDES");
                                             <select name="dlstWingsNum" @bind="WingsNum" class="@doorConfig.borderColors["TRSH_WINGSNUMDES"]" 
-                                              disabled="@doorConfig.disabledFlds["TRSH_WINGSNUMDES"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i6]]" 
+                                              disabled="@doorConfig.disabledFlds["TRSH_WINGSNUMDES"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i6]]"
                                                    @onfocus="@( () => HasFocus("TRSH_WINGSNUMDES") )" onkeypress="@KeyPressHandler" >
 
                                                 @*
+                                                     @ref="doorConfig.dicRefs[UiLogic.propNames[i6]]"
+                                                      @ref="dlstWingsNum" 
+
                                                 <option>בחר סוג מיפתח</option>
                                                 <option>כנף</option>
                                                 <option>כנף וחצי</option>
@@ -1091,6 +1111,7 @@
                                     @code
                                     {
         //protected bool disableStaticWing = false;
+        
         protected string _WingsNum = string.Empty;
         protected string WingsNum
         {

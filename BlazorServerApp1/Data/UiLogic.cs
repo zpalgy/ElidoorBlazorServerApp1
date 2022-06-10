@@ -31,7 +31,7 @@ namespace BlazorServerApp1.Data
         
         public static string borderColor = string.Empty;
         public static List<string> optionalFields = new List<string>(){ "REFERENCE", "ENDCUSTDES", "FORMDATE", "CUSTORDNAME", "TMPSHIPADDRESS", "FAMILYNAME",
-                              "VENTS", "RAFAFAONMOVINGWING" };
+                             "HANDLENAME", "VENTS", "RAFAFAONMOVINGWING" };
 
         public static int IdOfNone = 99999;
         public static string NameOfNone = "9999999";
@@ -387,7 +387,10 @@ namespace BlazorServerApp1.Data
                 return true;
             if (doorConfig.disabledFlds.ContainsKey(fldName) && doorConfig.disabledFlds[fldName])
                 return true;
-
+            if (fldName == "HWCOLORID")
+                return isHWCOLORID_filled(doorConfig);
+            if (fldName == "DRIL4HW")
+                return isDRIL4HW_filled(doorConfig);
             Type objType = doorConfig.GetType();
             PropertyInfo[] props = objType.GetProperties();
             //string[] propNames = props.Select(i => i.Name).ToArray();
@@ -406,13 +409,6 @@ namespace BlazorServerApp1.Data
                     return true;
                 else if (fldName == "INTCOLORID" && doorConfig.COLORSNUM != "2")
                     return true;
-
-                //  debug            ELECTRICAPPARATUS
-                if (fldName == "ELECTRICAPPARATUS")
-				{
-					int x = 17;
-				}
-				//
 
 				int p = Array.IndexOf(propNames, fldName);
                 if (p >= 0)
@@ -464,6 +460,18 @@ namespace BlazorServerApp1.Data
                 return false;
                 //displayErrMsg(lblMsg, errMsg);
             }
+        }
+        public static bool isHWCOLORID_filled(DoorConfig doorConfig)
+        {
+            doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
+            bool isFilled = (doorConfig.disabledFlds["HWCOLORID"] ? true : (doorConfig.HWCOLORID != 0));
+            return isFilled;
+        }
+        public static bool isDRIL4HW_filled(DoorConfig doorConfig)
+        {
+            doorConfig.disabledFlds["DRIL4HW"] = (doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone);
+            bool isFilled = (doorConfig.disabledFlds["DRIL4HW"] ? true : (doorConfig.DRIL4HW != 0));
+            return isFilled;
         }
         public static void clearFollowingTabFields(DoorConfig doorConfig, string tabName)
         {
