@@ -77,7 +77,8 @@
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
         //}
 
-        doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;  // initialize colors as disabled.
+        doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
+        doorConfig.disabledFlds["HWCOLORID"] = false;   // new - Harware may be with COLORED != "Y" .
         
         // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
         if (doorConfig.ELECTRICAPPARATUS == null)
@@ -669,6 +670,13 @@
                             doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
                             doorConfig.borderColors["DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? string.Empty : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(value);
+                            @*if (doorConfig.disabledFlds["HWCOLORID"])
+                              doorConfig.borderColors["HWCOLORID"] = string.Empty;
+                            *@
+                            doorConfig.borderColors["HWCOLORID"] = (doorConfig.disabledFlds["HWCOLORID"] || doorConfig.HWCOLORID != 0 ? string.Empty : "redBorder");
+                            if (doorConfig.disabledFlds["HWCOLORID"])
+                                doorConfig.HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
                         }
                     }
                 }
@@ -681,7 +689,8 @@
             //tmpDtColors = tmpLstColors.ToDataTable<TRSH_COLOR_Class>();
         }
         <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
-            <select name="dlstHwColor" @bind="HwColorId" class="@doorConfig.borderColors["HWCOLORID"]">
+            <select name="dlstHwColor" @bind="HwColorId" class="@doorConfig.borderColors["HWCOLORID"]"  
+                 disabled="@doorConfig.disabledFlds["HWCOLORID"]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)

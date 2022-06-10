@@ -207,11 +207,15 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 2)]
         public int TRSH_DOOR_HWCATCODE { get; set; }
         [DataMember(Order = 3)]
+        public string HARDWARENAME { get; set; }
+        [DataMember(Order = 4)]
         public string HARDWAREDES { get; set; }
-        [DataMember(Order = 4)]
+        [DataMember(Order = 5)]
         public int DRIL4HW { get; set; }
-        [DataMember(Order = 4)]
+        [DataMember(Order = 6)]
         public string DRIL4HWDES { get; set; }
+        [DataMember(Order = 7)]
+        public string COLORED { get; set; }   // boolean Y | '' 
     }
     public class ValuesTRSH_HARDWARE_Class
     {

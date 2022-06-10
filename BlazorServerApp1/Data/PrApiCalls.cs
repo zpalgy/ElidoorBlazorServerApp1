@@ -1038,7 +1038,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,HARDWAREDES,DRIL4HW,DRIL4HWDES";
+                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,HARDWARENAME,HARDWAREDES,DRIL4HW,DRIL4HWDES,COLORED";
                 request.Resource = string.Format("TRSH_HARDWARE?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1079,7 +1079,22 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-
+        public static bool isHWColored(int TRSH_HARDWARE)
+        {
+            DataRow[] rowsArray;
+            string query = string.Format("TRSH_HARDWARE = '{0}'", TRSH_HARDWARE);
+            rowsArray = PrApiCalls.dtHardwares.Select(query);
+            if (rowsArray.Length > 0)
+            {
+                string COLORED = rowsArray[0]["COLORED"].ToString();
+                if (!string.IsNullOrEmpty(COLORED) && COLORED == "Y")
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
         public static List<TRSH_HARDWARE_Class> getPartHWs(int TRSH_DOOR_HWCATCODE, ref string errMsg)
         {
             try
