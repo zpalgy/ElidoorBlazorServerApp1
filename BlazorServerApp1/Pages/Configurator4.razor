@@ -476,7 +476,7 @@
             <td id="tdMainForm">
                 <div id="divMainForm" dir="rtl" class="mainFormDiv">
                     @* class="@doorConfig.divClasses["divHeader"]" *@
-                    <div id="divHeader" dir="rtl" class="div1"  >
+                    <div id="divHeader" dir="rtl" class="divNotActive"  >
                         <table>
                             <tr>
                                 <td>
@@ -957,7 +957,7 @@
                     <!--end of divHeader -->
                     @if (showProducts)
                     {                       @* class="@doorConfig.divClasses["divProducts"]" *@
-                                            <div id="divProducts" class="div1">
+                                            <div id="divProducts" class="divNotActive">
                                                 <table>
                                                     <tr>
                                                         <td>
@@ -1032,7 +1032,7 @@
                             class="@doorConfig.divClasses["divDoorTitle"]"
                         *@
 
-                        <div id="divDoorTitle" dir="rtl"  class="div1" hidden="@hideDoorTitle">
+                        <div id="divDoorTitle" dir="rtl"  class="divNotActive" hidden="@hideDoorTitle">
                             <table>
                             <tr>
                                 <td>
@@ -1393,7 +1393,7 @@
                         {
                             @* style="border: solid; border-color: black; border-radius: 10px"  *@
                             dbgstr = doorConfig.divClasses["dynCompStyle"];
-                            <div dir="rtl" style="border: solid; border-color: black; border-radius: 10px" >
+                            <div dir="rtl" class="divNotActive" >
                                     <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
                                          @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
                             </div>
