@@ -194,24 +194,41 @@
         {
         this.StateHasChanged();
         }
-        private void doRestart()
+        //private void doRestart()
+        async Task doRestart()
         {
-            UiLogic.clearDoorConfig(doorConfig);
-            showProducts = false;
-            hideDoorTitle = true;
-            showDynComp = false;
-            hideDivDoor = true;
+        UiLogic.clearDoorConfig(doorConfig);
+
+        //does also in OnInitializedAsync() of the current page
+        formDate = DateTime.Now;
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+
+        showProducts = false;
+        hideDoorTitle = true;
+        showDynComp = false;
+        hideDivDoor = true;
 
 
-            doorConfig.btnClasses["restart"] = "buttonRed";
-            doorConfig.btnClasses["general"] = "buttonActive";
-            doorConfig.btnClasses["selectprod"] =
-            doorConfig.btnClasses["btnDoor"] =
-            doorConfig.btnClasses["proddes"] = "button";
+        doorConfig.btnClasses["restart"] = "buttonRed";
+        doorConfig.btnClasses["general"] = "buttonActive";
+        doorConfig.btnClasses["selectprod"] =
+        doorConfig.btnClasses["btnDoor"] =
+        doorConfig.btnClasses["proddes"] = "button";
 
-            doorConfig.divClasses["divHeader"] = "divActive";
-            doorConfig.divClasses["divProducts"] = 
-            doorConfig.divClasses["divDoorTitle"] = "divNotActive"; 
+        doorConfig.divClasses["divHeader"] = "divActive";
+        doorConfig.divClasses["divProducts"] = 
+        doorConfig.divClasses["divDoorTitle"] = "divNotActive"; 
+
+        UiLogic.tabPageIsFilled("divHeader", doorConfig);
+
+        // done also in OnAfterRender firstRenter==true  of the current page
+        if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+        {
+            StateHasChanged();
+            await Task.Delay(1);
+            await doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+        }
+
         }
         void submitForm()  //called when Enter is hit and not caught by onKeypressed event 
         {
