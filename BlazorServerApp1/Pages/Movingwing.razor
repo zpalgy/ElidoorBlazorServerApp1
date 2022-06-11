@@ -1231,13 +1231,18 @@
             }
         </td>
         <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">
-            <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]" onkeypress="return event.keyCode!=13" >
+            @{  int i320 = Array.IndexOf(UiLogic.propNames, "RAFAFAONMOVINGWING");
+            <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]" 
+                @onfocus="@( () => UiLogic.HasFocus("RAFAFAONMOVINGWING", doorConfig) )" 
+                     onkeypress="@KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i320]]" >
                 <option></option>
                 <option>ללא</option>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
             </select>
+            }
             @code
             {
                 protected string _Rafafa = string.Empty;
@@ -1275,7 +1280,12 @@
             }
         </td>
         <td id="tdCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">
-            <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" onkeypress="return event.keyCode!=13"  />
+            @{  int i321 = Array.IndexOf(UiLogic.propNames, "CATDOOR");
+                <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" 
+                   @onfocus="@( () => UiLogic.HasFocus("CATDOOR", doorConfig) )" 
+                     onkeypress="@KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i321]]"  />
+            }
             @code
             {
                 protected bool _CatDoor = false;

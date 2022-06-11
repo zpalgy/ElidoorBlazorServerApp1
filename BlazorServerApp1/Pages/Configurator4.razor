@@ -175,6 +175,7 @@
         doorConfig.divClasses["dynCompStyle"] = "divActive";
         pageParams["disableLogo"] = disableLogo;
         UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
+        doorConfig.disabledFlds["btnDoor"] = true;  //
         showTabPage(typeof(Movingwing), "movinwing");
 
         StateHasChanged();
