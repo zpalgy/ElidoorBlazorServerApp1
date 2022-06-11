@@ -1117,7 +1117,8 @@ namespace BlazorServerApp1.Data
         public string COMMENTS { get; set; } = string.Empty;
         [NonSerialized]
         public string meaged = string.Empty;
-        
+        [NonSerialized]
+        public string currPropName = String.Empty;
         public Dictionary<string, string> borderColors { get; set; } 
         public Dictionary<string, string> btnClasses { get; set; }
         public Dictionary<string,string>  divClasses { get; set; }

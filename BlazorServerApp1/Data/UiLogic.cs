@@ -1406,6 +1406,11 @@ namespace BlazorServerApp1.Data
         {
             return string.Format("{0} {1}", c.TRSH_COLORTYPEDES, c.TRSH_COLORDES);
         }
+        public static void HasFocus(string currFldName, DoorConfig doorConfig)
+        {
+            doorConfig.currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+        }
+        
         //static List<string> lstThNames = new List<string>();
         //static List<string> lstTdNames = new List<string>();
         //public static void getThTdNames(Control rootCtl, ref List<string> lstThNames, ref List<string> lstTdNames)

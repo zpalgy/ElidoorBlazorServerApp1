@@ -45,6 +45,8 @@
     private bool disableExtColor = true;
     private bool disableIntColor = true;
     
+    //protected string currPropName = string.Empty;
+    DataTable dtTabFlds = new DataTable();
       
     async void IDisposable.Dispose()
     {
@@ -77,6 +79,7 @@
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
         //}
 
+        
         doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
         doorConfig.disabledFlds["HWCOLORID"] = false;   // new - Harware may be with COLORED != "Y" .
         
@@ -85,10 +88,42 @@
             doorConfig.ELECTRICAPPARATUS = string.Empty;
         doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? string.Empty : "redBorder");
 
+        string errMsg = string.Empty;
+        dtTabFlds = UiLogic.getTabFields("movingwing", doorConfig, ref errMsg);
         //Js.InvokeVoidAsync("SayHelloJS");
     }
 
+    // We must have this event handler in every tabPage because it uses doorConfig , and we can't pass it as a parameter to
+    //   this type of method. Teh only parameter that can be passwed to this method is KeyboardEventArgs !
+    // Otherwise I would have create a single event handler in UiLogic class 
 
+    async Task KeyPressHandler(KeyboardEventArgs e)
+        {
+            string currTabName = "movingwing";
+            if (e.Key.ToLowerInvariant() == "enter")
+            {
+                //RestartClicked = false;
+                int j = 0;
+                //DataTable dtTabFlds = new DataTable();
+                //string currTabName = UiLogic.getTabOfField(doorConfig.currPropName);
+                string nextfld = UiLogic.getNextTabFld(dtTabFlds, doorConfig.currPropName);
+                if (!string.IsNullOrEmpty(nextfld))
+                {
+                    j = Array.IndexOf(UiLogic.propNames, nextfld);
+                    if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+                        doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                    return;
+                }
+                else
+                {
+                    string nextTabName = UiLogic.getNextTabName(doorConfig, currTabName);
+                    if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
+                    {
+                        config4.RefreshState();
+                    }
+                }
+            }
+        }
   }
 <br />
 <table>
@@ -116,17 +151,19 @@
 
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
             @{  int i301 = Array.IndexOf(UiLogic.propNames, "DOORWIDTH");
-                 <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" onkeypress="return event.keyCode!=13" 
+                 <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" 
+                      @onfocus="@( () => UiLogic.HasFocus("DOORWIDTH", doorConfig) )" 
+                      onkeypress="@KeyPressHandler"
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i301]]"    /> 
-                     @*  @ref="txtWingWidth"  *@
+                     @*  @ref="txtWingWidth"   onkeypress="return event.keyCode!=13"   *@
             }
              @*<InputText name="txtWingWidth" type="number"  @bind-Value="DoorWidth"  class="@doorConfig.borderColors["DOORWIDTH"]" 
               style="outline:none" onkeypress="return event.keyCode!=13"/>
              *@
 
         @code
-        {
-                private ElementReference txtWingWidth;
+            {
+                //private ElementReference txtWingWidth;
                 protected int? _DoorWidth;
                 protected int? DoorWidth
                 {
@@ -144,25 +181,19 @@
                     set
                     {
                         _DoorWidth = value;
-                    //if (!int.TryParse(value,out _DoorWidth))
-                        //{
-                        //    msgCaption = string.Empty;
-                        //    errMsg2 = "ספרות בלבד";
-                        //    msgClass = "modal-body centeredMsg";
-                        //    openMsgBox = true;
-                        //}
-                        //else if (!wingWidthIsOk(_DoorWidth, ref errMsg2))
 
-                        if (!wingWidthIsOk((int)value, ref errMsg2))
+                        if (value == null || value == 0 || !wingWidthIsOk((int)value, ref errMsg2))
                         {
+                            errMsg2 = (value == null || value == 0 ? "חובה לציין רוחב דלת" : errMsg2);
                             msgCaption = string.Empty;
                             msgClass = "modal-body centeredMsg";
                             // the error text is in errMsg2 which was populated in wingWidthIsOk(...) 
                             openMsgBox = true;
                             value = _DoorWidth = 0;
-                            txtWingWidth.FocusAsync();
+                            StateHasChanged();
                             doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
-                            this.StateHasChanged();
+                            doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+                            //this.StateHasChanged();
                         }
                         else
                         {
@@ -180,7 +211,7 @@
                                         errMsg2 = errMsg;
                                         openMsgBox = true;
                                         value = _DoorWidth = 0;
-                                        txtWingWidth.FocusAsync();
+                                        doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
                                         doorConfig.borderColors["DOORWIDTH"] = "redBorder";
                                         this.StateHasChanged();
                                     }
@@ -196,9 +227,17 @@
 }
         </td>
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
+            @{
+                 int i302 = Array.IndexOf(UiLogic.propNames, "DOORHEIGHT");
+
            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
-           onkeypress="return event.keyCode!=13" @ref="txtDoorHeight"  />  
-            @* <InputText name="txtDoorHeight" type="number" @bind-Value="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]"
+           onkeypress="return event.keyCode!=13" 
+           @ref="doorConfig.dicRefs[UiLogic.propNames[i302]]" />  
+           }
+            @* 
+                @ref="txtDoorHeight"  
+
+                <InputText name="txtDoorHeight" type="number" @bind-Value="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]"
              style="outline:none" onkeypress="return event.keyCode!=13"/>
              *@
 
