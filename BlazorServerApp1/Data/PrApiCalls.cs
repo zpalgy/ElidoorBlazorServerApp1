@@ -22,7 +22,7 @@ namespace BlazorServerApp1.Data
         //public static DataTable MeagedFields = new DataTable();  // it's a table that is common to all users !
         //public static DoorConfig doorConfig = new DoorConfig();
 
-        public const int ELIDOOR_COMPLIENT = 1;
+        public static int ELIDOOR_COMPLIENT = 1;
 
         public static DataTable dtMeagedFields;
         public static DataTable dtDecorSideFlds;

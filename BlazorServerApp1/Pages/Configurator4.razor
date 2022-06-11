@@ -1332,7 +1332,9 @@
                                                     {
                                                         @foreach (Complient_Class m in PrApiCalls.lstComplients)
                                                         {
-                                                            <option value="@m.TRSH_COMPLIENT">@m.COMPLIENTDES</option>
+                                                          <option value="@m.TRSH_COMPLIENT">@m.COMPLIENTDES</option>
+                                                          if (m.COMPLIENTDES == "אלידור")
+                                                            PrApiCalls.ELIDOOR_COMPLIENT = m.TRSH_COMPLIENT;
                                                         }
                                                     }
                                             </select>
