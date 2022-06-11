@@ -1149,7 +1149,7 @@ namespace BlazorServerApp1.Data
                 return string.Empty;
         }
 
-        public static string getNextTabFld(DataTable dtTabFields, string fldName)
+        public static string getNextTabFld(DoorConfig doorConfig, DataTable dtTabFields, string fldName)
         {
             string query = string.Format("FIELDNAME='{0}'", fldName);
             DataRow[] rowsArray = dtTabFields.Select(query);
@@ -1161,8 +1161,14 @@ namespace BlazorServerApp1.Data
             if (rowsArray.Length > 0)
             {
                 rowIndex = dtTabFields.Rows.IndexOf(rowsArray[0]);
-                if (rowIndex < dtTabFields.Rows.Count-1)
-                    return dtTabFields.Rows[rowIndex + 1]["FIELDNAME"].ToString();
+                if (rowIndex < dtTabFields.Rows.Count - 1)
+                {
+                    string nextFldName = dtTabFields.Rows[rowIndex + 1]["FIELDNAME"].ToString();
+                    if (doorConfig.disabledFlds.ContainsKey(nextFldName) &&  doorConfig.disabledFlds[nextFldName])
+                        return getNextTabFld(doorConfig, dtTabFields, nextFldName);   // recursive call 
+                    else
+                        return nextFldName;  //dtTabFields.Rows[rowIndex + 1]["FIELDNAME"].ToString();
+                }
                 else
                     return String.Empty;
             }

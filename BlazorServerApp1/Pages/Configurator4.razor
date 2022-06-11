@@ -624,7 +624,7 @@
                                                     dtTabFlds = dtDivHeaderDoorTitle;
                                                     break;
                                             }
-                                            string nextfld = UiLogic.getNextTabFld(dtTabFlds, currPropName);
+                                            string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, currPropName);
                                             if (!string.IsNullOrEmpty(nextfld))
                                             {
                                                     // if (nextfld == "SHIPADDRESS")
