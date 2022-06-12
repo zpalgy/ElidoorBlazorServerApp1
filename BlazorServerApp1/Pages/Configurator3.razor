@@ -235,7 +235,7 @@
         {
                     get {
                         if (doorConfig != null)
-                            _AGENT = doorConfig.AGENT;
+                            _AGENT = doorConfig.CUST;
 
                         return _AGENT; 
                     }
@@ -243,7 +243,7 @@
                     {
                         _AGENT = value;
                         if (doorConfig != null)
-                            doorConfig.AGENT = _AGENT;
+                            doorConfig.CUST = _AGENT;
                     }
         }
      }

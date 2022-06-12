@@ -286,9 +286,13 @@ namespace BlazorServerApp1.Data
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     };
                     ValuesCUSTOMER_Class val = JsonConvert.DeserializeObject<ValuesCUSTOMER_Class>(response.Content);
-                    CUSTOMER_Class val1 = val.value[0];
-                    return val1;
-
+                    if (val.value != null && val.value.Count > 0)
+                    {
+                        CUSTOMER_Class val1 = val.value[0];
+                        return val1;
+                    }
+                    else
+                        return null;
                 }
                 else
                 {

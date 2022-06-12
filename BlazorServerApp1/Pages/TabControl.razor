@@ -59,7 +59,7 @@
 
 	public void ActivatePage(TabPage page )
 	{
-		if (doorConfig.AGENT != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME))
+		if (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.PARTNAME))
 		{
 			int t = Array.IndexOf(UiLogic.tabNames, page.TabName);
 			string prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
@@ -89,7 +89,7 @@
 		else
 		{
 			errMsg = string.Empty;
-			if (doorConfig.AGENT == null || doorConfig.AGENT == 0)
+			if (doorConfig.CUST == null || doorConfig.CUST == 0)
 				errMsg += "חובה לציין לקוח";
 			if (string.IsNullOrEmpty(doorConfig.PARTNAME))
 				errMsg += " חובה לציין דגם , ";

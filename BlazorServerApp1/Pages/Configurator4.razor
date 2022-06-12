@@ -798,19 +798,21 @@
                                         <select name="dlstAgent" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]">
                                         @if (lstAgents != null)
                                         {
-                                        @foreach (AGENT_Class a in lstAgents)
-                                        {
-                                        <option value="@a.AGENT">@a.AGENTNAME</option>
-                                        }
+                                            @foreach (AGENT_Class a in lstAgents)
+                                            {
+                                                <option value="@a.AGENT">@a.AGENTNAME</option>
+                                            }
                                         }
                                         </select>
                                     *@
+                                    
                                     @{
-                                        int i2 = Array.IndexOf(UiLogic.propNames, "AGENT");
-                                                <select name="dlstCustDes" @bind="AGENT" class="@doorConfig.borderColors["AGENT"]"  disabled="@doorConfig.disabledFlds["AGENT"]" 
-                                                    @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("AGENT") )" 
-                                                    onkeydown="@KeyPressHandler"  >
-                                                @*    onkeypress="@KeyPressHandler"   >  *@
+                                        int i2 = Array.IndexOf(UiLogic.propNames, "CUST");
+                                            <select name="dlstCustDes" @bind="CUST" class="@doorConfig.borderColors["CUST"]"  disabled="@doorConfig.disabledFlds["CUST"]" 
+                                                    @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("CUST") )" 
+                                                    onkeypress="@KeyPressHandler"   >  
+                                                      @*     onkeydown="@KeyPressHandler"  > *@
+                                           
                                             @if (lstCustomers != null)
                                             {
                                                 @foreach (CUSTOMER_Class c in lstCustomers)
@@ -822,42 +824,44 @@
                                     }
                                 </td>
                                 @code {
-        public bool disableLogo = false;
-        private int _AGENT = 0;
-        protected int AGENT
+                                    public bool disableLogo = false;
+        private int _CUST = 0;
+        protected int CUST
         {
                                     get
                                     {
-                                        //currPropName = "AGENT";
                                         if (doorConfig != null)
-                                            _AGENT = doorConfig.AGENT;
+                                            _CUST = doorConfig.CUST;
 
-                                        return _AGENT;
+                                        return _CUST;
                                     }
                                     set
                                     {
-                                        _AGENT = value;
+                                        _CUST = value;
                                         if (doorConfig != null)
                                         {
-                                            doorConfig.AGENT = _AGENT;
-                                            doorConfig.borderColors["AGENT"] = (value != 0 ? string.Empty : "redBorder");
+                                            doorConfig.CUST = _CUST;
+                                            doorConfig.borderColors["CUST"] = (value != 0 ? string.Empty : "redBorder");
                                             //
-                                            if (_AGENT != 0)
+                                            if (_CUST != 0)
                                             {
-                                                // set Address and Logo based on _AGENT ( actuall CUST in priority)
-                                                CUSTOMER_Class agent = PrApiCalls.getCustomer((int)doorConfig.AGENT, ref errMsg);
-                                                ShipAddress = string.Format("{0} {1} {2}", agent.ADDRESS, agent.ADDRESS2, agent.ADDRESS3);
-                                                if (!string.IsNullOrEmpty(agent.TRSH_LOGO) && agent.TRSH_LOGO == "Y")
+                                                // set Address and Logo based on _CUST 
+                                                CUSTOMER_Class Cust = PrApiCalls.getCustomer((int)doorConfig.CUST, ref errMsg);
+                                                if (Cust != null)
                                                 {
-                                                    disableLogo = true;
-                                                    doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
-                                                }
-                                                //
-                                                //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
-                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                                    ShipAddress = string.Format("{0} {1} {2}", Cust.ADDRESS, Cust.ADDRESS2, Cust.ADDRESS3);
+                                                    if (!string.IsNullOrEmpty(Cust.TRSH_LOGO) && Cust.TRSH_LOGO == "Y")
+                                                    {
+                                                        disableLogo = true;
+                                                        doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                                                    }
+                                                    //
+                                                    //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
+                                                    UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
 
-                                                if (doorConfig.dicRefs.ContainsKey("SHIPADDRESS"))
-                                                    doorConfig.dicRefs["SHIPADDRESS"].FocusAsync();
+                                                    if (doorConfig.dicRefs.ContainsKey("SHIPADDRESS"))
+                                                        doorConfig.dicRefs["SHIPADDRESS"].FocusAsync();
+                                                }
                                             }
                                         }
                                     }
@@ -1653,6 +1657,10 @@
                     break;
 
             }
+        }
+        else
+        {
+            RestartClicked = false;
         }
         openYesNo = false;
         errMsg2 = string.Empty;
