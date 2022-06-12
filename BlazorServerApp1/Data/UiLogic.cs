@@ -766,9 +766,18 @@ namespace BlazorServerApp1.Data
                         string defval = rowsDefVal[r]["DEFVAL"].ToString();
 
                         // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
-                        string configFldName = rowsDefVal[r]["CONFIG_FIELDNAME"].ToString();
+                        string configFldName = rowsDefVal[r]["CONFIG_FIELDNAME"].ToString();  //dlstDecorFormat 
                         ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
-                        UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+                        if (cFld.FIELDNAME == "DECORFORMAT")
+                        {
+                            int x = 17;
+                        }
+                        applyFldDefault(doorConfig, cFld.FIELDNAME);
+
+                        //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+                        //// apply VAL_LOCKED  to doorConfig.disabled
+                        //if (rowsDefVal[r]["VAL_LOCKED"].ToString() == "Y")
+                        //    doorConfig.disabledFlds[configFldName] = true;
                     }
                 }
             }
@@ -822,7 +831,7 @@ namespace BlazorServerApp1.Data
                     {
 
                         //string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
-                        if (fldName == "TRSH_HARDWARE")
+                        if (fldName == "DECORFORMAT")
                         {
                             int x = 17;
                         }
@@ -837,6 +846,8 @@ namespace BlazorServerApp1.Data
                             // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
                             //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
                             UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
+                            if (rowsDefVal[r]["VAL_LOCKED"].ToString() == "Y")
+                                doorConfig.disabledFlds[fldName] = true;
                         }
                     }
                     else // field was not found in the DEFAULTs that depend on MODEL (PARTNAME), maybe it has a general default that does not depend on MODEL (PARTNAME)

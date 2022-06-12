@@ -16,7 +16,7 @@ namespace BlazorServerApp1.Pages
 		{
 			errMsg = string.Empty;
 
-			if (doorConfig.AGENT != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
+			if (doorConfig.AGENT != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES) && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
 			{
 				int t = Array.IndexOf(UiLogic.tabNames, tabName);
 				string prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
@@ -68,6 +68,8 @@ namespace BlazorServerApp1.Pages
 			{
 				if (doorConfig.AGENT == null || doorConfig.AGENT == 0)
 					errMsg += "חובה לציין משווק";
+				if (string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES))
+					errMsg += " חובה לציין מיפתח , ";
 				if (string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
 					errMsg += " חובה לציין דגם , ";
 

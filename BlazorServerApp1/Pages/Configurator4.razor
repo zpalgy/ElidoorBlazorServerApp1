@@ -147,7 +147,7 @@
         StateHasChanged();
         }
 
-        void showTabPage(Type pageType, string tabName)
+        bool showTabPage(Type pageType, string tabName)
         {
         errMsg2 = string.Empty;
         if (ActivatePage(tabName, doorConfig, ref errMsg2))
@@ -159,11 +159,13 @@
             dyncompType = pageType;
             //doorConfig.btnClasses[tabName] = "buttonActive";
             doorConfig.markButton(tabName);
+            return true;
         }
         else
         {
             ErrMsgCssClass = "modal-body centeredMsg";
             openMsgBox = true;
+            return false;
         }
         }
         //protected void showMw()
@@ -176,16 +178,16 @@
         pageParams["disableLogo"] = disableLogo;
         UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
         doorConfig.disabledFlds["btnDoor"] = true;  //
-        showTabPage(typeof(Movingwing), "movinwing");
-
-        StateHasChanged();
-        await Task.Delay(1);
-        await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
-
-        doorConfig.btnClasses["general"] =
-        doorConfig.btnClasses["selectprod"] =
-        doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
-        doorConfig.btnClasses["movingwing"] = "buttonActive";
+        if (showTabPage(typeof(Movingwing), "movinwing"))
+        {
+            StateHasChanged();
+            await Task.Delay(1);
+            await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+        }
+            doorConfig.btnClasses["general"] =
+            doorConfig.btnClasses["selectprod"] =
+            doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
+            doorConfig.btnClasses["movingwing"] = "buttonActive";
         }
 
         //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
@@ -1139,14 +1141,14 @@
                                     </td>
                                     @code
                                     {
-        //protected bool disableStaticWing = false;
-        
+                                        //protected bool disableStaticWing = false;
+
         protected string _WingsNum = string.Empty;
         protected string WingsNum
         {
                                         get
                                         {
-                                            //currPropName = "TRSH_WINGSNUMDES";
+                                        //currPropName = "TRSH_WINGSNUMDES";
                                             if (doorConfig != null)
                                             {
                                                 _WingsNum = doorConfig.TRSH_WINGSNUMDES;
@@ -1169,9 +1171,13 @@
                                                         dlstModelName.FocusAsync();
                                                         return;
                                                     }
-                                                    // get PART FAMILY
-                                                    FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
-                                                    doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
+                                                    else
+                                                    {
+                                                        // get PART FAMILY
+                                                        FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
+                                                        doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
+                                                        UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
+                                                    }
                                                 }
                                                 doorConfig.borderColors["TRSH_WINGSNUMDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                                             }

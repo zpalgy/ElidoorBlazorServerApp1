@@ -24,22 +24,28 @@
     transition-duration: 0.4s;
 }
 .button {
+    border: solid;
+    border-color: darkblue;
+    border-width:initial;   /* medium */
     width: 160px;
     height: 70px;
     color: blue;
     border-color: darkblue;
     /* text-wrap: normal; */
-    font-weight:bolder;
-    text-align:center;
+    font-weight: bolder;
+    text-align: center;
     transition-duration: 0.4s;
 }
 .buttonActive {
+    border: solid;
+    border-color: darkblue;
+    border-width: thick;
     width: 160px;
     height: 70px;
     color: white;
     border-color: darkblue;
     /* text-wrap: normal; */
-    font-weight:bolder;
+    font-weight: bolder;
     text-align: center;
     transition-duration: 0.4s;
     background-color: rgb(0,120,255);
@@ -48,6 +54,9 @@
     background-color: rgb(121, 245, 121);
 }
 .buttonFilled {
+    border:solid;
+    border-color:darkblue;
+    border-width:thin;
     width: 160px;
     height: 70px;
     color: black;
