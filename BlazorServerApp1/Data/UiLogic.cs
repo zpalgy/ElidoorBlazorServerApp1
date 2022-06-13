@@ -1426,6 +1426,7 @@ namespace BlazorServerApp1.Data
         public static void HasFocus(string currFldName, DoorConfig doorConfig)
         {
             doorConfig.currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+            doorConfig.borderColors[currFldName] = "focusBorder";
         }
         
         //static List<string> lstThNames = new List<string>();
