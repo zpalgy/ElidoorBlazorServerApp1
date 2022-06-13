@@ -455,10 +455,30 @@ namespace BlazorServerApp1.Data
                     }
                 }
             }
-            
             return string.Empty;  // error !
         }
+        public static bool existsPartOfModel(DoorConfig doorConfig, ref string errMsg)
+        {
+            int TRSH_MODEL = 0;
 
+            if (doorConfig != null)
+            {
+                string query = string.Format("TRSH_MODELNAME = '{0}'", doorConfig.TRSH_MODELNAME);
+                DataRow[] rowsModels = dtModels.Select(query);
+                if (rowsModels.Length > 0)
+                {
+                    TRSH_MODEL = int.Parse(rowsModels[0]["TRSH_MODEL"].ToString());
+                }
+                if (TRSH_MODEL > 0)
+                {
+                    query = String.Format("TRSH_MODEL = {0}", TRSH_MODEL);
+                    DataRow[] rowsParts = dtParts.Select(query);
+                    return (rowsParts.Length > 0);
+                }
+            }
+            return false;  // error !
+        }
+    
         public static List<WingWidth_Class> getAllWingWidths(ref string errMsg)
         {
             try

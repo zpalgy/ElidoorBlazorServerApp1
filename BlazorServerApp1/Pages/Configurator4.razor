@@ -648,7 +648,7 @@
                                             if (!string.IsNullOrEmpty(nextfld))
                                             {
                                                     // if (nextfld == "SHIPADDRESS")
-                                                    // {
+                                            // {
                                             //     //int x = 17;
                                             //     txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
                                                 //                                   //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
@@ -686,7 +686,8 @@
         //-------------------
         void HasFocus(string currFldName)
         {
-                  currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+                                        currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+                                        doorConfig.borderColors[currFldName] = "focusBorder";
         }
         void formFillerLostFocus()
         {
@@ -888,7 +889,7 @@
                                     }
                                     @code {
         // public bool disableLogo = false;
-        ElementReference txtEndCustDes;
+        //ElementReference txtEndCustDes;
         private string _ENDCUSTDES = string.Empty;
         protected string ENDCUSTDES
         {
@@ -931,7 +932,7 @@
                                     *@
                                 </td>
                                 @code {
-        ElementReference txtShipAddress;
+        //ElementReference txtShipAddress;
         protected string _ShipAddress = string.Empty;
         protected string ShipAddress
         {
@@ -1172,7 +1173,7 @@
                                                     {
                                                         errMsg2 = "לא קיים פריט  עם הדגם והמיפתח שציינת";
                                                         openMsgBox = true;
-                                                        dlstModelName.FocusAsync();
+                                                        doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
                                                         return;
                                                     }
                                                     else
@@ -1211,13 +1212,13 @@
                                         }
                                     </td>
                                     @code {
-        private ElementReference dlstModelName;
+                                       // private ElementReference dlstModelName;
         protected string _TRSH_MODELNAME = string.Empty;
         protected string TRSH_MODELNAME
         {
                                         get
                                         {
-                                            //currPropName = "TRSH_MODELNAME";
+                                        //currPropName = "TRSH_MODELNAME";
                                             if (doorConfig != null)
                                             {
                                                 _TRSH_MODELNAME = doorConfig.TRSH_MODELNAME;
@@ -1254,14 +1255,24 @@
                                                 doorConfig.meaged = model.TRSH_MEAGEDNAME;
                                                 doorConfig.TRSH_DOOR_HWCATCODE = model.TRSH_DOOR_HWCATCODE;
                                                 doorConfig.borderColors["TRSH_MODELNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-                                                if (!string.IsNullOrEmpty(value) && (!string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES)))
+                                                if (!string.IsNullOrEmpty(value) && (string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES)))
+                                                {
+                                                    if (!PrApiCalls.existsPartOfModel(doorConfig, ref errMsg))
+                                                    {
+                                                        errMsg2 = "לא קיים פריט  עם הדגם שציינת";
+                                                        openMsgBox = true;
+                                                        doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
+                                                        return;
+                                                    }
+                                                }
+                                                else if (!string.IsNullOrEmpty(value) && (!string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES)))
                                                 {
                                                     doorConfig.PARTNAME = PrApiCalls.getPARTNAMEbyModelWings(doorConfig, ref errMsg);
                                                     if (string.IsNullOrEmpty(doorConfig.PARTNAME))
                                                     {
                                                         errMsg2 = "לא קיים פריט  עם הדגם והמיפתח שציינת";
                                                         openMsgBox = true;
-                                                        dlstModelName.FocusAsync();
+                                                         doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
                                                         return;
                                                     }
                                                     // get PART FAMILY

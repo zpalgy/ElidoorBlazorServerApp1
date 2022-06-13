@@ -242,6 +242,10 @@ a {
     border-color: black;
     outline: none;
 }
+.focusBorder {
+    border: 3px solid blue;
+    outline: none;
+}
 
     /*  ref: https://stackoverflow.com/questions/39741709/css-focus-not-working */
 input:focus, select:focus, .inputstyle:focus, .blackBorder:focus, .redBorder:focus {
