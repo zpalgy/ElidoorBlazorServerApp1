@@ -147,6 +147,12 @@
         StateHasChanged();
         }
 
+        void showDivProducts()
+		{
+        showProducts = true;
+        doorConfig.divClasses["divHeader"] = "divNotActive";
+        doorConfig.divClasses["divProducts"] = "divActive";
+		}
         bool showTabPage(Type pageType, string tabName)
         {
         errMsg2 = string.Empty;
@@ -171,25 +177,28 @@
         //protected void showMw()
         async Task showMw()
         {
-        doorConfig.divClasses["divHeader"] = 
-        doorConfig.divClasses["divProducts"] = 
-        doorConfig.divClasses["divDoorTitle"] = "divNotActive";
-        doorConfig.divClasses["dynCompStyle"] = "divActive";
-        pageParams["disableLogo"] = disableLogo;
-        UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
-        doorConfig.disabledFlds["btnDoor"] = true;  //
-        if (showTabPage(typeof(Movingwing), "movinwing"))
-        {
-            StateHasChanged();
-            await Task.Delay(1);
-            await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
-        }
-            doorConfig.btnClasses["general"] =
-            doorConfig.btnClasses["selectprod"] =
-            doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
-            doorConfig.btnClasses["movingwing"] = "buttonActive";
-        }
+            doorConfig.divClasses["divHeader"] =
+            doorConfig.divClasses["divProducts"] =
+            doorConfig.divClasses["divDoorTitle"] = "divNotActive";
+            doorConfig.divClasses["dynCompStyle"] = "divActive";
+            pageParams["disableLogo"] = disableLogo;
+            UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
+            doorConfig.disabledFlds["btnDoor"] = true;  //
+            if (showTabPage(typeof(Movingwing), "movinwing"))
+            {
+                StateHasChanged();
+                await Task.Delay(1);
+                await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
 
+                doorConfig.btnClasses["general"] =
+                doorConfig.btnClasses["selectprod"] =
+                doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
+                doorConfig.btnClasses["movingwing"] = "buttonActive";
+
+                // disable prev navigation buttons 
+                doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
+            }
+        }
         //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
         //  the 2nd answer
         public void RefreshState()
@@ -296,13 +305,13 @@
                         </tr>
                         <tr>
                             <td>
-                                <button name="btnSelectProd" class="@doorConfig.btnClasses["selectprod"]"
-                                        onclick="@showProdButtons">
+                                <button name="btnSelectProd" class="@doorConfig.btnClasses["selectprod"]" disabled="@doorConfig.disabledFlds["selectprod"]"
+                                        onclick="@try2ShowProdButtons">
                                     בחירת מוצר
                                 </button>
                             </td>
                             @{
-                                void showProdButtons()
+                                void try2ShowProdButtons()
                                 {
                                     if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
                                     {
@@ -316,16 +325,17 @@
                                     }
                                     else
                                     {
-                                        showProducts = true;
-                                        doorConfig.divClasses["divHeader"] = "divNotActive";
-                                        doorConfig.divClasses["divProducts"] = "divActive";
+                                        //showProducts = true;
+                                        //doorConfig.divClasses["divHeader"] = "divNotActive";
+                                        //doorConfig.divClasses["divProducts"] = "divActive";
+                                        showDivProducts();
                                     }
                                 }
                             }
                         </tr>
                         <tr>
                             <td>
-                                <button name="btnProdDes" class="@doorConfig.btnClasses["proddes"]"
+                                <button name="btnProdDes" class="@doorConfig.btnClasses["proddes"]" disabled="@doorConfig.disabledFlds["proddes"]"
                                         onclick="@showDoorTitle">
                                     תאור מוצר
                                 </button>
@@ -353,6 +363,8 @@
 
                                     //ref: https://stackoverflow.com/questions/67360450/how-to-focus-an-element-when-making-it-visible-in-the-same-method-call
                                     //  thw 1st answer !
+                                    doorConfig.disabledFlds["btnDoor"] = true;
+                                    doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = true;  //disable prev buttons
                                     StateHasChanged();
                                     await Task.Delay(1);
                                     //await dlstWingsNum.FocusAsync();  // harcoded ElementReference !
@@ -841,6 +853,9 @@
                                         _CUST = value;
                                         if (doorConfig != null)
                                         {
+                                            if (_CUST != doorConfig.CUST)
+                                                doorConfig.TMPSHIPADDRESS = string.Empty;
+
                                             doorConfig.CUST = _CUST;
                                             doorConfig.borderColors["CUST"] = (value != 0 ? string.Empty : "redBorder");
                                             //
@@ -858,7 +873,8 @@
                                                     }
                                                     //
                                                     //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
-                                                    UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                                    if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
+                                                        showDivProducts();
 
                                                     if (doorConfig.dicRefs.ContainsKey("SHIPADDRESS"))
                                                         doorConfig.dicRefs["SHIPADDRESS"].FocusAsync();
@@ -1181,7 +1197,11 @@
                                                         // get PART FAMILY
                                                         FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
                                                         doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
-                                                        UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
+                                                        if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
+                                                        {
+                                                           // doorConfig.disabledFlds["btnDoor"] = true;
+                                                           // StateHasChanged();
+                                                        }
                                                     }
                                                 }
                                                 doorConfig.borderColors["TRSH_WINGSNUMDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");

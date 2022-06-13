@@ -1062,7 +1062,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,HARDWARENAME,HARDWAREDES,DRIL4HW,DRIL4HWDES,COLORED";
+                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,DRIL4HW,DRIL4HWDES,COLORED";
                 request.Resource = string.Format("TRSH_HARDWARE?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1076,7 +1076,7 @@ namespace BlazorServerApp1.Data
                     List<TRSH_HARDWARE_Class> val1 = new List<TRSH_HARDWARE_Class>();  //val.value;
                     TRSH_HARDWARE_Class emptyHw = new TRSH_HARDWARE_Class();
                     emptyHw.TRSH_HARDWARE = 0;
-                    emptyHw.HARDWAREDES = " ";
+                    emptyHw.PARTNAME = " ";
                     val1.Add(emptyHw);
 
                     foreach (TRSH_HARDWARE_Class hw in val.value)
@@ -1131,19 +1131,19 @@ namespace BlazorServerApp1.Data
                     List<TRSH_HARDWARE_Class> lstParHWs = new List<TRSH_HARDWARE_Class>();
                     TRSH_HARDWARE_Class emptyHW = new TRSH_HARDWARE_Class();
                     emptyHW.TRSH_HARDWARE = 0;
-                    emptyHW.HARDWAREDES = " ";
+                    emptyHW.PARTNAME = " ";
                     lstParHWs.Add(emptyHW);
 
                     TRSH_HARDWARE_Class noHw = new TRSH_HARDWARE_Class();
                     noHw.TRSH_HARDWARE = UiLogic.IdOfNone;
-                    noHw.HARDWAREDES = "ללא";
+                    noHw.PARTDES = "ללא";
                     lstParHWs.Add(noHw);
 
                     for (int r = 0; r < rowsArray.Length; r++)
                     {
                         TRSH_HARDWARE_Class Hw1 = new TRSH_HARDWARE_Class();
                         Hw1.TRSH_HARDWARE = int.Parse(rowsArray[r]["TRSH_HARDWARE"].ToString());
-                        Hw1.HARDWAREDES = rowsArray[r]["HARDWAREDES"].ToString();
+                        Hw1.PARTDES = rowsArray[r]["PARTDES"].ToString();  //rowsArray[r]["HARDWAREDES"].ToString();
                         lstParHWs.Add(Hw1);
                     }
 

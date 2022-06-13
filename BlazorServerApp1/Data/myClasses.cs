@@ -207,9 +207,9 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 2)]
         public int TRSH_DOOR_HWCATCODE { get; set; }
         [DataMember(Order = 3)]
-        public string HARDWARENAME { get; set; }
+        public string PARTNAME { get; set; }  //HARDWARENAME
         [DataMember(Order = 4)]
-        public string HARDWAREDES { get; set; }
+        public string PARTDES { get; set; }  //HARDWAREDES
         [DataMember(Order = 5)]
         public int DRIL4HW { get; set; }
         [DataMember(Order = 6)]
@@ -1149,7 +1149,8 @@ namespace BlazorServerApp1.Data
             disabledFlds["REFERENCE"] = true;    // 01/06/2022     
             disabledFlds["btnDoor"] = false;
             disabledFlds["btnLintel"] = disabledFlds["btnCover"] = disabledFlds["btnSideUnit"] = disabledFlds["btnECabinet"] = disabledFlds["btnShelves"] = true;
-
+            disabledFlds["general"] = disabledFlds["selectprod"] = disabledFlds["proddes"] = false;  // on startup I assume these buttons can be Enabled ! 13/06/2022 
+                                                                    // maybe teh CU will ask to Disable them !
             initDivClasses();
 
         }
