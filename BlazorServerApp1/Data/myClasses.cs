@@ -239,9 +239,11 @@ namespace BlazorServerApp1.Data
     public class CYLINDER_Class
     {
         [DataMember(Order = 1)]
-        public string CYLINDERNAME { get; set; }
+        public int TRSH_CYLINDER { get; set; }
         [DataMember(Order = 2)]
-        public string CYLINDERDES { get; set; }
+        public string PARTNAME { get; set; }
+        [DataMember(Order = 3)]
+        public string PARTDES { get; set; }
     }
     public class ValuesCYLINDER_Class
     {
@@ -772,7 +774,7 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 63), Order]
         public string CYLINDERNAME { get; set; }  //D-900  , table 310
         //[DataMember(Order = 64), Order]
-        //public string CYLINDERDES { get; set; }
+        //public string PARTDES { get; set; }
         [DataMember(Order = 65), Order]
         public string ELECTRICAPPARATUS { get; set; } // Y, N, ''  D-910
 

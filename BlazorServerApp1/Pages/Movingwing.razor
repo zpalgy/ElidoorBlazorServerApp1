@@ -895,9 +895,9 @@
     </tr>
     <tr>
         <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
-            @{  int i313 = Array.IndexOf(UiLogic.propNames, "CYLINDERNAME");
-            <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]"
-                @onfocus="@( () => UiLogic.HasFocus("CYLINDERNAME", doorConfig) )" 
+            @{  int i313 = Array.IndexOf(UiLogic.propNames, "PARTNAME");
+            <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["PARTNAME"]"
+                @onfocus="@( () => UiLogic.HasFocus("PARTNAME", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i313]]" >
 
@@ -905,7 +905,7 @@
                 {
                     @foreach (CYLINDER_Class c in PrApiCalls.lstCylinders)
                     {
-                        <option value="@c.CYLINDERNAME">@c.CYLINDERDES</option>
+                        <option value="@c.PARTNAME">@c.PARTDES</option>
                     }
                 }
             </select>
@@ -930,7 +930,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.CYLINDERNAME = _CylinderName;
-                        doorConfig.borderColors["CYLINDERNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        doorConfig.borderColors["PARTNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }

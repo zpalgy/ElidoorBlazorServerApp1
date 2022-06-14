@@ -1225,7 +1225,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "CYLINDERNAME,CYLINDERDES";
+                string fields = "PARTNAME,PARTDES";
                 request.Resource = string.Format("TRSH_CYLINDERS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1238,13 +1238,13 @@ namespace BlazorServerApp1.Data
                     ValuesCYLINDER_Class val = JsonConvert.DeserializeObject<ValuesCYLINDER_Class>(response.Content);
                     List<CYLINDER_Class> val1 = new List<CYLINDER_Class>();  //val.value;
                     CYLINDER_Class emptyCylinder = new CYLINDER_Class();
-                    emptyCylinder.CYLINDERNAME = " ";
-                    emptyCylinder.CYLINDERDES = " ";
+                    emptyCylinder.PARTNAME = " ";
+                    emptyCylinder.PARTDES = " ";
                     val1.Add(emptyCylinder);
 
                     CYLINDER_Class noCylinder = new CYLINDER_Class();
-                    noCylinder.CYLINDERNAME = UiLogic.NameOfNone;//"9999999";
-                    noCylinder.CYLINDERDES = "ללא";
+                    noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
+                    noCylinder.PARTDES = "ללא";
                     val1.Add(noCylinder);
                     foreach (CYLINDER_Class cyl in val.value)
                     {
@@ -2383,7 +2383,7 @@ namespace BlazorServerApp1.Data
                 
 @",""OPENMODE"":null,""COMPLIENTDOOR"":""Y"",""TRSH_MODELNAME"":""MLI"",""LOCKDRILHEIGHT"":0,""OPENSIDE"":null,""DECORFORMAT"":null,""COLORSNUM"":null," +
                 
-@"""DOORWIDTH"":0,""DOORCOLORID"":0,""DOORHEIGHT"":0,""TURBOAPPARATUS"":""Y"",""LOGO"":"""",""TRSH_HARDWARE"":0,""HWCOLORID"":0,""DRIL4HW"":0,""CYLINDERNAME"":null," +
+@"""DOORWIDTH"":0,""DOORCOLORID"":0,""DOORHEIGHT"":0,""TURBOAPPARATUS"":""Y"",""LOGO"":"""",""TRSH_HARDWARE"":0,""HWCOLORID"":0,""DRIL4HW"":0,""PARTNAME"":null," +
 
 @"""ELECTRICAPPARATUS"":""N"",""RAFAFAONMOVINGWING"":null,""VENTS"":null,""CATDOOR"":null,""EXTCOLORID"":0,""GRIDCOLORID"":0,""VITRAGECLRBYCTLG"":null," +
 
