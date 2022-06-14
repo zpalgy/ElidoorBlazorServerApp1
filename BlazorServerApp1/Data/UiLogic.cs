@@ -1421,7 +1421,7 @@ namespace BlazorServerApp1.Data
 
         public static string colorTypeAndDes(TRSH_COLOR_Class c)
         {
-            return string.Format("{0} {1}", c.TRSH_COLORTYPEDES, c.TRSH_COLORDES);
+            return string.Format("{0} {1}", c.TRSH_COLORTYPEDES, c.PARTDES);
         }
         public static void HasFocus(string currFldName, DoorConfig doorConfig)
         {

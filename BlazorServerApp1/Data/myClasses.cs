@@ -149,11 +149,16 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 3)]
         public string TRSH_COLORTYPEDES { get; set; }
         [DataMember(Order = 4)]
-        public string TRSH_COLORNAME { get; set; }
+        public string PARTNAME { get; set; }
         [DataMember(Order = 5)]
-        public string TRSH_COLORDES { get; set; }
+        public string PARTDES { get; set; }
         [DataMember(Order = 6)]
         public string TRSH_TEXTURE { get; set; }
+
+        //[DataMember(Order = 4)]
+        //public string PARTNAME { get; set; }
+        //[DataMember(Order = 5)]
+        //public string PARTDES { get; set; }
     }
     public class ValuesTRSH_COLOR_Class
     {

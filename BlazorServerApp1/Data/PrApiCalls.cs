@@ -918,7 +918,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_COLORID,TRSH_COLORNAME,TRSH_COLORDES";
+                string fields = "TRSH_COLORID,PARTNAME,PARTDES";
                 request.Resource = string.Format("TRSH_COLORS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -931,8 +931,8 @@ namespace BlazorServerApp1.Data
                     ValuesTRSH_COLOR_Class val = JsonConvert.DeserializeObject<ValuesTRSH_COLOR_Class>(response.Content);
                     List<TRSH_COLOR_Class> val1 = new List<TRSH_COLOR_Class>();  //val.value;
                     TRSH_COLOR_Class emptyColor = new TRSH_COLOR_Class();
-                    emptyColor.TRSH_COLORNAME = " ";
-                    emptyColor.TRSH_COLORDES = " ";
+                    emptyColor.PARTNAME = " ";
+                    emptyColor.PARTDES = " ";
                     val1.Add(emptyColor);
                     foreach (TRSH_COLOR_Class clr in val.value)
                     {
@@ -965,7 +965,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_COLORID,TRSH_COLORNAME,TRSH_COLORDES";
+                string fields = "TRSH_COLORID,PARTNAME,PARTDES";
                 request.Resource = string.Format("TRSH_GLASSCLRS4DMND?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -978,8 +978,8 @@ namespace BlazorServerApp1.Data
                     ValuesTRSH_COLOR_Class val = JsonConvert.DeserializeObject<ValuesTRSH_COLOR_Class>(response.Content);
                     List<TRSH_COLOR_Class> val1 = new List<TRSH_COLOR_Class>();  //val.value;
                     TRSH_COLOR_Class emptyColor = new TRSH_COLOR_Class();
-                    emptyColor.TRSH_COLORNAME = " ";
-                    emptyColor.TRSH_COLORDES = " ";
+                    emptyColor.PARTNAME = " ";
+                    emptyColor.PARTDES = " ";
                     val1.Add(emptyColor);
                     foreach (TRSH_COLOR_Class clr in val.value)
                     {
