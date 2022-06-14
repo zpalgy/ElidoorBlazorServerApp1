@@ -1279,7 +1279,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_LOCK,TRSH_DOOR_HWCATCODE,TRSH_LOCKNAME,TRSH_LOCKDES";
+                string fields = "TRSH_LOCK,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES";
                 request.Resource = string.Format("TRSH_LOCKS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1292,8 +1292,8 @@ namespace BlazorServerApp1.Data
                     ValuesTRSH_LOCK_Class val = JsonConvert.DeserializeObject<ValuesTRSH_LOCK_Class>(response.Content);
                     List<TRSH_LOCK_Class> val1 = new List<TRSH_LOCK_Class>();  //val.value;
                     TRSH_LOCK_Class emptyLock = new TRSH_LOCK_Class();
-                    emptyLock.TRSH_LOCKDES = " ";
-                    emptyLock.TRSH_LOCKNAME = " ";
+                    emptyLock.PARTDES = " ";
+                    emptyLock.PARTNAME = " ";
                     val1.Add(emptyLock);
                     foreach (TRSH_LOCK_Class lck in val.value)
                     {
@@ -1338,15 +1338,15 @@ namespace BlazorServerApp1.Data
                 {
                     List<TRSH_LOCK_Class> lstPartLocks = new List<TRSH_LOCK_Class>();
                     TRSH_LOCK_Class emptyLock = new TRSH_LOCK_Class();
-                    emptyLock.TRSH_LOCKNAME = " ";
-                    emptyLock.TRSH_LOCKDES = " ";
+                    emptyLock.PARTNAME = " ";
+                    emptyLock.PARTDES = " ";
                     lstPartLocks.Add(emptyLock);
                     for (int r = 0; r < rowsArray.Length; r++)
                     {
                         TRSH_LOCK_Class lock1 = new TRSH_LOCK_Class();
                         lock1.TRSH_LOCK = int.Parse(rowsArray[r]["TRSH_LOCK"].ToString());
-                        lock1.TRSH_LOCKNAME = rowsArray[r]["TRSH_LOCKNAME"].ToString();
-                        lock1.TRSH_LOCKDES = rowsArray[r]["TRSH_LOCKDES"].ToString();
+                        lock1.PARTNAME = rowsArray[r]["PARTNAME"].ToString();
+                        lock1.PARTDES = rowsArray[r]["PARTDES"].ToString();
                         lstPartLocks.Add(lock1);
                     }
                     return lstPartLocks;

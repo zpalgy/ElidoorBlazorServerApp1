@@ -8,9 +8,14 @@
   </PropertyGroup>
 	
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+	
+  <ItemGroup>
+    <Compile Remove="Pages\Configurator3Base.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Data\Web.config" />
+    <Content Remove="Pages\Configurator3.razor" />
   </ItemGroup>
 
   <ItemGroup>

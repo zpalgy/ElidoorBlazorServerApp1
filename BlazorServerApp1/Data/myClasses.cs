@@ -256,9 +256,9 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 2)]
         public int TRSH_DOOR_HWCATCODE { get; set; }
         [DataMember(Order = 3)]
-        public string TRSH_LOCKNAME { get; set; }
+        public string PARTNAME { get; set; }
         [DataMember(Order = 4)]
-        public string TRSH_LOCKDES { get; set; }
+        public string PARTDES { get; set; }
     }
     public class ValuesTRSH_LOCK_Class
     {
