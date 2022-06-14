@@ -1851,7 +1851,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "HANDLENAME,HANDLEDES";
+                string fields = "PARTNAME,PARTDES";
                 request.Resource = string.Format("TRSH_HANDLES?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1864,12 +1864,12 @@ namespace BlazorServerApp1.Data
                     ValuesHANDLE_Class val = JsonConvert.DeserializeObject<ValuesHANDLE_Class>(response.Content);
                     List<HANDLE_Class> val1 = new List<HANDLE_Class>();  //val.value;
                     HANDLE_Class emptyHandle = new HANDLE_Class();
-                    emptyHandle.HANDLENAME = " ";
-                    emptyHandle.HANDLEDES = " ";
+                    emptyHandle.PARTNAME = " ";
+                    emptyHandle.PARTDES = " ";
                     val1.Add(emptyHandle);
                     
                     HANDLE_Class noHandle = new HANDLE_Class();
-                    noHandle.HANDLENAME = noHandle.HANDLEDES = "ללא";  // new per CU request 23/05/2022
+                    noHandle.PARTNAME = noHandle.PARTDES = "ללא";  // new per CU request 23/05/2022
                     val1.Add(noHandle);
 
                     foreach (HANDLE_Class handle in val.value)

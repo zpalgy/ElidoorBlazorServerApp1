@@ -438,11 +438,12 @@ namespace BlazorServerApp1.Data
     public class HANDLE_Class    // table 360
     {
         [DataMember(Order = 1)]
-        //123456789 123456789  
-        public string HANDLENAME { get; set; }
+        public int HANDLEID { get; set; }
         [DataMember(Order = 2)]
-        public string HANDLEDES { get; set; }
+        public string PARTNAME { get; set; }
         [DataMember(Order = 3)]
+        public string PARTDES { get; set; }
+        [DataMember(Order = 4)]
         public int LENGTH { get; set; }
     }
     public class ValuesHANDLE_Class
