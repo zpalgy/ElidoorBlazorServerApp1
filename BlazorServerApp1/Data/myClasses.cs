@@ -334,9 +334,11 @@ namespace BlazorServerApp1.Data
     public class TILETYPE_Class  // table 70
     {
         [DataMember(Order = 1)]
-        public string TILENAME { get; set; }
+        public int PART { get; set; }
         [DataMember(Order = 2)]
-        public string TILEDES { get; set; }
+        public string PARTNAME { get; set; }
+        [DataMember(Order = 3)]
+        public string PARTDES { get; set; }
     }
     public class ValuesTILETYPE_Class
     {
@@ -835,10 +837,10 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 81), Order]
         public string TILENAME { get; set; }      // D-100
         //[NonSerialized]
-        //public string TILENAME;
+        //public string PARTNAME;
 
         //[DataMember(Order = 82), Order]
-        //public string TILEDES { get; set; }
+        //public string PARTDES { get; set; }
 
         [DataMember(Order = 83), Order]
         public int EXTCOLORID { get; set; }   //D-120
@@ -1132,6 +1134,7 @@ namespace BlazorServerApp1.Data
         public Dictionary<string,string>  divClasses { get; set; }
         public Dictionary<string, bool> disabledFlds { get; set; }
         public Dictionary<string, ElementReference> dicRefs = new Dictionary<string, ElementReference>();
+        public Dictionary<string, bool> hideBtns { get; set; }  // not used yet 
 
         public void initBorderColors()
         {
@@ -1139,7 +1142,7 @@ namespace BlazorServerApp1.Data
             PropertyInfo[] props = objType.GetProperties();
             borderColors = new Dictionary<string, string>();
             disabledFlds = new Dictionary<string, bool>();
-
+            hideBtns = new Dictionary<string, bool>();
             ElementReference er;
             foreach (PropertyInfo pinfo in props)
             {
@@ -1160,6 +1163,7 @@ namespace BlazorServerApp1.Data
             disabledFlds["general"] = disabledFlds["selectprod"] = disabledFlds["proddes"] = false;  // on startup I assume these buttons can be Enabled ! 13/06/2022 
                                                                     // maybe teh CU will ask to Disable them !
             initDivClasses();
+            //initHideBtns();  not used yet 
 
         }
         public void initBtnClasses()
@@ -1180,6 +1184,11 @@ namespace BlazorServerApp1.Data
             {
                 btnClasses.Add(tabName, "button");
             }
+        }
+        public void initHideBtns()  // not used yet !
+        {
+            hideBtns["EXTCOLORID"] =
+            hideBtns["INTCOLORID"] = false;
         }
         public void initDivClasses()
         {

@@ -1369,7 +1369,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TILENAME,TILEDES";
+                string fields = "PART,PARTNAME,PARTDES";
                 request.Resource = string.Format("TRSH_TILETYPES?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1382,8 +1382,8 @@ namespace BlazorServerApp1.Data
                     ValuesTILETYPE_Class val = JsonConvert.DeserializeObject<ValuesTILETYPE_Class>(response.Content);
                     List<TILETYPE_Class> val1 = new List<TILETYPE_Class>();  //val.value;
                     TILETYPE_Class emptyTile = new TILETYPE_Class();
-                    emptyTile.TILENAME = " ";
-                    emptyTile.TILEDES = " ";
+                    emptyTile.PARTNAME = " ";
+                    emptyTile.PARTDES = " ";
                     val1.Add(emptyTile);
                     foreach (TILETYPE_Class tile in val.value)
                     {
@@ -2360,7 +2360,7 @@ namespace BlazorServerApp1.Data
                 //debug 
                 //UiLogic.clearDoorConfig(doorConfig, false);  //works  without defaults
                 //UiLogic.clearDoorConfig(doorConfig, true);  // fails with defaults 
-                //doorConfig.TILENAME = "";     //"224" fails because it does not exist in TRSH_TILETYPES.TILENAME  (the U key of that table ) - should be : 990141
+                //doorConfig.PARTNAME = "";     //"224" fails because it does not exist in TRSH_TILETYPES.PARTNAME  (the U key of that table ) - should be : 990141
                 //doorConfig.VITRAGENAME = "";  //"ויטראז לדגם 5515";  - fails  because it does not exists in TRSH_VITRAGE.VITRAGENAME ( The U key of that table )
                                                 // - should be V5515 
 
