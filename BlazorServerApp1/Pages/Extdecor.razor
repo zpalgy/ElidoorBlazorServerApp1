@@ -8,20 +8,15 @@
 
 @inject NavigationManager Navigator
 
-<style>
-    th, td {
-        padding: 15px;
-        text-align: center;
-    }
-</style>
+
 
 @code
 {
     [Parameter]
     public DoorConfig doorConfig { get; set; }
 
-    [Parameter]
-    public bool MovingwingIsFull { get; set; }
+   // [Parameter]
+   // public bool MovingwingIsFull { get; set; }
 
 	[Parameter]
     public Configurator4 config4 { get; set; }
@@ -68,8 +63,16 @@
         //}
     }
 }
-   <h3>פרטי דקורציה חוץ</h3>
-
+<br />
+<table>
+    <tr>
+        <td>
+            <div class="tabPageTitle">
+                <h1 class="rightLeftMargin"> פרטי דקורציה חוץ</h1>
+            </div>
+        </td>
+    </tr>
+</table>
     <table id="extDecorL1">
         <tr>
             <th id="thPassim" hidden="@UiLogic.hideFld(doorConfig, "Passim")">פסים שקועים\בולטים</th>
