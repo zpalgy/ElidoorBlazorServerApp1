@@ -6,13 +6,6 @@
 
 @inject NavigationManager Navigator
 
-<style>
-    th, td {
-        padding: 15px;
-        text-align: center;
-    }
-</style>
-
 @code
 {
     [Parameter]
@@ -66,7 +59,18 @@
         //}
     }
 }
-<h3>דקורציה פנים</h3>
+
+<br />
+<table>
+    <tr>
+        <td>
+            <div class="tabPageTitle">
+                <h1 class="rightLeftMargin">דקורציה פנים</h1>
+            </div>
+        </td>
+    </tr>
+</table>
+
 <table id="intDecorL1">
     <tr>
         @* <th id="thIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">גוון מעטה פנים</th>   ==> Movingwing L2  *@ 
