@@ -73,11 +73,13 @@
 </table>
                         <table id="tblHandle">
                                                 <tr>
-                                                    @{ 	bool h = UiLogic.hideFld(doorConfig, "thHandle"); 	}
-			                                        @if (!h)
-			                                        {	
-                                                        <th id="thHandle"  >דגם ידית אומנותית</th>
-                                                    }
+                                                    @*  Handle was moved to movingwing Line3 
+                                                        @{ 	bool h = UiLogic.hideFld(doorConfig, "thHandle"); 	}
+			                                            @if (!h)
+			                                            {	
+                                                            <th id="thHandle"  >דגם ידית אומנותית</th>
+                                                        }
+                                                    *@
                                                     @{ 	bool hclr = UiLogic.hideFld(doorConfig, "thHandleColorID"); 	}
 			                                        @if (!hclr)
 			                                        {	
@@ -85,6 +87,7 @@
                                                     }
                                                 </tr>
                                                 <tr>
+                                                @*     Handle was moved to movingwing Line3 
                                                     @if (!h)
 			                                        {	
                                                         <td id="tdHandle" >
@@ -124,7 +127,7 @@
 		                                                    }
 	                                                    }
                                                     }
-
+                                               *@
                                                     @if (!hclr)
 			                                        {	
                                                         <td id="tdHandleColorID" >

@@ -23,8 +23,12 @@
 }
 
 @code {
-    protected override async Task OnInitializedAsync()
-    {
+	protected override async Task OnInitializedAsync()
+	{
+		doorConfig.config4 = config4;
+		doorConfig.currTabName = "extdecor";
+		string errMsg = string.Empty;
+		doorConfig.dtTabFlds = UiLogic.getTabFields(doorConfig.currTabName, doorConfig, ref errMsg);
 		//int x = doorConfig.EXTCOLORID;
   //      if (!MovingwingIsFull)
   //      {
@@ -88,11 +92,16 @@
         </tr>
         <tr>
         <td id="tdPassim" hidden="@UiLogic.hideFld(doorConfig, "Passim")" >
-                    <select name="dlstPassimShkuimBoltim"  @bind="Passim" class= "@doorConfig.borderColors["LINESFORMAT"]" >
+			        @{  int i401 = Array.IndexOf(UiLogic.propNames, "LINESFORMAT");
+                    <select name="dlstPassimShkuimBoltim"  @bind="Passim" class= "@doorConfig.borderColors["LINESFORMAT"]" 
+					@onfocus="@( () => UiLogic.HasFocus("LINESFORMAT", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i401]]" >
                         <option></option>
                         <option>בולטים</option>
                         <option>שקועים</option>
                     </select>
+					}
          @code
         {
 			protected string _Passim = string.Empty;
@@ -120,7 +129,12 @@
         }
 		</td>
         <td id="tdTiletype" hidden="@UiLogic.hideFld(doorConfig, "Tiletype")" >
-            <select name="dlstTiletype"  @bind="TileName" class= "@doorConfig.borderColors["TILENAME"]" >
+			 @{  int i402 = Array.IndexOf(UiLogic.propNames, "TILENAME");
+            <select name="dlstTiletype"  @bind="TileName" class= "@doorConfig.borderColors["TILENAME"]" 
+					 @onfocus="@( () => UiLogic.HasFocus("TILENAME", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i402]]" >
+
                 @if (PrApiCalls.lstTileTypes != null)
                 {
                     @foreach (TILETYPE_Class c in PrApiCalls.lstTileTypes)
@@ -129,6 +143,7 @@
                     }
                 }
             </select>
+			}
         @code
         {
 			protected string _TileName = string.Empty;
@@ -194,15 +209,20 @@
 		</td>
      *@
          <td id="tdGridColor" hidden="@UiLogic.hideFld(doorConfig, "tdGridColor")" >
-            <select name="dlstGridColor"  @bind="GridColor" class= "@doorConfig.borderColors["GRIDCOLORID"]" >
-                @if (PrApiCalls.lstColors != null)
-                {
-                    @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                    {
-                        <option value="@c.TRSH_COLORID">@c.PARTDES</option>
-                    }
-                }
-            </select>
+			  @{  int i403 = Array.IndexOf(UiLogic.propNames, "GRIDCOLORID");
+				<select name="dlstGridColor"  @bind="GridColor" class= "@doorConfig.borderColors["GRIDCOLORID"]" 
+				@onfocus="@( () => UiLogic.HasFocus("GRIDCOLORID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i403]]" >
+					@if (PrApiCalls.lstColors != null)
+					{
+						@foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+						{
+							<option value="@c.TRSH_COLORID">@c.PARTDES</option>
+						}
+					}
+				</select>
+			}
         </td>
         @code
         {
@@ -232,7 +252,12 @@
 
 
         <td id="tdVitrageClrByCtlg" hidden="@UiLogic.hideFld(doorConfig, "tdVitrageClrByCtlg")" >
-            <input type="checkbox" name="chkbVitrageClrByCtlg" @bind="VitrageClrByCtlg" />
+			@{  int i404 = Array.IndexOf(UiLogic.propNames, "VITRAGECLRBYCTLG");
+				<input type="checkbox" name="chkbVitrageClrByCtlg" @bind="VitrageClrByCtlg" 
+					@onfocus="@( () => UiLogic.HasFocus("VITRAGECLRBYCTLG", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i404]]" />
+			}
         </td>
         @code
         {
@@ -257,7 +282,11 @@
         }
 
         <td id="tdExtSepLinesClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtSepLinesClr")" >
-            <select name="dlstExtSepLinesClr" @bind="ExtSepLinesClr" class= "@doorConfig.borderColors["EXTSEPLINESCLRID"]" >
+			@{  int i405 = Array.IndexOf(UiLogic.propNames, "EXTSEPLINESCLRID");
+            <select name="dlstExtSepLinesClr" @bind="ExtSepLinesClr" class= "@doorConfig.borderColors["EXTSEPLINESCLRID"]" 
+			     @onfocus="@( () => UiLogic.HasFocus("EXTSEPLINESCLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i405]]" >
                 @if (PrApiCalls.lstColors != null)
 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -266,6 +295,7 @@
                     }
                 }
             </select>
+			}
         </td>
         @code
         {
@@ -293,7 +323,12 @@
 	        }
         }
         <td id="tdExtCPlateHTDmndClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtCPlateHTDmndClr")" >
-            <select name="dlstExtCPlateHTDmndClr"  @bind="ExtCPlateHTDmndClr" class= "@doorConfig.borderColors["EXTCPLATEHTDMNDCLRID"]" >
+		  @{  int i406 = Array.IndexOf(UiLogic.propNames, "EXTCPLATEHTDMNDCLRID");
+            <select name="dlstExtCPlateHTDmndClr"  @bind="ExtCPlateHTDmndClr" class= "@doorConfig.borderColors["EXTCPLATEHTDMNDCLRID"]" 
+			   @onfocus="@( () => UiLogic.HasFocus("EXTCPLATEHTDMNDCLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i406]]"
+			>
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -302,6 +337,7 @@
                     }
                 }
             </select>
+		  }
         </td>
         @code
         {

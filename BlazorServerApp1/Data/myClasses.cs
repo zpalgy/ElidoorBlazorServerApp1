@@ -1129,6 +1129,12 @@ namespace BlazorServerApp1.Data
         public string meaged = string.Empty;
         [NonSerialized]
         public string currPropName = String.Empty;
+        [NonSerialized]
+        public string currTabName = String.Empty;
+        [NonSerialized]
+        public System.Data.DataTable dtTabFlds = new System.Data.DataTable();
+        [NonSerialized]
+        public BlazorServerApp1.Pages.Configurator4 config4;
         public Dictionary<string, string> borderColors { get; set; } 
         public Dictionary<string, string> btnClasses { get; set; }
         public Dictionary<string,string>  divClasses { get; set; }
@@ -1210,7 +1216,33 @@ namespace BlazorServerApp1.Data
                 divClasses[tabName1] = divClass;
             }
         }
-
+        public async Task KeyPressHandler(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+        {
+            //string currTabName = "movingwing";
+            if (e.Key.ToLowerInvariant() == "enter")
+            {
+                //RestartClicked = false;
+                int j = 0;
+                //DataTable dtTabFlds = new DataTable();
+                //string currTabName = UiLogic.getTabOfField(doorConfig.currPropName);
+                string nextfld = UiLogic.getNextTabFld(this, dtTabFlds, currPropName);
+                if (!string.IsNullOrEmpty(nextfld))
+                {
+                    j = Array.IndexOf(UiLogic.propNames, nextfld);
+                    if (dicRefs.ContainsKey(UiLogic.propNames[j]))
+                        dicRefs[UiLogic.propNames[j]].FocusAsync();
+                    return;
+                }
+                else
+                {
+                    string nextTabName = UiLogic.getNextTabName(this, currTabName);
+                    if (UiLogic.try2UpdateBtnClass(this, currTabName))
+                    {
+                        config4.RefreshState();
+                    }
+                }
+            }
+        }
     }
     public class ValuesDoorConfig
     {
