@@ -504,6 +504,8 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 5)]
         public string CONFIG_FIELDNAME { get; set; }
         [DataMember(Order = 6)]
+        public string FIELDNAME { get; set; }
+        [DataMember(Order = 7)]
         public bool Visible { get; set; }
     }
     public class ValuesMeagedFields_Class

@@ -1959,7 +1959,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "MEAGEDNAME,CONFIG_THNAME,CONFIG_TDNAME,FIELDCODE,CONFIG_FIELDNAME";
+                string fields = "MEAGEDNAME,CONFIG_THNAME,CONFIG_TDNAME,FIELDCODE,CONFIG_FIELDNAME,FIELDNAME";
                 request.Resource = string.Format("TRSH_MEAGEDFIELDS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)

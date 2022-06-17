@@ -695,6 +695,8 @@ namespace BlazorServerApp1.Data
         {
             try
             {
+                //we may come here also with FIELDNAME in priority e.g. DOORCOLORID !
+                //TODO - handle that 
                 //if (c.ID == null)
                 //{
                 //    int z = 17;
@@ -1115,6 +1117,10 @@ namespace BlazorServerApp1.Data
         {
             try
             {
+                if (tabName == "extdecor")
+                {
+                    int dbg = 17;
+                }
                 string query = string.Format("CONFIG_SUBFORM ='{0}'", tabName);
                 DataRow[] rowsArray = PrApiCalls.dtConfFields.Select(query);
                 List<ConfField_Class> lstTabFlds = new List<ConfField_Class>();
@@ -1164,7 +1170,7 @@ namespace BlazorServerApp1.Data
         {
             string query = string.Format("FIELDNAME='{0}'", fldName);
             DataRow[] rowsArray = dtTabFields.Select(query);
-            if (fldName == "ENDCUSTDES")
+            if (fldName == "GRIDCOLORID")
             {
                 int x = 17;
             }
@@ -1175,7 +1181,8 @@ namespace BlazorServerApp1.Data
                 if (rowIndex < dtTabFields.Rows.Count - 1)
                 {
                     string nextFldName = dtTabFields.Rows[rowIndex + 1]["FIELDNAME"].ToString();
-                    if (doorConfig.disabledFlds.ContainsKey(nextFldName) &&  doorConfig.disabledFlds[nextFldName])
+                    //string nextThName = dtTabFields.Rows[rowIndex + 1]["CONFIG_THNAME"].ToString();
+                    if (doorConfig.disabledFlds.ContainsKey(nextFldName) &&  doorConfig.disabledFlds[nextFldName]) //|| hideFld(doorConfig, nextThName))
                         return getNextTabFld(doorConfig, dtTabFields, nextFldName);   // recursive call 
                     else
                         return nextFldName;  //dtTabFields.Rows[rowIndex + 1]["FIELDNAME"].ToString();

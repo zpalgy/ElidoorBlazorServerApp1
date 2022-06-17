@@ -365,7 +365,12 @@
 	        }
         }
         <td id="tdExtPerifProfileClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtPerifProfileClr")" >
-            <select name="dlstExtPerifProfileClr" @bind="ExtPerifProfileClr" class= "@doorConfig.borderColors["EXTPERIFPROFILECLRID"]" >
+			@{  int i407 = Array.IndexOf(UiLogic.propNames, "EXTPERIFPROFILECLRID");
+            <select name="dlstExtPerifProfileClr" @bind="ExtPerifProfileClr" class= "@doorConfig.borderColors["EXTPERIFPROFILECLRID"]" 
+			   @onfocus="@( () => UiLogic.HasFocus("EXTPERIFPROFILECLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i407]]"
+			>
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -374,6 +379,7 @@
                     }
                 }
             </select>
+			}
         </td>
         @code
         {
@@ -401,7 +407,12 @@
 	        }
         }
         <td id="tdExtModerCPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtModerCPlateClr")" >
-            <select name="dlstExtModerCPlateClr"  @bind="ExtModerCPlateClr" class= "@doorConfig.borderColors["EXTMODERNCPLATECLRID"]" >
+			@{  int i408 = Array.IndexOf(UiLogic.propNames, "EXTMODERNCPLATECLRID");
+            <select name="dlstExtModerCPlateClr"  @bind="ExtModerCPlateClr" class= "@doorConfig.borderColors["EXTMODERNCPLATECLRID"]" 
+			 @onfocus="@( () => UiLogic.HasFocus("EXTMODERNCPLATECLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i408]]"
+			>
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -410,6 +421,7 @@
                     }
                 }
             </select>
+			}
         </td>
         @code
         {
@@ -437,7 +449,12 @@
 	        }
         }
         <td id="tdExtCGridClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtCGridClr")" >
-            <select name="dlstExtCGridClr"  @bind="ExtCGridClr" class= "@doorConfig.borderColors["EXTCGTIDCLRID"]" >
+			@{  int i409 = Array.IndexOf(UiLogic.propNames, "EXTCGTIDCLRID");
+            <select name="dlstExtCGridClr"  @bind="ExtCGridClr" class= "@doorConfig.borderColors["EXTCGTIDCLRID"]" 
+				@onfocus="@( () => UiLogic.HasFocus("EXTCGTIDCLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i409]]"
+			>
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -446,6 +463,7 @@
                     }
                 }
             </select>
+			}
         </td>
         @code
         {
@@ -492,7 +510,12 @@
         </tr>
         <tr>
             <td id="tdExtHTPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtHTPlatesClr")" >
-                <select name="dlstExtHTPlatesClr"  @bind="ExtHTPlatesClr" class= "@doorConfig.borderColors["EXTHTPLATESCLRID"]" >
+				@{  int i410 = Array.IndexOf(UiLogic.propNames, "EXTHTPLATESCLRID");
+                <select name="dlstExtHTPlatesClr"  @bind="ExtHTPlatesClr" class= "@doorConfig.borderColors["EXTHTPLATESCLRID"]" 
+				      @onfocus="@( () => UiLogic.HasFocus("EXTHTPLATESCLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i410]]"
+				>
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -501,6 +524,7 @@
                         }
                     }
                 </select>
+				}
             </td>
             @code
             {
@@ -528,7 +552,12 @@
 	            }
             }
             <td id="tdAttachedPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "tdAttachedPlatesClr")" >
-                <select name="dlstAttachedPlatesClr"  @bind="AttachedPlatesClr" class= "@doorConfig.borderColors["ATTACHEDPLATECLRID"]" >
+				@{  int i411 = Array.IndexOf(UiLogic.propNames, "ATTACHEDPLATECLRID");
+                <select name="dlstAttachedPlatesClr"  @bind="AttachedPlatesClr" class= "@doorConfig.borderColors["ATTACHEDPLATECLRID"]" 
+				   @onfocus="@( () => UiLogic.HasFocus("ATTACHEDPLATECLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i411]]"
+				>
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -537,6 +566,7 @@
                         }
                     }
                 </select>
+				}
             </td>
             @code
             {
@@ -564,7 +594,12 @@
 	            }
             }
             <td id="tdExtGlassPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtGlassPlateClr")" >
-                <select name="dlstExtGlassPlateClr" @bind="ExtGlassPlateClr" class= "@doorConfig.borderColors["EXTGLASSPLATECLRID"]" >
+				@{  int i412 = Array.IndexOf(UiLogic.propNames, "EXTGLASSPLATECLRID");
+                <select name="dlstExtGlassPlateClr" @bind="ExtGlassPlateClr" class= "@doorConfig.borderColors["EXTGLASSPLATECLRID"]" 
+				      @onfocus="@( () => UiLogic.HasFocus("EXTGLASSPLATECLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i412]]"
+				>
                     @if (PrApiCalls.lstGlassColors4Diamond != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstGlassColors4Diamond)
@@ -573,6 +608,7 @@
                         }
                     }
                 </select>
+				}
             </td>
             @code
             {
@@ -601,7 +637,12 @@
             }
             
             <td id="tdExtModerPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtModerPlateClr")" >
-                <select name="dlstExtModerPlateClr"  @bind="ExtModerPlateClr" class= "@doorConfig.borderColors["EXTMODERNPLATECLRID"]" >
+				@{  int i413 = Array.IndexOf(UiLogic.propNames, "EXTMODERNPLATECLRID");
+                <select name="dlstExtModerPlateClr"  @bind="ExtModerPlateClr" class= "@doorConfig.borderColors["EXTMODERNPLATECLRID"]" 
+				        @onfocus="@( () => UiLogic.HasFocus("EXTMODERNPLATECLRID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i413]]"
+				>
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -610,6 +651,7 @@
                         }
                     }
                 </select>
+				}
                 </td>
                 @code
                 {
@@ -637,15 +679,21 @@
 	                }
 }
                 <td id="tdDecorativePlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdDecorativePlateClr")" >
-                    <select name="dlstDecorativePlateClr"  @bind="DecorativePlateClr" class= "@doorConfig.borderColors["DECORPLATECLRID"]" >
-                        @if (PrApiCalls.lstColors != null)
-                        {
-                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                            {
-                                <option value="@c.TRSH_COLORID">@c.PARTDES</option>
-                            }
-                        }
-                    </select>
+						@{  int i414 = Array.IndexOf(UiLogic.propNames, "DECORPLATECLRID");
+						<select name="dlstDecorativePlateClr"  @bind="DecorativePlateClr" class= "@doorConfig.borderColors["DECORPLATECLRID"]"
+					          @onfocus="@( () => UiLogic.HasFocus("DECORPLATECLRID", doorConfig) )" 
+							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i414]]"
+						>
+							@if (PrApiCalls.lstColors != null)
+							{
+								@foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+								{
+									<option value="@c.TRSH_COLORID">@c.PARTDES</option>
+								}
+							}
+						</select>
+					}
                 </td>
                 @code
                 {
@@ -673,15 +721,21 @@
 	                }
                 }
                 <td id="tdNirostaLinesClr" hidden="@UiLogic.hideFld(doorConfig, "tdNirostaLinesClr")" >
-                    <select name="dlstNirostaLinesClr"  @bind="NirostaLinesClr" class= "@doorConfig.borderColors["NIROSTALINESCLRID"]" >
-                        @if (PrApiCalls.lstColors != null)
-                        {
-                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                            {
-                                <option value="@c.TRSH_COLORID">@c.PARTDES</option>
-                            }
-                        }
-                    </select>
+					@{  int i415 = Array.IndexOf(UiLogic.propNames, "NIROSTALINESCLRID");
+						<select name="dlstNirostaLinesClr"  @bind="NirostaLinesClr" class= "@doorConfig.borderColors["NIROSTALINESCLRID"]" 
+						        @onfocus="@( () => UiLogic.HasFocus("NIROSTALINESCLRID", doorConfig) )" 
+							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i415]]"
+						>
+							@if (PrApiCalls.lstColors != null)
+							{
+								@foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+								{
+									<option value="@c.TRSH_COLORID">@c.PARTDES</option>
+								}
+							}
+						</select>
+					}
                 </td>
                 @code
                 {
@@ -709,15 +763,21 @@
 	                }
                 }
                 <td id="tdExtNirostaLinesClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtNirostaLinesClr")" >
-                    <select name="dlstExtNirostaLinesClr"  @bind="ExtNirostaLinesClr" class= "@doorConfig.borderColors["EXTNIROSTALINESCLRID"]" >
-                        @if (PrApiCalls.lstColors != null)
-                        {
-                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                            {
-                                <option value="@c.TRSH_COLORID">@c.PARTDES</option>
-                            }
-                        }
-                    </select>
+					@{  int i416 = Array.IndexOf(UiLogic.propNames, "EXTNIROSTALINESCLRID");
+						<select name="dlstExtNirostaLinesClr"  @bind="ExtNirostaLinesClr" class= "@doorConfig.borderColors["EXTNIROSTALINESCLRID"]"
+					               @onfocus="@( () => UiLogic.HasFocus("EXTNIROSTALINESCLRID", doorConfig) )" 
+							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i416]]"
+						>
+							@if (PrApiCalls.lstColors != null)
+							{
+								@foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+								{
+									<option value="@c.TRSH_COLORID">@c.PARTDES</option>
+								}
+							}
+						</select>
+					}
                 </td>
                 @code
                 {
@@ -745,7 +805,12 @@
 	                }
                 }
                 <td id="tdExtInsertCoverClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtInsertCoverClr")" >
-                    <select name="dlstExtInsertCoverClr"  @bind="ExtInsertCoverClr" class= "@doorConfig.borderColors["EXTINSERTCLRID"]" >
+					@{  int i417 = Array.IndexOf(UiLogic.propNames, "EXTINSERTCLRID");
+                    <select name="dlstExtInsertCoverClr"  @bind="ExtInsertCoverClr" class= "@doorConfig.borderColors["EXTINSERTCLRID"]" 
+					      @onfocus="@( () => UiLogic.HasFocus("EXTINSERTCLRID", doorConfig) )" 
+							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i417]]"
+					>
                         @if (PrApiCalls.lstColors != null)
                         {
                             @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -754,6 +819,7 @@
                             }
                         }
                     </select>
+					}
                 </td>
                 @code
                 {
@@ -781,7 +847,13 @@
 	                }
                 }
                 <td id="tdVitragePatternOnDoor" hidden="@UiLogic.hideFld(doorConfig, "tdVitragePatternOnDoor")" >
-                    <input type="checkbox" name="chkbVitragePatternOnDoor"  @bind="VitragePatternOnDoor" />
+					@{  int i418 = Array.IndexOf(UiLogic.propNames, "VITRAGEPATTERNONDOOR");
+                    <input type="checkbox" name="chkbVitragePatternOnDoor"  @bind="VitragePatternOnDoor" 
+					    @onfocus="@( () => UiLogic.HasFocus("VITRAGEPATTERNONDOOR", doorConfig) )" 
+							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i418]]"
+					/>
+					}
                 </td>
                 @code
                 {
@@ -805,7 +877,13 @@
 	                }
                 }
                 <td id="tdWindowWidth" hidden="@UiLogic.hideFld(doorConfig, "tdWindowWidth")" >
-                    <input  name="txtWindowWidth" @bind="WindowWidth" class= "@doorConfig.borderColors["WINDOWWIDTH"]" />
+					@{  int i419 = Array.IndexOf(UiLogic.propNames, "WINDOWWIDTH");
+                    <input  name="txtWindowWidth" @bind="WindowWidth" class= "@doorConfig.borderColors["WINDOWWIDTH"]" 
+					       @onfocus="@( () => UiLogic.HasFocus("WINDOWWIDTH", doorConfig) )" 
+							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i419]]"
+					/>
+					}
                 </td>
                 @code
                 {
@@ -833,7 +911,13 @@
 	                }
                 }
                 <td id="tdWindowHeight" hidden="@UiLogic.hideFld(doorConfig, "tdWindowHeight")" >
-                    <input  name="txtWindowHeight"  @bind="WindowHeight" class= "@doorConfig.borderColors["WINDOWHEIGHT"]" />
+					@{  int i420 = Array.IndexOf(UiLogic.propNames, "WINDOWHEIGHT");
+                    <input  name="txtWindowHeight"  @bind="WindowHeight" class= "@doorConfig.borderColors["WINDOWHEIGHT"]" 
+					         @onfocus="@( () => UiLogic.HasFocus("WINDOWHEIGHT", doorConfig) )" 
+							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i420]]"
+					/>
+					}
                 </td>
                 @code
                 {
@@ -863,712 +947,724 @@
             </tr>
         </table>
         <!-- end extDecorL2 -->
-                                            <table id="extDecorL3">
-                                                <tr>
-                                                    <th id="thProfile4Window" hidden="@UiLogic.hideFld(doorConfig, "thProfile4Window")" >צורת פרופיל</th>
-                                                    <th id="thDecorFrame" hidden="@UiLogic.hideFld(doorConfig, "thDecorFrame")" >מסגרת דקורטיבית</th>
-                                                    <th id="thGlass4Window" hidden="@UiLogic.hideFld(doorConfig, "thGlass4Window")" >זכוכית לחלון</th>
-                                                    <th id="thGrid" hidden="@UiLogic.hideFld(doorConfig, "thGrid")" >דגם סורג</th>
-                                                    <th id="thVitrage" hidden="@UiLogic.hideFld(doorConfig, "thVitrage")" >דגם ויטראז'</th>
-                                                    <th id="thJapaneseWindow" hidden="@UiLogic.hideFld(doorConfig, "thJapaneseWindow")" >חלון יפני</th>
-                                                    <th id="thPlatesFor7504" hidden="@UiLogic.hideFld(doorConfig, "thPlatesFor7504")" >לוחות מדבקים לדגם 7504</th>
-                                                    <th id="thCPlate4HTDiamond" hidden="@UiLogic.hideFld(doorConfig, "thCPlate4HTDiamond")" >לוח מרכזי מעטה חוץ-הייטק\יהלום</th>
-                                                    <th id="thExtSide_C_Plate" hidden="@UiLogic.hideFld(doorConfig, "thExtSide_C_Plate")" >לוח צידי\אמצעי מעטה חוץ</th>
-                                                    <th id="thDecorGridPlate" hidden="@UiLogic.hideFld(doorConfig, "thDecorGridPlate")" >לוח דקורטיבי מסורג</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="tdProfile4Window" hidden="@UiLogic.hideFld(doorConfig, "tdProfile4Window")" >
-                                                        <select name="dlstProfile4Window" @bind="Profile4Window" class= "@doorConfig.borderColors["PROFILE4WINDOWNAME"]" >
-                                                            @if (PrApiCalls.lstProfiles4Windows != null)
-                                                            {
-	                                                            @foreach (PROFILE4WINDOW_Class c in PrApiCalls.lstProfiles4Windows)
-	                                                            {
-		                                                            <option value="@c.PROFILE4WINDOWNAME">@c.PROFILE4WINDOWDES</option>
-	                                                            }
-                                                            }
-                                                        </select>
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected string _Profile4Window = string.Empty;
-	                                                    protected string Profile4Window
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _Profile4Window = doorConfig.PROFILE4WINDOWNAME;
-			                                                    }
-			                                                    return _Profile4Window;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _Profile4Window = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.PROFILE4WINDOWNAME = _Profile4Window;
-																	doorConfig.borderColors["PROFILE4WINDOWNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdDecorFrame" hidden="@UiLogic.hideFld(doorConfig, "tdDecorFrame")" >
-                                                        <input type="checkbox" name="chkbDecorFrame" @bind="DecorFrame" />
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected bool _DecorFrame = false;
-	                                                    protected bool DecorFrame
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _DecorFrame = (doorConfig.DECORFRAME == "Y");
-			                                                    }
-			                                                    return _DecorFrame;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _DecorFrame = value;
-			                                                    if (doorConfig != null)
-				                                                    doorConfig.DECORFRAME = (_DecorFrame ? "Y" : "");
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdGlass4Window" hidden="@UiLogic.hideFld(doorConfig, "tdGlass4Window")" >
-                                                        <select name="dlstGlass4Window" @bind="Glass4Window" class= "@doorConfig.borderColors["GLASS4WINDOWID"]" >
-                                                             @if (PrApiCalls.lstGlasses4Windows != null)
-                                                             {
-	                                                            @foreach (GLASS4WINDOW_Class c in PrApiCalls.lstGlasses4Windows)
-	                                                            {
-		                                                            <option value="@c.GLASS4WINDOWID">@c.GLASS4WINDOWDES</option>
-	                                                            }
-                                                             }
-                                                            </select>
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected int _Glass4Window = 0;
-	                                                    protected int Glass4Window
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _Glass4Window = doorConfig.GLASS4WINDOWID;
-			                                                    }
-			                                                    return _Glass4Window;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _Glass4Window = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.GLASS4WINDOWID = _Glass4Window;
-																	doorConfig.borderColors["GLASS4WINDOWID"] = (value != 0 ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdGrid" hidden="@UiLogic.hideFld(doorConfig, "tdGrid")" >
-                                                        <select name="dlstGrid"  @bind="Grid" class= "@doorConfig.borderColors["GRID_ID"]" >
-                                                             @if (PrApiCalls.lstGrids != null)
-                                                             {
-	                                                            @foreach (GRID_Class c in PrApiCalls.lstGrids)
-	                                                            {
-		                                                            <option value="@c.GRID_ID">@c.GRIDDES</option>
-	                                                            }
-                                                             }
-                                                        </select>
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected int _Grid = 0;
-	                                                    protected int Grid
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _Grid = doorConfig.GRID_ID;
-			                                                    }
-			                                                    return _Grid;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _Grid = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.GRID_ID = _Grid;
-																	doorConfig.borderColors["GRID_ID"] = (value != 0 ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdVitrage" hidden="@UiLogic.hideFld(doorConfig, "tdVitrage")" >
-                                                        <select name="dlstVitrage" @bind="Vitrage" class= "@doorConfig.borderColors["VITRAGENAME"]" >
-                                                             @if (PrApiCalls.lstVitrages != null)
-                                                             {
-	                                                            @foreach (VITRAGE_Class c in PrApiCalls.lstVitrages)
-	                                                            {
-		                                                            <option value="@c.VITRAGENAME">@c.VITRAGENAME</option>
-	                                                            }
-                                                             }
-                                                        </select>
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected string _Vitrage = string.Empty;
-	                                                    protected string Vitrage
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _Vitrage = doorConfig.VITRAGENAME;
-			                                                    }
-			                                                    return _Vitrage;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _Vitrage = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.VITRAGENAME = _Vitrage;
-																	doorConfig.borderColors["VITRAGENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdJapaneseWindow" hidden="@UiLogic.hideFld(doorConfig, "tdJapaneseWindow")" >
-                                                        <input type="checkbox" name="chkbJapaneseWindow" @bind="JapaneseWindow" />
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected bool _JapaneseWindow = false;
-	                                                    protected bool JapaneseWindow
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _JapaneseWindow = (doorConfig.JAPANESEWINDOW == "Y");
-			                                                    }
-			                                                    return _JapaneseWindow;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _JapaneseWindow = value;
-			                                                    if (doorConfig != null)
-				                                                    doorConfig.JAPANESEWINDOW = (_JapaneseWindow ? "Y" : "");
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdPlatesFor7504" hidden="@UiLogic.hideFld(doorConfig, "tdPlatesFor7504")" >
-                                                        <input type="checkbox" name="chkbPlatesFor7504" @bind="PlatesFor7504" />
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected bool _PlatesFor7504 = false;
-	                                                    protected bool PlatesFor7504
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _PlatesFor7504 = (doorConfig.PLATESFOR7504 == "Y");
-			                                                    }
-			                                                    return _PlatesFor7504;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _PlatesFor7504 = value;
-			                                                    if (doorConfig != null)
-				                                                    doorConfig.PLATESFOR7504 = (_PlatesFor7504 ? "Y" : "");
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdCPlate4HTDiamond" hidden="@UiLogic.hideFld(doorConfig, "tdCPlate4HTDiamond")" >
-                                                        <select name="dlstCPlate4HTDiamond" @bind="CPlate4HTDiamond" class= "@doorConfig.borderColors["EXTCPLATE4HTDMNDNAME"]" >
-                                                            @if (PrApiCalls.lstRaw4CPlates != null)
-                                                             {
-	                                                            @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
-	                                                            {
-		                                                            <option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
-	                                                            }
-                                                             }
-                                                        </select>
-                                                            @* DataValueField="RAW4CPLATESNAME"
-                                                               DataTextField="RAW4CPLATESNAME"
-                                                               SelectMethod="getRaw4CPlates"
-                                                            *@
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected string _CPlate4HTDiamond = string.Empty;
-	                                                    protected string CPlate4HTDiamond
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _CPlate4HTDiamond = doorConfig.EXTCPLATE4HTDMNDNAME;
-			                                                    }
-			                                                    return _CPlate4HTDiamond;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _CPlate4HTDiamond = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.EXTCPLATE4HTDMNDNAME = _CPlate4HTDiamond;
-																	doorConfig.borderColors["EXTCPLATE4HTDMNDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdExtSide_C_Plate" hidden="@UiLogic.hideFld(doorConfig, "tdExtSide_C_Plate")" >
-                                                        <select name="dlstExtSide_C_Plate" @bind="ExtSide_C_Plate" class= "@doorConfig.borderColors["EXTSIDE_C_PLATENAME"]" >
-                                                            @if (PrApiCalls.lstRaw4CPlates != null)
-                                                             {
-	                                                            @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
-	                                                            {
-		                                                            <option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
-	                                                            }
-                                                             }
-                                                        </select>
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected string _ExtSide_C_Plate = string.Empty;
-	                                                    protected string ExtSide_C_Plate
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _ExtSide_C_Plate = doorConfig.EXTSIDE_C_PLATENAME;
-			                                                    }
-			                                                    return _ExtSide_C_Plate;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _ExtSide_C_Plate = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.EXTSIDE_C_PLATENAME = _ExtSide_C_Plate;
-																	doorConfig.borderColors["EXTSIDE_C_PLATENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
+                    <table id="extDecorL3">
+                        <tr>
+                            <th id="thProfile4Window" hidden="@UiLogic.hideFld(doorConfig, "thProfile4Window")" >צורת פרופיל</th>
+                            <th id="thDecorFrame" hidden="@UiLogic.hideFld(doorConfig, "thDecorFrame")" >מסגרת דקורטיבית</th>
+                            <th id="thGlass4Window" hidden="@UiLogic.hideFld(doorConfig, "thGlass4Window")" >זכוכית לחלון</th>
+                            <th id="thGrid" hidden="@UiLogic.hideFld(doorConfig, "thGrid")" >דגם סורג</th>
+                            <th id="thVitrage" hidden="@UiLogic.hideFld(doorConfig, "thVitrage")" >דגם ויטראז'</th>
+                            <th id="thJapaneseWindow" hidden="@UiLogic.hideFld(doorConfig, "thJapaneseWindow")" >חלון יפני</th>
+                            <th id="thPlatesFor7504" hidden="@UiLogic.hideFld(doorConfig, "thPlatesFor7504")" >לוחות מדבקים לדגם 7504</th>
+                            <th id="thCPlate4HTDiamond" hidden="@UiLogic.hideFld(doorConfig, "thCPlate4HTDiamond")" >לוח מרכזי מעטה חוץ-הייטק\יהלום</th>
+                            <th id="thExtSide_C_Plate" hidden="@UiLogic.hideFld(doorConfig, "thExtSide_C_Plate")" >לוח צידי\אמצעי מעטה חוץ</th>
+                            <th id="thDecorGridPlate" hidden="@UiLogic.hideFld(doorConfig, "thDecorGridPlate")" >לוח דקורטיבי מסורג</th>
+                        </tr>
+                        <tr>
+                            <td id="tdProfile4Window" hidden="@UiLogic.hideFld(doorConfig, "tdProfile4Window")" >
+								@{  int i421 = Array.IndexOf(UiLogic.propNames, "PROFILE4WINDOWNAME");
+									<select name="dlstProfile4Window" @bind="Profile4Window" class= "@doorConfig.borderColors["PROFILE4WINDOWNAME"]" 
+									         @onfocus="@( () => UiLogic.HasFocus("PROFILE4WINDOWNAME", doorConfig) )" 
+											 onkeypress="@doorConfig.KeyPressHandler" 
+											 @ref="doorConfig.dicRefs[UiLogic.propNames[i421]]"
+									>
+										@if (PrApiCalls.lstProfiles4Windows != null)
+										{
+											@foreach (PROFILE4WINDOW_Class c in PrApiCalls.lstProfiles4Windows)
+											{
+												<option value="@c.PROFILE4WINDOWNAME">@c.PROFILE4WINDOWDES</option>
+											}
+										}
+									</select>
+								}
+                            </td>
+                            @code
+                            {
+	                            protected string _Profile4Window = string.Empty;
+	                            protected string Profile4Window
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _Profile4Window = doorConfig.PROFILE4WINDOWNAME;
+			                            }
+			                            return _Profile4Window;
+		                            }
+		                            set
+		                            {
+			                            _Profile4Window = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.PROFILE4WINDOWNAME = _Profile4Window;
+											doorConfig.borderColors["PROFILE4WINDOWNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
+                            <td id="tdDecorFrame" hidden="@UiLogic.hideFld(doorConfig, "tdDecorFrame")" >
+								@{  int i422 = Array.IndexOf(UiLogic.propNames, "DECORFRAME");
+									<input type="checkbox" name="chkbDecorFrame" @bind="DecorFrame" 
+										    @onfocus="@( () => UiLogic.HasFocus("DECORFRAME", doorConfig) )" 
+											 onkeypress="@doorConfig.KeyPressHandler" 
+											 @ref="doorConfig.dicRefs[UiLogic.propNames[i422]]"
+									/>
+								}
+                            </td>
+                            @code
+                            {
+	                            protected bool _DecorFrame = false;
+	                            protected bool DecorFrame
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _DecorFrame = (doorConfig.DECORFRAME == "Y");
+			                            }
+			                            return _DecorFrame;
+		                            }
+		                            set
+		                            {
+			                            _DecorFrame = value;
+			                            if (doorConfig != null)
+				                            doorConfig.DECORFRAME = (_DecorFrame ? "Y" : "");
+		                            }
+	                            }
+                            }
+                            <td id="tdGlass4Window" hidden="@UiLogic.hideFld(doorConfig, "tdGlass4Window")" >
+                                <select name="dlstGlass4Window" @bind="Glass4Window" class= "@doorConfig.borderColors["GLASS4WINDOWID"]" >
+                                        @if (PrApiCalls.lstGlasses4Windows != null)
+                                        {
+	                                    @foreach (GLASS4WINDOW_Class c in PrApiCalls.lstGlasses4Windows)
+	                                    {
+		                                    <option value="@c.GLASS4WINDOWID">@c.GLASS4WINDOWDES</option>
+	                                    }
+                                        }
+                                    </select>
+                            </td>
+                            @code
+                            {
+	                            protected int _Glass4Window = 0;
+	                            protected int Glass4Window
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _Glass4Window = doorConfig.GLASS4WINDOWID;
+			                            }
+			                            return _Glass4Window;
+		                            }
+		                            set
+		                            {
+			                            _Glass4Window = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.GLASS4WINDOWID = _Glass4Window;
+											doorConfig.borderColors["GLASS4WINDOWID"] = (value != 0 ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
+                            <td id="tdGrid" hidden="@UiLogic.hideFld(doorConfig, "tdGrid")" >
+                                <select name="dlstGrid"  @bind="Grid" class= "@doorConfig.borderColors["GRID_ID"]" >
+                                        @if (PrApiCalls.lstGrids != null)
+                                        {
+	                                    @foreach (GRID_Class c in PrApiCalls.lstGrids)
+	                                    {
+		                                    <option value="@c.GRID_ID">@c.GRIDDES</option>
+	                                    }
+                                        }
+                                </select>
+                            </td>
+                            @code
+                            {
+	                            protected int _Grid = 0;
+	                            protected int Grid
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _Grid = doorConfig.GRID_ID;
+			                            }
+			                            return _Grid;
+		                            }
+		                            set
+		                            {
+			                            _Grid = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.GRID_ID = _Grid;
+											doorConfig.borderColors["GRID_ID"] = (value != 0 ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
+                            <td id="tdVitrage" hidden="@UiLogic.hideFld(doorConfig, "tdVitrage")" >
+                                <select name="dlstVitrage" @bind="Vitrage" class= "@doorConfig.borderColors["VITRAGENAME"]" >
+                                        @if (PrApiCalls.lstVitrages != null)
+                                        {
+	                                    @foreach (VITRAGE_Class c in PrApiCalls.lstVitrages)
+	                                    {
+		                                    <option value="@c.VITRAGENAME">@c.VITRAGENAME</option>
+	                                    }
+                                        }
+                                </select>
+                            </td>
+                            @code
+                            {
+	                            protected string _Vitrage = string.Empty;
+	                            protected string Vitrage
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _Vitrage = doorConfig.VITRAGENAME;
+			                            }
+			                            return _Vitrage;
+		                            }
+		                            set
+		                            {
+			                            _Vitrage = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.VITRAGENAME = _Vitrage;
+											doorConfig.borderColors["VITRAGENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
+                            <td id="tdJapaneseWindow" hidden="@UiLogic.hideFld(doorConfig, "tdJapaneseWindow")" >
+                                <input type="checkbox" name="chkbJapaneseWindow" @bind="JapaneseWindow" />
+                            </td>
+                            @code
+                            {
+	                            protected bool _JapaneseWindow = false;
+	                            protected bool JapaneseWindow
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _JapaneseWindow = (doorConfig.JAPANESEWINDOW == "Y");
+			                            }
+			                            return _JapaneseWindow;
+		                            }
+		                            set
+		                            {
+			                            _JapaneseWindow = value;
+			                            if (doorConfig != null)
+				                            doorConfig.JAPANESEWINDOW = (_JapaneseWindow ? "Y" : "");
+		                            }
+	                            }
+                            }
+                            <td id="tdPlatesFor7504" hidden="@UiLogic.hideFld(doorConfig, "tdPlatesFor7504")" >
+                                <input type="checkbox" name="chkbPlatesFor7504" @bind="PlatesFor7504" />
+                            </td>
+                            @code
+                            {
+	                            protected bool _PlatesFor7504 = false;
+	                            protected bool PlatesFor7504
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _PlatesFor7504 = (doorConfig.PLATESFOR7504 == "Y");
+			                            }
+			                            return _PlatesFor7504;
+		                            }
+		                            set
+		                            {
+			                            _PlatesFor7504 = value;
+			                            if (doorConfig != null)
+				                            doorConfig.PLATESFOR7504 = (_PlatesFor7504 ? "Y" : "");
+		                            }
+	                            }
+                            }
+                            <td id="tdCPlate4HTDiamond" hidden="@UiLogic.hideFld(doorConfig, "tdCPlate4HTDiamond")" >
+                                <select name="dlstCPlate4HTDiamond" @bind="CPlate4HTDiamond" class= "@doorConfig.borderColors["EXTCPLATE4HTDMNDNAME"]" >
+                                    @if (PrApiCalls.lstRaw4CPlates != null)
+                                        {
+	                                    @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
+	                                    {
+		                                    <option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
+	                                    }
+                                        }
+                                </select>
+                                    @* DataValueField="RAW4CPLATESNAME"
+                                        DataTextField="RAW4CPLATESNAME"
+                                        SelectMethod="getRaw4CPlates"
+                                    *@
+                            </td>
+                            @code
+                            {
+	                            protected string _CPlate4HTDiamond = string.Empty;
+	                            protected string CPlate4HTDiamond
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _CPlate4HTDiamond = doorConfig.EXTCPLATE4HTDMNDNAME;
+			                            }
+			                            return _CPlate4HTDiamond;
+		                            }
+		                            set
+		                            {
+			                            _CPlate4HTDiamond = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.EXTCPLATE4HTDMNDNAME = _CPlate4HTDiamond;
+											doorConfig.borderColors["EXTCPLATE4HTDMNDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
+                            <td id="tdExtSide_C_Plate" hidden="@UiLogic.hideFld(doorConfig, "tdExtSide_C_Plate")" >
+                                <select name="dlstExtSide_C_Plate" @bind="ExtSide_C_Plate" class= "@doorConfig.borderColors["EXTSIDE_C_PLATENAME"]" >
+                                    @if (PrApiCalls.lstRaw4CPlates != null)
+                                        {
+	                                    @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
+	                                    {
+		                                    <option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
+	                                    }
+                                        }
+                                </select>
+                            </td>
+                            @code
+                            {
+	                            protected string _ExtSide_C_Plate = string.Empty;
+	                            protected string ExtSide_C_Plate
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _ExtSide_C_Plate = doorConfig.EXTSIDE_C_PLATENAME;
+			                            }
+			                            return _ExtSide_C_Plate;
+		                            }
+		                            set
+		                            {
+			                            _ExtSide_C_Plate = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.EXTSIDE_C_PLATENAME = _ExtSide_C_Plate;
+											doorConfig.borderColors["EXTSIDE_C_PLATENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
 
-                                                    <td id="tdDecorGridPlate" hidden="@UiLogic.hideFld(doorConfig, "tdDecorGridPlate")" >
-                                                        <select name="dlstDecorGridPlate" @bind="DecorGridPlate" class= "@doorConfig.borderColors["DECORGRIDPLATEDES"]" >
-                                                            @if (PrApiCalls.lstGrids != null)
-                                                             {
-	                                                            @foreach (GRID_Class c in PrApiCalls.lstGrids)
-	                                                            {
-		                                                            <option value="@c.GRID_ID">@c.GRIDDES</option>
-	                                                            }
-                                                             }
-                                                        </select>
-                                                            @*  DataValueField="GRIDDES"   
-                                                                DataTextField="GRIDDES"    
-                                                                SelectMethod="getGrids" 
-                                                            *@
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected string _DecorGridPlate = string.Empty;
-	                                                    protected string DecorGridPlate
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _DecorGridPlate = doorConfig.DECORGRIDPLATEDES;
-			                                                    }
-			                                                    return _DecorGridPlate;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _DecorGridPlate = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.DECORGRIDPLATEDES = _DecorGridPlate;
-																	doorConfig.borderColors["DECORGRIDPLATEDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
-                                                </tr>
-                                            </table>
-                                            <!-- end table extDecorL3 -->
-                                            <table id="extDecorL4">
-                                                <tr>
-                                                    <th id="thGrid4HT1084" hidden="@UiLogic.hideFld(doorConfig, "thGrid4HT1084")" >סורג לדלת מדגם הייטק 1084</th>
-                                                    <th id="thExtGridCPlate" hidden="@UiLogic.hideFld(doorConfig, "thExtGridCPlate")" >לוח מסורג מרכזי מעטה חוץ</th>
-                                                    <th id="thExtHTPlate" hidden="@UiLogic.hideFld(doorConfig, "thExtHTPlate")" >לוחות הייטק מעטה חוץ</th>
-                                                    <th id="thVitrage4Diamond" hidden="@UiLogic.hideFld(doorConfig, "thVitrage4Diamond")" >ויטראז' לדגם יהלום</th>
-                                                    <th id="thExtVitrage4DiamondQ" hidden="@UiLogic.hideFld(doorConfig, "thExtVitrage4DiamondQ")" >כמות ויטראז' לדגם יהלום מעטה חוץ</th>
-                                                    <th id="thInterPlatesSpace" hidden="@UiLogic.hideFld(doorConfig, "thInterPlatesSpace")" >מרווח בין לוחות</th>
-                                                    <th id="thExtFinModernCPlate" hidden="@UiLogic.hideFld(doorConfig, "thExtFinModernCPlate")" >גימור לוח מרכזי מודרני מעטה חוץ</th>
-                                                    <th id="thExtFinModernSepLine" hidden="@UiLogic.hideFld(doorConfig, "thExtFinModernSepLine")" >גימור פס מפריד מודרני מעטה חוץ</th>
-                                                    <th id="thExtFinModernPlate" hidden="@UiLogic.hideFld(doorConfig, "thExtFinModernPlate")" >גימור לוח מודרני מעטה חוץ</th>
-                                                    <th id="thHandle4Diamond" hidden="@UiLogic.hideFld(doorConfig, "thHandle4Diamond")" >דגם ידיות אומנותיות לדגם יהלום</th>
+                            <td id="tdDecorGridPlate" hidden="@UiLogic.hideFld(doorConfig, "tdDecorGridPlate")" >
+                                <select name="dlstDecorGridPlate" @bind="DecorGridPlate" class= "@doorConfig.borderColors["DECORGRIDPLATEDES"]" >
+                                    @if (PrApiCalls.lstGrids != null)
+                                        {
+	                                    @foreach (GRID_Class c in PrApiCalls.lstGrids)
+	                                    {
+		                                    <option value="@c.GRID_ID">@c.GRIDDES</option>
+	                                    }
+                                        }
+                                </select>
+                                    @*  DataValueField="GRIDDES"   
+                                        DataTextField="GRIDDES"    
+                                        SelectMethod="getGrids" 
+                                    *@
+                            </td>
+                            @code
+                            {
+	                            protected string _DecorGridPlate = string.Empty;
+	                            protected string DecorGridPlate
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _DecorGridPlate = doorConfig.DECORGRIDPLATEDES;
+			                            }
+			                            return _DecorGridPlate;
+		                            }
+		                            set
+		                            {
+			                            _DecorGridPlate = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.DECORGRIDPLATEDES = _DecorGridPlate;
+											doorConfig.borderColors["DECORGRIDPLATEDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
+                        </tr>
+                    </table>
+                    <!-- end table extDecorL3 -->
+                    <table id="extDecorL4">
+                        <tr>
+                            <th id="thGrid4HT1084" hidden="@UiLogic.hideFld(doorConfig, "thGrid4HT1084")" >סורג לדלת מדגם הייטק 1084</th>
+                            <th id="thExtGridCPlate" hidden="@UiLogic.hideFld(doorConfig, "thExtGridCPlate")" >לוח מסורג מרכזי מעטה חוץ</th>
+                            <th id="thExtHTPlate" hidden="@UiLogic.hideFld(doorConfig, "thExtHTPlate")" >לוחות הייטק מעטה חוץ</th>
+                            <th id="thVitrage4Diamond" hidden="@UiLogic.hideFld(doorConfig, "thVitrage4Diamond")" >ויטראז' לדגם יהלום</th>
+                            <th id="thExtVitrage4DiamondQ" hidden="@UiLogic.hideFld(doorConfig, "thExtVitrage4DiamondQ")" >כמות ויטראז' לדגם יהלום מעטה חוץ</th>
+                            <th id="thInterPlatesSpace" hidden="@UiLogic.hideFld(doorConfig, "thInterPlatesSpace")" >מרווח בין לוחות</th>
+                            <th id="thExtFinModernCPlate" hidden="@UiLogic.hideFld(doorConfig, "thExtFinModernCPlate")" >גימור לוח מרכזי מודרני מעטה חוץ</th>
+                            <th id="thExtFinModernSepLine" hidden="@UiLogic.hideFld(doorConfig, "thExtFinModernSepLine")" >גימור פס מפריד מודרני מעטה חוץ</th>
+                            <th id="thExtFinModernPlate" hidden="@UiLogic.hideFld(doorConfig, "thExtFinModernPlate")" >גימור לוח מודרני מעטה חוץ</th>
+                            <th id="thHandle4Diamond" hidden="@UiLogic.hideFld(doorConfig, "thHandle4Diamond")" >דגם ידיות אומנותיות לדגם יהלום</th>
 
-                                                </tr>
-                                                <tr>
-                                                    <td id="tdGrid4HT1084" hidden="@UiLogic.hideFld(doorConfig, "tdGrid4HT1084")" >
-                                                        <select name="dlstGrid4HT1084"  @bind="Grid4HT1084" class= "@doorConfig.borderColors["GRID4HT1084NAME"]" >
-                                                            @if (PrApiCalls.lstGrid4HT1084 != null)
-                                                             {
-	                                                            @foreach (GRID4HT1084_Class c in PrApiCalls.lstGrid4HT1084)
-	                                                            {
-		                                                            <option value="@c.GRID4HT1084NAME">@c.GRID4HT1084DES</option>
-	                                                            }
-                                                             }
-                                                        </select>
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected string _Grid4HT1084 = string.Empty;
-	                                                    protected string Grid4HT1084
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _Grid4HT1084 = doorConfig.GRID4HT1084NAME;
-			                                                    }
-			                                                    return _Grid4HT1084;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _Grid4HT1084 = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.GRID4HT1084NAME = _Grid4HT1084;
-																	doorConfig.borderColors["GRID4HT1084NAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdExtGridCPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtGridCPlate")" >
-                                                        <select name="dlstExtGridCPlate"  @bind="ExtGridCPlate" class= "@doorConfig.borderColors["EXTGRIDCPLATEDES"]" >
-                                                            @if (PrApiCalls.lstGrids != null)
-                                                             {
-	                                                            @foreach (GRID_Class c in PrApiCalls.lstGrids)
-	                                                            {
-		                                                            <option value="@c.GRIDDES">@c.GRIDDES</option>
-	                                                            }
-                                                             }
-                                                        </select>
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected string _ExtGridCPlate = string.Empty;
-	                                                    protected string ExtGridCPlate
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _ExtGridCPlate = doorConfig.EXTGRIDCPLATEDES;
-			                                                    }
-			                                                    return _ExtGridCPlate;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _ExtGridCPlate = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.EXTGRIDCPLATEDES = _ExtGridCPlate;
-																	doorConfig.borderColors["EXTGRIDCPLATEDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-		                                                    }
-	                                                    }
-                                                    }
-                                                    <td id="tdExtHTPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtHTPlate")" >
-                                                        <select name="dlstExtHTPlate"  @bind="ExtHTPlate" class= "@doorConfig.borderColors["EXTHTPLATENAME"]" >
-                                                            @if (PrApiCalls.lstRaw4CPlates != null)
-															 {
-																@foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
-																{
-																	<option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
-																}
-															 }
-                                                        </select>
-                                                    </td>
-													@code
-													{
-														protected string _ExtHTPlate = string.Empty;
-														protected string ExtHTPlate
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_ExtHTPlate = doorConfig.EXTHTPLATENAME;
-																}
-																return _ExtHTPlate;
-															}
-															set
-															{
-																_ExtHTPlate = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.EXTHTPLATENAME = _ExtHTPlate;
-																	doorConfig.borderColors["EXTHTPLATENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-															}
-														}
-													}
-                                                    <td id="tdVitrage4Diamond" hidden="@UiLogic.hideFld(doorConfig, "tdVitrage4Diamond")" >
-                                                        <select name="dlstVitrage4Diamond" @bind="Vitrage4Diamond" class= "@doorConfig.borderColors["VITRAGE4DIAMONDNAME"]" >
-															@if (PrApiCalls.lstVitrages4Diamond != null)
-															 {
-																@foreach (VITRAGE4DIAMOND_Class c in PrApiCalls.lstVitrages4Diamond)
-																{
-																	<option value="@c.VITRAGE4DIAMONDNAME">@c.VITRAGE4DIAMONDDES</option>
-																}
-															 }
-                                                        </select>
-                                                    </td>
-													@code
-													{
-														protected string _Vitrage4Diamond = string.Empty;
-														protected string Vitrage4Diamond
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_Vitrage4Diamond = doorConfig.VITRAGE4DIAMONDNAME;
-																}
-																return _Vitrage4Diamond;
-															}
-															set
-															{
-																_Vitrage4Diamond = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.VITRAGE4DIAMONDNAME = _Vitrage4Diamond;
-																	doorConfig.borderColors["VITRAGE4DIAMONDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-															}
-														}
-													}
-                                                    <td id="tdExtVitrage4DiamondQ" hidden="@UiLogic.hideFld(doorConfig, "tdExtVitrage4DiamondQ")" >
-                                                        <input type="number"  name="txtExtVitrage4DiamondQ"  @bind="ExtVitrage4DiamondQ" 
-														       class= "@doorConfig.borderColors["EXTVITRAGE4DIAMONDQ"]" />
-                                                    </td>
-													@code
-													{
-														protected int _ExtVitrage4DiamondQ = 0;
-														protected int ExtVitrage4DiamondQ
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_ExtVitrage4DiamondQ = doorConfig.EXTVITRAGE4DIAMONDQ;
-																}
-																return _ExtVitrage4DiamondQ;
-															}
-															set
-															{
-																_ExtVitrage4DiamondQ = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.EXTVITRAGE4DIAMONDQ = _ExtVitrage4DiamondQ;
-																	doorConfig.borderColors["EXTVITRAGE4DIAMONDQ"] = (value != 0 ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-															}
-														}
-													}
-                                                    <td id="tdInterPlatesSpace" hidden="@UiLogic.hideFld(doorConfig, "tdInterPlatesSpace")" >
-                                                        <select name="dlstInterPlatesSpace"   @bind="InterPlatesSpace" class= "@doorConfig.borderColors["INTERPLATESSPACE"]" >
-                                                            <option></option>
-                                                            <option>4</option>
-                                                            <option>5</option>
-                                                        </select>
-                                                    </td>
-													@code
-													{
-														protected int _InterPlatesSpace = 0;
-														protected int InterPlatesSpace
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_InterPlatesSpace = doorConfig.INTERPLATESSPACE;
-																}
-																return _InterPlatesSpace;
-															}
-															set
-															{
-																_InterPlatesSpace = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.INTERPLATESSPACE = _InterPlatesSpace;
-																	doorConfig.borderColors["INTERPLATESSPACE"] = (value != 0 ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-															}
-														}
-													}
-                                                    <td id="tdExtFinModernCPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernCPlate")" >
-                                                        <select name="dlstExtFinModernCPlate"  @bind="ExtFinModernCPlate" 
-														            class= "@doorConfig.borderColors["EXTFINMODERNCPLATE"]" >
-                                                            <option></option>
-                                                            <option>חלק</option>
-                                                            <option>מחורץ</option>
-                                                        </select>
-                                                    </td>
-													@code
-													{
-														protected string _ExtFinModernCPlate = string.Empty;
-														protected string ExtFinModernCPlate
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_ExtFinModernCPlate = doorConfig.EXTFINMODERNCPLATE;
-																}
-																return _ExtFinModernCPlate;
-															}
-															set
-															{
-																_ExtFinModernCPlate = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.EXTFINMODERNCPLATE = _ExtFinModernCPlate;
-																	doorConfig.borderColors["EXTFINMODERNCPLATE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-															}
-														}
-													}
-                                                    <td id="tdExtFinModernSepLine" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernSepLine")" >
-                                                        <select name="dlstExtFinModernSepLine"  @bind="ExtFinModernSepLine" 
-														             class= "@doorConfig.borderColors["EXTFINMODERNSEPLINE"]" >
-                                                            <option></option>
-                                                            <option>חלק</option>
-                                                            <option>מחורץ</option>
-                                                        </select>
-                                                    </td>
-													@code
-													{
-														protected string _ExtFinModernSepLine = string.Empty;
-														protected string ExtFinModernSepLine
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_ExtFinModernSepLine = doorConfig.EXTFINMODERNSEPLINE;
-																}
-																return _ExtFinModernSepLine;
-															}
-															set
-															{
-																_ExtFinModernSepLine = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.EXTFINMODERNSEPLINE = _ExtFinModernSepLine;
-																	doorConfig.borderColors["EXTFINMODERNSEPLINE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-															}
-														}
-													}
-                                                    <td id="tdExtFinModernPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernPlate")" >
-                                                        <select name="dlstExtFinModernPlate"  @bind="ExtFinModernPlate" 
-														                class= "@doorConfig.borderColors["EXTFINMODERNPLATE"]" >
-                                                            <option></option>
-                                                            <option>חלק</option>
-                                                            <option>מחורץ</option>
-                                                        </select>
-                                                    </td>
-													@code
-													{
-														protected string _ExtFinModernPlate = string.Empty;
-														protected string ExtFinModernPlate
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_ExtFinModernPlate = doorConfig.EXTFINMODERNPLATE;
-																}
-																return _ExtFinModernPlate;
-															}
-															set
-															{
-																_ExtFinModernPlate = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.EXTFINMODERNPLATE = _ExtFinModernPlate;
-																	doorConfig.borderColors["EXTFINMODERNPLATE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																}
-															}
-														}
-													}
-                                                    <td id="tdHandle4Diamond" hidden="@UiLogic.hideFld(doorConfig, "tdHandle4Diamond")" >
-                                                        <select name="dlstHandle4Diamond"  @bind="Handle4Diamond" class= "@doorConfig.borderColors["HANDLE4DIAMONDNAME"]" >
-															@if (PrApiCalls.lstHandles4Diamond != null)
-															 {
-																@foreach (HANDLE4DIAMOND_Class c in PrApiCalls.lstHandles4Diamond)
-																{
-																	<option value="@c.HANDLE4DIAMONDNAME">@c.HANDLE4DIAMONDDES</option>
-																}
-															 }
-														</select>
-													</td>
-														@code
-														{
-															protected string _Handle4Diamond = string.Empty;
-															protected string Handle4Diamond
-															{
-																get
-																{
-																	if (doorConfig != null)
-																	{
-																		_Handle4Diamond = doorConfig.HANDLE4DIAMONDNAME;
-																	}
-																	return _Handle4Diamond;
-																}
-																set
-																{
-																	_Handle4Diamond = value;
-																	if (doorConfig != null)
-																	{
-																		doorConfig.HANDLE4DIAMONDNAME = _Handle4Diamond;
-																		doorConfig.borderColors["HANDLE4DIAMONDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
-																		UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
-																	}
-																}
-															}
-														}
-                                                </tr>
-                                            </table>
-                                            <!--end table extDecrL4 -->
+                        </tr>
+                        <tr>
+                            <td id="tdGrid4HT1084" hidden="@UiLogic.hideFld(doorConfig, "tdGrid4HT1084")" >
+                                <select name="dlstGrid4HT1084"  @bind="Grid4HT1084" class= "@doorConfig.borderColors["GRID4HT1084NAME"]" >
+                                    @if (PrApiCalls.lstGrid4HT1084 != null)
+                                        {
+	                                    @foreach (GRID4HT1084_Class c in PrApiCalls.lstGrid4HT1084)
+	                                    {
+		                                    <option value="@c.GRID4HT1084NAME">@c.GRID4HT1084DES</option>
+	                                    }
+                                        }
+                                </select>
+                            </td>
+                            @code
+                            {
+	                            protected string _Grid4HT1084 = string.Empty;
+	                            protected string Grid4HT1084
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _Grid4HT1084 = doorConfig.GRID4HT1084NAME;
+			                            }
+			                            return _Grid4HT1084;
+		                            }
+		                            set
+		                            {
+			                            _Grid4HT1084 = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.GRID4HT1084NAME = _Grid4HT1084;
+											doorConfig.borderColors["GRID4HT1084NAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
+                            <td id="tdExtGridCPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtGridCPlate")" >
+                                <select name="dlstExtGridCPlate"  @bind="ExtGridCPlate" class= "@doorConfig.borderColors["EXTGRIDCPLATEDES"]" >
+                                    @if (PrApiCalls.lstGrids != null)
+                                        {
+	                                    @foreach (GRID_Class c in PrApiCalls.lstGrids)
+	                                    {
+		                                    <option value="@c.GRIDDES">@c.GRIDDES</option>
+	                                    }
+                                        }
+                                </select>
+                            </td>
+                            @code
+                            {
+	                            protected string _ExtGridCPlate = string.Empty;
+	                            protected string ExtGridCPlate
+	                            {
+		                            get
+		                            {
+			                            if (doorConfig != null)
+			                            {
+				                            _ExtGridCPlate = doorConfig.EXTGRIDCPLATEDES;
+			                            }
+			                            return _ExtGridCPlate;
+		                            }
+		                            set
+		                            {
+			                            _ExtGridCPlate = value;
+			                            if (doorConfig != null)
+										{
+				                            doorConfig.EXTGRIDCPLATEDES = _ExtGridCPlate;
+											doorConfig.borderColors["EXTGRIDCPLATEDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+		                            }
+	                            }
+                            }
+                            <td id="tdExtHTPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtHTPlate")" >
+                                <select name="dlstExtHTPlate"  @bind="ExtHTPlate" class= "@doorConfig.borderColors["EXTHTPLATENAME"]" >
+                                    @if (PrApiCalls.lstRaw4CPlates != null)
+										{
+										@foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
+										{
+											<option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
+										}
+										}
+                                </select>
+                            </td>
+							@code
+							{
+								protected string _ExtHTPlate = string.Empty;
+								protected string ExtHTPlate
+								{
+									get
+									{
+										if (doorConfig != null)
+										{
+											_ExtHTPlate = doorConfig.EXTHTPLATENAME;
+										}
+										return _ExtHTPlate;
+									}
+									set
+									{
+										_ExtHTPlate = value;
+										if (doorConfig != null)
+										{
+											doorConfig.EXTHTPLATENAME = _ExtHTPlate;
+											doorConfig.borderColors["EXTHTPLATENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+									}
+								}
+							}
+                            <td id="tdVitrage4Diamond" hidden="@UiLogic.hideFld(doorConfig, "tdVitrage4Diamond")" >
+                                <select name="dlstVitrage4Diamond" @bind="Vitrage4Diamond" class= "@doorConfig.borderColors["VITRAGE4DIAMONDNAME"]" >
+									@if (PrApiCalls.lstVitrages4Diamond != null)
+										{
+										@foreach (VITRAGE4DIAMOND_Class c in PrApiCalls.lstVitrages4Diamond)
+										{
+											<option value="@c.VITRAGE4DIAMONDNAME">@c.VITRAGE4DIAMONDDES</option>
+										}
+										}
+                                </select>
+                            </td>
+							@code
+							{
+								protected string _Vitrage4Diamond = string.Empty;
+								protected string Vitrage4Diamond
+								{
+									get
+									{
+										if (doorConfig != null)
+										{
+											_Vitrage4Diamond = doorConfig.VITRAGE4DIAMONDNAME;
+										}
+										return _Vitrage4Diamond;
+									}
+									set
+									{
+										_Vitrage4Diamond = value;
+										if (doorConfig != null)
+										{
+											doorConfig.VITRAGE4DIAMONDNAME = _Vitrage4Diamond;
+											doorConfig.borderColors["VITRAGE4DIAMONDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+									}
+								}
+							}
+                            <td id="tdExtVitrage4DiamondQ" hidden="@UiLogic.hideFld(doorConfig, "tdExtVitrage4DiamondQ")" >
+                                <input type="number"  name="txtExtVitrage4DiamondQ"  @bind="ExtVitrage4DiamondQ" 
+										class= "@doorConfig.borderColors["EXTVITRAGE4DIAMONDQ"]" />
+                            </td>
+							@code
+							{
+								protected int _ExtVitrage4DiamondQ = 0;
+								protected int ExtVitrage4DiamondQ
+								{
+									get
+									{
+										if (doorConfig != null)
+										{
+											_ExtVitrage4DiamondQ = doorConfig.EXTVITRAGE4DIAMONDQ;
+										}
+										return _ExtVitrage4DiamondQ;
+									}
+									set
+									{
+										_ExtVitrage4DiamondQ = value;
+										if (doorConfig != null)
+										{
+											doorConfig.EXTVITRAGE4DIAMONDQ = _ExtVitrage4DiamondQ;
+											doorConfig.borderColors["EXTVITRAGE4DIAMONDQ"] = (value != 0 ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+									}
+								}
+							}
+                            <td id="tdInterPlatesSpace" hidden="@UiLogic.hideFld(doorConfig, "tdInterPlatesSpace")" >
+                                <select name="dlstInterPlatesSpace"   @bind="InterPlatesSpace" class= "@doorConfig.borderColors["INTERPLATESSPACE"]" >
+                                    <option></option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </td>
+							@code
+							{
+								protected int _InterPlatesSpace = 0;
+								protected int InterPlatesSpace
+								{
+									get
+									{
+										if (doorConfig != null)
+										{
+											_InterPlatesSpace = doorConfig.INTERPLATESSPACE;
+										}
+										return _InterPlatesSpace;
+									}
+									set
+									{
+										_InterPlatesSpace = value;
+										if (doorConfig != null)
+										{
+											doorConfig.INTERPLATESSPACE = _InterPlatesSpace;
+											doorConfig.borderColors["INTERPLATESSPACE"] = (value != 0 ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+									}
+								}
+							}
+                            <td id="tdExtFinModernCPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernCPlate")" >
+                                <select name="dlstExtFinModernCPlate"  @bind="ExtFinModernCPlate" 
+											class= "@doorConfig.borderColors["EXTFINMODERNCPLATE"]" >
+                                    <option></option>
+                                    <option>חלק</option>
+                                    <option>מחורץ</option>
+                                </select>
+                            </td>
+							@code
+							{
+								protected string _ExtFinModernCPlate = string.Empty;
+								protected string ExtFinModernCPlate
+								{
+									get
+									{
+										if (doorConfig != null)
+										{
+											_ExtFinModernCPlate = doorConfig.EXTFINMODERNCPLATE;
+										}
+										return _ExtFinModernCPlate;
+									}
+									set
+									{
+										_ExtFinModernCPlate = value;
+										if (doorConfig != null)
+										{
+											doorConfig.EXTFINMODERNCPLATE = _ExtFinModernCPlate;
+											doorConfig.borderColors["EXTFINMODERNCPLATE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+									}
+								}
+							}
+                            <td id="tdExtFinModernSepLine" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernSepLine")" >
+                                <select name="dlstExtFinModernSepLine"  @bind="ExtFinModernSepLine" 
+												class= "@doorConfig.borderColors["EXTFINMODERNSEPLINE"]" >
+                                    <option></option>
+                                    <option>חלק</option>
+                                    <option>מחורץ</option>
+                                </select>
+                            </td>
+							@code
+							{
+								protected string _ExtFinModernSepLine = string.Empty;
+								protected string ExtFinModernSepLine
+								{
+									get
+									{
+										if (doorConfig != null)
+										{
+											_ExtFinModernSepLine = doorConfig.EXTFINMODERNSEPLINE;
+										}
+										return _ExtFinModernSepLine;
+									}
+									set
+									{
+										_ExtFinModernSepLine = value;
+										if (doorConfig != null)
+										{
+											doorConfig.EXTFINMODERNSEPLINE = _ExtFinModernSepLine;
+											doorConfig.borderColors["EXTFINMODERNSEPLINE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+									}
+								}
+							}
+                            <td id="tdExtFinModernPlate" hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernPlate")" >
+                                <select name="dlstExtFinModernPlate"  @bind="ExtFinModernPlate" 
+												class= "@doorConfig.borderColors["EXTFINMODERNPLATE"]" >
+                                    <option></option>
+                                    <option>חלק</option>
+                                    <option>מחורץ</option>
+                                </select>
+                            </td>
+							@code
+							{
+								protected string _ExtFinModernPlate = string.Empty;
+								protected string ExtFinModernPlate
+								{
+									get
+									{
+										if (doorConfig != null)
+										{
+											_ExtFinModernPlate = doorConfig.EXTFINMODERNPLATE;
+										}
+										return _ExtFinModernPlate;
+									}
+									set
+									{
+										_ExtFinModernPlate = value;
+										if (doorConfig != null)
+										{
+											doorConfig.EXTFINMODERNPLATE = _ExtFinModernPlate;
+											doorConfig.borderColors["EXTFINMODERNPLATE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+											UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										}
+									}
+								}
+							}
+                            <td id="tdHandle4Diamond" hidden="@UiLogic.hideFld(doorConfig, "tdHandle4Diamond")" >
+                                <select name="dlstHandle4Diamond"  @bind="Handle4Diamond" class= "@doorConfig.borderColors["HANDLE4DIAMONDNAME"]" >
+									@if (PrApiCalls.lstHandles4Diamond != null)
+										{
+										@foreach (HANDLE4DIAMOND_Class c in PrApiCalls.lstHandles4Diamond)
+										{
+											<option value="@c.HANDLE4DIAMONDNAME">@c.HANDLE4DIAMONDDES</option>
+										}
+										}
+								</select>
+							</td>
+								@code
+								{
+									protected string _Handle4Diamond = string.Empty;
+									protected string Handle4Diamond
+									{
+										get
+										{
+											if (doorConfig != null)
+											{
+												_Handle4Diamond = doorConfig.HANDLE4DIAMONDNAME;
+											}
+											return _Handle4Diamond;
+										}
+										set
+										{
+											_Handle4Diamond = value;
+											if (doorConfig != null)
+											{
+												doorConfig.HANDLE4DIAMONDNAME = _Handle4Diamond;
+												doorConfig.borderColors["HANDLE4DIAMONDNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+												UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+											}
+										}
+									}
+								}
+                        </tr>
+                    </table>
+                    <!--end table extDecrL4 -->
 
