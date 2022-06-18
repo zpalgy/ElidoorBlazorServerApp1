@@ -47,7 +47,8 @@
     
     //protected string currPropName = string.Empty;
     DataTable dtTabFlds = new DataTable();
-      
+    List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
+
     async void IDisposable.Dispose()
     {
         //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
@@ -758,15 +759,22 @@
                             {
                                 doorConfig.disabledFlds["HWCOLORID"] = true;
                                 doorConfig.HWCOLORID = 0;
-                                doorConfig.disabledFlds["DRIL4HW"] = true;
-                                doorConfig.DRIL4HW = 0;
-                                doorConfig.borderColors["DRIL4HW"] = doorConfig.borderColors["HWCOLORID"] = string.Empty;
+                                // 18/06/2022 - when HARWARE is ללא DRIL4HW showuld be ENABLED !
+                                //  therefore commented the three lines below.
+                                // doorConfig.disabledFlds["DRIL4HW"] = true;
+                                // doorConfig.DRIL4HW = 0;
+                                // doorConfig.borderColors["DRIL4HW"] = doorConfig.borderColors["HWCOLORID"] = string.Empty;
+                                lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();  // the full list of Drills for Hardwares
                                 return;
                             }
                             else
                             {
                                 doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? string.Empty : "redBorder");
                                 doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
+                                // populate the LOV for Dril4Hw based on Hardware selected .
+                                string errMsg = string.Empty;
+                                lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig, ref errMsg);
+
                                 doorConfig.borderColors["DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? string.Empty : "redBorder");
                                 UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
 
@@ -837,9 +845,11 @@
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i312]]" >
 
-                @if (PrApiCalls.lstDril4Hw != null)
+                @* @if (PrApiCalls.lstDril4Hw != null)  *@
+                @if (lstD4HW1 != null)
                 {
-                    @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw)
+                    @* @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw) *@
+                    @foreach (DRIL4HW_Class c in lstD4HW1)
                     {
                         <option value="@c.DRIL4HW">@c.DRIL4HWDES</option>
                     }
