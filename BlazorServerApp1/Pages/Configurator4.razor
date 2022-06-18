@@ -149,10 +149,41 @@
 
         void showDivProducts()
 		{
-        showProducts = true;
-        doorConfig.divClasses["divHeader"] = "divNotActive";
-        doorConfig.divClasses["divProducts"] = "divActive";
+            showProducts = true;
+            doorConfig.divClasses["divHeader"] = "divNotActive";
+            doorConfig.divClasses["divProducts"] = "divActive";
 		}
+
+         async Task showDoorTitle()
+         {
+            if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+            {
+                msgCaption = string.Empty;
+                errMsg2 = UiLogic.requiredFieldsAreEmpty;  //"שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
+                                                            // Js.InvokeVoidAsync("alert", errMsg);
+                ErrMsgCssClass = "modal-body centeredMsg";
+                openMsgBox = true;
+                return;
+            }
+            hideDoorTitle = false;
+            UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
+            dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
+            doorConfig.divClasses["divDoorTitle"] = "divActive";
+            doorConfig.divClasses["divProducts"] = "divNotActive";
+            //int j = Array.IndexOf(UiLogic.propNames, "TRSH_WINGSNUMDES");
+            //doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+
+            //ref: https://stackoverflow.com/questions/67360450/how-to-focus-an-element-when-making-it-visible-in-the-same-method-call
+            //  thw 1st answer !
+            doorConfig.disabledFlds["btnDoor"] = true;
+            doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = true;  //disable prev buttons
+            StateHasChanged();
+            await Task.Delay(1);
+            //await dlstWingsNum.FocusAsync();  // harcoded ElementReference !
+            await doorConfig.dicRefs["TRSH_WINGSNUMDES"].FocusAsync();
+
+       }
+
         bool showTabPage(Type pageType, string tabName)
         {
         errMsg2 = string.Empty;
@@ -325,10 +356,11 @@
                                     }
                                     else
                                     {
-                                        //showProducts = true;
+                                    //showProducts = true;
                                         //doorConfig.divClasses["divHeader"] = "divNotActive";
                                         //doorConfig.divClasses["divProducts"] = "divActive";
                                         showDivProducts();
+                                        UiLogic.disableTabFlds(doorConfig, "divHeader");
                                     }
                                 }
                             }
@@ -342,35 +374,7 @@
                             </td>
                             @{
                                 //void showDoorTitle()
-                                async Task showDoorTitle()
-                                {
-                                    if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
-                                    {
-                                        msgCaption = string.Empty;
-                                        errMsg2 = UiLogic.requiredFieldsAreEmpty;  //"שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
-                                                                                   // Js.InvokeVoidAsync("alert", errMsg);
-                                        ErrMsgCssClass = "modal-body centeredMsg";
-                                        openMsgBox = true;
-                                        return;
-                                    }
-                                    hideDoorTitle = false;
-                                    UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
-                                    dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
-                                    doorConfig.divClasses["divDoorTitle"] = "divActive";
-                                    doorConfig.divClasses["divProducts"] = "divNotActive";
-                                    //int j = Array.IndexOf(UiLogic.propNames, "TRSH_WINGSNUMDES");
-                                    //doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-
-                                    //ref: https://stackoverflow.com/questions/67360450/how-to-focus-an-element-when-making-it-visible-in-the-same-method-call
-                                    //  thw 1st answer !
-                                    doorConfig.disabledFlds["btnDoor"] = true;
-                                    doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = true;  //disable prev buttons
-                                    StateHasChanged();
-                                    await Task.Delay(1);
-                                    //await dlstWingsNum.FocusAsync();  // harcoded ElementReference !
-                                    await doorConfig.dicRefs["TRSH_WINGSNUMDES"].FocusAsync();
-
-                                }
+                               
                             }
                         </tr>
 
@@ -923,7 +927,8 @@
                                             if (doorConfig != null)
                                             {
                                                 doorConfig.ENDCUSTDES = _ENDCUSTDES;
-                                                //doorConfig.borderColors["ENDCUSTDES"] = (value != 0 ? string.Empty : "redBorder");  // it's al optional field 01/06/2022
+                                                doorConfig.borderColors["ENDCUSTDES"] = (!string.IsNullOrEmpty(value)  ? string.Empty : "redBorder");  // it's an optional field 01/06/2022
+                                                                                                                                                       // 18/06/2022 it's required !
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
                                         }
@@ -1007,8 +1012,8 @@
                                         {
                                             doorConfig.TMPSHIPADDRESS = _TmpShipAddress;
                                             //
-                                            //doorConfig.borderColors["ADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder"); // optional field
-
+                                            doorConfig.borderColors["TMPSHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder"); // optional field 01/06/2022
+                                                                                                                                    // 18/06/2022 - required
                                             // pre CU request:  if TMPSHIPADDRESS got a non empty value SHIPADDRESS should be cleared and disabled 
                                             if (!string.IsNullOrEmpty(value))
                                             {
@@ -1072,6 +1077,7 @@
                                             doorConfig.divClasses["divHeader"] = "divNotActive";
 
                                             doorConfig.btnClasses["proddes"] = "buttonActive";
+                                            showDoorTitle();
                                             //doorConfig.divClasses["divProducts"] = "divNotActive";
                                             doorConfig.divClasses["divDoorTitle"] = "divActive";
 

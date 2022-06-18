@@ -30,7 +30,7 @@ namespace BlazorServerApp1.Data
         public static int[] propIndex;
         
         public static string borderColor = string.Empty;
-        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "ENDCUSTDES", "FORMDATE", "CUSTORDNAME", "TMPSHIPADDRESS", "FAMILYNAME",
+        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "FORMDATE", "CUSTORDNAME", "FAMILYNAME",
                              "HANDLENAME", "VENTS", "RAFAFAONMOVINGWING" };
 
         public static int IdOfNone = 99999;
@@ -781,12 +781,19 @@ namespace BlazorServerApp1.Data
 
                         // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
                         string configFldName = rowsDefVal[r]["CONFIG_FIELDNAME"].ToString();  //dlstDecorFormat 
-                        ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
-                        if (cFld.FIELDNAME == "DECORFORMAT")
+                        if (configFldName == "chkbTwoColors")
                         {
-                            int x = 17;
+                            int dbg = 17;
                         }
-                        applyFldDefault(doorConfig, cFld.FIELDNAME);
+                        ConfField_Class cFld = getConfFieldByFldName(configFldName, ref errMsg);
+                        if (cFld != null)
+                        {
+                            if (cFld.FIELDNAME == "DECORFORMAT")
+                            {
+                                int x = 17;
+                            }
+                            applyFldDefault(doorConfig, cFld.FIELDNAME);
+                        }
 
                         //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
                         //// apply VAL_LOCKED  to doorConfig.disabled
@@ -1227,7 +1234,12 @@ namespace BlazorServerApp1.Data
                     {
                         try
                         {
-                            props[p].SetValue(fld, fldRow[props[p].Name]);
+                            if (props[p].Name == "CONFIG_SUBFORM" && fldRow[props[p].Name] != null && string.IsNullOrEmpty(fldRow[props[p].Name].ToString()))
+                            {
+                                return null;
+                            }
+                            if (fldRow[props[p].Name] != null)
+                               props[p].SetValue(fld, fldRow[props[p].Name]);
                         }
                         catch (Exception ex)
                         {
