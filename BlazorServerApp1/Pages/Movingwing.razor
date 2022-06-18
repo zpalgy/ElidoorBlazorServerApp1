@@ -893,7 +893,7 @@
             <th id="thHandle">ידית אומנויות</th>
         }
 
-        <th id="thVents" hidden="@UiLogic.hideFld(doorConfig, "Ventilation")">פתחי אוורור</th>
+        <th id="thVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">פתחי אוורור</th>
         <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">רפפת עשן</th>
         <th id="thCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">פתח לחתול</th>
         @* <th id="thLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEyer")">LCD עינית</th> *@
@@ -1200,7 +1200,7 @@
         }
             @* end  tdHandle *@
 
-        <td id="tdVents" hidden="@UiLogic.hideFld(doorConfig, "Vents")">
+        <td id="tdVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">
              @{  int i319 = Array.IndexOf(UiLogic.propNames, "VENTS");
             <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["VENTS"]" 
             @onfocus="@( () => UiLogic.HasFocus("VENTS", doorConfig) )" 

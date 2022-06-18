@@ -409,7 +409,7 @@ namespace BlazorServerApp1.Data
             }
         }
 
-        public static Model_Class  getModel(string TRSH_MODELNAME, ref string errMsg)
+        public static Model_Class getModel(string TRSH_MODELNAME, ref string errMsg)
         {
             Model_Class model = new Model_Class();
             string query = string.Format("TRSH_MODELNAME = '{0}'", TRSH_MODELNAME);
@@ -436,13 +436,13 @@ namespace BlazorServerApp1.Data
                 DataRow[] rowsModels = dtModels.Select(query);
                 if (rowsModels.Length > 0)
                 {
-                     TRSH_MODEL = int.Parse(rowsModels[0]["TRSH_MODEL"].ToString());
+                    TRSH_MODEL = int.Parse(rowsModels[0]["TRSH_MODEL"].ToString());
                 }
                 query = string.Format("TRSH_WINGSNUMDES='{0}'", doorConfig.TRSH_WINGSNUMDES);
                 DataRow[] rowsWingsNum = dtWingsNum.Select(query);
                 if (rowsWingsNum.Length > 0)
                 {
-                     TRSH_WINGSNUM = int.Parse(rowsWingsNum[0]["TRSH_WINGSNUM"].ToString());
+                    TRSH_WINGSNUM = int.Parse(rowsWingsNum[0]["TRSH_WINGSNUM"].ToString());
                 }
                 if (TRSH_MODEL > 0 && TRSH_WINGSNUM > 0)
                 {
@@ -478,7 +478,7 @@ namespace BlazorServerApp1.Data
             }
             return false;  // error !
         }
-    
+
         public static List<WingWidth_Class> getAllWingWidths(ref string errMsg)
         {
             try
@@ -1147,7 +1147,7 @@ namespace BlazorServerApp1.Data
                         lstParHWs.Add(Hw1);
                     }
 
-                    
+
 
                     return lstParHWs;
                 }
@@ -1207,7 +1207,7 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-        public static int getDril4HwOfHw (DoorConfig doorConfig)
+        public static int getDril4HwOfHw(DoorConfig doorConfig)
         {
             if (doorConfig != null)
             {
@@ -1867,7 +1867,7 @@ namespace BlazorServerApp1.Data
                     emptyHandle.PARTNAME = " ";
                     emptyHandle.PARTDES = " ";
                     val1.Add(emptyHandle);
-                    
+
                     HANDLE_Class noHandle = new HANDLE_Class();
                     noHandle.PARTNAME = noHandle.PARTDES = "ללא";  // new per CU request 23/05/2022
                     val1.Add(noHandle);
@@ -2091,6 +2091,24 @@ namespace BlazorServerApp1.Data
                 myLogger.log.Error(errMsg);
                 return null;
             }
+        }
+        public static string getFieldCodebyTh(string thName)
+        { 
+           string query = string.Format("CONFIG_THNAME = '{0}'", thName);
+           DataRow[] resRows = dtConfFields.Select(query);
+            return (resRows.Length > 0 ? resRows[0].ToString() : string.Empty);
+        }
+        public static string getFieldCodebyTd(string tdName)
+        {
+            string query = string.Format("CONFIG_TDNAME = '{0}'", tdName);
+            DataRow[] resRows = dtConfFields.Select(query);
+            return (resRows.Length > 0 ? resRows[0].ToString() : string.Empty);
+        }
+        public static string getFieldCodebyFIELDNAME(string FIELDNAME)
+        {
+            string query = string.Format("FIELDNAME = '{0}'", FIELDNAME);
+            DataRow[] resRows = dtConfFields.Select(query);
+            return (resRows.Length > 0 ? resRows[0]["FIELDCODE"].ToString() : string.Empty);
         }
         public static DataTable getDefaults(ref string errMsg)
         {

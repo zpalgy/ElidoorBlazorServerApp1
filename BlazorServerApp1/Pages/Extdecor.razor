@@ -500,16 +500,16 @@
             <th id="thAttachedPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "thAttachedPlatesClr")" >גוון לוחות מודבקים לדגמים 1503+7505+1082</th>
             <th id="thExtGlassPlateClr" hidden="@UiLogic.hideFld(doorConfig, "thExtGlassPlateClr")" >גוון לוח בזכוכית מעטה חוץ</th>
             <th id="thExtModerPlateClr" hidden="@UiLogic.hideFld(doorConfig, "thExtModerPlateClr")" >גוון לוח מודרני מעטה חוץ</th>
-            <th id="thDecorativePlateClr" hidden="@UiLogic.hideFld(doorConfig, "thNirostaLinesClr")" >גוון לוח דקורטיבי</th>
+            <th id="thDecorativePlateClr" hidden="@UiLogic.hideFld(doorConfig, "thDecorativePlateClr")" >גוון לוח דקורטיבי</th>
             <th id="thNirostaLinesClr" hidden="@UiLogic.hideFld(doorConfig, "thNirostaLinesClr")" >גוון פסי נירוסטה</th>
             <th id="thExtNirostaLinesClr" hidden="@UiLogic.hideFld(doorConfig, "thExtNirostaLinesClr")" >גוון פסי נירוסטה בחוץ</th>
             <th id="thExtInsertCoverClr" hidden="@UiLogic.hideFld(doorConfig, "thExtInsertCoverClr")" >גוון אינסרט מעטה חוץ</th>
-            <th id="thVitragePatternOnDoor" hidden="@UiLogic.hideFld(doorConfig, "thVitragePatternOnDoor")" >דוגמת ויטראז' על גוף הדלת</th>
+            <th id="thVitragePatternOnDoor" hidden="@UiLogic.hideFld(doorConfig, "VITRAGEPATTERNONDOOR")" >דוגמת ויטראז' על גוף הדלת</th>
             <th id="thWindowWidth" hidden="@UiLogic.hideFld(doorConfig, "thWindowWidth")" >רוחב חלון</th>
             <th id="thWindowHeight" hidden="@UiLogic.hideFld(doorConfig, "thWindowHeight")" >גובה חלון</th>
         </tr>
         <tr>
-            <td id="tdExtHTPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtHTPlatesClr")" >
+            <td id="tdExtHTPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "thExtHTPlatesClr")" >
 				@{  int i410 = Array.IndexOf(UiLogic.propNames, "EXTHTPLATESCLRID");
                 <select name="dlstExtHTPlatesClr"  @bind="ExtHTPlatesClr" class= "@doorConfig.borderColors["EXTHTPLATESCLRID"]" 
 				      @onfocus="@( () => UiLogic.HasFocus("EXTHTPLATESCLRID", doorConfig) )" 
@@ -551,7 +551,7 @@
 		            }
 	            }
             }
-            <td id="tdAttachedPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "tdAttachedPlatesClr")" >
+            <td id="tdAttachedPlatesClr" hidden="@UiLogic.hideFld(doorConfig, "thAttachedPlatesClr")" >
 				@{  int i411 = Array.IndexOf(UiLogic.propNames, "ATTACHEDPLATECLRID");
                 <select name="dlstAttachedPlatesClr"  @bind="AttachedPlatesClr" class= "@doorConfig.borderColors["ATTACHEDPLATECLRID"]" 
 				   @onfocus="@( () => UiLogic.HasFocus("ATTACHEDPLATECLRID", doorConfig) )" 
@@ -593,7 +593,7 @@
 		            }
 	            }
             }
-            <td id="tdExtGlassPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtGlassPlateClr")" >
+            <td id="tdExtGlassPlateClr" hidden="@UiLogic.hideFld(doorConfig, "thExtGlassPlateClr")" >
 				@{  int i412 = Array.IndexOf(UiLogic.propNames, "EXTGLASSPLATECLRID");
                 <select name="dlstExtGlassPlateClr" @bind="ExtGlassPlateClr" class= "@doorConfig.borderColors["EXTGLASSPLATECLRID"]" 
 				      @onfocus="@( () => UiLogic.HasFocus("EXTGLASSPLATECLRID", doorConfig) )" 
@@ -636,7 +636,7 @@
 	            }
             }
             
-            <td id="tdExtModerPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtModerPlateClr")" >
+            <td id="tdExtModerPlateClr" hidden="@UiLogic.hideFld(doorConfig, "thExtModerPlateClr")" >
 				@{  int i413 = Array.IndexOf(UiLogic.propNames, "EXTMODERNPLATECLRID");
                 <select name="dlstExtModerPlateClr"  @bind="ExtModerPlateClr" class= "@doorConfig.borderColors["EXTMODERNPLATECLRID"]" 
 				        @onfocus="@( () => UiLogic.HasFocus("EXTMODERNPLATECLRID", doorConfig) )" 
@@ -678,7 +678,7 @@
 		                }
 	                }
 }
-                <td id="tdDecorativePlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdDecorativePlateClr")" >
+                <td id="tdDecorativePlateClr" hidden="@UiLogic.hideFld(doorConfig, "thDecorativePlateClr")" >
 						@{  int i414 = Array.IndexOf(UiLogic.propNames, "DECORPLATECLRID");
 						<select name="dlstDecorativePlateClr"  @bind="DecorativePlateClr" class= "@doorConfig.borderColors["DECORPLATECLRID"]"
 					          @onfocus="@( () => UiLogic.HasFocus("DECORPLATECLRID", doorConfig) )" 
@@ -804,7 +804,7 @@
 		                }
 	                }
                 }
-                <td id="tdExtInsertCoverClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtInsertCoverClr")" >
+                <td id="tdExtInsertCoverClr" hidden="@UiLogic.hideFld(doorConfig, "thExtInsertCoverClr")" >
 					@{  int i417 = Array.IndexOf(UiLogic.propNames, "EXTINSERTCLRID");
                     <select name="dlstExtInsertCoverClr"  @bind="ExtInsertCoverClr" class= "@doorConfig.borderColors["EXTINSERTCLRID"]" 
 					      @onfocus="@( () => UiLogic.HasFocus("EXTINSERTCLRID", doorConfig) )" 
@@ -846,7 +846,7 @@
 		                }
 	                }
                 }
-                <td id="tdVitragePatternOnDoor" hidden="@UiLogic.hideFld(doorConfig, "tdVitragePatternOnDoor")" >
+                <td id="tdVitragePatternOnDoor" hidden="@UiLogic.hideFld(doorConfig, "VITRAGEPATTERNONDOOR")" >
 					@{  int i418 = Array.IndexOf(UiLogic.propNames, "VITRAGEPATTERNONDOOR");
                     <input type="checkbox" name="chkbVitragePatternOnDoor"  @bind="VitragePatternOnDoor" 
 					    @onfocus="@( () => UiLogic.HasFocus("VITRAGEPATTERNONDOOR", doorConfig) )" 
@@ -876,7 +876,7 @@
 		                }
 	                }
                 }
-                <td id="tdWindowWidth" hidden="@UiLogic.hideFld(doorConfig, "tdWindowWidth")" >
+                <td id="tdWindowWidth" hidden="@UiLogic.hideFld(doorConfig, "thWindowWidth")" >
 					@{  int i419 = Array.IndexOf(UiLogic.propNames, "WINDOWWIDTH");
                     <input  name="txtWindowWidth" @bind="WindowWidth" class= "@doorConfig.borderColors["WINDOWWIDTH"]" 
 					       @onfocus="@( () => UiLogic.HasFocus("WINDOWWIDTH", doorConfig) )" 
@@ -910,7 +910,7 @@
 		                }
 	                }
                 }
-                <td id="tdWindowHeight" hidden="@UiLogic.hideFld(doorConfig, "tdWindowHeight")" >
+                <td id="tdWindowHeight" hidden="@UiLogic.hideFld(doorConfig, "thWindowHeight")" >
 					@{  int i420 = Array.IndexOf(UiLogic.propNames, "WINDOWHEIGHT");
                     <input  name="txtWindowHeight"  @bind="WindowHeight" class= "@doorConfig.borderColors["WINDOWHEIGHT"]" 
 					         @onfocus="@( () => UiLogic.HasFocus("WINDOWHEIGHT", doorConfig) )" 

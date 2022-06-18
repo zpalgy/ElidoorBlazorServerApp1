@@ -206,10 +206,10 @@ namespace BlazorServerApp1.Data
                 if (!hideFld(doorConfig, controlThName)
                     && !controlName.StartsWith("chkb")
                     && !doorFldIsFilled(doorConfig, fldName, fldDataType))
-                    //&& fldName.ToUpper() != "REFERENCE"
-                    //&& fldName.ToUpper() != "FORMDATE"
-                    //&& fldName.ToUpper() != "TMPSHIPADDRESS"
-                    //&& fldName.ToUpper() != "FAMILYNAME")
+                    //&& thTdFIELDNAME.ToUpper() != "REFERENCE"
+                    //&& thTdFIELDNAME.ToUpper() != "FORMDATE"
+                    //&& thTdFIELDNAME.ToUpper() != "TMPSHIPADDRESS"
+                    //&& thTdFIELDNAME.ToUpper() != "FAMILYNAME")
                 {
                     borderColor = "redBorder";
                     doorConfig.borderColors[fldName] = "redBorder";
@@ -347,7 +347,7 @@ namespace BlazorServerApp1.Data
                                 //                    i.e. DECORFORMAT is not filled when it's value is empty as all the other fields.
                                 //
                                 //if ( (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
-                                //    || (fldName == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
+                                //    || (thTdFIELDNAME == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
                                 //-- 
                                 if (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
                                     return false;
@@ -431,7 +431,7 @@ namespace BlazorServerApp1.Data
                                 //                    i.e. DECORFORMAT is not filled when it's value is empty as all the other fields.
                                 //
                                 //if ( (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
-                                //    || (fldName == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
+                                //    || (thTdFIELDNAME == "DECORFORMAT" && sval == "ללא" ))    //special for DECORFORMAT !
                                 //-- 
                                 if (string.IsNullOrEmpty(sval.Trim()) || sval.Trim() == " ")
                                     return false;
@@ -691,64 +691,76 @@ namespace BlazorServerApp1.Data
         //    }
         //}
 
-        public static bool meagedContains(string meaged, string fldName, DataTable MeagedFields)
+        public static bool meagedContains(string meaged, string thTdFIELDNAME, DataTable MeagedFields)
         {
             try
             {
                 //we may come here also with FIELDNAME in priority e.g. DOORCOLORID !
+                //  before returning false check also that FIELNAME is in teh meaged !
+
                 //TODO - handle that 
                 //if (c.ID == null)
                 //{
                 //    int z = 17;
                 //}
-                //if (c.ID.Contains("IntModernCPlateClr"))
-                //{
-                //    //Debugger.Break();
-                //    int dbg = 17;
-                //}
-                if (!fldName.StartsWith("th") && !fldName.StartsWith("td"))
+                if (thTdFIELDNAME =="DOORCOLORID")
                 {
-                    fldName = "th" + fldName;
+                    //Debugger.Break();
+                    int dbg = 17;
                 }
-                if (fldName.StartsWith("th"))
-                {
-                    //string x = "20";
-                    //string x1 = "thFinModernSeparatingLines";
-                    //string x2 = MeagedFields.Rows[1]["MEAGEDNAME"].ToString();
-                    //DataRow[] rows1 = MeagedFields.Select(string.Format("MEAGEDNAME='{0}' AND CONFIG_THNAME = '{1}'", x, x1));
-
-                    DataRow[] rowsTh = MeagedFields.Select(string.Format("MEAGEDNAME='{0}' AND CONFIG_THNAME = '{1}'", meaged, fldName));
-                    if (rowsTh != null && rowsTh.Length > 0)
-                        return true;
-                    else
-                    {
-                        DataRow[] rowsTh2 = MeagedFields.Select(string.Format("CONFIG_THNAME = '{0}'", fldName));
-                        if (rowsTh2 != null && rowsTh2.Length > 0)
-                            return false;     //exists but in a different Meaged - hide
-                        else
-                            return true;      // doesn't exist in MeagedFields - should be always Visible
-                    }
-                }
-                else if (fldName.StartsWith("td"))
-                {
-                    DataRow[] rowsTd = MeagedFields.Select(string.Format("MEAGEDNAME='{0}' AND CONFIG_TDNAME = '{1}'", meaged, fldName));
-                    if (rowsTd != null && rowsTd.Length > 0)
-                        return true;
-                    else
-                    {
-                        DataRow[] rowsTd2 = MeagedFields.Select(string.Format("CONFIG_TDNAME = '{0}'", fldName));
-                        if (rowsTd2 != null && rowsTd2.Length > 0)
-                            return false;  //exists but in a different Meaged - hide
-                        else
-                            return true;  // it's not a Meaged field - it should always be shown
-                    }
-                }
+                string thName = string.Empty;
+                string tdName = string.Empty;
+                string FIELDNAME = string.Empty;
+                                
+                if (thTdFIELDNAME.StartsWith("th"))
+                    thName = thTdFIELDNAME;
+                else if (thTdFIELDNAME.StartsWith("td"))
+                    tdName = thTdFIELDNAME;
                 else
-                    return true;
+                {
+                    thName = "th" + thTdFIELDNAME;
+                    tdName = "td" + thTdFIELDNAME;
+                    if (thTdFIELDNAME == thTdFIELDNAME.ToUpper())  // FIELDNAME must be UPPERCASE
+                        FIELDNAME = thTdFIELDNAME;
+                }
+
+                string fldCode = string.Empty;
+                if (!string.IsNullOrEmpty(thName))
+                    fldCode = PrApiCalls.getFieldCodebyTh(thName);
+                if (string.IsNullOrEmpty(fldCode) &&  !string.IsNullOrEmpty(tdName))
+                    fldCode = PrApiCalls.getFieldCodebyTd(tdName);
+                if (string.IsNullOrEmpty(fldCode) && !string.IsNullOrEmpty(FIELDNAME))
+                {
+                    fldCode = PrApiCalls.getFieldCodebyFIELDNAME(FIELDNAME);
+                    //if (string.IsNullOrEmpty(fldCode) && !string.IsNullOrEmpty(thName))
+                    //    fldCode = PrApiCalls.getFieldCodebyTh(thName);
+                    //if (string.IsNullOrEmpty(fldCode) && !string.IsNullOrEmpty(tdName))
+                    //    fldCode = PrApiCalls.getFieldCodebyTh(tdName);
+                }
+                if (!string.IsNullOrEmpty(fldCode))
+                {
+                    DataRow[] resRows = MeagedFields.Select(string.Format("MEAGEDNAME='{0}' AND FIELDCODE = '{1}'", meaged, fldCode));
+                    if (resRows != null && resRows.Length > 0)
+                        return true;
+                    else
+                    {
+                        DataRow[] tesRows2 = MeagedFields.Select(string.Format("FIELDCODE = '{0}'", fldCode));
+                        if (resRows != null && resRows.Length > 0)
+                            return false;  //exists but in a different Meaged - hide
+                    }
+                }
+                else //bug fldCode is empty !!
+                {
+                    string errMsg = string.Format("Unexpected error didn't find FIEDLCODE of '{0}'", thTdFIELDNAME);
+                    myLogger.log.Error(errMsg);
+                    throw new Exception(errMsg);
+                    //return false;
+                }
+                return true;
             }
             catch (Exception ex)
             {
-                string errMsg = string.Format("Unexpected error: {0} . MEAGEDNAME='{1}' AND CONFIG_TDNAME = '{2}'  Stacktrace : {3}", ex.Message, meaged, fldName, ex.StackTrace);
+                string errMsg = string.Format("Unexpected error: {0} . MEAGEDNAME='{1}' AND CONFIG_TDNAME = '{2}'  Stacktrace : {3}", ex.Message, meaged, thTdFIELDNAME, ex.StackTrace);
                 myLogger.log.Error(errMsg);
                 return false;
             }
@@ -844,7 +856,7 @@ namespace BlazorServerApp1.Data
                         {
                             string defval = rowsDefVal[r]["DEFVAL"].ToString();
                             string fldDataType = rowsDefVal[r]["FIELDDATATYPE"].ToString();
-                            //ConfField_Class cFld = getConfFieldByFldName(fldName, ref errMsg);
+                            //ConfField_Class cFld = getConfFieldByFldName(thTdFIELDNAME, ref errMsg);
                             // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
                             //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
                             UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
@@ -854,11 +866,11 @@ namespace BlazorServerApp1.Data
                     }
                     else // field was not found in the DEFAULTs that depend on MODEL (PARTNAME), maybe it has a general default that does not depend on MODEL (PARTNAME)
                     {
-                        //if (fldName == "COMPLIENTDOOR")
+                        //if (thTdFIELDNAME == "COMPLIENTDOOR")
                         //{
                         //    int x = 17;
                         //}
-                        //string query = string.Format("(PARTNAME = '' OR PARTNAME IS NULL) AND FIELDNAME = '{0}'", fldName);  //default that does not depend on PARTNAME
+                        //string query = string.Format("(PARTNAME = '' OR PARTNAME IS NULL) AND FIELDNAME = '{0}'", thTdFIELDNAME);  //default that does not depend on PARTNAME
                         string query = string.Format("(TRSH_MODELNAME = '' OR TRSH_MODELNAME IS NULL) AND FIELDNAME = '{0}'", fldName);  //default that does not depend on MODEL
                         DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
                         string errMsg = string.Empty;
@@ -866,7 +878,7 @@ namespace BlazorServerApp1.Data
                         {
                             string defval = rowsDefVal[r]["DEFVAL"].ToString();
                             string fldDataType = rowsDefVal[r]["FIELDDATATYPE"].ToString();
-                            //ConfField_Class cFld = getConfFieldByFldName(fldName, ref errMsg);
+                            //ConfField_Class cFld = getConfFieldByFldName(thTdFIELDNAME, ref errMsg);
                             // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
                             //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
                             UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
