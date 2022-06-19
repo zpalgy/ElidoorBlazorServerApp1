@@ -930,7 +930,8 @@
                                                 doorConfig.ENDCUSTDES = _ENDCUSTDES;
                                                 doorConfig.borderColors["ENDCUSTDES"] = (!string.IsNullOrEmpty(value)  ? string.Empty : "redBorder");  // it's an optional field 01/06/2022
                                                                                                                                                        // 18/06/2022 it's required !
-                                                UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                                if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
+                                                        showDivProducts();
                                             }
                                         }
 
@@ -975,7 +976,8 @@
                                             doorConfig.SHIPADDRESS = _ShipAddress;
                                             doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                                             //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                            if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
+                                                        showDivProducts();
                                         }
                                     }
         }
@@ -1026,7 +1028,8 @@
                                             {
                                                 doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
                                             }
-                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                           if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
+                                                        showDivProducts();
                                         }
                                     }
         }
