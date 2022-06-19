@@ -62,7 +62,7 @@ namespace BlazorServerApp1.Data
                 return true;  // hardcoded -these fields are temporarily not visible 22/05/2022
 
             //debug
-            if (fldName == "Cylinder" || fldName == "ColorsNum")
+            if (fldName == "Tiletype" || fldName == "Passim")
             {
                 int x = 17;
             }
@@ -744,9 +744,11 @@ namespace BlazorServerApp1.Data
                         return true;
                     else
                     {
-                        DataRow[] tesRows2 = MeagedFields.Select(string.Format("FIELDCODE = '{0}'", fldCode));
-                        if (resRows != null && resRows.Length > 0)
+                        DataRow[] resRows2 = MeagedFields.Select(string.Format("FIELDCODE = '{0}'", fldCode));
+                        if (resRows2 != null && resRows2.Length > 0)
                             return false;  //exists but in a different Meaged - hide
+                        else
+                            return true;  // the field does not exist in any meaged - it's always shown !
                     }
                 }
                 else //bug fldCode is empty !!
@@ -756,7 +758,7 @@ namespace BlazorServerApp1.Data
                     throw new Exception(errMsg);
                     //return false;
                 }
-                return true;
+                return true;    // the default  - show the field !
             }
             catch (Exception ex)
             {

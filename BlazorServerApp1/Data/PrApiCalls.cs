@@ -2143,13 +2143,13 @@ namespace BlazorServerApp1.Data
         { 
            string query = string.Format("CONFIG_THNAME = '{0}'", thName);
            DataRow[] resRows = dtConfFields.Select(query);
-            return (resRows.Length > 0 ? resRows[0].ToString() : string.Empty);
+            return (resRows.Length > 0 ? resRows[0]["FIELDCODE"].ToString() : string.Empty);
         }
         public static string getFieldCodebyTd(string tdName)
         {
             string query = string.Format("CONFIG_TDNAME = '{0}'", tdName);
             DataRow[] resRows = dtConfFields.Select(query);
-            return (resRows.Length > 0 ? resRows[0].ToString() : string.Empty);
+            return (resRows.Length > 0 ? resRows[0]["FIELDCODE"].ToString() : string.Empty);
         }
         public static string getFieldCodebyFIELDNAME(string FIELDNAME)
         {
