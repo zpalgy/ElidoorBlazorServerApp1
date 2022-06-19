@@ -1137,6 +1137,8 @@ namespace BlazorServerApp1.Data
         public System.Data.DataTable dtTabFlds = new System.Data.DataTable();
         [NonSerialized]
         public BlazorServerApp1.Pages.Configurator4 config4;
+        [NonSerialized]
+        public bool RestartClicked = false;
         public Dictionary<string, string> borderColors { get; set; } 
         public Dictionary<string, string> btnClasses { get; set; }
         public Dictionary<string,string>  divClasses { get; set; }
@@ -1172,7 +1174,7 @@ namespace BlazorServerApp1.Data
                                                                     // maybe teh CU will ask to Disable them !
             initDivClasses();
             //initHideBtns();  not used yet 
-
+            RestartClicked = false;
         }
         public void initBtnClasses()
         {
@@ -1221,6 +1223,7 @@ namespace BlazorServerApp1.Data
         public async Task KeyPressHandler(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
         {
             //string currTabName = "movingwing";
+            RestartClicked = false;  // this handler is launched when a key is pressed in a field not btnRestart !
             if (e.Key.ToLowerInvariant() == "enter")
             {
                 //RestartClicked = false;

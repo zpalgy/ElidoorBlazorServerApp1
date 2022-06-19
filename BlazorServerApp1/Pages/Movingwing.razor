@@ -101,6 +101,7 @@
     async Task KeyPressHandler(KeyboardEventArgs e)
         {
             string currTabName = "movingwing";
+            doorConfig.RestartClicked = false; 
             if (e.Key.ToLowerInvariant() == "enter")
             {
                 //RestartClicked = false;

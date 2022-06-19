@@ -312,11 +312,11 @@
                             @{
                                 void enableRestart()
                                 {
-                                    RestartClicked = true;
+                                    doorConfig.RestartClicked = true;  //RestartClicked = true;
                                 }
                                 void restart()
                                 {
-                                    if (!RestartClicked)  // test 3/06/2022  - works fine !!!
+                                    if (!doorConfig.RestartClicked)  //(!RestartClicked)  // test 3/06/2022  - works fine !!!
                                         return;              // test
 
                                     msgCaption = string.Empty;
@@ -644,10 +644,11 @@
 
         async Task KeyPressHandler(KeyboardEventArgs e)
         {
+                                        doorConfig.RestartClicked = false;  // we're in a field not btnRestart !
                                         //DataTable dtTabFlds = new DataTable();
                                         if (e.Key.ToLowerInvariant() == "enter")
                                         {
-                                            RestartClicked = false;
+                                            //RestartClicked = false;
                                             int j = 0;
                                             DataTable dtTabFlds = new DataTable();
                                             string currTabName = UiLogic.getTabOfField(currPropName);
@@ -1697,7 +1698,7 @@
         }
         else
         {
-            RestartClicked = false;
+            doorConfig.RestartClicked = false;  //RestartClicked = false;
         }
         openYesNo = false;
         errMsg2 = string.Empty;
