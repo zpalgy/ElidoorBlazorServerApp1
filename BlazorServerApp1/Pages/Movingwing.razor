@@ -591,9 +591,18 @@
                         openMsgBox = true;
                         //txtDoorHeight.FocusAsync();
                         doorConfig.borderColors["EXTCOLORID"] = doorConfig.borderColors["INTCOLORID"] = "redBorder";
-                        this.StateHasChanged(); 
+                        this.StateHasChanged();
+                        switch (doorConfig.currPropName)
+                        {
+                            case "EXTCOLORID" :
+                                doorConfig.EXTCOLORID = 0;
+                                break;
+                            case "INTCOLORID" :
+                                doorConfig.INTCOLORID = 0;
+                                break;
+                        }
                     }
-                    else
+                    //else
                     {
                         doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? string.Empty : "redBorder");
                         doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? string.Empty : "redBorder");
