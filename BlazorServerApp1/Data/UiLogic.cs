@@ -1461,7 +1461,14 @@ namespace BlazorServerApp1.Data
             doorConfig.currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
             doorConfig.borderColors[currFldName] = "focusBorder";
         }
-        
+        // this event handler is used only in Mandatory fields - as we want to set border color to red when the field is empty
+        public static void LostFocus(DoorConfig doorConfig, string fldDataType)
+        {
+            //doorConfig.currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+            bool fldIsFilled = doorFldIsFilled(doorConfig, doorConfig.currPropName, fldDataType);
+            doorConfig.borderColors[doorConfig.currPropName] = (fldIsFilled ? string.Empty : "redBorder");
+        }
+
         //static List<string> lstThNames = new List<string>();
         //static List<string> lstTdNames = new List<string>();
         //public static void getThTdNames(Control rootCtl, ref List<string> lstThNames, ref List<string> lstTdNames)

@@ -598,7 +598,7 @@
                                             <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
                                            disabled="@doorConfig.disabledFlds["FORMFILLER"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i1]]"
                                                    @onfocus="@( () => HasFocus("FORMFILLER") )"
-                                                   @onblur="@( () => formFillerLostFocus() )" 
+                                                   @onblur="@( () => LostFocus() )" 
                                                onkeypress="@KeyPressHandler" >
                                                   </input >
                                     }
@@ -634,6 +634,7 @@
                                                 doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blackBorder" : "redBorder");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                                StateHasChanged();
                                             }
                                         }
         }
@@ -706,9 +707,10 @@
                                         currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
                                         doorConfig.borderColors[currFldName] = "focusBorder";
         }
-        void formFillerLostFocus()
+        void LostFocus()
         {
-                                        //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+            doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(_formFiller) ? "blackBorder" : "redBorder");
+            //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
         }
                                     }
                                 </td>
