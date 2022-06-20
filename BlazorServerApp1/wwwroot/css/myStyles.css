@@ -116,9 +116,9 @@
 
 
 
-input /* asp:TextBox */
-{
-
+input /* asp:TextBox */ {
+    border-color: blue;
+    outline: none;
 }
 /* input  type="submit" = button */
 
@@ -130,8 +130,8 @@ input /* asp:TextBox */
     height :12px;
 }
 select /* asp:DropDownList */ {
-
-
+    border-color: blue;
+    outline: none;
 }
 
 table {
@@ -238,18 +238,24 @@ a {
     border-color: red;
     outline: none;
 }
+.blueBorder {
+    border-color: blue;
+    outline: none;
+}
 .blackBorder {
     border-color: black;
     outline: none;
 }
 .focusBorder {
-    border: 5px solid blue;
+    border-top: 5px solid blue;
+    border-right: 5px solid blue;
     outline: none;
 }
 
     /*  ref: https://stackoverflow.com/questions/39741709/css-focus-not-working */
-input:focus, select:focus, .inputstyle:focus, .blackBorder:focus, .redBorder:focus {
-    border: 5px solid blue;
+input:focus, select:focus, .inputstyle:focus, .blueBorder:focus, .redBorder:focus {
+    border-top: 5px solid blue;
+    border-right: 5px solid blue;
 }
 
 /*

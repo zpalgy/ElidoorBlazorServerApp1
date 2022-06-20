@@ -1160,7 +1160,7 @@ namespace BlazorServerApp1.Data
                 {
                     int x = 17;
                 }
-                borderColors.Add(pinfo.Name, string.Empty);
+                borderColors.Add(pinfo.Name, "blueBorder"); //string.Empty);
                 //if (!disabledFlds.ContainsKey(pinfo.Name))
                 //    disabledFlds.Add(pinfo.Name, false);
                 //else

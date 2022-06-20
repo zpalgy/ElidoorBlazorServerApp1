@@ -96,7 +96,8 @@
         showProducts = false;
         hideDoorTitle = true;
 
-
+        doorConfig.currTabName = "divHeader";
+        doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
         //myService.RefreshRequested += RefreshMe;
 
         //Js.InvokeVoidAsync("SayHelloJS");
@@ -168,6 +169,8 @@
             hideDoorTitle = false;
             UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
             dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
+            doorConfig.currTabName = "divDoorTitle";
+            doorConfig.dtTabFlds = dtDivDoorTitle.Copy();
             doorConfig.divClasses["divDoorTitle"] = "divActive";
             doorConfig.divClasses["divProducts"] = "divNotActive";
             //int j = Array.IndexOf(UiLogic.propNames, "TRSH_WINGSNUMDES");
@@ -597,9 +600,9 @@
 
                                             <input name="txtFormFiller" @bind="formFiller" dir="rtl" class="@doorConfig.borderColors["FORMFILLER"]"
                                            disabled="@doorConfig.disabledFlds["FORMFILLER"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i1]]"
-                                                   @onfocus="@( () => HasFocus("FORMFILLER") )"
-                                                   @onblur="@( () => LostFocus() )" 
-                                               onkeypress="@KeyPressHandler" >
+                                                   @onfocus="@( () => UiLogic.HasFocus("FORMFILLER", doorConfig) )"
+                                                   @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                               onkeypress="@doorConfig.KeyPressHandler" >
                                                   </input >
                                     }
                                     @* onkeypress="return event.keyCode!=13" *@
@@ -631,7 +634,7 @@
                                             if (doorConfig != null)
                                             {
                                                 doorConfig.FORMFILLER = _formFiller;
-                                                doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blackBorder" : "redBorder");
+                                                doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                                 StateHasChanged();
@@ -709,7 +712,7 @@
         }
         void LostFocus()
         {
-            doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(_formFiller) ? "blackBorder" : "redBorder");
+            doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(_formFiller) ? "blueBorder" : "redBorder");
             //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
         }
                                     }
@@ -745,7 +748,7 @@
                                             if (doorConfig != null)
                                             {
                                                 doorConfig.CUSTORDNAME = _custOrdName;
-                                                doorConfig.borderColors["CUSTORDNAME"] = (!string.IsNullOrEmpty(value) ? "blackBorder" : "redBorder");
+                                                doorConfig.borderColors["CUSTORDNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
                                             }
@@ -864,7 +867,7 @@
                                                 doorConfig.TMPSHIPADDRESS = string.Empty;
 
                                             doorConfig.CUST = _CUST;
-                                            doorConfig.borderColors["CUST"] = (value != 0 ? string.Empty : "redBorder");
+                                            doorConfig.borderColors["CUST"] = (value != 0 ? "blueBorder" : "redBorder");
                                             //
                                             if (_CUST != 0)
                                             {
@@ -930,7 +933,7 @@
                                             if (doorConfig != null)
                                             {
                                                 doorConfig.ENDCUSTDES = _ENDCUSTDES;
-                                                doorConfig.borderColors["ENDCUSTDES"] = (!string.IsNullOrEmpty(value)  ? string.Empty : "redBorder");  // it's an optional field 01/06/2022
+                                                doorConfig.borderColors["ENDCUSTDES"] = (!string.IsNullOrEmpty(value)  ? "blueBorder" : "redBorder");  // it's an optional field 01/06/2022
                                                                                                                                                        // 18/06/2022 it's required !
                                                 if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
                                                         showDivProducts();
@@ -976,7 +979,7 @@
                                         if (doorConfig != null)
                                         {
                                             doorConfig.SHIPADDRESS = _ShipAddress;
-                                            doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                            doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                             //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                             if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
                                                         showDivProducts();
@@ -1017,7 +1020,7 @@
                                         {
                                             doorConfig.TMPSHIPADDRESS = _TmpShipAddress;
                                             //
-                                            doorConfig.borderColors["TMPSHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder"); // optional field 01/06/2022
+                                            doorConfig.borderColors["TMPSHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); // optional field 01/06/2022
                                                                                                                                     // 18/06/2022 - required
                                             // pre CU request:  if TMPSHIPADDRESS got a non empty value SHIPADDRESS should be cleared and disabled 
                                             if (!string.IsNullOrEmpty(value))
@@ -1028,7 +1031,7 @@
                                             }
                                             else
                                             {
-                                                doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                             }
                                            if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
                                                         showDivProducts();
@@ -1216,7 +1219,7 @@
                                                         }
                                                     }
                                                 }
-                                                doorConfig.borderColors["TRSH_WINGSNUMDES"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                doorConfig.borderColors["TRSH_WINGSNUMDES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                             }
 
                                             //disableStaticWing =  (_WingsNum == "כנף");
@@ -1286,7 +1289,7 @@
                                                 Model_Class model = PrApiCalls.getModel(doorConfig.TRSH_MODELNAME, ref errMsg);
                                                 doorConfig.meaged = model.TRSH_MEAGEDNAME;
                                                 doorConfig.TRSH_DOOR_HWCATCODE = model.TRSH_DOOR_HWCATCODE;
-                                                doorConfig.borderColors["TRSH_MODELNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                doorConfig.borderColors["TRSH_MODELNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                                 if (!string.IsNullOrEmpty(value) && (string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES)))
                                                 {
                                                     if (!PrApiCalls.existsPartOfModel(doorConfig, ref errMsg))
@@ -1379,7 +1382,7 @@
                                             if (doorConfig != null)
                                             {
                                                 doorConfig.DECORFORMAT = _DecorFormat;
-                                                doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                                                doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle", "proddes", "movingwing");
                                                 UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
@@ -1431,7 +1434,7 @@
                                             if (doorConfig != null)
                                             {
                                                 doorConfig.TRSH_COMPLIENT = _TRSH_COMPLIENT;
-                                                doorConfig.borderColors["TRSH_COMPLIENT"] = (value != 0 ? string.Empty : "redBorder");
+                                                doorConfig.borderColors["TRSH_COMPLIENT"] = (value != 0 ? "blueBorder" : "redBorder");
                                             }
                                         }
         }

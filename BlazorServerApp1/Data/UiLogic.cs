@@ -1462,11 +1462,25 @@ namespace BlazorServerApp1.Data
             doorConfig.borderColors[currFldName] = "focusBorder";
         }
         // this event handler is used only in Mandatory fields - as we want to set border color to red when the field is empty
-        public static void LostFocus(DoorConfig doorConfig, string fldDataType)
+        public static string getFldDataType (string fldName )
+        {
+            string query = string.Format("FIELDNAME='{0}'", fldName);
+            DataRow[] fldRows = PrApiCalls.dtConfFields.Select(query);
+            if (fldRows.Length > 0)
+                return  fldRows[0]["FIELDDATATYPE"].ToString();
+            else
+            {
+                string errMsg = string.Format("Unexpected error: FIELDNAME {0} not found in PrApiCalls.dtConfFields", fldName);
+                myLogger.log.Error(errMsg);
+                throw new Exception(errMsg);    //return string.Empty;
+            }
+        }
+        public static void LostFocus(DoorConfig doorConfig)
         {
             //doorConfig.currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+            string fldDataType = getFldDataType(doorConfig.currPropName);
             bool fldIsFilled = doorFldIsFilled(doorConfig, doorConfig.currPropName, fldDataType);
-            doorConfig.borderColors[doorConfig.currPropName] = (fldIsFilled ? string.Empty : "redBorder");
+            doorConfig.borderColors[doorConfig.currPropName] = (fldIsFilled ? "blueBorder" : "redBorder");
         }
 
         //static List<string> lstThNames = new List<string>();

@@ -87,7 +87,7 @@
         // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
         if (doorConfig.ELECTRICAPPARATUS == null)
             doorConfig.ELECTRICAPPARATUS = string.Empty;
-        doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? string.Empty : "redBorder");
+        doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
 
         string errMsg = string.Empty;
         dtTabFlds = UiLogic.getTabFields("movingwing", doorConfig, ref errMsg);
@@ -296,12 +296,12 @@
                                 }
                                 else
                                 {
-                                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? string.Empty : "redBorder");  //update borderColor
+                                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");  //update borderColor
                                                                                                                                                 // of dlstLOCKDRILHEIGHT if its value was changed after DoorHeight was processsed
                                     this.StateHasChanged();
                                 }
                             }
-                            doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
+                            doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
                                             @*
                                The following code lines are actually inside setHingesAndWindowsData
 
@@ -357,7 +357,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.OPENSIDE = _openSide;
-                            doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -396,7 +396,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.OPENMODE = _openMode;
-                            doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -469,7 +469,7 @@
                                     doorConfig.DOORCOLORID = 0;
                                     break;
                             }
-                            doorConfig.borderColors["COLORSNUM"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            doorConfig.borderColors["COLORSNUM"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -516,7 +516,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.DOORCOLORID = _DoorColorId;
-                        doorConfig.borderColors["DOORCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                        doorConfig.borderColors["DOORCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -576,7 +576,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.EXTCOLORID = _ExtColor;
-                            doorConfig.borderColors["EXTCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                            doorConfig.borderColors["EXTCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                             compareExtIntColors();
                             UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
                         }
@@ -604,8 +604,8 @@
                     }
                     //else
                     {
-                        doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? string.Empty : "redBorder");
-                        doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? string.Empty : "redBorder");
+                        doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");
+                        doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
                         this.StateHasChanged(); 
                     }
                 }
@@ -647,7 +647,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.INTCOLORID = _IntColor;
-                            doorConfig.borderColors["INTCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                            doorConfig.borderColors["INTCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                             compareExtIntColors();
                             UiLogic.clearFollowingTabFields(doorConfig, "intdecor");
                         }
@@ -719,7 +719,7 @@
                                 UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                                 clearHingesMeasures(doorConfig);
                             }
-                            doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? string.Empty : "redBorder");
+                            doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
                             *@
                         }
                 }
@@ -779,17 +779,17 @@
                             }
                             else
                             {
-                                doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? string.Empty : "redBorder");
+                                doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? "blueBorder" : "redBorder");
                                 doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
                                 // populate the LOV for Dril4Hw based on Hardware selected .
                                 string errMsg = string.Empty;
                                 lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig, ref errMsg);
 
-                                doorConfig.borderColors["DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? string.Empty : "redBorder");
+                                doorConfig.borderColors["DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
                                 UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
 
                                 doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(value);
-                                doorConfig.borderColors["HWCOLORID"] = (doorConfig.disabledFlds["HWCOLORID"] || doorConfig.HWCOLORID != 0 ? string.Empty : "redBorder");
+                                doorConfig.borderColors["HWCOLORID"] = (doorConfig.disabledFlds["HWCOLORID"] || doorConfig.HWCOLORID != 0 ? "blueBorder" : "redBorder");
                                 if (doorConfig.disabledFlds["HWCOLORID"])
                                     doorConfig.HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
                             }
@@ -840,7 +840,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.HWCOLORID = _HwColorId;
-                        doorConfig.borderColors["HWCOLORID"] = (value != 0 ? string.Empty : "redBorder");
+                        doorConfig.borderColors["HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -886,7 +886,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.DRIL4HW = _Dril4Hw;
-                        doorConfig.borderColors["DRIL4HW"] = (value != 0 ? string.Empty : "redBorder");
+                        doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -955,7 +955,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.CYLINDERNAME = _CylinderName;
-                        doorConfig.borderColors["CYLINDERNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        doorConfig.borderColors["CYLINDERNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -994,7 +994,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.ELECTRICAPPARATUS = _ElectricApparatus;
-                        doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -1105,7 +1105,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.LOCKNAME = _Lock;
-                        doorConfig.borderColors["LOCKNAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                        doorConfig.borderColors["LOCKNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                          UiLogic.try2UpdateBtnClass(doorConfig, "movingwing");
                             config4.RefreshState();
@@ -1208,7 +1208,7 @@
                         {
                             doorConfig.HANDLENAME = _Handle1;
                             // Handle is Optional
-                            //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                              UiLogic.try2UpdateBtnClass(doorConfig, "movingwing");
                             config4.RefreshState();
@@ -1252,7 +1252,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.VENTS = _Vents;
-                           // doorConfig.borderColors["VENTS"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                           // doorConfig.borderColors["VENTS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                              UiLogic.try2UpdateBtnClass(doorConfig, "movingwing");
                             config4.RefreshState();
@@ -1293,7 +1293,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.RAFAFAONMOVINGWING = _Rafafa;
-                            //doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            //doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                             UiLogic.try2UpdateBtnClass(doorConfig, "movingwing");
                             
@@ -1336,7 +1336,7 @@
                         if (doorConfig != null)
                         {
                             doorConfig.CATDOOR = (_CatDoor ? "Y" : "N" );
-                            //doorConfig.borderColors["CATDOOR"] = (!string.IsNullOrEmpty(value) ? string.Empty : "redBorder");
+                            //doorConfig.borderColors["CATDOOR"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                             UiLogic.try2UpdateBtnClass(doorConfig, "movingwing");
                             config4.RefreshState();
@@ -1419,7 +1419,7 @@
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         clearHingesMeasures(doorConfig);
                     }
-                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? string.Empty : "redBorder");
+                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");
                     break;
             }
         }
