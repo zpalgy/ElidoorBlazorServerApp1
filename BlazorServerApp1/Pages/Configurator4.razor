@@ -724,8 +724,9 @@
 
                                             <input name="txtCustOrdName" @bind="custOrdName" dir="rtl" class="@doorConfig.borderColors["CUSTORDNAME"]"
                                            disabled="@doorConfig.disabledFlds["CUSTORDNAME"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i15]]"
-                                                   @onfocus="@( () => HasFocus("CUSTORDNAME") )"
-                                               onkeypress="@KeyPressHandler" >
+                                                   @onfocus="@( () => UiLogic.HasFocus("CUSTORDNAME", doorConfig) )"
+                                                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                               onkeypress="@doorConfig.KeyPressHandler" >
                                             </input >
                                     }
 
@@ -832,8 +833,11 @@
                                     @{
                                         int i2 = Array.IndexOf(UiLogic.propNames, "CUST");
                                             <select name="dlstCustDes" @bind="CUST" class="@doorConfig.borderColors["CUST"]"  disabled="@doorConfig.disabledFlds["CUST"]" 
-                                                    @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    @onfocus="@( () => HasFocus("CUST") )" 
-                                                    onkeypress="@KeyPressHandler"   >  
+                                                    @ref="doorConfig.dicRefs[UiLogic.propNames[i2]]"    
+                                                    @onfocus="@( () => UiLogic.HasFocus("CUST", doorConfig) )" 
+                                                     @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                                     onkeypress="@doorConfig.KeyPressHandler"  > 
+                                                     
                                                       @*     onkeydown="@KeyPressHandler"  > *@
                                            
                                             @if (lstCustomers != null)
@@ -910,7 +914,9 @@
                                         //currPropInd = i3;
                                             <input name="txtEndCustDes" @bind="ENDCUSTDES" dir="rtl" class="@doorConfig.borderColors["ENDCUSTDES"]" 
                                        disabled="@doorConfig.disabledFlds["ENDCUSTDES"]"
-                                            @onfocus="@( () => HasFocus("ENDCUSTDES") )" onkeypress="@KeyPressHandler"
+                                            @onfocus="@( () => UiLogic.HasFocus("ENDCUSTDES",doorConfig) )" 
+                                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                               onkeypress="@doorConfig.KeyPressHandler"
                                                @ref="doorConfig.dicRefs[UiLogic.propNames[i3]]" />
                                     }
                                     @code {
@@ -950,8 +956,12 @@
                                      @{
                                         int i4 = Array.IndexOf(UiLogic.propNames, "SHIPADDRESS");
                                             <input name="txtShipAddress" dir="rtl" @bind="ShipAddress" size="50" class="@doorConfig.borderColors["SHIPADDRESS"]" 
-                                        disabled="@doorConfig.disabledFlds["SHIPADDRESS"]"  @onfocus="@( () => HasFocus("SHIPADDRESS") )"
-                                        onkeypress="@KeyPressHandler"  @ref="doorConfig.dicRefs[UiLogic.propNames[i4]]" />
+                                        disabled="@doorConfig.disabledFlds["SHIPADDRESS"]"  
+                                        @onfocus="@( () => UiLogic.HasFocus("SHIPADDRESS",doorConfig) )"
+                                        @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                        onkeypress="@doorConfig.KeyPressHandler"
+                                        @ref="doorConfig.dicRefs[UiLogic.propNames[i4]]" />
+
                                         @*  was  @ref="txtShipAddress"  *@  
                                     }
                                     @* this does not work !! @ref="doorConfig.dicRefs[UiLogic.propNames[i4]]"  *@
@@ -993,8 +1003,11 @@
                                      @{
                                         int i5 = Array.IndexOf(UiLogic.propNames, "TMPSHIPADDRESS");
                                             <input name="txtTmpShipAddress" dir="rtl" @bind="TmpShipAddress" size="40" class="@doorConfig.borderColors["TMPSHIPADDRESS"]" 
-                                               disabled="@doorConfig.disabledFlds["TMPSHIPADDRESS"]"   @onfocus="@( () => HasFocus("TMPSHIPADDRESS") )"
-                                               onkeypress="@KeyPressHandler"   @ref="doorConfig.dicRefs[UiLogic.propNames[i5]]"/> 
+                                               disabled="@doorConfig.disabledFlds["TMPSHIPADDRESS"]"   
+                                               @onfocus="@( () => UiLogic.HasFocus("TMPSHIPADDRESS", doorConfig) )"
+                                                @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                               onkeypress="@doorConfig.KeyPressHandler"
+                                               @ref="doorConfig.dicRefs[UiLogic.propNames[i5]]"/> 
                                     }
                                     @* <InputText dir="rtl" @bind-Value="InstallAddress" class="@doorConfig.borderColors["INSTALLADDRESS"]"  style="outline:none"
                                       onkeypress="return event.keyCode!=13"/>
