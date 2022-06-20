@@ -56,7 +56,8 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 6)]
         public string ADDRESS3 { get; set; }
         [DataMember(Order = 7)]
-        public string TRSH_LOGO { get; set; }
+        public string TRSH_NOTECOMPLIENT { get; set; }   // bool Y | ''
+        //public string TRSH_LOGO { get; set; }
     }
     public class ValuesCUSTOMER_Class
     {
@@ -663,12 +664,16 @@ namespace BlazorServerApp1.Data
         //[Required]
         [DataMember(Order = 3), Order]
         public string FORMDATE { get; set; }
+
         [DataMember(Order = 4), Order]
+        public string ESTSHIPDATE { get; set; }
+
+        [DataMember(Order = 5), Order]
         public string FORMFILLER { get; set; }
-        [DataMember(Order = 5)]
+        [DataMember(Order = 6)]
         public string CUSTORDNAME { get; set; }
 
-        [DataMember(Order = 6), Order]
+        [DataMember(Order = 7), Order]
         public int CUST { get; set; }
         //[DataMember(Order = 5), Order]
         //public string AGENTCODE { get; set; }
@@ -677,16 +682,16 @@ namespace BlazorServerApp1.Data
        
 
         //[Required]      
-        [DataMember(Order = 7), Order]
+        [DataMember(Order = 8), Order]
         public string ENDCUSTDES { get; set; }
         //public int CUST { get; set; }
         //[DataMember(Order = 6), Order]
         //public string CUSTNAME { get; set; }
         //[DataMember(Order = 7), Order]
         
-        [DataMember(Order = 8), Order]
-        public string SHIPADDRESS { get; set; }
         [DataMember(Order = 9), Order]
+        public string SHIPADDRESS { get; set; }
+        [DataMember(Order = 10), Order]
         public string TMPSHIPADDRESS { get; set; }
 
         //[DataMember(Order = 10), Order]
@@ -1167,7 +1172,8 @@ namespace BlazorServerApp1.Data
                    disabledFlds[pinfo.Name] = false;
             }
             initBtnClasses();
-            disabledFlds["REFERENCE"] = true;    // 01/06/2022     
+            disabledFlds["REFERENCE"] = true;    // 01/06/2022
+            disabledFlds["ESTSHIPDATE"] = true;  // it is enabled only before sending the the form to Priority 20/06/2022 
             disabledFlds["btnDoor"] = false;
             disabledFlds["btnLintel"] = disabledFlds["btnCover"] = disabledFlds["btnSideUnit"] = disabledFlds["btnECabinet"] = disabledFlds["btnShelves"] = true;
             disabledFlds["general"] = disabledFlds["selectprod"] = disabledFlds["proddes"] = false;  // on startup I assume these buttons can be Enabled ! 13/06/2022 

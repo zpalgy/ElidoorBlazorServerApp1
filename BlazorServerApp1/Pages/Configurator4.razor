@@ -55,6 +55,8 @@
         protected string currPropName = string.Empty;
         //protected int currPropInd;
 
+        protected bool isEComplient = true;
+
         DataTable dtDivHeader;
         DataTable dtDivDoorTitle;
         DataTable dtDivHeaderDoorTitle;
@@ -74,20 +76,21 @@
             return;
 
         doorConfig = new DoorConfig();
-        doorConfig.initBorderColors();
-        doorConfig.btnClasses["general"] = "buttonActive";
-        doorConfig.divClasses["divHeader"] = "divActive";
-
-        formDate = DateTime.Now;
+        
         UiLogic.initPropNames(doorConfig);
         UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
+        //initFormStuffInDoorConfig(doorConfig);
+          doorConfig.initBorderColors();
+          doorConfig.btnClasses["general"] = "buttonActive";
+          doorConfig.divClasses["divHeader"] = "divActive";
+
         //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
         pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-                                                   // dyncompType = typeof(Extdecor);
+        //                                           // dyncompType = typeof(Extdecor);
 
-        // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
-        // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+        //// ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+        //// the 2nd answer : Update Parent State by calling it's StateHasChanged method
         pageParams.Add("config4", this);
 
         hebrew = new CultureInfo("he-IL", false);
@@ -101,6 +104,7 @@
         //myService.RefreshRequested += RefreshMe;
 
         //Js.InvokeVoidAsync("SayHelloJS");
+        formDate = DateTime.Now; // <<<
         UiLogic.tabPageIsFilled("divHeader", doorConfig);
 
         //string UserName = httpContextAccessor.HttpContext.User.Identity.Name;  // httpContextAccessor.HttpContext is null !    
@@ -112,6 +116,20 @@
         //{
         //    string userIdentity = user.Identity.Name;
         //}
+        }
+        protected void initFormStuffInDoorConfig(DoorConfig doorConfig)
+        {
+            doorConfig.initBorderColors();
+            doorConfig.btnClasses["general"] = "buttonActive";
+            doorConfig.divClasses["divHeader"] = "divActive";
+  
+            //UiLogic.initPropNames(doorConfig);
+            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+
+            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+
+            doorConfig.currTabName = "divHeader";
+            doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -245,38 +263,40 @@
         //private void doRestart()
         async Task doRestart()
         {
-        UiLogic.clearDoorConfig(doorConfig);
+            UiLogic.clearDoorConfig(doorConfig);
 
-        //does also in OnInitializedAsync() of the current page
-        formDate = DateTime.Now;
-        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+            //does also in OnInitializedAsync() of the current page
+            formDate = DateTime.Now;
+            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-        showProducts = false;
-        hideDoorTitle = true;
-        showDynComp = false;
-        hideDivDoor = true;
+            showProducts = false;
+            hideDoorTitle = true;
+            showDynComp = false;
+            hideDivDoor = true;
 
 
-        doorConfig.btnClasses["restart"] = "buttonRed";
-        doorConfig.btnClasses["general"] = "buttonActive";
-        doorConfig.btnClasses["selectprod"] =
-        doorConfig.btnClasses["btnDoor"] =
-        doorConfig.btnClasses["proddes"] = "button";
+            //doorConfig.btnClasses["restart"] = "buttonRed";
+            //doorConfig.btnClasses["general"] = "buttonActive";
+            //doorConfig.btnClasses["selectprod"] =
+            //doorConfig.btnClasses["btnDoor"] =
+            //doorConfig.btnClasses["proddes"] = "button";
 
-        doorConfig.divClasses["divHeader"] = "divActive";
-        doorConfig.divClasses["divProducts"] = 
-        doorConfig.divClasses["divDoorTitle"] = "divNotActive"; 
+            //doorConfig.divClasses["divHeader"] = "divActive";
+            //doorConfig.divClasses["divProducts"] = 
+            //doorConfig.divClasses["divDoorTitle"] = "divNotActive"; 
 
-        UiLogic.tabPageIsFilled("divHeader", doorConfig);
+            //doorConfig.currTabName = "divHeader";
+            //doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
+            initFormStuffInDoorConfig(doorConfig);
+            UiLogic.tabPageIsFilled("divHeader", doorConfig);
 
-        // done also in OnAfterRender firstRenter==true  of the current page
-        if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
-        {
-            StateHasChanged();
-            await Task.Delay(1);
-            await doorConfig.dicRefs["FORMFILLER"].FocusAsync();
-        }
-
+            // done also in OnAfterRender firstRenter==true  of the current page
+            if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+            {
+                StateHasChanged();
+                await Task.Delay(1);
+                await doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+            }
         }
         void submitForm()  //called when Enter is hit and not caught by onKeypressed event 
         {
@@ -563,6 +583,7 @@
                                 <th>ממלא ההזמנה</th>
                                 <th>מס' הזמנת לקוח'</th>
                                 <th>אסמכתא</th>
+                                <th>תאריך אספקה משוער</th>
                             </tr>
                             <tr id="trHeaderL1Controls">
                                 <td id="tdDate">
@@ -804,6 +825,38 @@
                                     }
                                 </td>
                                 <!-- end tdReference -->
+                                <td id="tdEstShipDate">
+                                    <input type="date" name="txtEstShipDate" @bind="estShipDate" disabled="@doorConfig.disabledFlds["ESTSHIPDATE"]" />
+                                    @code {
+                                        private DateTime _estShipDate = DateTime.Now;
+        protected DateTime estShipDate
+        {
+                                        get
+                                        {
+                                            if (doorConfig != null)
+                                            {
+                                                if (!string.IsNullOrEmpty(doorConfig.ESTSHIPDATE))
+                                                    _estShipDate = Convert.ToDateTime(doorConfig.ESTSHIPDATE);
+                                                else
+                                                {
+                                                    _estShipDate = _formDate.AddDays(21);
+                                                    doorConfig.ESTSHIPDATE = Helper.formatDate4Rest(_estShipDate);
+                                                }
+                                            }
+
+                                            return _estShipDate;
+                                        }
+                                        set
+                                        {
+                                            _estShipDate = value;
+                                            doorConfig.ESTSHIPDATE = Helper.formatDate4Rest(_estShipDate);
+                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                        }
+        }
+}
+                                </td>
+                                <!-- end tdEstShipDate -->
                                 <td>
                                     <label id="lblMsgL1" />
                                 </td>
@@ -883,12 +936,17 @@
                                                 if (Cust != null)
                                                 {
                                                     ShipAddress = string.Format("{0} {1} {2}", Cust.ADDRESS, Cust.ADDRESS2, Cust.ADDRESS3);
-                                                    if (!string.IsNullOrEmpty(Cust.TRSH_LOGO) && Cust.TRSH_LOGO == "Y")
-                                                    {
-                                                        disableLogo = true;
-                                                        doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
-                                                    }
+                                                    //if (!string.IsNullOrEmpty(Cust.TRSH_LOGO) && Cust.TRSH_LOGO == "Y")
+                                                    //{
+                                                    //    disableLogo = true;
+                                                    //    doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
+                                                    //}
                                                     //
+                                                    isEComplient = (Cust.TRSH_NOTECOMPLIENT != "Y");
+                                                    if (isEComplient)
+                                                        doorConfig.TRSH_COMPLIENT = PrApiCalls.ELIDOOR_COMPLIENT;  // 1 !
+                                                    else
+                                                        doorConfig.TRSH_COMPLIENT = 0;
                                                     //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
                                                     if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
                                                         showDivProducts();
