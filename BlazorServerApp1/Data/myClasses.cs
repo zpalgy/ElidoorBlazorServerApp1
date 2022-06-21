@@ -304,12 +304,14 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 1)]
         public int WINDOWWIDTH_ID { get; set; }
         [DataMember(Order = 2)]
-        public string PARTNAME { get; set; }
+        public string TRSH_MODELNAME { get; set; }
         [DataMember(Order = 3)]
-        public int MINDOORWIDTH { get; set; }
+        public string TRSH_WINGSNUMDES { get; set; }
         [DataMember(Order = 4)]
-        public int MAXDOORWIDTH { get; set; }
+        public int MIN_DOORWIDTH { get; set; }
         [DataMember(Order = 5)]
+        public int MAX_DOORWIDTH { get; set; }
+        [DataMember(Order = 6)]
         public int WINDOWWIDTH { get; set; }
     }
     public class ValuesWINDOWWIDTH_Class
@@ -475,7 +477,7 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 5)]
         public string FIELDDATATYPE { get; set; }
         [DataMember(Order = 6)]
-        public string FIELDNAME { get; set; }  // e.e AGENT, TRSH_MODELNAME - properties of DoorConfig class
+        public string FIELDNAME { get; set; }  // e.g. AGENT, TRSH_MODELNAME - properties of DoorConfig class
         [DataMember(Order = 7)]
         public string FIELDCODE { get; set; }
         [DataMember(Order = 8)]
@@ -495,7 +497,7 @@ namespace BlazorServerApp1.Data
     public class MeagedFields_Class
     {
         [DataMember(Order = 1)]
-        public string MEAGEDNAME { get; set; }  //PARTNAME of פריט מרכז
+        public string MEAGEDNAME { get; set; }  
         [DataMember(Order = 2)]
         public string CONFIG_THNAME { get; set; }
         [DataMember(Order = 3)]
@@ -554,7 +556,7 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 6)]
         public string CONFIG_FIELDNAME { get; set; }  //e.g. dlstPARTNAME
         [DataMember(Order = 7)]
-        public string FIELDNAME { get; set; }  //e.g. PARTNAME
+        public string FIELDNAME { get; set; }  //e.g. TRSH_MODELNAME
         [DataMember(Order = 8)]
         public string CONFIG_TDNAME { get; set; }
         [DataMember(Order = 9)]
@@ -623,22 +625,22 @@ namespace BlazorServerApp1.Data
         public List<Decoration_Class> value { get; set; }
     }
 
-    [DataContract]
-    public class WingWidth_Class
-    {
-        [DataMember(Order = 1)]
-        public int TRSH_WING_WIDTH { get; set; }
-        [DataMember(Order = 2)]
-        public int FROM_WIDTH { get; set; }
-        [DataMember(Order = 3)]
-        public int TO_WIDTH { get; set; }
-        [DataMember(Order = 4)]
-        public int AUTO_WINDOW_WIDTH { get; set; }
-    }
-    public class ValuesWingWidth_Class
-    {
-        public List<WingWidth_Class> value { get; set; }
-    }
+    //[DataContract]
+    //public class WingWidth_Class
+    //{
+    //    [DataMember(Order = 1)]
+    //    public int TRSH_WING_WIDTH { get; set; }
+    //    [DataMember(Order = 2)]
+    //    public int FROM_WIDTH { get; set; }
+    //    [DataMember(Order = 3)]
+    //    public int TO_WIDTH { get; set; }
+    //    [DataMember(Order = 4)]
+    //    public int AUTO_WINDOW_WIDTH { get; set; }
+    //}
+    //public class ValuesWingWidth_Class
+    //{
+    //    public List<WingWidth_Class> value { get; set; }
+    //}
 
     [DataContract]
     public class Complient_Class

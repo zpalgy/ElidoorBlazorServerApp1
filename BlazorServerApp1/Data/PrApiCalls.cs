@@ -41,8 +41,8 @@ namespace BlazorServerApp1.Data
         public static List<PART_Class> lstParts = new List<PART_Class>();
         public static DataTable dtParts = new DataTable();
 
-        public static List<WingWidth_Class> lstWingWidth = new List<WingWidth_Class>();
-        public static DataTable dtWingWidth = new DataTable();
+        //public static List<WingWidth_Class> lstWingWidth = new List<WingWidth_Class>();
+        //public static DataTable dtWingWidth = new DataTable();
 
         public static List<TRSH_COLOR_Class> lstColors = new List<TRSH_COLOR_Class>();
         public static List<TRSH_COLOR_Class> lstGlassColors4Diamond = new List<TRSH_COLOR_Class>();
@@ -479,53 +479,53 @@ namespace BlazorServerApp1.Data
             return false;  // error !
         }
 
-        public static List<WingWidth_Class> getAllWingWidths(ref string errMsg)
-        {
-            try
-            {
-                RestClient restClient = new RestClient();
-                initRestClient(restClient);
-                RestRequest request = new RestRequest();
-                string fields = "TRSH_WING_WIDTH,FROM_WIDTH,TO_WIDTH,AUTO_WINDOW_WIDTH";
-                request.Resource = string.Format("TRSH_WING_WIDTH?$select={0}", fields);
-                IRestResponse response = restClient.Execute(request);
-                if (response.IsSuccessful)
-                {
-                    var settings = new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Include,
-                        MissingMemberHandling = MissingMemberHandling.Ignore
-                    };
-                    ValuesWingWidth_Class val = JsonConvert.DeserializeObject<ValuesWingWidth_Class>(response.Content);
+        //public static List<WingWidth_Class> getAllWingWidths(ref string errMsg)
+        //{
+        //    try
+        //    {
+        //        RestClient restClient = new RestClient();
+        //        initRestClient(restClient);
+        //        RestRequest request = new RestRequest();
+        //        string fields = "TRSH_WING_WIDTH,FROM_WIDTH,TO_WIDTH,AUTO_WINDOW_WIDTH";
+        //        request.Resource = string.Format("TRSH_WING_WIDTH?$select={0}", fields);
+        //        IRestResponse response = restClient.Execute(request);
+        //        if (response.IsSuccessful)
+        //        {
+        //            var settings = new JsonSerializerSettings
+        //            {
+        //                NullValueHandling = NullValueHandling.Include,
+        //                MissingMemberHandling = MissingMemberHandling.Ignore
+        //            };
+        //            ValuesWingWidth_Class val = JsonConvert.DeserializeObject<ValuesWingWidth_Class>(response.Content);
 
-                    List<WingWidth_Class> val1 = new List<WingWidth_Class>();  //val.value;
-                    //WingWidth_Class emptyWWidth = new WingWidth_Class();
-                    //emptyWWidth.TRSH_WINGSNUM = 0;
-                    //val1.Add(emptyWnum);
-                    foreach (WingWidth_Class ww in val.value)
-                    {
-                        val1.Add(ww);
-                    }
-                    return val1;
-                }
-                else
-                {
-                    if (response.StatusDescription.ToLower() == "not found")
-                    {
-                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
-                        myLogger.log.Error(errMsg);
-                        return null;
-                    }
-                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
-                throw ex;
-            }
-        }
+        //            List<WingWidth_Class> val1 = new List<WingWidth_Class>();  //val.value;
+        //            //WingWidth_Class emptyWWidth = new WingWidth_Class();
+        //            //emptyWWidth.TRSH_WINGSNUM = 0;
+        //            //val1.Add(emptyWnum);
+        //            foreach (WingWidth_Class ww in val.value)
+        //            {
+        //                val1.Add(ww);
+        //            }
+        //            return val1;
+        //        }
+        //        else
+        //        {
+        //            if (response.StatusDescription.ToLower() == "not found")
+        //            {
+        //                errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+        //                myLogger.log.Error(errMsg);
+        //                return null;
+        //            }
+        //            errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+        //            return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+        //        throw ex;
+        //    }
+        //}
         public static List<Decoration_Class> getAllDecorations(ref string errMsg)
         {
             try
@@ -872,8 +872,8 @@ namespace BlazorServerApp1.Data
                 lstDecorations = getAllDecorations(ref errMsg);
                 dtDecorations = lstDecorations.ToDataTable<Decoration_Class>();
                 dtComplients = getComplients(ref errMsg);
-                lstWingWidth = getAllWingWidths(ref errMsg);
-                dtWingWidth = lstWingWidth.ToDataTable<WingWidth_Class>();
+                //lstWingWidth = getAllWingWidths(ref errMsg);
+                //dtWingWidth = lstWingWidth.ToDataTable<WingWidth_Class>();
 
                 lstParts = getAllParts(ref errMsg);
                 dtParts = lstParts.ToDataTable<PART_Class>();
@@ -1512,7 +1512,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "WINDOWWIDTH_ID,PARTNAME,MINDOORWIDTH,MAXDOORWIDTH,WINDOWWIDTH";
+                string fields = "WINDOWWIDTH_ID,TRSH_MODELNAME,TRSH_WINGSNUMDES,MIN_DOORWIDTH,MAX_DOORWIDTH,WINDOWWIDTH";
                 request.Resource = string.Format("TRSH_WINDOWWIDTH?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1525,7 +1525,7 @@ namespace BlazorServerApp1.Data
                     ValuesWINDOWWIDTH_Class val = JsonConvert.DeserializeObject<ValuesWINDOWWIDTH_Class>(response.Content);
                     List<WINDOWWIDTH_Class> val1 = new List<WINDOWWIDTH_Class>();  //val.value;
                     WINDOWWIDTH_Class emptyV = new WINDOWWIDTH_Class();
-                    //emptyV.PARTNAME = " ";
+                    //emptyV.TRSH_MODELNAME = " ";
                     //val1.Add(emptyV);
                     foreach (WINDOWWIDTH_Class wwidth in val.value)
                     {
@@ -2427,9 +2427,9 @@ namespace BlazorServerApp1.Data
                 //debug 
                 //UiLogic.clearDoorConfig(doorConfig, false);  //works  without defaults
                 //UiLogic.clearDoorConfig(doorConfig, true);  // fails with defaults 
-                //doorConfig.PARTNAME = "";     //"224" fails because it does not exist in TRSH_TILETYPES.PARTNAME  (the U key of that table ) - should be : 990141
+                //doorConfig.PARTNAME = "";     //"224" fails because it does not exist in TRSH_TILETYPES.TRSH_MODELNAME  (the U key of that table ) - should be : 990141
                 //doorConfig.VITRAGENAME = "";  //"ויטראז לדגם 5515";  - fails  because it does not exists in TRSH_VITRAGE.VITRAGENAME ( The U key of that table )
-                                                // - should be V5515 
+                // - should be V5515 
 
                 // end debug  
 
@@ -2450,7 +2450,7 @@ namespace BlazorServerApp1.Data
                 
 @",""OPENMODE"":null,""COMPLIENTDOOR"":""Y"",""TRSH_MODELNAME"":""MLI"",""LOCKDRILHEIGHT"":0,""OPENSIDE"":null,""DECORFORMAT"":null,""COLORSNUM"":null," +
                 
-@"""DOORWIDTH"":0,""DOORCOLORID"":0,""DOORHEIGHT"":0,""TURBOAPPARATUS"":""Y"",""LOGO"":"""",""TRSH_HARDWARE"":0,""HWCOLORID"":0,""DRIL4HW"":0,""PARTNAME"":null," +
+@"""DOORWIDTH"":0,""DOORCOLORID"":0,""DOORHEIGHT"":0,""TURBOAPPARATUS"":""Y"",""LOGO"":"""",""TRSH_HARDWARE"":0,""HWCOLORID"":0,""DRIL4HW"":0,""TRSH_MODELNAME"":null," +
 
 @"""ELECTRICAPPARATUS"":""N"",""RAFAFAONMOVINGWING"":null,""VENTS"":null,""CATDOOR"":null,""EXTCOLORID"":0,""GRIDCOLORID"":0,""VITRAGECLRBYCTLG"":null," +
 

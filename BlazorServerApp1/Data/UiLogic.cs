@@ -873,7 +873,7 @@ namespace BlazorServerApp1.Data
                                 doorConfig.disabledFlds[fldName] = true;
                         }
                     }
-                    else // field was not found in the DEFAULTs that depend on MODEL (PARTNAME), maybe it has a general default that does not depend on MODEL (PARTNAME)
+                    else // field was not found in the DEFAULTs that depend on MODEL (TRSH_MODELNAME), maybe it has a general default that does not depend on MODEL (TRSH_MODELNAME)
                     {
                         //if (thTdFIELDNAME == "COMPLIENTDOOR")
                         //{

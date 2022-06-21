@@ -184,7 +184,7 @@
                     {
                         _DoorWidth = value;
 
-                        if (value == null || value == 0 || !wingWidthIsOk((int)value, ref errMsg2))
+                        if (value == null || value == 0 || !wingWidthIsOk(doorConfig, (int)value, ref errMsg2))
                         {
                             errMsg2 = (value == null || value == 0 ? "חובה לציין רוחב דלת" : errMsg2);
                             msgCaption = string.Empty;

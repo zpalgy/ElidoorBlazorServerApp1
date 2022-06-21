@@ -11,40 +11,73 @@ namespace BlazorServerApp1.Pages
 {
     public class MovingwingBase : ComponentBase
     {
-        protected bool wingWidthIsOk(int wingWidth, ref string errMsg)
+        protected bool wingWidthIsOk(DoorConfig doorConfig, int wingWidth, ref string errMsg)
         {
-            string query = string.Format("FROM_WIDTH <= {0} AND {0} <= TO_WIDTH", wingWidth);
-            DataRow[] rowsArray = PrApiCalls.dtWingWidth.Select(query);
+            //string query = string.Format("FROM_WIDTH <= {0} AND {0} <= TO_WIDTH", wingWidth);
+            //DataRow[] rowsArray = PrApiCalls.dtWingWidth.Select(query);
+            //if (rowsArray.Length == 0)
+            //{
+            //    errMsg = "רוחב כנף חורג מהטולרנס שהוגדר נא למלא רוחב כנף מתאים";
+            //    return false;
+            //}
+            //return true;
+            string query = string.Format("TRSH_MODELNAME='{0}'", doorConfig.TRSH_MODELNAME);
+            DataRow[] rowsArray = PrApiCalls.dtWindowWidths.Select(query);
+            if (rowsArray.Length == 0)
+            {
+                //return 0;  // A DOOR  without WINDOW is legal 
+                errMsg = "דגם זה לא קיים בטבלת מידות רוחב חלון - אנא פנה למנהל המערכת";  // now (21/06/2022) any MODEL should be in  TRSH_WINDOWWIDTH 
+                                                                                         // even if it doesn't have a Window !
+                myLogger.log.Error(errMsg);
+                return false;
+            }
+            query = string.Format("TRSH_MODELNAME='{0}'  AND TRSH_WINGSNUMDES = '{1}' AND MIN_DOORWIDTH <= {2} AND {2} <= MAX_DOORWIDTH",
+                        doorConfig.TRSH_MODELNAME, doorConfig.TRSH_WINGSNUMDES, wingWidth);
+
+            rowsArray = PrApiCalls.dtWindowWidths.Select(query);
             if (rowsArray.Length == 0)
             {
                 errMsg = "רוחב כנף חורג מהטולרנס שהוגדר נא למלא רוחב כנף מתאים";
+                myLogger.log.Error(errMsg);
                 return false;
             }
             return true;
         }
+        
         protected int calcWindowWidth(DoorConfig doorConfig, ref string errMsg)
         {
             try
             {
-                string query = string.Format("PARTNAME='{0}'", doorConfig.PARTNAME);
+                string query = string.Format("TRSH_MODELNAME='{0}'", doorConfig.TRSH_MODELNAME);
                 DataRow[] rowsArray = PrApiCalls.dtWindowWidths.Select(query);
                 if (rowsArray.Length == 0)
                 {
-                    return 0;  // A DOOR  without WINDOW is legal 
+                    //return 0;  // A DOOR  without WINDOW is legal 
+                    errMsg = "דגם זה לא קיים בטבלת מידות רוחב חלון - אנא פנה למנהל המערכת";  // now (21/06/2022) any MODEL should be in  TRSH_WINDOWWIDTH 
+                                                                                                // even if it doesn't have a Window !
+                    myLogger.log.Error(errMsg);
+                    return -1;
                 }
-                query = string.Format("PARTNAME='{0}'  AND MINDOORWIDTH <= {1} AND {1} <= MAXDOORWIDTH", doorConfig.PARTNAME, doorConfig.DOORWIDTH);
+                query = string.Format("TRSH_MODELNAME='{0}'  AND TRSH_WINGSNUMDES = '{1}' AND MIN_DOORWIDTH <= {2} AND {2} <= MAX_DOORWIDTH", 
+                        doorConfig.TRSH_MODELNAME, doorConfig.TRSH_WINGSNUMDES,  doorConfig.DOORWIDTH);
                 rowsArray = PrApiCalls.dtWindowWidths.Select(query);
                 if (rowsArray.Length > 0)
                 {
                     //UiLogic.hideErrMsg(lblMsg3);
-                    return (rowsArray[0]["WINDOWWIDTH"] != null ? int.Parse(rowsArray[0]["WINDOWWIDTH"].ToString()) : 0);
+                    int windowWidth = 0;
+                    if (rowsArray[0]["WINDOWWIDTH"] != null && !String.IsNullOrEmpty(rowsArray[0]["WINDOWWIDTH"].ToString()) )
+                    {
+                        windowWidth = int.Parse(rowsArray[0]["WINDOWWIDTH"].ToString());
+                    }
+                    return windowWidth;
                 }
                 else
                 {
-                    errMsg = string.Format("שגיאה: לא נמצא רוחב חלון לדלת {0} ברוחב {1}  בטבלת מידות רוחב חלון", doorConfig.PARTNAME, doorConfig.DOORWIDTH);
+                    //errMsg = string.Format("שגיאה: לא נמצא רוחב חלון לדלת {0} ברוחב {1}  בטבלת מידות רוחב חלון", doorConfig.PARTNAME, doorConfig.DOORWIDTH);
+                    errMsg = "רוחב כנף חורג מהטולרנס שהוגדר נא למלא רוחב כנף מתאים";
                     myLogger.log.Error(errMsg);
                     //UiLogic.displayErrMsg(lblMsg3, errMsg2);
-                    return 0;
+                    return -1;
                 }
             }
             catch (Exception ex)
@@ -59,14 +92,14 @@ namespace BlazorServerApp1.Pages
         {
             try
             {
-                //string query = string.Format("PARTNAME='{0}'", doorConfig.PARTNAME);
-                string query = string.Format("PARTNAME='{0}'", doorConfig.TRSH_MODELNAME);  //temporary till we update the TRSH_WINDOWHEIGHT table in priority
+                //string query = string.Format("PARTNAME='{0}'", doorConfig.TRSH_MODELNAME);
+                string query = string.Format("TRSH_MODELNAME='{0}'", doorConfig.TRSH_MODELNAME);  //temporary till we update the TRSH_WINDOWHEIGHT table in priority
                 DataRow[] rowsArray = PrApiCalls.dtWindowHeights.Select(query);
                 if (rowsArray.Length == 0)
                 {
                     return 0;  // A DOOR  without WINDOW is legal 
                 }
-                query = string.Format("PARTNAME='{0}'  AND MINDOORHEIGHT <= {1} AND {1} <= MAXDOORHEIGHT", doorConfig.PARTNAME, doorConfig.DOORHEIGHT);
+                query = string.Format("TRSH_MODELNAME='{0}'  AND MINDOORHEIGHT <= {1} AND {1} <= MAXDOORHEIGHT", doorConfig.TRSH_MODELNAME, doorConfig.DOORHEIGHT);
                 rowsArray = PrApiCalls.dtWindowHeights.Select(query);
                 if (rowsArray.Length > 0)
                     return int.Parse(rowsArray[0]["WINDOWHEIGHT"].ToString());
@@ -134,7 +167,7 @@ namespace BlazorServerApp1.Pages
                     doorConfig.HINGE5HEIGHT = 0;
                     doorConfig.HINGE5HEIGHT = 0;
                 }
-                //check if txtWindowHeight is visible before calculating WindowHeight and WindowWidth
+                //check if txtWindowHeight is visible before calculating WindowHeight and windowWidth
                 // if one of them is visible and the other NOT - BUG in Meaged definition.
 
                 if (!UiLogic.hideFld(doorConfig, "WindowHeight"))
