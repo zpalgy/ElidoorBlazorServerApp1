@@ -49,6 +49,8 @@
     DataTable dtTabFlds = new DataTable();
     List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
 
+    DataTable dtCylinders1 = new DataTable();
+
     async void IDisposable.Dispose()
     {
         //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
@@ -397,6 +399,7 @@
                         {
                             doorConfig.OPENMODE = _openMode;
                             doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                            dtCylinders1 = PrApiCalls.getCylindersByModeOpenMode(doorConfig, ref errMsg2);
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -411,7 +414,7 @@
                      onkeypress="@KeyPressHandler" 
                              @ref="doorConfig.dicRefs[UiLogic.propNames[i305]]"  >
                             <option></option>
-                            <option>ללא</option>
+                            <option>מגולוון</option>
                             <option>1</option>
                             <option>2</option>
                         </select>
@@ -439,10 +442,12 @@
                             switch (_ColorsNum.Trim())
                             {
                                 case "":
-                                case "ללא":
+                                case "מגולוון":
+                                    doorConfig.DOORCOLORID = PrApiCalls.MEGULVAN_ID;   // 22/06/2022
                                     disableColor = disableExtColor = disableIntColor = true;
                                     doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;
-                                    doorConfig.DOORCOLORID = doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
+                                    doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
+                                    this.StateHasChanged();
                                     //doorConfig.INTCOLORDES = string.Empty;
                                     break;
                                 case "1":

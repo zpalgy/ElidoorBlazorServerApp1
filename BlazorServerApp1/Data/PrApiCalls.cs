@@ -23,6 +23,7 @@ namespace BlazorServerApp1.Data
         //public static DoorConfig doorConfig = new DoorConfig();
 
         public static int ELIDOOR_COMPLIENT = 1;
+        public static int MEGULVAN_ID;
 
         public static DataTable dtMeagedFields;
         public static DataTable dtDecorSideFlds;
@@ -53,6 +54,7 @@ namespace BlazorServerApp1.Data
         public static List<DRIL4HW_Class> lstDril4Hw = new List<DRIL4HW_Class>();
         public static DataTable dtDril4Hws = new DataTable();
         public static List<CYLINDER_Class> lstCylinders = new List<CYLINDER_Class>();
+        public static DataTable dtCylinders = new DataTable();
         public static List<TRSH_LOCK_Class> lstLocks = new List<TRSH_LOCK_Class>();
         public static DataTable dtLocks = new DataTable();
 
@@ -60,6 +62,9 @@ namespace BlazorServerApp1.Data
         public static List<RAW4CPLATES_Class> lstRaw4CPlates = new List<RAW4CPLATES_Class>();
         public static List<WINDOWWIDTH_Class> lstWindowWidths = new List<WINDOWWIDTH_Class>();
         public static DataTable dtWindowWidths = new DataTable();
+        public static List<WWIDTH_STATIC_Class> lstWWidth_Statics = new List<WWIDTH_STATIC_Class>();
+        public static DataTable dtWWidth_Statics = new DataTable();
+
         public static List<WINDOWHEIGHT_Class> lstWindowHeights = new List<WINDOWHEIGHT_Class>();
         public static DataTable dtWindowHeights = new DataTable();
         public static List<PROFILE4WINDOW_Class> lstProfiles4Windows = new List<PROFILE4WINDOW_Class>();
@@ -886,10 +891,15 @@ namespace BlazorServerApp1.Data
                 lstDril4Hw = getDril4Hws(ref errMsg);
                 dtDril4Hws = lstDril4Hw.ToDataTable<DRIL4HW_Class>();
                 lstCylinders = getCylinders(ref errMsg);
+                dtCylinders = lstCylinders.ToDataTable<CYLINDER_Class>();
                 lstLocks = getLocks(ref errMsg);
                 dtLocks = lstLocks.ToDataTable<TRSH_LOCK_Class>();
+                
                 lstWindowWidths = getWindowWidths(ref errMsg);
                 dtWindowWidths = lstWindowWidths.ToDataTable<WINDOWWIDTH_Class>();
+                lstWWidth_Statics = getWWidth_Statics(ref errMsg);
+                dtWWidth_Statics = lstWWidth_Statics.ToDataTable<WWIDTH_STATIC_Class>();
+
                 lstWindowHeights = getWindowHeights(ref errMsg);
                 dtWindowHeights = lstWindowHeights.ToDataTable<WINDOWHEIGHT_Class>();
                 lstVitrages4Diamond = getVitrages4Diamond(ref errMsg);
@@ -937,6 +947,8 @@ namespace BlazorServerApp1.Data
                     foreach (TRSH_COLOR_Class clr in val.value)
                     {
                         val1.Add(clr);
+                        if (clr.PARTDES.Contains("מגולוון"))
+                            MEGULVAN_ID = clr.TRSH_COLORID;
                     }
                     return val1;
                 }
@@ -1272,7 +1284,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "PARTNAME,PARTDES";
+                string fields = "TRSH_CYLINDER,PARTNAME,PARTDES,TRSH_MODELNAME,OPENMODE";
                 request.Resource = string.Format("TRSH_CYLINDERS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1295,6 +1307,8 @@ namespace BlazorServerApp1.Data
                     val1.Add(noCylinder);
                     foreach (CYLINDER_Class cyl in val.value)
                     {
+                        if (cyl.OPENMODE == null || string.IsNullOrEmpty(cyl.OPENMODE))
+                            cyl.OPENMODE = "2";   // IN and OUT 
                         val1.Add(cyl);
                     }
                     return val1;
@@ -1317,6 +1331,30 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        public static DataTable getCylindersByModeOpenMode(DoorConfig doorConfig, ref string errMsg)
+        {
+            try
+            {
+                string query = string.Format("TRSH_MODELNAME='{0}' AND (OPENMODE = '2' OR OPENMODE = '{1}')", doorConfig.TRSH_MODELNAME, doorConfig.OPENMODE );
+                DataRow[] cylRows = dtCylinders.Select(query);
+                if (cylRows != null && cylRows.Length > 0)
+                {
+                    DataTable res = new DataTable();
+                    for (int r = 0; r < cylRows.Length; r++)
+                    {
+                        res.ImportRow(cylRows[r]);
+                    }
+                    return res;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+
 
         //getLocks" 
         public static List<TRSH_LOCK_Class> getLocks(ref string errMsg)
@@ -1551,6 +1589,54 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+
+        public static List<WWIDTH_STATIC_Class> getWWidth_Statics(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "WWIDTH_STATIC_ID,TRSH_MODELNAME,TRSH_WINGSNUMDES,MIN_WINGWIDTH,MAX_WINGWIDTH,WINDOWWIDTH,HASLOCK";
+                request.Resource = string.Format("TRSH_WWIDTH_STATIC?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesWWIDTH_STATIC_Class val = JsonConvert.DeserializeObject<ValuesWWIDTH_STATIC_Class>(response.Content);
+                    List<WWIDTH_STATIC_Class> val1 = new List<WWIDTH_STATIC_Class>();  //val.value;
+                    WWIDTH_STATIC_Class emptyV = new WWIDTH_STATIC_Class();
+                    //emptyV.TRSH_MODELNAME = " ";
+                    //val1.Add(emptyV);
+                    foreach (WWIDTH_STATIC_Class wwidth in val.value)
+                    {
+                        val1.Add(wwidth);
+                    }
+                    return val1;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+
         //TRSH_WINDOWHEIGHT     - 140
         public static List<WINDOWHEIGHT_Class> getWindowHeights(ref string errMsg)
         {

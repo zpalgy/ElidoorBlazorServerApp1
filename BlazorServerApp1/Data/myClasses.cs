@@ -250,6 +250,11 @@ namespace BlazorServerApp1.Data
         public string PARTNAME { get; set; }
         [DataMember(Order = 3)]
         public string PARTDES { get; set; }
+        [DataMember(Order =4)]
+        public string TRSH_MODELNAME { get; set; }
+        [DataMember(Order = 5)]
+        public string OPENMODE { get; set; }
+
     }
     public class ValuesCYLINDER_Class
     {
@@ -299,7 +304,7 @@ namespace BlazorServerApp1.Data
     }
 
     [DataContract]
-    public class WINDOWWIDTH_Class  // table 150
+    public class WINDOWWIDTH_Class  // table 150  - this is only for Movingwing not for Staticwing 22/06/2022
     {
         [DataMember(Order = 1)]
         public int WINDOWWIDTH_ID { get; set; }
@@ -318,6 +323,31 @@ namespace BlazorServerApp1.Data
     {
         public List<WINDOWWIDTH_Class> value { get; set; }
     }
+
+    [DataContract]
+    public class WWIDTH_STATIC_Class  //  this is only for Staticwing not for Movingwing  22/06/2022
+    {
+        [DataMember(Order = 1)]
+        public int WWIDTH_STATIC_ID { get; set; }
+        [DataMember(Order = 2)]
+        public string TRSH_MODELNAME { get; set; }
+        [DataMember(Order = 3)]
+        public string TRSH_WINGSNUMDES { get; set; }
+        [DataMember(Order = 4)]
+        public int MIN_DOORWIDTH { get; set; }
+        [DataMember(Order = 5)]
+        public int MAX_DOORWIDTH { get; set; }
+        [DataMember(Order = 6)]
+        public int WINDOWWIDTH { get; set; }
+        [DataMember(Order =7)]
+        public string HASLOCK { get; set; }  // Y | '' bool 
+    }
+    public class ValuesWWIDTH_STATIC_Class
+    {
+        public List<WWIDTH_STATIC_Class> value { get; set; }
+    }
+
+
     [DataContract]
     public class PROFILE4WINDOW_Class   //table 160
     {
@@ -1251,7 +1281,8 @@ namespace BlazorServerApp1.Data
                     string nextTabName = UiLogic.getNextTabName(this, currTabName);
                     if (UiLogic.try2UpdateBtnClass(this, currTabName))
                     {
-                        config4.RefreshState();
+                        if (config4 != null)
+                            config4.RefreshState();
                     }
                 }
             }
