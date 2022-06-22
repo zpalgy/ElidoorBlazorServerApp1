@@ -1331,22 +1331,32 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-        public static DataTable getCylindersByModeOpenMode(DoorConfig doorConfig, ref string errMsg)
+        public static List<CYLINDER_Class> getCylindersByModelOpenMode(DoorConfig doorConfig, ref string errMsg)
         {
             try
             {
-                string query = string.Format("TRSH_MODELNAME='{0}' AND (OPENMODE = '2' OR OPENMODE = '{1}')", doorConfig.TRSH_MODELNAME, doorConfig.OPENMODE );
-                DataRow[] cylRows = dtCylinders.Select(query);
-                if (cylRows != null && cylRows.Length > 0)
+                //string query = string.Format("TRSH_MODELNAME='{0}' AND (OPENMODE = '2' OR OPENMODE = '{1}')", doorConfig.TRSH_MODELNAME, doorConfig.OPENMODE );
+                //DataRow[] cylRows = dtCylinders.Select(query);
+                //if (cylRows != null && cylRows.Length > 0)
+                //{
+                //    //DataTable res = new DataTable();
+                //    for (int r = 0; r < cylRows.Length; r++)
+                //    {
+                //        res.ImportRow(cylRows[r]);
+                //    }
+                //    lstRes = Helper.ConvertDataTable<CYLINDER_Class>(res);
+                List<CYLINDER_Class> lstRes = new List<CYLINDER_Class>();
+                CYLINDER_Class noCylinder = new CYLINDER_Class();
+                noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
+                noCylinder.PARTDES = "ללא";
+                lstRes.Add(noCylinder);
+                foreach (CYLINDER_Class cyl in lstCylinders)
                 {
-                    DataTable res = new DataTable();
-                    for (int r = 0; r < cylRows.Length; r++)
-                    {
-                        res.ImportRow(cylRows[r]);
-                    }
-                    return res;
+                    if (cyl.TRSH_MODELNAME == doorConfig.TRSH_MODELNAME
+                        && (cyl.OPENMODE == doorConfig.OPENMODE || cyl.OPENMODE == "2"))
+                        lstRes.Add(cyl);
                 }
-                return null;
+                return lstRes;
             }
             catch (Exception ex)
             {

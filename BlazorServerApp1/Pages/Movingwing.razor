@@ -50,6 +50,7 @@
     List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
 
     DataTable dtCylinders1 = new DataTable();
+    List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
 
     async void IDisposable.Dispose()
     {
@@ -399,7 +400,8 @@
                         {
                             doorConfig.OPENMODE = _openMode;
                             doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            dtCylinders1 = PrApiCalls.getCylindersByModeOpenMode(doorConfig, ref errMsg2);
+                            lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
+                            
                             UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -933,7 +935,7 @@
 
                 @if (PrApiCalls.lstCylinders != null)
                 {
-                    @foreach (CYLINDER_Class c in PrApiCalls.lstCylinders)
+                    @foreach (CYLINDER_Class c in lstCylinders1)
                     {
                         <option value="@c.PARTNAME">@c.PARTDES</option>
                     }
