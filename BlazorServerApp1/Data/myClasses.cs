@@ -1114,7 +1114,7 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 265), Order]
         public string LOCK4SWING { get; set; }    // new
         [DataMember(Order = 266), Order]
-        public string HW4EXTRAWING { get; set; }         //D-520  was logic == bool now real value from LOV 26/06/2022 - new field size !
+        public int HW4EXTRAWING { get; set; }         //D-520  was logic == bool now it's int - like TRSH_HARDWARE  26/06/2022 - new field size !
         [DataMember(Order = 267), Order]
         public int SWING_HWCOLORID { get; set; }  // new 
         [DataMember(Order = 268), Order]

@@ -970,6 +970,15 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        public static string getColorDes (int ColorId)
+        {
+            foreach (TRSH_COLOR_Class c in lstColors)
+            {
+                if (c.TRSH_COLORID == ColorId)
+                    return c.PARTDES;
+            }
+            return String.Empty;
+        }
         public static List<TRSH_COLOR_Class> getGlassColors4Diamond(ref string errMsg)
         {
             try

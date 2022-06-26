@@ -158,7 +158,7 @@
             @{  int i301 = Array.IndexOf(UiLogic.propNames, "DOORWIDTH");
                              <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" 
                                   @onfocus="@( () => UiLogic.HasFocus("DOORWIDTH", doorConfig) )" 
-                      onkeypress="@KeyPressHandler"
+                                  onkeypress="@KeyPressHandler"
                                  @ref="doorConfig.dicRefs[UiLogic.propNames[i301]]"    /> 
                                  @*  @ref="txtWingWidth"   onkeypress="return event.keyCode!=13"   *@
             }

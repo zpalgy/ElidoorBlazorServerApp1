@@ -25,6 +25,7 @@
 @code {
 
 	private DataTable dtTabFlds = new DataTable();
+	List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -50,7 +51,10 @@
 
 		//Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
 		string errMsg = string.Empty;
-		dtTabFlds = UiLogic.getTabFields("staticwing", doorConfig, ref errMsg);
+		doorConfig.config4 = config4;
+		doorConfig.currTabName = "staticwing";
+		doorConfig.dtTabFlds = UiLogic.getTabFields("staticwing", doorConfig, ref errMsg);
+		
 		doorConfig.disabledFlds["DOORHEIGHT"] = doorConfig.disabledFlds["CENTRALCOLCLRID"] = doorConfig.disabledFlds["OPENMODE"] =
 		doorConfig.disabledFlds["OPENSIDE"] =  doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] =
 		doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["TURBOAPPARATUS"] = doorConfig.disabledFlds["LOGO"] = true;
@@ -239,16 +243,19 @@
 				}
 			</td>
 
-	
-			@if (!ccw)
-			{
-				<td id="tdCentralColWidth" @hidden="@false" >
-					<select name="dlstCentralColWidth" @bind="CentralColWidth" class= "@doorConfig.borderColors["CENTRALCOLWIDTH"]" >
+			<td id="tdCentralColWidth" @hidden="@false" >
+				 @{  int i603 = Array.IndexOf(UiLogic.propNames, "CENTRALCOLWIDTH");
+					<select name="dlstCentralColWidth" @bind="CentralColWidth" class= "@doorConfig.borderColors["CENTRALCOLWIDTH"]" 
+					  @onfocus="@( () => UiLogic.HasFocus("CENTRALCOLWIDTH", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i603]]"  
+					>
 						<option>40</option>
 						<option>30</option>
 					</select>
+					}
 				</td>
-			}
+			
 			@code
 			{
 				protected int _CentralColWidth = 0;
@@ -275,7 +282,7 @@
 				}
 			}
 			<td id="tdCentralColClrID" >
-                <input name="dlstCentralColClrID" @bind="CentralColClrID" class= "@doorConfig.borderColors["CENTRALCOLCLRID"]"  
+                <input name="dlstCentralColClrID" @bind="CentralColClrDes" class= "@doorConfig.borderColors["CENTRALCOLCLRID"]"  
 				   disabled="@doorConfig.disabledFlds["CENTRALCOLCLRID"]"
 				/>
                     
@@ -284,7 +291,8 @@
             @code
             {
 	            protected int _CentralColClrID = 0;
-	            protected int CentralColClrID
+				protected string _CentralColClrDes = string.Empty;
+	            protected string CentralColClrDes
 	            {
 		            get
 		            {
@@ -292,11 +300,11 @@
 			            {
 				            _CentralColClrID = doorConfig.CENTRALCOLCLRID;
 			            }
-			            return _CentralColClrID;
+			            return PrApiCalls.getColorDes(_CentralColClrID);
 		            }
 		            set
 		            {
-			            _CentralColClrID = value;
+			            _CentralColClrDes = value;
 		            }
 	            }
             }
@@ -374,11 +382,12 @@
 			</tr>
 			<tr>
 				<td id="thSwingColorId">
-					<input name="txtSwingColorID" disabled="true"  @bind="SwingColorID"  class="@doorConfig.borderColors["DOORCOLORID"]"   /> 
+					<input name="txtSwingColorID" disabled="true"  @bind="SwingColorDes"  class="@doorConfig.borderColors["DOORCOLORID"]"   /> 
 					@code 
 					{
 						protected int _SwingColorID = 0;
-						protected int SwingColorID
+						protected string _SwingColorDes = string.Empty;
+						protected string SwingColorDes
 						{
 							get
 							{
@@ -386,21 +395,22 @@
 								{
 									_SwingColorID = doorConfig.DOORCOLORID;
 								}
-								return _SwingColorID;
+								return PrApiCalls.getColorDes(_SwingColorID);
 							}
 							set
 							{
-								_SwingColorID = value;
+								_SwingColorDes = value;
 							}
 						}
 					}
 				</td>
 				<td>
-					<input name="txtSwingExtColorID" disabled="true"  @bind="SwingExtColorID"  class="@doorConfig.borderColors["EXTCOLORID"]"   /> 
+					<input name="txtSwingExtColorID" disabled="true"  @bind="SwingExtColorDes"  class="@doorConfig.borderColors["EXTCOLORID"]"   /> 
 					@code 
 					{
 						protected int _SwingExtColorID = 0;
-						protected int SwingExtColorID
+						protected string _SwingExtColorDes = string.Empty;
+						protected string SwingExtColorDes
 						{
 							get
 							{
@@ -408,21 +418,22 @@
 								{
 									_SwingExtColorID = doorConfig.EXTCOLORID;
 								}
-								return _SwingExtColorID;
+								return PrApiCalls.getColorDes(_SwingExtColorID);
 							}
 							set
 							{
-								_SwingExtColorID = value;
+								_SwingExtColorDes = value;
 							}
 						}
 					}
 				</td>
 				<td>
-					<input name="txtSwingIntColorID" disabled="true"  @bind="SwingIntColorID"  class="@doorConfig.borderColors["INTCOLORID"]"   /> 
+					<input name="txtSwingIntColorID" disabled="true"  @bind="SwingIntColorDes"  class="@doorConfig.borderColors["INTCOLORID"]"   /> 
 					@code 
 					{
-						protected int _SwingIntColorID = 0;
-						protected int SwingIntColorID
+				protected int _SwingIntColorID = 0;
+				protected string _SwingIntColorDes = string.Empty;
+				protected string SwingIntColorDes
 						{
 							get
 							{
@@ -430,11 +441,11 @@
 								{
 									_SwingIntColorID = doorConfig.INTCOLORID;
 								}
-								return _SwingIntColorID;
+								return PrApiCalls.getColorDes(_SwingIntColorID);
 							}
 							set
 							{
-								_SwingIntColorID = value;
+								_SwingIntColorDes = value;
 							}
 						}
 					}
@@ -462,8 +473,79 @@
 						}
 					}
 				</td>
-				<td>  
+				<td id="dlstHW4EXTRAWING" >  
 					@* HW4EXTRAWING *@
+					 @{  int i604 = Array.IndexOf(UiLogic.propNames, "HW4EXTRAWING");
+					<select name="dlstHw" @bind="Hw4ExtraWing" class="@doorConfig.borderColors["HW4EXTRAWING"]" 
+							@onfocus="@( () => UiLogic.HasFocus("HW4EXTRAWING", doorConfig) )" 
+							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i604]]" >
+                    @{
+						string errMsg = string.Empty;
+						List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getPartHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+
+						if (lstPartHWs != null)
+						{
+							@foreach (TRSH_HARDWARE_Class c in lstPartHWs)
+							{
+								<option value="@c.TRSH_HARDWARE">@c.PARTDES</option>
+							}
+						}
+                    }
+                </select>
+				}
+				@code
+            {
+                protected int _Hw4ExtraWing = 0;
+                protected int Hw4ExtraWing
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Hw4ExtraWing = doorConfig.HW4EXTRAWING;
+                        }
+                        return _Hw4ExtraWing;
+                    }
+                    set
+                    {
+                        _Hw4ExtraWing = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.HW4EXTRAWING = _Hw4ExtraWing;
+                            if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
+                            {
+                                doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
+                                doorConfig.SWING_HWCOLORID = 0;
+                                // 18/06/2022 - when HARWARE is ללא DRIL4HW showuld be ENABLED !
+                                //  therefore commented the three lines below.
+                                // doorConfig.disabledFlds["DRIL4HW"] = true;
+                                // doorConfig.DRIL4HW = 0;
+                                // doorConfig.borderColors["DRIL4HW"] = doorConfig.borderColors["HWCOLORID"] = string.Empty;
+                                lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();  // the full list of Drills for Hardwares
+                                return;
+                            }
+                            else
+                            {
+                                doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");
+                                //doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
+								doorConfig.SWING_DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
+                                // populate the LOV for Dril4Hw based on Hardware selected .
+                                string errMsg = string.Empty;
+                                lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig, ref errMsg);
+
+                                doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
+                                UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+
+                                doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(value);
+                                doorConfig.borderColors["SWING_HWCOLORID"] = (doorConfig.disabledFlds["SWING_HWCOLORID"] || doorConfig.HWCOLORID != 0 ? "blueBorder" : "redBorder");
+                                if (doorConfig.disabledFlds["SWING_HWCOLORID"])
+                                    doorConfig.SWING_HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
+                            }
+                        }
+                    }
+                }
+            }
 				</td>
 
      		

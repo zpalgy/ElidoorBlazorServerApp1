@@ -254,11 +254,23 @@
                 doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
             }
         }
+
+        async Task  showStaticwing()
+        {
+            //showTabPage(typeof(Staticwing), "staticwing");
+            if (showTabPage(typeof(Staticwing), "staticwing"))
+	        {
+		        StateHasChanged();
+		        await Task.Delay(1);
+		        await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
+    	    }
+        }
+
         //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
         //  the 2nd answer
         public void RefreshState()
         {
-        this.StateHasChanged();
+                this.StateHasChanged();
         }
         //private void doRestart()
         async Task doRestart()
@@ -416,7 +428,7 @@
                                                             <tr>
                                                                 <td>
                                                                     <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
-                                                    @onclick=@( () => @showMw())>
+                                                                            @onclick=@( () => @showMw())>
                                                                         כנף נעה
                                                                     </button>
                                                                 </td>
@@ -478,15 +490,15 @@
                                             }
                                                                 <td>
                                                                     <button name="btnstaticwing" class="@doorConfig.btnClasses["staticwing"]" disabled="@disableSw"
-                                                    @onclick="showStaticwing">
+                                                                             @onclick="showStaticwing">
                                                                         כנף קבועה
                                                                     </button>
                                                                 </td>
                                             @{
-                                                void showStaticwing()
-                                                {
-                                                    showTabPage(typeof(Staticwing), "staticwing");
-                                                }
+                                                //void showStaticwing()
+                                                //{
+                                                //    showTabPage(typeof(Staticwing), "staticwing");
+                                                //}
                                             }
                                                             </tr>
                                                             <tr>
