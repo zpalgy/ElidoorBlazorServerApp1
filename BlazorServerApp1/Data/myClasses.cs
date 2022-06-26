@@ -1114,7 +1114,8 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 265), Order]
         public string LOCK4SWING { get; set; }    // new
         [DataMember(Order = 266), Order]
-        public int HW4EXTRAWING { get; set; }         //D-520  was logic == bool now it's int - like TRSH_HARDWARE  26/06/2022 - new field size !
+        public int HW4EXTRAWING { get; set; }         //D-520  was logic (== bool)  now - 26/06/2022 -  it's int - it's a foreign key for  TRSH_HARDWARE   
+                                                //  i.e. it points at a TRSH_HARDWARE record . Note TRSH_HARDWARE is a table, it's primary key is TRSH_HARDWARE.TRSH_HARDWARE
         [DataMember(Order = 267), Order]
         public int SWING_HWCOLORID { get; set; }  // new 
         [DataMember(Order = 268), Order]
