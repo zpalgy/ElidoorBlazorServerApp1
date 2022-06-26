@@ -1346,6 +1346,11 @@ namespace BlazorServerApp1.Data
                 //    }
                 //    lstRes = Helper.ConvertDataTable<CYLINDER_Class>(res);
                 List<CYLINDER_Class> lstRes = new List<CYLINDER_Class>();
+
+                CYLINDER_Class emptyCyl = new CYLINDER_Class();
+                emptyCyl.PARTNAME = string.Empty;
+                emptyCyl.PARTDES = string.Empty;
+                lstRes.Add(emptyCyl);
                 CYLINDER_Class noCylinder = new CYLINDER_Class();
                 noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
                 noCylinder.PARTDES = "ללא";

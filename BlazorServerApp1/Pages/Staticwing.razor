@@ -1,4 +1,7 @@
-﻿@page "/Staticwing"
+﻿@using BlazorServerApp1.Data
+@using System.Data;
+
+@page "/Staticwing"
 
 @inject IJSRuntime Js
 
@@ -20,44 +23,66 @@
 }
 
 @code {
-    protected override async Task OnInitializedAsync()
-    {
-		
-        //if (!ExtdecorIsFull)
-        //{
-        //    // navigate back to Movingwing 
-        //    //[TODO]  Navigator.NavigateTo("Movingwing");
-        //}
+
+	private DataTable dtTabFlds = new DataTable();
+
+	protected override async Task OnInitializedAsync()
+	{
+
+		//if (!ExtdecorIsFull)
+		//{
+		//    // navigate back to Movingwing 
+		//    //[TODO]  Navigator.NavigateTo("Movingwing");
+		//}
 
 		//if (!UiLogic.tabPageIsFilled("intdecor", doorConfig))
-  //      {
-  //          Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה פנים' י");
-  //      }
+		//{
+		//   Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה פנים' י");
+		//}
 
-        //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
-        //if (doorConfigJsonV.Success)
-        //{
-        //    string doorConfigJson2 = doorConfigJsonV.Value;
-        //    if (!string.IsNullOrEmpty(doorConfigJson2))
-        //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
-        //UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
+		//var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
+		//if (doorConfigJsonV.Success)
+		//{
+		//    string doorConfigJson2 = doorConfigJsonV.Value;
+		//    if (!string.IsNullOrEmpty(doorConfigJson2))
+		//         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
+		//UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
 
-        //Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
-     }
+		//Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
+		string errMsg = string.Empty;
+		dtTabFlds = UiLogic.getTabFields("staticwing", doorConfig, ref errMsg);
+		doorConfig.disabledFlds["DOORHEIGHT"] = doorConfig.disabledFlds["CENTRALCOLCLRID"] = doorConfig.disabledFlds["OPENMODE"] =
+		doorConfig.disabledFlds["OPENSIDE"] =  doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] =
+		doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["TURBOAPPARATUS"] = doorConfig.disabledFlds["LOGO"] = true;
+		calcCentralColClrID(doorConfig);
+	}
+	void calcCentralColClrID(DoorConfig doorConfig)
+	{
+		switch (doorConfig.COLORSNUM)
+		{
+			case "מגולוון" :
+			case "1":
+				doorConfig.CENTRALCOLCLRID = doorConfig.DOORCOLORID;
+				break;
+			case "2":
+				doorConfig.CENTRALCOLCLRID = (doorConfig.OPENMODE == "פנימה" ? doorConfig.INTCOLORID : doorConfig.EXTCOLORID);
+				break;
+		}
+	}
     
     
     async void IDisposable.Dispose()
     {
 		 //if (!UiLogic.tabPageIsFilled("intdecor", doorConfig))
-   //     {
-   //         Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה פנים' י");
-   //     }
-        //int x = 17;
-        //if (x == 18)
-        //{
-        //    Js.InvokeVoidAsync("alert", "error !");
-        //    //NavigationManager.NavigateTo("Movingwing", true);
-        //}
+         // {
+         //     Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה פנים' י");
+         // }
+         //int x = 17;
+         //if (x == 18)
+         //{
+         //    Js.InvokeVoidAsync("alert", "error !");
+         //    //NavigationManager.NavigateTo("Movingwing", true);
+         //}
     }
 }
 
@@ -77,13 +102,17 @@
             <th id="thExtraWingWidth" @hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")">רוחב כנף</th>
 			<th>גובה כנף</th>
 
-            @{ 	bool ccw = UiLogic.hideFld(doorConfig, "thCentralColWidth"); }
-			@if (!ccw) 	{ 	<th id="thCentralColWidth" >רוחב עמוד מרכזי</th> }
+            @{
+				bool ccw = UiLogic.hideFld(doorConfig, "thCentralColWidth"); 
+				ccw = false;		
+		    }
+		    @if (!ccw) 	
+			 { 	<th id="thCentralColWidth" >רוחב עמוד מרכזי</th> }
 
-			<th id="thCentralColClrID" @hidden="@UiLogic.hideFld(doorConfig, "thCentralColClrID")">גוון עמוד מרכזי</th>
+			<th id="thCentralColClrID" >גוון עמוד מרכזי</th>
 
 			<th>פתיחה</th>
-			<th id="thOpenDirection" @hidden="@UiLogic.hideFld(doorConfig, "thOpenDirection")">צד פתיחה</th>
+			<th id="thOpenDirection" >צד פתיחה</th>
 			           
      @*
 			@{	string thCyl = "thCylinder4HalfWing"; }
@@ -110,21 +139,63 @@
         </tr>
         <tr>
 			<td>
-				@* lock checkbox *@   
-			</td>
-			<td id="tdExtraWingWidth" @hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")">
-                <input type="number"  name="txtExtraWingWidth" @bind="ExtraWingWidth" class= "@doorConfig.borderColors["EXTRAWINGWIDTH"]" />
-           	@code
+ 			  @{  int i601 = Array.IndexOf(UiLogic.propNames, "SWINGHASLOCK");
+				 <input type="checkbox" name="chkbSwingHasLock" @bind="SwingHasLock"  
+                       @onfocus="@( () => UiLogic.HasFocus("SWINGHASLOCK", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i601]]"  
+            />
+			}
+            @code
 			{
-				protected int _ExtraWingWidth = 0;
-				protected int ExtraWingWidth
+				protected bool _SwingHasLock = false;
+				protected bool SwingHasLock
 				{
 					get
 					{
 						if (doorConfig != null)
 						{
+							_SwingHasLock = (doorConfig.SWINGHASLOCK == "Y");
+						}
+						return _SwingHasLock;
+					}
+					set
+					{
+						_SwingHasLock = value;
+						if (doorConfig != null)
+						{
+							doorConfig.SWINGHASLOCK = (_SwingHasLock ? "Y" : "");
+							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] =
+										!_SwingHasLock;
+							UiLogic.clearFollowingTabFields(doorConfig, "staticgwing");
+                        }
+                    }
+                }
+            }
+			</td>
+
+			<td id="tdExtraWingWidth">
+				 @{  int i602 = Array.IndexOf(UiLogic.propNames, "EXTRAWINGWIDTH");
+                <input type="number"  name="txtExtraWingWidth" @bind="ExtraWingWidth" class= "@doorConfig.borderColors["EXTRAWINGWIDTH"]" 
+				   @onfocus="@( () => UiLogic.HasFocus("EXTRAWINGWIDTH", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i602]]"  
+				/>
+				}
+           	@code
+			{
+				protected int? _ExtraWingWidth = 0;
+				protected int? ExtraWingWidth
+				{
+					get
+					{
+						if (doorConfig != null && doorConfig.EXTRAWINGWIDTH > 0)
+						{
 							_ExtraWingWidth = doorConfig.EXTRAWINGWIDTH;
 						}
+						else
+							_ExtraWingWidth = null;
+
 						return _ExtraWingWidth;
 					}
 					set
@@ -132,7 +203,7 @@
 						_ExtraWingWidth = value;
 						if (doorConfig != null)
 						{
-							doorConfig.EXTRAWINGWIDTH = _ExtraWingWidth;
+							doorConfig.EXTRAWINGWIDTH = (_ExtraWingWidth != null ? (int)_ExtraWingWidth : 0);
 							doorConfig.borderColors["EXTRAWINGWIDTH"] = (value != 0 ? "blueBorder" : "redBorder");
 							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
 						}
@@ -140,9 +211,35 @@
 				}
 			}
 			</td>
-			<td>
-				@* Wing Height *@
+
+			<td id="tdDoorHeight">
+     			<input name="txtDoorHeight" type="number" @bind-value="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
+				  disabled="true" />
+                @code 
+				{
+			    protected int? _DoorHeight;
+                protected int? DoorHeight
+                {
+                    get
+                    {
+                        if (doorConfig != null && doorConfig.DOORHEIGHT > 0)
+                        {
+                            _DoorHeight = doorConfig.DOORHEIGHT;
+                        }
+                        else
+                            _DoorHeight = null;
+
+                        return _DoorHeight; //_DoorHeight.ToString();
+                    }
+  				    set
+                    {
+                        _DoorHeight = value;
+					}
+				}
+				}
 			</td>
+
+	
 			@if (!ccw)
 			{
 				<td id="tdCentralColWidth" @hidden="@false" >
@@ -177,16 +274,12 @@
 					}
 				}
 			}
-			<td id="tdCentralColClrID" @hidden="@UiLogic.hideFld(doorConfig, "thCentralColClrID")">
-                <select name="dlstCentralColClrID" @bind="CentralColClrID" class= "@doorConfig.borderColors["CENTRALCOLCLRID"]"  >
-                    @if (PrApiCalls.lstColors != null)
-	                {
-		                @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-		                {
-			                <option value="@c.TRSH_COLORID">@c.PARTDES</option>
-		                }
-	                }
-                </select>
+			<td id="tdCentralColClrID" >
+                <input name="dlstCentralColClrID" @bind="CentralColClrID" class= "@doorConfig.borderColors["CENTRALCOLCLRID"]"  
+				   disabled="@doorConfig.disabledFlds["CENTRALCOLCLRID"]"
+				/>
+                    
+                
             </td>
             @code
             {
@@ -204,22 +297,39 @@
 		            set
 		            {
 			            _CentralColClrID = value;
-			            if (doorConfig != null)
-						{
-				            doorConfig.CENTRALCOLCLRID = _CentralColClrID;
-							doorConfig.borderColors["CENTRALCOLCLRID"] = (value != 0 ? "blueBorder" : "redBorder");
-							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
-						}
 		            }
 	            }
             }
             
-			<td>
-				@* OPENMODE in out *@
+		
+				<td id="tdOpenMode">
+                        <input name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]" 
+						  disabled = "true" />
+
+            @code
+            {
+                protected string _openMode = string.Empty;
+                protected string openMode
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _openMode = doorConfig.OPENMODE;
+                        }
+                        return _openMode;
+                    }
+                    set
+                    {
+                        _openMode = value;
+                    }
+                }
+            }
+        
 			</td>
 
-		    <td id="tdOpenDirection" @hidden="@UiLogic.hideFld(doorConfig, "thOpenDirection")" >
-                <input name="txtOpenDirection" disabled=@true @bind="OpenDirection"   /> 
+		    <td id="tdOpenDirection" >
+                <input name="txtOpenDirection" disabled="true"  @bind="OpenDirection"  class="@doorConfig.borderColors["OPENSIDE"]"   /> 
             </td>
             @code
             {
@@ -241,7 +351,8 @@
 	            }
             }
         </tr>
-			@* end of StaticwingL1 *@
+
+           @* end of StaticwingL1 *@
 		   </table>
            <!--end table staticWingL1 -->
 
@@ -262,49 +373,150 @@
 			<th>ניקוב לפירזול</th>
 			</tr>
 			<tr>
-				<td>
-					@*  static wing colorId RO from movingwing *@
+				<td id="thSwingColorId">
+					<input name="txtSwingColorID" disabled="true"  @bind="SwingColorID"  class="@doorConfig.borderColors["DOORCOLORID"]"   /> 
+					@code 
+					{
+						protected int _SwingColorID = 0;
+						protected int SwingColorID
+						{
+							get
+							{
+								if (doorConfig != null)
+								{
+									_SwingColorID = doorConfig.DOORCOLORID;
+								}
+								return _SwingColorID;
+							}
+							set
+							{
+								_SwingColorID = value;
+							}
+						}
+					}
 				</td>
 				<td>
-					@*  static wing EXTcolorId RO from movingwing *@
+					<input name="txtSwingExtColorID" disabled="true"  @bind="SwingExtColorID"  class="@doorConfig.borderColors["EXTCOLORID"]"   /> 
+					@code 
+					{
+						protected int _SwingExtColorID = 0;
+						protected int SwingExtColorID
+						{
+							get
+							{
+								if (doorConfig != null)
+								{
+									_SwingExtColorID = doorConfig.EXTCOLORID;
+								}
+								return _SwingExtColorID;
+							}
+							set
+							{
+								_SwingExtColorID = value;
+							}
+						}
+					}
 				</td>
 				<td>
-					@*  static wing INTcolorIdRO from movingwing *@
+					<input name="txtSwingIntColorID" disabled="true"  @bind="SwingIntColorID"  class="@doorConfig.borderColors["INTCOLORID"]"   /> 
+					@code 
+					{
+						protected int _SwingIntColorID = 0;
+						protected int SwingIntColorID
+						{
+							get
+							{
+								if (doorConfig != null)
+								{
+									_SwingIntColorID = doorConfig.INTCOLORID;
+								}
+								return _SwingIntColorID;
+							}
+							set
+							{
+								_SwingIntColorID = value;
+							}
+						}
+					}
 				</td>
 				<td>
 					@*   height of Dril4Lock  RO from movingwing *@
+					<input name="txtSwing_LockDrilHeight" disabled="true"  @bind="Swing_LockDrilHeight"  class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"   /> 
+					@code 
+					{
+						protected int _Swing_LockDrilHeight = 0;
+						protected int Swing_LockDrilHeight
+						{
+							get
+							{
+								if (doorConfig != null)
+								{
+									_Swing_LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
+								}
+								return _Swing_LockDrilHeight;
+							}
+							set
+							{
+								_Swing_LockDrilHeight = value;
+							}
+						}
+					}
 				</td>
-				@if (!hw4)
-			{
-			<td id="tdHW4ExtraWing" >
-				<input type="checkbox" name="chkbHW4ExtraWing" @bind="HW4ExtraWing" />
-            </td>
-			}
-            @code
-            {
-	            protected bool _HW4ExtraWing = false;
-	            protected bool HW4ExtraWing
-	            {
-		            get
-		            {
-			            if (doorConfig != null)
-			            {
-				            _HW4ExtraWing = (doorConfig.HW4EXTRAWING == "Y");
-			            }
-			            return _HW4ExtraWing;
-		            }
-		            set
-		            {
-			            _HW4ExtraWing = value;
-			            if (doorConfig != null)
-				            doorConfig.HW4EXTRAWING = (_HW4ExtraWing ? "Y" : "");
-		            }
-	            }
-            }
+				<td>  
+					@* HW4EXTRAWING *@
+				</td>
+
+     		
 
 			<td>
-				@* HWColorID *@
+				 @{
+            List<TRSH_COLOR_Class> tmpLstColors = new List<TRSH_COLOR_Class>(PrApiCalls.lstColors);
+            tmpLstColors.Insert(1, new TRSH_COLOR_Class() { TRSH_COLORID = 99999, PARTDES = "ללא"  });
+            //DataTable tmpDtColors = new DataTable();
+            //tmpDtColors = tmpLstColors.ToDataTable<TRSH_COLOR_Class>();
+        }
+        
+            @{  int i605 = Array.IndexOf(UiLogic.propNames, "SWING_HWCOLORID");
+            <select name="dlstSwing_HwColor" @bind="Swing_HwColorId" class="@doorConfig.borderColors["SWING_HWCOLORID"]"  
+                 disabled="@doorConfig.disabledFlds["SWING_HWCOLORID"]"  
+                  @onfocus="@( () => UiLogic.HasFocus("SWING_HWCOLORID", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" >
+                @if (PrApiCalls.lstColors != null)
+                {
+                    @foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)
+                    {
+                        <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
+                    }
+                }
+            </select>
+            }
 			</td>
+			@code
+        {
+            protected int _Swing_HwColorId = 0;
+            protected int Swing_HwColorId
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _Swing_HwColorId = doorConfig.SWING_HWCOLORID;
+                    }
+                    return _Swing_HwColorId;
+                }
+                set
+                {
+                    _Swing_HwColorId = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.HWCOLORID = _Swing_HwColorId;
+                        doorConfig.borderColors["SWING_HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                    }
+                }
+            }
+        }
 			<td>
 				@* Dril4HW *@
 			</td>

@@ -51,6 +51,7 @@ namespace BlazorServerApp1.Data
             //List<int> lstPropIndices = new List<int>();
             //for (int i = 0; i < propNames.Length; i++)
             //    lstPropIndices.Add(i);
+            int dbg = Array.IndexOf(propNames, "SWINGHASLOCK");
         }
         public static int getIndOfProp(string prop)
         {

@@ -1098,6 +1098,8 @@ namespace BlazorServerApp1.Data
         #endregion Internal decoration (intdecor)
 
         #region staticwing
+        [DataMember(Order = 255), Order]
+        public string SWINGHASLOCK { get; set; }  // "Y" | "" (string.empty) FIELDCODE = "SWINGHASLOCK"  - new 
         [DataMember(Order = 260), Order]
         public int CENTRALCOLCLRID { get; set; }         //D-390
         [DataMember(Order = 261), Order]
@@ -1108,18 +1110,34 @@ namespace BlazorServerApp1.Data
         public string SHALVANIACLRDES { get; set; }
         [DataMember(Order = 264), Order]
         public string CYLINDER4HALFWING { get; set; }    //D-510
+        
         [DataMember(Order = 265), Order]
-        public string HW4EXTRAWING { get; set; }         //D-520  Y, N , ''
+        public string LOCK4SWING { get; set; }    // new
         [DataMember(Order = 266), Order]
-        public string DESIGNEDEXTRAWING { get; set; }    //D-530  Y, N , ''
+        public string HW4EXTRAWING { get; set; }         //D-520  was logic == bool now real value from LOV 26/06/2022 - new field size !
         [DataMember(Order = 267), Order]
-        public string DESIGNEDWINDOWEDWING { get; set; } //D-540   Y, N , ''
+        public int SWING_HWCOLORID { get; set; }  // new 
         [DataMember(Order = 268), Order]
-        public int EXTRAWINGWIDTH { get; set; }          //D-560
+        public int SWING_DRIL4HW { get; set; }   // new 
+
         [DataMember(Order = 269), Order]
-        public int CENTRALCOLWIDTH { get; set; }         //D-860
+        public string DESIGNEDEXTRAWING { get; set; }    //D-530  Y, N , ''
         [DataMember(Order = 270), Order]
+        public string DESIGNEDWINDOWEDWING { get; set; } //D-540   Y, N , ''
+        [DataMember(Order = 271), Order]
+        public int EXTRAWINGWIDTH { get; set; }          //D-560
+        [DataMember(Order = 272), Order]
+        public int CENTRALCOLWIDTH { get; set; }         //D-860
+        //TODO
+        [DataMember(Order = 273), Order]
+        public string HANDLENAME4SWING { get; set; }   // new
+        [DataMember(Order = 274), Order]
+        public string VENTONSWING { get; set; }   //  new 
+        //end TODO
+        [DataMember(Order = 275), Order]
         public string RAFAFAONSTATICWING { get; set; }   //D-1150  Y, N , ''
+        [DataMember(Order = 276), Order]
+        public string CATDOORONSWING { get; set; }   //new 
         #endregion staticwing { get; set; }
         #region hinges
         [DataMember(Order = 280), Order]
