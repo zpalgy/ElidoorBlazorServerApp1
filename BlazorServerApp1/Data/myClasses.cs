@@ -1191,6 +1191,8 @@ namespace BlazorServerApp1.Data
         [NonSerialized]
         public string currTabName = String.Empty;
         [NonSerialized]
+        public string prevTabName = string.Empty;
+        [NonSerialized]
         public System.Data.DataTable dtTabFlds = new System.Data.DataTable();
         [NonSerialized]
         public BlazorServerApp1.Pages.Configurator4 config4;
@@ -1296,7 +1298,12 @@ namespace BlazorServerApp1.Data
                 {
                     j = Array.IndexOf(UiLogic.propNames, nextfld);
                     if (j < 0 || j > UiLogic.propNames.Length)
+                    {
+                        string errFmt = "doorConfig.KeyPressHandler() index out of range! : nextFld = {0} , j=Array.IndexOf(UiLogic.propNames, nextfld) = {1}"
+                                         + " pls check in Priority that nextfld is in TRSH_CONF_FIELDS table/form and in DoorConfig class";
+                        myLogger.log.Error(string.Format(errFmt, nextfld, j));
                         return;  // indexOutOfRange 
+                    }
 
                     if (dicRefs.ContainsKey(UiLogic.propNames[j]))
                         dicRefs[UiLogic.propNames[j]].FocusAsync();

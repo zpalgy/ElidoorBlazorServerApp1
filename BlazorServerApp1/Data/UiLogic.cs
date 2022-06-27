@@ -89,17 +89,17 @@ namespace BlazorServerApp1.Data
                 return false;
             }
         }
-        public static bool disableFld(DoorConfig doorConfig, string configFldName)
+        public static bool disableFld(DoorConfig doorConfig, string fldName)
         {
-            //configFldName = configFldName.ToUpper();
             if (doorConfig != null)
             {
-                string query = string.Format("TRSH_MODELNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.TRSH_MODELNAME, configFldName);
+                string query = string.Format("TRSH_MODELNAME = '{0}' AND FIELDNAME = '{1}'", doorConfig.TRSH_MODELNAME, fldName);
                 DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
                 if (rowsDefVal.Length > 0)
                 {
                     //string defval = rowsDefVal[0]["DEFVAL"].ToString();
                     string val_locked = rowsDefVal[0]["VAL_LOCKED"].ToString();
+                    doorConfig.disabledFlds[fldName] = (val_locked == "Y");
                     return (val_locked == "Y");
                 }
                 return false;
@@ -1151,7 +1151,9 @@ namespace BlazorServerApp1.Data
                     for (int r=0;r<rowsArray.Length;r++)
                     {
                         string fldName = rowsArray[r]["FIELDNAME"].ToString();
-                        if (!hideFld(doorConfig, fldName) && !disableFld(doorConfig, fldName))
+                        if (!hideFld(doorConfig, fldName) && !disableFld(doorConfig, fldName))  //TODO : replace !disableFld(doorConfig, fldName) by
+                                     //  !doorConfig.disabledFlds[fldName], actually here UiLogic.disableFld() should set 
+                                     //   doorConfig.disabledFlds[fldName] which should be in the HTML element of teh field.
                         {
                             ConfField_Class confFld = new ConfField_Class();
                             confFld.FIELDNAME = fldName;

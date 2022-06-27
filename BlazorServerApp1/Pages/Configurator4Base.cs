@@ -53,13 +53,16 @@ namespace BlazorServerApp1.Pages
                 else
                 {
 					if (UiLogic.tabPageIsFilled(prevTab, doorConfig))
+					{
+						doorConfig.prevTabName = prevTab;
 						return true; //ActivePage = page;
+					}
 					else
 					{
 						//string prevTabText = UiLogic.tabTexts[t - 1];
 						errMsg = UiLogic.requiredFieldsAreEmpty;   //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
-						// Js.InvokeVoidAsync("alert", errMsg);
-						//openMsgBox = true;
+																   // Js.InvokeVoidAsync("alert", errMsg);
+																   //openMsgBox = true;
 						return false;
 					}
                 }

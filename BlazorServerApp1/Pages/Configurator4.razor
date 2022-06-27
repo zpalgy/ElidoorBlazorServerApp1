@@ -76,18 +76,18 @@
             return;
 
         doorConfig = new DoorConfig();
-        
+
         UiLogic.initPropNames(doorConfig);
         UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
         //initFormStuffInDoorConfig(doorConfig);
-          doorConfig.initBorderColors();
-          doorConfig.btnClasses["general"] = "buttonActive";
-          doorConfig.divClasses["divHeader"] = "divActive";
+        doorConfig.initBorderColors();
+        doorConfig.btnClasses["general"] = "buttonActive";
+        doorConfig.divClasses["divHeader"] = "divActive";
 
         //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
         pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
-        //                                           // dyncompType = typeof(Extdecor);
+                                                   //                                           // dyncompType = typeof(Extdecor);
 
         //// ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
         //// the 2nd answer : Update Parent State by calling it's StateHasChanged method
@@ -119,17 +119,17 @@
         }
         protected void initFormStuffInDoorConfig(DoorConfig doorConfig)
         {
-            doorConfig.initBorderColors();
-            doorConfig.btnClasses["general"] = "buttonActive";
-            doorConfig.divClasses["divHeader"] = "divActive";
-  
-            //UiLogic.initPropNames(doorConfig);
-            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+        doorConfig.initBorderColors();
+        doorConfig.btnClasses["general"] = "buttonActive";
+        doorConfig.divClasses["divHeader"] = "divActive";
 
-            //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+        //UiLogic.initPropNames(doorConfig);
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
 
-            doorConfig.currTabName = "divHeader";
-            doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
+        //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
+
+        doorConfig.currTabName = "divHeader";
+        doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -171,40 +171,40 @@
 
         void showDivProducts()
 		{
-            showProducts = true;
-            doorConfig.divClasses["divHeader"] = "divNotActive";
-            doorConfig.divClasses["divProducts"] = "divActive";
+        showProducts = true;
+        doorConfig.divClasses["divHeader"] = "divNotActive";
+        doorConfig.divClasses["divProducts"] = "divActive";
 		}
 
          async Task showDoorTitle()
          {
-            if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
-            {
-                msgCaption = string.Empty;
-                errMsg2 = UiLogic.requiredFieldsAreEmpty;  //"שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
-                                                            // Js.InvokeVoidAsync("alert", errMsg);
-                ErrMsgCssClass = "modal-body centeredMsg";
-                openMsgBox = true;
-                return;
-            }
-            hideDoorTitle = false;
-            UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
-            dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
-            doorConfig.currTabName = "divDoorTitle";
-            doorConfig.dtTabFlds = dtDivDoorTitle.Copy();
-            doorConfig.divClasses["divDoorTitle"] = "divActive";
-            doorConfig.divClasses["divProducts"] = "divNotActive";
-            //int j = Array.IndexOf(UiLogic.propNames, "TRSH_WINGSNUMDES");
-            //doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+        if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+        {
+            msgCaption = string.Empty;
+            errMsg2 = UiLogic.requiredFieldsAreEmpty;  //"שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
+                                                       // Js.InvokeVoidAsync("alert", errMsg);
+            ErrMsgCssClass = "modal-body centeredMsg";
+            openMsgBox = true;
+            return;
+        }
+        hideDoorTitle = false;
+        UiLogic.tabPageIsFilled("divDoorTitle", doorConfig);  //set redBorder on empty controls
+        dtDivHeaderDoorTitle = uniteHeaderDoorTitleFlds();
+        doorConfig.currTabName = "divDoorTitle";
+        doorConfig.dtTabFlds = dtDivDoorTitle.Copy();
+        doorConfig.divClasses["divDoorTitle"] = "divActive";
+        doorConfig.divClasses["divProducts"] = "divNotActive";
+        //int j = Array.IndexOf(UiLogic.propNames, "TRSH_WINGSNUMDES");
+        //doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
 
-            //ref: https://stackoverflow.com/questions/67360450/how-to-focus-an-element-when-making-it-visible-in-the-same-method-call
-            //  thw 1st answer !
-            doorConfig.disabledFlds["btnDoor"] = true;
-            doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = true;  //disable prev buttons
-            StateHasChanged();
-            await Task.Delay(1);
-            //await dlstWingsNum.FocusAsync();  // harcoded ElementReference !
-            await doorConfig.dicRefs["TRSH_WINGSNUMDES"].FocusAsync();
+        //ref: https://stackoverflow.com/questions/67360450/how-to-focus-an-element-when-making-it-visible-in-the-same-method-call
+        //  thw 1st answer !
+        doorConfig.disabledFlds["btnDoor"] = true;
+        doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = true;  //disable prev buttons
+        StateHasChanged();
+        await Task.Delay(1);
+        //await dlstWingsNum.FocusAsync();  // harcoded ElementReference !
+        await doorConfig.dicRefs["TRSH_WINGSNUMDES"].FocusAsync();
 
        }
 
@@ -220,6 +220,7 @@
             dyncompType = pageType;
             //doorConfig.btnClasses[tabName] = "buttonActive";
             doorConfig.markButton(tabName);
+            UiLogic.disableTabFlds(doorConfig, doorConfig.prevTabName);  
             return true;
         }
         else

@@ -546,14 +546,14 @@
 						doorConfig.borderColors["CYLINDER4HALFWING"] = (!string.IsNullOrEmpty(value)  ? "blueBorder" : "redBorder");
 						if (PrApiCalls.cylinderIsHalf(doorConfig.CYLINDER4HALFWING))
 						{
-							// if the user selected 1/2 Cylinder the folowint two fields are mptied and disabled !
+							// if the user selected 1/2 Cylinder the folowint two fields are emptied and disabled !
 							doorConfig.HW4EXTRAWING = 0;
 							doorConfig.SWING_HWCOLORID = 0;
 							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
 						}
 						else
 						{
-							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
+							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
 							doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? doorConfig.TRSH_HARDWARE : doorConfig.HW4EXTRAWING );
 							doorConfig.SWING_HWCOLORID = (doorConfig.SWING_HWCOLORID == 0 ? doorConfig.HWCOLORID : doorConfig.SWING_HWCOLORID);
 						}

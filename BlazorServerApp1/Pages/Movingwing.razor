@@ -157,6 +157,7 @@
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
             @{  int i301 = Array.IndexOf(UiLogic.propNames, "DOORWIDTH");
                              <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" 
+                                  disabled="@doorConfig.disabledFlds["DOORWIDTH"]"
                                   @onfocus="@( () => UiLogic.HasFocus("DOORWIDTH", doorConfig) )" 
                                   onkeypress="@KeyPressHandler"
                                  @ref="doorConfig.dicRefs[UiLogic.propNames[i301]]"    /> 
@@ -236,6 +237,7 @@
                  int i302 = Array.IndexOf(UiLogic.propNames, "DOORHEIGHT");
 
                        <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
+                               disabled="@doorConfig.disabledFlds["DOORHEIGHT"]"
                               @onfocus="@( () => UiLogic.HasFocus("DOORHEIGHT", doorConfig) )" 
                   onkeypress="@KeyPressHandler"
                               @ref="doorConfig.dicRefs[UiLogic.propNames[i302]]" />  
@@ -329,9 +331,10 @@
             }
         </td>
 
+        @* TODO: replace disabled : use disabled="@doorConfig.disabledFlds["OPENSIDE"]"  *@
         <td id="tdOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">
              @{  int i303 = Array.IndexOf(UiLogic.propNames, "OPENSIDE");
-                        <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "dlstOpenSide")"
+                        <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "OPENSIDE")"
                     class="@doorConfig.borderColors["OPENSIDE"]"
                                  @onfocus="@( () => UiLogic.HasFocus("OPENSIDE", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
