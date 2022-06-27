@@ -26,7 +26,7 @@
 
 	private DataTable dtTabFlds = new DataTable();
 	List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
-    List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
+	List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -64,6 +64,7 @@
 		string errMsg2 = string.Empty;
 		lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2, true); // get also HALF Cylinders 
 
+		doorConfig.thClasses["TURBOAPPARATUS"] = "thGray";
 	}
 	void calcCentralColClrID(DoorConfig doorConfig)
 	{
@@ -758,53 +759,284 @@
 				}
 			}
 
-            <td>
-			      @* Turbo apparatus - RO - copy from movingwing*@
+            <td id="tdTurboApparatus" class="@doorConfig.thClasses["TURBOAPPARATUS"]" >
+            <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus"  disabled="true" />
+            @code
+            {
+                protected bool _TurboApparatus = false;
+                protected bool TurboApparatus
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _TurboApparatus = (doorConfig.TURBOAPPARATUS == "Y");
+                        }
+                        return _TurboApparatus;
+                    }
+                    set
+                    {
+                        _TurboApparatus = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.TURBOAPPARATUS = (_TurboApparatus ? "Y" : "");
+                            UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                        }
+                    }
+                }
+            }
+        </td>
 
-		   </td>
-		   <td>
-			   @* Logo - RO - copy from movingwing* *@
-		   </td>
-		   <td>
-			   @*  lock 4 static wing - new *@
-		   </td>
+        <td id="tdLogo" class="@doorConfig.thClasses["LOGO"]">
+            <input type="checkbox" name="chkbLogo" @bind="Logo" disabled="true" />
+            @code
+            {
+                protected bool _Logo = false;
+                protected bool Logo
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Logo = (doorConfig.LOGO == "Y");
+                        }
+                        return _Logo;
+                    }
+                    set
+                    {
+                        _Logo = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.LOGO = (_Logo ? "Y" : "");
+                            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        }
+                    }
+                }
+
+            }
+        </td>
+        
+        <td id="tdLock"  class="@doorConfig.thClasses["SWING_LOCKNAME"]">
+            @{  int i608 = Array.IndexOf(UiLogic.propNames, "SWING_LOCKNAME");
+            <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["SWING_LOCKNAME"]" 
+			     disabled="@doorConfig.disabledFlds["SWING_LOCKNAME"]"
+                 @onfocus="@( () => UiLogic.HasFocus("SWING_LOCKNAME", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i608]]"  >
+                @{
+                    List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+                    if (lstPartLocks != null)
+                    {
+                        @foreach (TRSH_LOCK_Class c in lstPartLocks)
+                        {
+                            <option value="@c.PARTNAME">@c.PARTDES</option>
+                        }
+                    }
+                }
+            </select>
+            }
+        </td>
+        @code {
+            protected string _Lock = string.Empty;
+            protected string Lock
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _Lock = doorConfig.SWING_LOCKNAME;
+                    }
+                    return _Lock;
+                }
+                set
+                {
+                    _Lock = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.SWING_LOCKNAME = _Lock;
+                        doorConfig.borderColors["SWING_LOCKNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "statucgwing");
+                         UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
+                            config4.RefreshState();
+                    }
+                }
+            }
+        }
+
 		<td>
 			@* handle 4 static wing   new *@
+			 @{  int i609 = Array.IndexOf(UiLogic.propNames, "SWING_HANDLENAME");
+                <select name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["SWING_HANDLENAME"]" 
+                @onfocus="@( () => UiLogic.HasFocus("SWING_HANDLENAME", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i609]]"  >
+                    @if (PrApiCalls.lstHandles != null)
+                    {
+                        @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
+                        {
+                            <option value="@c.PARTNAME">@c.PARTDES</option>
+                        }
+                    }
+                </select>
+                }
+           
+                @code
+                {
+                protected string _Handle1 = string.Empty;
+                protected string Handle1
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Handle1 = doorConfig.SWING_HANDLENAME;
+                        }
+                        return _Handle1;
+                    }
+                    set
+                    {
+                        _Handle1 = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.SWING_HANDLENAME = _Handle1;
+                            // Handle is Optional
+                            //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                             UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
+                            config4.RefreshState();
+                        }
+                    }
+                }
+            }
 		</td>
-		<td>
+		<td class="@doorConfig.thClasses["SWING_VENTS"]" >
 			@* Vent 4 static wing new *@
+			@{  int i610 = Array.IndexOf(UiLogic.propNames, "SWING_VENTS");
+            <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["SWING_VENTS"]" 
+            @onfocus="@( () => UiLogic.HasFocus("SWING_VENTS", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i610]]" >
+                <option></option>
+                <option>ללא</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+            }
+            @code
+            {
+                protected string _Vents = string.Empty;
+                protected string Vents
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Vents = doorConfig.SWING_VENTS;
+                        }
+                        return _Vents;
+                    }
+                    set
+                    {
+                        _Vents = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.SWING_VENTS = _Vents;
+                           // doorConfig.borderColors["VENTS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                             UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
+                            config4.RefreshState();
+                        }
+                    }
+                }
+            }
 		</td>
-		
-			@if (!rsw)
-			{
-			<td id="tdRafafaOnStaticWing" >
-                <input type="checkbox" name="chkbRafafaOnStaticWing" @bind="RafafaOnStaticWing" />
-            </td>
-			}
-			@code
-			{
-				protected bool _RafafaOnStaticWing = false;
-				protected bool RafafaOnStaticWing
-				{
-					get
-					{
-						if (doorConfig != null)
-						{
-							_RafafaOnStaticWing = (doorConfig.RAFAFAONSTATICWING == "Y");
-						}
-						return _RafafaOnStaticWing;
-					}
-					set
-					{
-						_RafafaOnStaticWing = value;
-						if (doorConfig != null)
-							doorConfig.RAFAFAONSTATICWING = (_RafafaOnStaticWing ? "Y" : "");
-					}
-				}
-			}
-		
-		<td>
+
+		<td id="tdRafafaOnStaticWing"  class="@doorConfig.thClasses["RAFAFAONSTATICWING"]">
+               @{  int i611 = Array.IndexOf(UiLogic.propNames, "RAFAFAONSTATICWING");
+            <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONSTATICWING"]" 
+                @onfocus="@( () => UiLogic.HasFocus("RAFAFAONSTATICWING", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i611]]" >
+                <option></option>
+                <option>ללא</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+            }
+			 @code
+            {
+                protected string _Rafafa = string.Empty;
+                protected string Rafafa
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _Rafafa = doorConfig.RAFAFAONSTATICWING;
+                        }
+                        return _Rafafa;
+                    }
+                    set
+                    {
+                        _Rafafa = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.RAFAFAONSTATICWING = _Rafafa;
+                            //doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                            UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
+                            
+                            //debug
+                            
+                            // ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+                            // the 2nd answer : Update Parent State by calling it's StateHasChanged method
+
+                               // doorConfig.btnClasses["hinges"] = "buttonActive";
+                                config4.RefreshState();
+                            // end debug 
+                        }
+                    }
+                }
+            }
+        </td>
+			
+		<td id="tdCatDoor" class="@doorConfig.thClasses["SWING_CATDOOR"]">
 			@* Cat door 4 static wing - new *@
+			@{  int i612 = Array.IndexOf(UiLogic.propNames, "SWING_CATDOOR");
+                <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" 
+                   @onfocus="@( () => UiLogic.HasFocus("SWING_CATDOOR", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i612]]"  />
+            }
+            @code
+            {
+                protected bool _CatDoor = false;
+                protected bool CatDoor
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                            _CatDoor = (doorConfig.SWING_CATDOOR == "Y");
+                        }
+                        return _CatDoor;
+                    }
+                    set
+                    {
+                        _CatDoor = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.SWING_CATDOOR = (_CatDoor ? "Y" : "N" );
+                            //doorConfig.borderColors["CATDOOR"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                            UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                            UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
+                            config4.RefreshState();
+                        }
+                    }
+                }
+            }
 		</td>
             
         </tr>

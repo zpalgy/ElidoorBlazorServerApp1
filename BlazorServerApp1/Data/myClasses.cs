@@ -784,7 +784,7 @@ namespace BlazorServerApp1.Data
 
         #endregion door header
 
-        #region moving wing
+        #region movingwing
         [DataMember(Order = 27), Order]
         public int LOCKDRILHEIGHT { get; set; }        //D-650
        
@@ -865,7 +865,7 @@ namespace BlazorServerApp1.Data
         //[NonSerialized]
         //public string CATDOOR;
 
-        #endregion moving wing
+        #endregion movingwing
 
         #region Ext Decoration (extdecor )
         #region extDecorL1
@@ -1113,7 +1113,7 @@ namespace BlazorServerApp1.Data
         public string CYLINDER4HALFWING { get; set; }    //D-510
         
         [DataMember(Order = 265), Order]
-        public string LOCK4SWING { get; set; }    // new
+        public string SWING_LOCKNAME { get; set; }    // new
         [DataMember(Order = 266), Order]
         public int HW4EXTRAWING { get; set; }         //D-520  was logic (== bool)  now - 26/06/2022 -  it's int - it's a foreign key for  TRSH_HARDWARE   
                                                 //  i.e. it points at a TRSH_HARDWARE record . Note TRSH_HARDWARE is a table, it's primary key is TRSH_HARDWARE.TRSH_HARDWARE
@@ -1132,14 +1132,14 @@ namespace BlazorServerApp1.Data
         public int CENTRALCOLWIDTH { get; set; }         //D-860
         //TODO
         [DataMember(Order = 273), Order]
-        public string HANDLENAME4SWING { get; set; }   // new
+        public string SWING_HANDLENAME { get; set; }   // new
         [DataMember(Order = 274), Order]
-        public string VENTONSWING { get; set; }   //  new 
+        public string SWING_VENTS { get; set; }   //  new 
         //end TODO
         [DataMember(Order = 275), Order]
         public string RAFAFAONSTATICWING { get; set; }   //D-1150  Y, N , ''
         [DataMember(Order = 276), Order]
-        public string CATDOORONSWING { get; set; }   //new 
+        public string SWING_CATDOOR { get; set; }   //new 
         #endregion staticwing { get; set; }
         #region hinges
         [DataMember(Order = 280), Order]
@@ -1295,6 +1295,9 @@ namespace BlazorServerApp1.Data
                 if (!string.IsNullOrEmpty(nextfld))
                 {
                     j = Array.IndexOf(UiLogic.propNames, nextfld);
+                    if (j < 0 || j > UiLogic.propNames.Length)
+                        return;  // indexOutOfRange 
+
                     if (dicRefs.ContainsKey(UiLogic.propNames[j]))
                         dicRefs[UiLogic.propNames[j]].FocusAsync();
                     return;
