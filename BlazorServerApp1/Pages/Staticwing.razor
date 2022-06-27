@@ -171,6 +171,13 @@
 							doorConfig.SWINGHASLOCK = (_SwingHasLock ? "Y" : "");
 							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] =
 										!_SwingHasLock;
+							if (!_SwingHasLock)
+							{
+								doorConfig.HW4EXTRAWING = 0;
+								doorConfig.SWING_HWCOLORID = 0;
+								doorConfig.SWING_DRIL4HW = 0;
+								//doorConfig.LOCKDRILHEIGHT = 0;
+							}
 							UiLogic.clearFollowingTabFields(doorConfig, "staticgwing");
                         }
                     }
@@ -451,7 +458,8 @@
 					}
 				</td>
 				<td>
-					@*   height of Dril4Lock  RO from movingwing *@
+					@*   height of Dril4Lock  Read Only it's identical to doorConfig.LOCKDRILHEIGHT which is set in movingwing. Because Lock Drill Heights on all wings 
+						              should be identical *@
 					<input name="txtSwing_LockDrilHeight" disabled="true"  @bind="Swing_LockDrilHeight"  class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"   /> 
 					@code 
 					{
@@ -532,7 +540,7 @@
 								doorConfig.SWING_DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
                                 // populate the LOV for Dril4Hw based on Hardware selected .
                                 string errMsg = string.Empty;
-                                lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig, ref errMsg);
+                                lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 
                                 doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
                                 UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
@@ -599,9 +607,52 @@
                 }
             }
         }
-			<td>
-				@* Dril4HW *@
+			<td id="tdSwing_Dril4Hw">
+				@* SWING_DRIL4HW *@
+				@{  int i606 = Array.IndexOf(UiLogic.propNames, "SWING_DRIL4HW");
+            <select name="dlstSwing_Dril4Hw" @bind="Swing_Dril4Hw" class="@doorConfig.borderColors["SWING_DRIL4HW"]"
+              disabled="@doorConfig.disabledFlds["SWING_DRIL4HW"]" 
+              @onfocus="@( () => UiLogic.HasFocus("SWING_DRIL4HW", doorConfig) )" 
+                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i606]]" >
+
+                @* @if (PrApiCalls.lstDril4Hw != null)  *@
+                @if (lstD4HW1 != null)
+                {
+                    @* @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw) *@
+                    @foreach (DRIL4HW_Class c in lstD4HW1)
+                    {
+                        <option value="@c.DRIL4HW">@c.DRIL4HWDES</option>
+                    }
+                }
+            </select>
+            }
 			</td>
+			@code
+        {
+            protected int _Swing_Dril4Hw = 0;
+            protected int Swing_Dril4Hw
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _Swing_Dril4Hw = doorConfig.SWING_DRIL4HW;
+                    }
+                    return _Swing_Dril4Hw;
+                }
+                set
+                {
+                    _Swing_Dril4Hw = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.DRIL4HW = _Swing_Dril4Hw;
+                        doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                    }
+                }
+            }
+        }
 			</tr>
 			</table>
 			<!-- end of table StaticwingL2-->

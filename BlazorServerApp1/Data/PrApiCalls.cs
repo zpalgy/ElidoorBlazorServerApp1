@@ -1259,6 +1259,36 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        public static List<DRIL4HW_Class> getDril4Hw1(int TRSH_HARDWARE, ref string errMsg)
+        {
+            try
+            {
+                List<DRIL4HW_Class> lstDril4Hw1 = new List<DRIL4HW_Class>();
+                DRIL4HW_Class d1 = getDril4HwRec1(TRSH_HARDWARE);
+                lstDril4Hw1.Add(d1);
+
+                if (d1.DRIL4HWDES.Contains("IDS"))
+                {
+                    foreach (DRIL4HW_Class d in lstDril4Hw)
+                    {
+                        if (d.DRIL4HWDES.Contains("IDS") && d.DRIL4HW != d1.DRIL4HW)
+                        {
+                            DRIL4HW_Class d2 = new DRIL4HW_Class();
+                            d2.DRIL4HW = d.DRIL4HW;
+                            d2.DRIL4HWDES = d.DRIL4HWDES;
+                            lstDril4Hw1.Add(d2);
+                            break;
+                        }
+                    }
+                }
+                return lstDril4Hw1;
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
         public static int getDril4HwOfHw(DoorConfig doorConfig)
         {
             if (doorConfig != null)
@@ -1285,6 +1315,20 @@ namespace BlazorServerApp1.Data
                 }
             }
             return null;
+        }
+        public static DRIL4HW_Class getDril4HwRec1(int TRSH_HARDWARE)
+        {
+            DRIL4HW_Class rec1 = new DRIL4HW_Class();
+            string query = string.Format("TRSH_HARDWARE={0}", TRSH_HARDWARE);
+            DataRow[] dril4HwRows = dtHardwares.Select(query);
+            if (dril4HwRows.Length > 0)
+            {
+                rec1.DRIL4HW = int.Parse(dril4HwRows[0]["DRIL4HW"].ToString());
+                rec1.DRIL4HWDES = dril4HwRows[0]["DRIL4HWDES"].ToString();
+                return rec1;
+            }
+           
+        return null;
         }
         public static List<CYLINDER_Class> getCylinders(ref string errMsg)
         {
