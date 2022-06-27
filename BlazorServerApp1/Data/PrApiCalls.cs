@@ -1337,7 +1337,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_CYLINDER,PARTNAME,PARTDES,TRSH_MODELNAME,OPENMODE";
+                string fields = "TRSH_CYLINDER,PARTNAME,PARTDES,TRSH_MODELNAME,OPENMODE,ISHALFCYLINDER";
                 request.Resource = string.Format("TRSH_CYLINDERS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1384,7 +1384,7 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-        public static List<CYLINDER_Class> getCylindersByModelOpenMode(DoorConfig doorConfig, ref string errMsg)
+        public static List<CYLINDER_Class> getCylindersByModelOpenMode(DoorConfig doorConfig,  ref string errMsg, bool incHalfCyl = false)
         {
             try
             {
@@ -1412,7 +1412,17 @@ namespace BlazorServerApp1.Data
                 {
                     if (cyl.TRSH_MODELNAME == doorConfig.TRSH_MODELNAME
                         && (cyl.OPENMODE == doorConfig.OPENMODE || cyl.OPENMODE == "2"))
-                        lstRes.Add(cyl);
+                    {
+                        if (incHalfCyl)
+                        {
+                                lstRes.Add(cyl);
+                        }
+                        else
+                        {
+                            if (cyl.ISHALFCYLINDER != "Y")
+                                lstRes.Add(cyl);
+                        }
+                    }
                 }
                 return lstRes;
             }
@@ -1421,6 +1431,15 @@ namespace BlazorServerApp1.Data
                 myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
                 throw ex;
             }
+        }
+        public static bool cylinderIsHalf(string PARTNAME)
+        {
+            foreach (CYLINDER_Class cyl in lstCylinders)
+            {
+                if (cyl.PARTNAME == PARTNAME)
+                    return (cyl.ISHALFCYLINDER == "Y");
+            }
+            return false;   // error - actually this can't happen because the uer selected a Cylinder from lstCylinders !
         }
 
 

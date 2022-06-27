@@ -254,7 +254,8 @@ namespace BlazorServerApp1.Data
         public string TRSH_MODELNAME { get; set; }
         [DataMember(Order = 5)]
         public string OPENMODE { get; set; }
-
+        [DataMember(Order = 6)]
+        public string ISHALFCYLINDER { get; set; }
     }
     public class ValuesCYLINDER_Class
     {
@@ -1198,6 +1199,7 @@ namespace BlazorServerApp1.Data
         public Dictionary<string, string> borderColors { get; set; } 
         public Dictionary<string, string> btnClasses { get; set; }
         public Dictionary<string,string>  divClasses { get; set; }
+        public Dictionary<string,string>  thClasses { get; set; }
         public Dictionary<string, bool> disabledFlds { get; set; }
         public Dictionary<string, ElementReference> dicRefs = new Dictionary<string, ElementReference>();
         public Dictionary<string, bool> hideBtns { get; set; }  // not used yet 
@@ -1207,16 +1209,18 @@ namespace BlazorServerApp1.Data
             Type objType = this.GetType();
             PropertyInfo[] props = objType.GetProperties();
             borderColors = new Dictionary<string, string>();
+            thClasses = new Dictionary<string, string>();
             disabledFlds = new Dictionary<string, bool>();
             hideBtns = new Dictionary<string, bool>();
-            ElementReference er;
+            //ElementReference er;
             foreach (PropertyInfo pinfo in props)
             {
                 if (pinfo.Name == "CUST")
                 {
-                    int x = 17;
+                    int dbg = 17;
                 }
                 borderColors.Add(pinfo.Name, "blueBorder"); //string.Empty);
+                thClasses.Add(pinfo.Name, "thBlue");
                 //if (!disabledFlds.ContainsKey(pinfo.Name))
                 //    disabledFlds.Add(pinfo.Name, false);
                 //else

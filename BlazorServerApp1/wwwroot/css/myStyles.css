@@ -257,6 +257,12 @@ input:focus, select:focus, .inputstyle:focus, .blueBorder:focus, .redBorder:focu
     border-top: 5px solid blue;
     border-right: 5px solid blue;
 }
+.thBlue {
+    color:blue;
+}
+.thGray {
+    color:gray;
+}
 
 /*
 .tabHeader {
