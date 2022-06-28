@@ -551,49 +551,51 @@
 				}
             </td>
             @code
-		{
-			protected string _Cylinder4HalfWing = string.Empty;
-			protected string Cylinder4HalfWing
 			{
-				get
+				protected string _Cylinder4HalfWing = string.Empty;
+				protected string Cylinder4HalfWing
 				{
-					if (doorConfig != null)
+					get
 					{
-						_Cylinder4HalfWing = doorConfig.CYLINDER4HALFWING;
+						if (doorConfig != null)
+						{
+							_Cylinder4HalfWing = doorConfig.CYLINDER4HALFWING;
+						}
+						return _Cylinder4HalfWing;
 					}
-					return _Cylinder4HalfWing;
-				}
-				set
-				{
-					_Cylinder4HalfWing = value;
-					if (doorConfig != null)
+					set
 					{
-						doorConfig.CYLINDER4HALFWING = _Cylinder4HalfWing;
-						doorConfig.borderColors["CYLINDER4HALFWING"] = (!string.IsNullOrEmpty(value)  ? "blueBorder" : "redBorder");
-						if (PrApiCalls.cylinderIsHalf(doorConfig.CYLINDER4HALFWING))
+						_Cylinder4HalfWing = value;
+						if (doorConfig != null)
 						{
-							// if the user selected 1/2 Cylinder the folowint two fields are emptied and disabled !
-							doorConfig.HW4EXTRAWING = 0;
-							doorConfig.SWING_HWCOLORID = 0;
-							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
-							// as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
-							//  the value in SWING_DRIL4HW
-							lstD4HW1 = new List<DRIL4HW_Class>();
-							DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
-							lstD4HW1.Add(dril4HalfCyl);
-							doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+							doorConfig.CYLINDER4HALFWING = _Cylinder4HalfWing;
+							doorConfig.borderColors["CYLINDER4HALFWING"] = (!string.IsNullOrEmpty(value)  ? "blueBorder" : "redBorder");
+							if (PrApiCalls.cylinderIsHalf(doorConfig.CYLINDER4HALFWING))
+							{
+								// if the user selected 1/2 Cylinder the folowint two fields are emptied and disabled !
+								doorConfig.HW4EXTRAWING = 0;
+								doorConfig.SWING_HWCOLORID = 0;
+								doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
+								// as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
+								//  the value in SWING_DRIL4HW
+								lstD4HW1 = new List<DRIL4HW_Class>();
+								DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
+								lstD4HW1.Add(dril4HalfCyl);
+								doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+							}
+							else
+							{
+								doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
+								doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? doorConfig.TRSH_HARDWARE : doorConfig.HW4EXTRAWING );
+								doorConfig.SWING_HWCOLORID = (doorConfig.SWING_HWCOLORID == 0 ? doorConfig.HWCOLORID : doorConfig.SWING_HWCOLORID);
+							}
+							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+							 if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                  config4.RefreshState();
 						}
-						else
-						{
-							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
-							doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? doorConfig.TRSH_HARDWARE : doorConfig.HW4EXTRAWING );
-							doorConfig.SWING_HWCOLORID = (doorConfig.SWING_HWCOLORID == 0 ? doorConfig.HWCOLORID : doorConfig.SWING_HWCOLORID);
-						}
-						UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
-						}
-		            }
-	            }
-            }
+					}
+				}
+			}
 				
 				<td id="dlstHW4EXTRAWING" >  
 					@* HW4EXTRAWING *@
@@ -889,7 +891,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.SWING_LOCKNAME = _Lock;
-                        doorConfig.borderColors["SWING_LOCKNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        //doorConfig.borderColors["SWING_LOCKNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "statucgwing");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
                                   config4.RefreshState();
