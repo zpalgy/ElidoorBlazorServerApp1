@@ -107,7 +107,16 @@
 		!_SwingHasLock;
 	}
 
-    
+	DRIL4HW_Class getDril4HalfCylinder()
+	{
+		foreach (DRIL4HW_Class dril in  PrApiCalls.lstDril4Hw)
+		{
+			if (dril.DRIL4HWDES.Contains("חצי צילינדר"))
+				return dril;
+		}
+        return null;
+    }
+
     async void IDisposable.Dispose()
     {
 		 //if (!UiLogic.tabPageIsFilled("intdecor", doorConfig))
@@ -525,12 +534,12 @@
 				</td>
 			  
 				<td id="tdCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, "thCylinder4HalfWing")">
-				 @{  int i607 = Array.IndexOf(UiLogic.propNames, "CYLINDER4HALFWING");
+				 @{  int i604 = Array.IndexOf(UiLogic.propNames, "CYLINDER4HALFWING");
                 <select name="dlstCylinder4HalfWing" @bind="Cylinder4HalfWing" class= "@doorConfig.borderColors["CYLINDER4HALFWING"]" 
 				 disabled="@doorConfig.disabledFlds["CYLINDER4HALFWING"]"
 				  @onfocus="@( () => UiLogic.HasFocus("CYLINDER4HALFWING", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i607]]"  >
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i604]]"  >
 					 @if (PrApiCalls.lstCylinders != null)
 					 {
 						@foreach (CYLINDER_Class c in lstCylinders1)
@@ -567,6 +576,12 @@
 							doorConfig.HW4EXTRAWING = 0;
 							doorConfig.SWING_HWCOLORID = 0;
 							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
+							// as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
+							//  the value in SWING_DRIL4HW
+							lstD4HW1 = new List<DRIL4HW_Class>();
+							DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
+							lstD4HW1.Add(dril4HalfCyl);
+							doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
 						}
 						else
 						{
@@ -582,12 +597,12 @@
 				
 				<td id="dlstHW4EXTRAWING" >  
 					@* HW4EXTRAWING *@
-					 @{  int i604 = Array.IndexOf(UiLogic.propNames, "HW4EXTRAWING");
+					 @{  int i605 = Array.IndexOf(UiLogic.propNames, "HW4EXTRAWING");
 					<select name="dlstHw" @bind="Hw4ExtraWing" class="@doorConfig.borderColors["HW4EXTRAWING"]" 
 					        disabled="@doorConfig.disabledFlds["HW4EXTRAWING"]"
 							@onfocus="@( () => UiLogic.HasFocus("HW4EXTRAWING", doorConfig) )" 
 							 onkeypress="@doorConfig.KeyPressHandler" 
-							 @ref="doorConfig.dicRefs[UiLogic.propNames[i604]]" >
+							 @ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" >
                     @{
 						string errMsg = string.Empty;
 						List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getPartHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
@@ -635,14 +650,14 @@
                             }
                             else
                             {
-                                doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");
+                               // doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
                                 //doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
 								doorConfig.SWING_DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
                                 // populate the LOV for Dril4Hw based on Hardware selected .
                                 string errMsg = string.Empty;
                                 lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 
-                                doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
+                                //doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
                                 UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
 
                                 doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(value);
@@ -658,20 +673,20 @@
 
      		
 
-			<td>
-				 @{
+			
+		@{
             List<TRSH_COLOR_Class> tmpLstColors = new List<TRSH_COLOR_Class>(PrApiCalls.lstColors);
             tmpLstColors.Insert(1, new TRSH_COLOR_Class() { TRSH_COLORID = 99999, PARTDES = "ללא"  });
             //DataTable tmpDtColors = new DataTable();
             //tmpDtColors = tmpLstColors.ToDataTable<TRSH_COLOR_Class>();
         }
-        
-            @{  int i605 = Array.IndexOf(UiLogic.propNames, "SWING_HWCOLORID");
+        <td>
+            @{  int i606 = Array.IndexOf(UiLogic.propNames, "SWING_HWCOLORID");
             <select name="dlstSwing_HwColor" @bind="Swing_HwColorId" class="@doorConfig.borderColors["SWING_HWCOLORID"]"  
                  disabled="@doorConfig.disabledFlds["SWING_HWCOLORID"]"  
                   @onfocus="@( () => UiLogic.HasFocus("SWING_HWCOLORID", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" >
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i606]]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)
@@ -701,7 +716,7 @@
                     if (doorConfig != null)
                     {
                         doorConfig.HWCOLORID = _Swing_HwColorId;
-                        doorConfig.borderColors["SWING_HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
+                        //doorConfig.borderColors["SWING_HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
                     }
                 }
@@ -731,12 +746,12 @@
 
 				<td id="tdSwing_Dril4Hw">
 				@* SWING_DRIL4HW *@
-				@{  int i606 = Array.IndexOf(UiLogic.propNames, "SWING_DRIL4HW");
+				@{  int i607 = Array.IndexOf(UiLogic.propNames, "SWING_DRIL4HW");
             <select name="dlstSwing_Dril4Hw" @bind="Swing_Dril4Hw" class="@doorConfig.borderColors["SWING_DRIL4HW"]"
               disabled="@doorConfig.disabledFlds["SWING_DRIL4HW"]" 
               @onfocus="@( () => UiLogic.HasFocus("SWING_DRIL4HW", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i606]]" >
+                     @ref="doorConfig.dicRefs[UiLogic.propNames[i607]]" >
 
                 @* @if (PrApiCalls.lstDril4Hw != null)  *@
                 @if (lstD4HW1 != null)
@@ -769,7 +784,7 @@
 						if (doorConfig != null)
 						{
 							doorConfig.DRIL4HW = _Swing_Dril4Hw;
-							doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
+							//doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
 							UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
 						}
 					}
