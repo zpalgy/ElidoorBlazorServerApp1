@@ -243,6 +243,7 @@ namespace BlazorServerApp1.Data
                     ValuesCUSTOMER_Class val = JsonConvert.DeserializeObject<ValuesCUSTOMER_Class>(response.Content);
                     List<CUSTOMER_Class> val1 = new List<CUSTOMER_Class>();  //val.value;
                     CUSTOMER_Class emptyCust = new CUSTOMER_Class();
+                    emptyCust.CUST = "0";
                     emptyCust.CUSTNAME = " ";
                     emptyCust.CUSTDES = " ";
                     val1.Add(emptyCust);

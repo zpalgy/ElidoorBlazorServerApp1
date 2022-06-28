@@ -102,8 +102,9 @@
 			doorConfig.thClasses["CYLINDER4HALFWING"] = "thBlue";
 		}
 		doorConfig.SWINGHASLOCK = (_SwingHasLock ? "Y" : "");
-		doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] =
-										!_SwingHasLock;
+		doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = 
+		doorConfig.disabledFlds["SWING_DRIL4HW"] = doorConfig.disabledFlds["CYLINDER4HALFWING"] = doorConfig.disabledFlds["SWING_LOCKNAME"] = 
+		!_SwingHasLock;
 	}
 
     
@@ -177,6 +178,7 @@
 			<td>
  			  @{  int i601 = Array.IndexOf(UiLogic.propNames, "SWINGHASLOCK");
 				 <input type="checkbox" name="chkbSwingHasLock" @bind="SwingHasLock"  
+				      disabled="@doorConfig.disabledFlds["SWINGHASLOCK"]"
                        @onfocus="@( () => UiLogic.HasFocus("SWINGHASLOCK", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i601]]"  
@@ -211,6 +213,7 @@
 			<td id="tdExtraWingWidth">
 				 @{  int i602 = Array.IndexOf(UiLogic.propNames, "EXTRAWINGWIDTH");
                 <input type="number"  name="txtExtraWingWidth" @bind="ExtraWingWidth" class= "@doorConfig.borderColors["EXTRAWINGWIDTH"]" 
+				    disabled="@doorConfig.disabledFlds["EXTRAWINGWIDTH"]"
 				   @onfocus="@( () => UiLogic.HasFocus("EXTRAWINGWIDTH", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i602]]"  
@@ -248,7 +251,7 @@
 
 			<td id="tdDoorHeight">
      			<input name="txtDoorHeight" type="number" @bind-value="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
-				  disabled="true" />
+				   disabled="@doorConfig.disabledFlds["DOORHEIGHT"]" />
                 @code 
 				{
 			    protected int? _DoorHeight;
@@ -276,20 +279,22 @@
 			<td id="tdCentralColWidth" @hidden="@false" >
 				 @{  int i603 = Array.IndexOf(UiLogic.propNames, "CENTRALCOLWIDTH");
 					<select name="dlstCentralColWidth" @bind="CentralColWidth" class= "@doorConfig.borderColors["CENTRALCOLWIDTH"]" 
+					   disabled="@doorConfig.disabledFlds["CENTRALCOLWIDTH"]"
 					  @onfocus="@( () => UiLogic.HasFocus("CENTRALCOLWIDTH", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i603]]"  
 					>
-						<option>40</option>
+					    <option>0</option>
 						<option>30</option>
+						<option>40</option>
 					</select>
 					}
 				</td>
 			
 			@code
 			{
-				protected int _CentralColWidth = 0;
-				protected int CentralColWidth
+				protected int? _CentralColWidth = null;
+				protected int? CentralColWidth
 				{
 					get
 					{
@@ -304,9 +309,12 @@
 						_CentralColWidth = value;
 						if (doorConfig != null)
 						{
-							doorConfig.CENTRALCOLWIDTH = _CentralColWidth;
+							doorConfig.CENTRALCOLWIDTH = (_CentralColWidth != null ? (int)_CentralColWidth : 0);
 							doorConfig.borderColors["CENTRALCOLWIDTH"] = (value != 0 ? "blueBorder" : "redBorder");
 							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+							if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                  config4.RefreshState();
+							
 						}
 					}
 				}
@@ -342,7 +350,7 @@
 		
 				<td id="tdOpenMode">
                         <input name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]" 
-						  disabled = "true" />
+						  disabled="@doorConfig.disabledFlds["OPENMODE"]" />
 
             @code
             {
@@ -367,7 +375,8 @@
 			</td>
 
 		    <td id="tdOpenDirection" >
-                <input name="txtOpenDirection" disabled="true"  @bind="OpenDirection"  class="@doorConfig.borderColors["OPENSIDE"]"   /> 
+                <input name="txtOpenDirection"   @bind="OpenDirection"  class="@doorConfig.borderColors["OPENSIDE"]"   
+				   disabled="@doorConfig.disabledFlds["OPENSIDE"]"   /> 
             </td>
             @code
             {
@@ -414,7 +423,9 @@
 			</tr>
 			<tr>
 				<td id="thSwingColorId">
-					<input name="txtSwingColorID" disabled="true"  @bind="SwingColorDes"  class="@doorConfig.borderColors["DOORCOLORID"]"   /> 
+					<input name="txtSwingColorID"  @bind="SwingColorDes"  class="@doorConfig.borderColors["DOORCOLORID"]"   
+					  disabled="@doorConfig.disabledFlds["DOORCOLORID"]"  /> 
+
 					@code 
 					{
 						protected int _SwingColorID = 0;
@@ -437,7 +448,9 @@
 					}
 				</td>
 				<td>
-					<input name="txtSwingExtColorID" disabled="true"  @bind="SwingExtColorDes"  class="@doorConfig.borderColors["EXTCOLORID"]"   /> 
+					<input name="txtSwingExtColorID"   @bind="SwingExtColorDes"  class="@doorConfig.borderColors["EXTCOLORID"]"   
+					   disabled="@doorConfig.disabledFlds["EXTCOLORID"]"
+					/> 
 					@code 
 					{
 						protected int _SwingExtColorID = 0;
@@ -460,7 +473,9 @@
 					}
 				</td>
 				<td>
-					<input name="txtSwingIntColorID" disabled="true"  @bind="SwingIntColorDes"  class="@doorConfig.borderColors["INTCOLORID"]"   /> 
+					<input name="txtSwingIntColorID"   @bind="SwingIntColorDes"  class="@doorConfig.borderColors["INTCOLORID"]"   
+					   disabled="@doorConfig.disabledFlds["INTCOLORID"]"
+					/> 
 					@code 
 					{
 				protected int _SwingIntColorID = 0;
@@ -485,7 +500,9 @@
 				<td>
 					@*   height of Dril4Lock  Read Only it's identical to doorConfig.LOCKDRILHEIGHT which is set in movingwing. Because Lock Drill Heights on all wings 
 						              should be identical *@
-					<input name="txtSwing_LockDrilHeight" disabled="true"  @bind="Swing_LockDrilHeight"  class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"   /> 
+					<input name="txtSwing_LockDrilHeight"   @bind="Swing_LockDrilHeight"  class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"  
+					   disabled="@doorConfig.disabledFlds["LOCKDRILHEIGHT"]"
+					/> 
 					@code 
 					{
 						protected int _Swing_LockDrilHeight = 0;
@@ -760,7 +777,9 @@
 			}
 
             <td id="tdTurboApparatus" class="@doorConfig.thClasses["TURBOAPPARATUS"]" >
-            <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus"  disabled="true" />
+            <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus"  
+			   disabled="@doorConfig.disabledFlds["TURBOAPPARATUS"]"	
+			/>
             @code
             {
                 protected bool _TurboApparatus = false;
@@ -788,7 +807,8 @@
         </td>
 
         <td id="tdLogo" class="@doorConfig.thClasses["LOGO"]">
-            <input type="checkbox" name="chkbLogo" @bind="Logo" disabled="true" />
+            <input type="checkbox" name="chkbLogo" @bind="Logo" 
+				disabled="@doorConfig.disabledFlds["LOGO"]"	 />
             @code
             {
                 protected bool _Logo = false;
@@ -856,8 +876,8 @@
                         doorConfig.SWING_LOCKNAME = _Lock;
                         doorConfig.borderColors["SWING_LOCKNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "statucgwing");
-                         UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
-                            config4.RefreshState();
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                  config4.RefreshState();
                     }
                 }
             }
@@ -867,6 +887,7 @@
 			@* handle 4 static wing   new *@
 			 @{  int i609 = Array.IndexOf(UiLogic.propNames, "SWING_HANDLENAME");
                 <select name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["SWING_HANDLENAME"]" 
+				  disabled="@doorConfig.disabledFlds["SWING_HANDLENAME"]"	
                 @onfocus="@( () => UiLogic.HasFocus("SWING_HANDLENAME", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i609]]"  >
@@ -913,6 +934,7 @@
 			@* Vent 4 static wing new *@
 			@{  int i610 = Array.IndexOf(UiLogic.propNames, "SWING_VENTS");
             <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["SWING_VENTS"]" 
+			 disabled="@doorConfig.disabledFlds["SWING_VENTS"]"
             @onfocus="@( () => UiLogic.HasFocus("SWING_VENTS", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i610]]" >
@@ -955,6 +977,7 @@
 		<td id="tdRafafaOnStaticWing"  class="@doorConfig.thClasses["RAFAFAONSTATICWING"]">
                @{  int i611 = Array.IndexOf(UiLogic.propNames, "RAFAFAONSTATICWING");
             <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONSTATICWING"]" 
+			    disabled="@doorConfig.disabledFlds["RAFAFAONSTATICWING"]"
                 @onfocus="@( () => UiLogic.HasFocus("RAFAFAONSTATICWING", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i611]]" >
@@ -1005,7 +1028,8 @@
 		<td id="tdCatDoor" class="@doorConfig.thClasses["SWING_CATDOOR"]">
 			@* Cat door 4 static wing - new *@
 			@{  int i612 = Array.IndexOf(UiLogic.propNames, "SWING_CATDOOR");
-                <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" 
+                <input type="checkbox" name="chkbCatDoor" @bind="CatDoor"
+				   disabled="@doorConfig.disabledFlds["SWING_CATDOOR"]"
                    @onfocus="@( () => UiLogic.HasFocus("SWING_CATDOOR", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i612]]"  />

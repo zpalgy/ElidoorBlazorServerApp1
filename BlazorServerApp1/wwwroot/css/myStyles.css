@@ -257,8 +257,13 @@ input:focus, select:focus, .inputstyle:focus, .blueBorder:focus, .redBorder:focu
     border-top: 5px solid blue;
     border-right: 5px solid blue;
 }
+
+input:disabled, select:disabled {
+    border-color:gray;
+}
+
 .thBlue {
-    color:blue;
+    color: blue;
 }
 .thGray {
     color:gray;

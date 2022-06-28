@@ -23,7 +23,7 @@
 }
 
 @code {
-   @*  @inject NavigationManager NavigationManager; *@
+    @*  @inject NavigationManager NavigationManager; *@
 
 
     protected bool openMsgBox = false;
@@ -44,7 +44,7 @@
     private bool disableColor = true;
     private bool disableExtColor = true;
     private bool disableIntColor = true;
-    
+
     //protected string currPropName = string.Empty;
     DataTable dtTabFlds = new DataTable();
     List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
@@ -83,10 +83,10 @@
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
         //}
 
-        
+
         doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
-        doorConfig.disabledFlds["HWCOLORID"] = false;   // new - Harware may be with COLORED != "Y" .
-        
+        doorConfig.disabledFlds["HWCOLORID"] = true;   // new - Hardware may be with COLORED = "Y", at that point we'll ENABLE HWCOLORID .
+                                                       // we can't do that here because we may return to the page after all it's fields were disabled.
         // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
         if (doorConfig.ELECTRICAPPARATUS == null)
             doorConfig.ELECTRICAPPARATUS = string.Empty;
@@ -94,6 +94,8 @@
 
         string errMsg = string.Empty;
         dtTabFlds = UiLogic.getTabFields("movingwing", doorConfig, ref errMsg);
+        doorConfig.disabledFlds["LOGO"] = disableLogo;   //disableLogo is a parameter a flag in CUSTOMER record in Priority
+        doorConfig.currTabName = "movingwing";
         //Js.InvokeVoidAsync("SayHelloJS");
     }
 
@@ -332,9 +334,11 @@
         </td>
 
         @* TODO: replace disabled : use disabled="@doorConfig.disabledFlds["OPENSIDE"]"  *@
+        @* deleted line  : disabled="@UiLogic.disableFld(doorConfig, "OPENSIDE")"  *@
         <td id="tdOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">
              @{  int i303 = Array.IndexOf(UiLogic.propNames, "OPENSIDE");
-                        <select name="dlstOpenSide" @bind="openSide" disabled="@UiLogic.disableFld(doorConfig, "OPENSIDE")"
+                        <select name="dlstOpenSide" @bind="openSide" 
+                         disabled="@doorConfig.disabledFlds["OPENSIDE"]"
                     class="@doorConfig.borderColors["OPENSIDE"]"
                                  @onfocus="@( () => UiLogic.HasFocus("OPENSIDE", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
@@ -375,6 +379,7 @@
         <td id="tdOpenMode">
              @{  int i304 = Array.IndexOf(UiLogic.propNames, "OPENMODE");
                         <select name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]"
+                          disabled="@doorConfig.disabledFlds["OPENMODE"]"
                           @onfocus="@( () => UiLogic.HasFocus("OPENMODE", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                                 @ref="doorConfig.dicRefs[UiLogic.propNames[i304]]" >
@@ -415,6 +420,7 @@
         <td id="tdColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">
              @{  int i305 = Array.IndexOf(UiLogic.propNames, "COLORSNUM");
                         <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]"
+                             disabled="@doorConfig.disabledFlds["COLORSNUM"]"
                              @onfocus="@( () => UiLogic.HasFocus("COLORSNUM", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                              @ref="doorConfig.dicRefs[UiLogic.propNames[i305]]"  >
@@ -670,6 +676,7 @@
         <td id="tdLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">
              @{  int i309 = Array.IndexOf(UiLogic.propNames, "LOCKDRILHEIGHT");
                  <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" 
+                        disabled="@doorConfig.disabledFlds["LOCKDRILHEIGHT"]"
                         @onfocus="@( () => UiLogic.HasFocus("LOCKDRILHEIGHT", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                          @ref="doorConfig.dicRefs[UiLogic.propNames[i309]]"
@@ -739,6 +746,7 @@
         <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
              @{  int i310 = Array.IndexOf(UiLogic.propNames, "TRSH_HARDWARE");
                 <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]" 
+                    disabled="@doorConfig.disabledFlds["TRSH_HARDWARE"]"
                     @onfocus="@( () => UiLogic.HasFocus("TRSH_HARDWARE", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i310]]" >
@@ -932,6 +940,7 @@
         <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
             @{  int i313 = Array.IndexOf(UiLogic.propNames, "CYLINDERNAME");
             <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]"
+                disabled="@doorConfig.disabledFlds["CYLINDERNAME"]"
                 @onfocus="@( () => UiLogic.HasFocus("CYLINDERNAME", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i313]]" >
@@ -975,6 +984,7 @@
         <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
             @{  int i314 = Array.IndexOf(UiLogic.propNames, "ELECTRICAPPARATUS");
             <select name="dlstElectricApparatus" @bind="ElectricApparatus" class="@doorConfig.borderColors["ELECTRICAPPARATUS"]"
+                     disabled="@doorConfig.disabledFlds["CYLINDERNAME"]" 
                      @onfocus="@( () => UiLogic.HasFocus("ELECTRICAPPARATUS", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i314]]" >
@@ -1013,6 +1023,7 @@
         <td id="tdTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">
              @{  int i315 = Array.IndexOf(UiLogic.propNames, "TURBOAPPARATUS");
             <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus"  
+                       disabled="@doorConfig.disabledFlds["TURBOAPPARATUS"]"
                        @onfocus="@( () => UiLogic.HasFocus("TURBOAPPARATUS", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i315]]"  
@@ -1044,9 +1055,11 @@
             }
         </td>
 
+        @* deleted   line : disabled="@disableLogo"  *@
         <td id="tdLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">
             @{  int i316 = Array.IndexOf(UiLogic.propNames, "LOGO");
-            <input type="checkbox" name="chkbLogo" @bind="Logo" disabled="@disableLogo" 
+            <input type="checkbox" name="chkbLogo" @bind="Logo" 
+                disabled="@doorConfig.disabledFlds["LOGO"]"
                 @onfocus="@( () => UiLogic.HasFocus("LOGO", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i316]]"   />
@@ -1080,7 +1093,8 @@
         
         <td id="tdLock" hidden="@UiLogic.hideFld(doorConfig, "Lock")">
             @{  int i317 = Array.IndexOf(UiLogic.propNames, "LOCKNAME");
-            <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["LOCKNAME"]" 
+            <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["LOCKNAME"]"
+                 disabled="@doorConfig.disabledFlds["LOCKNAME"]"
                  @onfocus="@( () => UiLogic.HasFocus("LOCKNAME", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i317]]"  >
@@ -1185,6 +1199,7 @@
             <td id="tdHandle">
                  @{  int i318 = Array.IndexOf(UiLogic.propNames, "HANDLENAME");
                 <select name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["HANDLENAME"]" 
+                disabled="@doorConfig.disabledFlds["HANDLENAME"]"
                 @onfocus="@( () => UiLogic.HasFocus("HANDLENAME", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i318]]"  >
@@ -1233,6 +1248,7 @@
         <td id="tdVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">
              @{  int i319 = Array.IndexOf(UiLogic.propNames, "VENTS");
             <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["VENTS"]" 
+             disabled="@doorConfig.disabledFlds["VENTS"]"
             @onfocus="@( () => UiLogic.HasFocus("VENTS", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i319]]" >
@@ -1274,6 +1290,7 @@
         <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">
             @{  int i320 = Array.IndexOf(UiLogic.propNames, "RAFAFAONMOVINGWING");
             <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]" 
+                disabled="@doorConfig.disabledFlds["RAFAFAONMOVINGWING"]"
                 @onfocus="@( () => UiLogic.HasFocus("RAFAFAONMOVINGWING", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i320]]" >
@@ -1323,6 +1340,7 @@
         <td id="tdCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">
             @{  int i321 = Array.IndexOf(UiLogic.propNames, "CATDOOR");
                 <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" 
+                   disabled="@doorConfig.disabledFlds["CATDOOR"]"
                    @onfocus="@( () => UiLogic.HasFocus("CATDOOR", doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i321]]"  />

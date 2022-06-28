@@ -220,7 +220,32 @@
             dyncompType = pageType;
             //doorConfig.btnClasses[tabName] = "buttonActive";
             doorConfig.markButton(tabName);
-            UiLogic.disableTabFlds(doorConfig, doorConfig.prevTabName);  
+
+            if (!string.IsNullOrEmpty(doorConfig.prevTabName))
+            {
+                if (doorConfig.prevTabName != doorConfig.currTabName)   // a bug 
+                {
+                    myLogger.log.Error(string.Format("BUG: doorConfig.prevTabName  ({0}) != doorConfig.currTabName ({1}) - we fix that here",
+                                     doorConfig.prevTabName, doorConfig.currTabName));
+                    doorConfig.prevTabName = doorConfig.currTabName;
+                    //doorConfig.currTabName = tabName;
+                }
+            }
+            else
+            {
+                //string dbg = doorConfig.currTabName;
+                doorConfig.prevTabName = doorConfig.currTabName;
+                doorConfig.currTabName = tabName;
+            }
+            
+            if (tabName != doorConfig.prevTabName)
+            {
+                int curr = Array.IndexOf(UiLogic.tabNames, tabName);
+                int prev = Array.IndexOf(UiLogic.tabNames, doorConfig.prevTabName);
+                if (prev < curr)
+                   UiLogic.disableTabFlds(doorConfig, doorConfig.prevTabName);
+            }
+            
             return true;
         }
         else
@@ -240,7 +265,7 @@
             pageParams["disableLogo"] = disableLogo;
             UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
             doorConfig.disabledFlds["btnDoor"] = true;  //
-            if (showTabPage(typeof(Movingwing), "movinwing"))
+            if (showTabPage(typeof(Movingwing), "movingwing"))
             {
                 StateHasChanged();
                 await Task.Delay(1);
@@ -964,8 +989,8 @@
                                                     if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
                                                         showDivProducts();
 
-                                                    if (doorConfig.dicRefs.ContainsKey("SHIPADDRESS"))
-                                                        doorConfig.dicRefs["SHIPADDRESS"].FocusAsync();
+                                                    //if (doorConfig.dicRefs.ContainsKey("SHIPADDRESS"))
+                                                    //    doorConfig.dicRefs["SHIPADDRESS"].FocusAsync();
                                                 }
                                             }
                                         }

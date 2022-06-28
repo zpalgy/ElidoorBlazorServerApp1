@@ -31,7 +31,9 @@ namespace BlazorServerApp1.Data
         
         public static string borderColor = string.Empty;
         public static List<string> optionalFields = new List<string>(){ "REFERENCE", "FORMDATE", "CUSTORDNAME", "FAMILYNAME",
-                             "HANDLENAME", "VENTS", "RAFAFAONMOVINGWING" };
+                             "HANDLENAME", "VENTS", "RAFAFAONMOVINGWING",
+                              "SWING_HANDLENAME", "SWING_VENTS", "RAFAFAONSTATICWING", "SWING_CATDOOR"
+                              ,"SHALVANIACLRID", "DESIGNEDEXTRAWING", "DESIGNEDWINDOWEDWING"};  //temporarily unused fields in Staticwing
 
         public static int IdOfNone = 99999;
         public static string NameOfNone = "9999999";
@@ -297,6 +299,10 @@ namespace BlazorServerApp1.Data
             string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
             int fieldsNum = tabFields.Length;
+            if (tabName.ToLower().StartsWith("movin"))
+            {
+                int dbg = 17;
+            }
 
             for (int r = 0; r < fieldsNum; r++)
             {
