@@ -261,6 +261,17 @@ input:focus, select:focus, .inputstyle:focus, .blueBorder:focus, .redBorder:focu
 input:disabled, select:disabled {
     border-color:gray;
 }
+/*  ref:  https://stackoverflow.com/questions/4148499/how-to-style-a-checkbox-using-css
+    ...
+    It is worth noting that the fundamental issue has not changed. You still can't apply styles (borders, etc.) directly to the checkbox element 
+    and have those styles affect the display of the HTML checkbox. What has changed, however, is that it's now possible to hide the actual checkbox 
+    and replace it with a styled element of your own, using nothing but CSS. In particular, because CSS now has a widely supported :checked selector, 
+    you can make your replacement correctly reflect the checked status of the box.
+*/
+input[type="checkbox"]{
+    width: 30px;
+    height: 30px;
+}
 
 .thBlue {
     color: blue;
