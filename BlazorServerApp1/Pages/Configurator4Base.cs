@@ -55,6 +55,7 @@ namespace BlazorServerApp1.Pages
 					if (UiLogic.tabPageIsFilled(prevTab, doorConfig))
 					{
 						doorConfig.prevTabName = prevTab;
+						doorConfig.currTabName = tabName;
 						return true; //ActivePage = page;
 					}
 					else

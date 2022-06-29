@@ -84,19 +84,35 @@
         //}
 
 
-        doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
-        doorConfig.disabledFlds["HWCOLORID"] = true;   // new - Hardware may be with COLORED = "Y", at that point we'll ENABLE HWCOLORID .
-                                                       // we can't do that here because we may return to the page after all it's fields were disabled.
-        // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
+        string errMsg = string.Empty;
+        doorConfig.currTabName = "movingwing";
+        dtTabFlds = UiLogic.getTabFields("movingwing", doorConfig, ref errMsg);
         if (doorConfig.ELECTRICAPPARATUS == null)
             doorConfig.ELECTRICAPPARATUS = string.Empty;
-        doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
 
-        string errMsg = string.Empty;
-        dtTabFlds = UiLogic.getTabFields("movingwing", doorConfig, ref errMsg);
-        doorConfig.disabledFlds["LOGO"] = disableLogo;   //disableLogo is a parameter a flag in CUSTOMER record in Priority
-        doorConfig.currTabName = "movingwing";
-        //Js.InvokeVoidAsync("SayHelloJS");
+        if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))
+        {
+            doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
+            doorConfig.disabledFlds["HWCOLORID"] = true;   // new - Hardware may be with COLORED = "Y", at that point we'll ENABLE HWCOLORID .
+                                                           // we can't do that here because we may return to the page after all it's fields were disabled.
+                                                           // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
+            doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
+
+            doorConfig.disabledFlds["LOGO"] = disableLogo;   //disableLogo is a parameter a flag in CUSTOMER record in Priority
+                                                             // issue : if we come here BACK from a newer tabPage we should not 
+                                                             // enable this field.
+        }
+        else
+        {
+             // we're returning here from a newer tab - and our tab is actually filled .
+            UiLogic.disableTabFlds(doorConfig, "movingwing");
+            // in order to restore  DRIL4HW and CYLINDER that depend on lists created dynamically  in this tab page
+            //  we must create the dynamic lists that are the LOVs of those fields.
+            //  all other select fields depend on static LOVs and are restored OK !
+            lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+            lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
+        }
+            //Js.InvokeVoidAsync("SayHelloJS");
     }
 
     // We must have this event handler in every tabPage because it uses doorConfig , and we can't pass it as a parameter to
@@ -350,7 +366,7 @@
             }
             @code
             {
-                protected string _openSide = string.Empty;
+                protected string _openSide;
                 protected string openSide
                 {
                     get
@@ -390,7 +406,7 @@
             }
             @code
             {
-                protected string _openMode = string.Empty;
+                protected string _openMode ;
                 protected string openMode
                 {
                     get
@@ -433,7 +449,7 @@
 
             @code
             {
-                protected string _ColorsNum = string.Empty;
+                protected string _ColorsNum ;
                 protected string ColorsNum
                 {
                     get
@@ -515,7 +531,7 @@
         @code
         {
 
-            protected int _DoorColorId = 0;
+            protected int _DoorColorId;
             protected int DoorColorId
             {
                 get
@@ -575,7 +591,7 @@
             }
             @code
             {
-                protected int _ExtColor = 0;
+                protected int _ExtColor;
                 protected int ExtColor
                 {
                     get
@@ -646,7 +662,7 @@
             }
             @code
             {
-                protected int _IntColor = 0;
+                protected int _IntColor;
                 protected int IntColor
                 {
                     get
@@ -756,9 +772,9 @@
 
                     if (lstPartHWs != null)
                     {
-                                            @foreach (TRSH_HARDWARE_Class c in lstPartHWs)
+                        @foreach (TRSH_HARDWARE_Class c in lstPartHWs)
                         {
-                                                <option value="@c.TRSH_HARDWARE">@c.PARTDES</option>
+                            <option value="@c.TRSH_HARDWARE">@c.PARTDES</option>
                         }
                     }
                     }
@@ -766,7 +782,7 @@
             }
             @code
             {
-                protected int _Hw = 0;
+                protected int _Hw;
                 protected int Hw
                 {
                     get
@@ -841,7 +857,7 @@
         </td>
         @code
         {
-            protected int _HwColorId = 0;
+            protected int _HwColorId;
             protected int HwColorId
             {
                 get
@@ -887,7 +903,7 @@
         </td>
         @code
         {
-            protected int _Dril4Hw = 0;
+            protected int _Dril4Hw;
             protected int Dril4Hw
             {
                 get
@@ -957,7 +973,7 @@
         </td>
         @code
         {
-            protected string _CylinderName = string.Empty;
+            protected string _CylinderName;
             protected string CylinderName
             {
                 get
@@ -997,7 +1013,7 @@
         </td>
         @code
         {
-            protected string _ElectricApparatus = string.Empty;
+            protected string _ElectricApparatus;
             protected string ElectricApparatus
             {
                 get
@@ -1031,7 +1047,7 @@
             }
             @code
             {
-                protected bool _TurboApparatus = false;
+                protected bool _TurboApparatus;
                 protected bool TurboApparatus
                 {
                     get
@@ -1066,7 +1082,7 @@
              }
             @code
             {
-                protected bool _Logo = false;
+                protected bool _Logo;
                 protected bool Logo
                 {
                     get
@@ -1112,7 +1128,7 @@
             }
         </td>
         @code {
-            protected string _Lock = string.Empty;
+            protected string _Lock;
             protected string Lock
             {
                 get
@@ -1215,7 +1231,7 @@
            
                 @code
                 {
-                protected string _Handle1 = string.Empty;
+                protected string _Handle1;
                 protected string Handle1
                 {
                     get
@@ -1261,7 +1277,7 @@
             }
             @code
             {
-                protected string _Vents = string.Empty;
+                protected string _Vents;
                 protected string Vents
                 {
                     get
@@ -1303,7 +1319,7 @@
             }
             @code
             {
-                protected string _Rafafa = string.Empty;
+                protected string _Rafafa ;
                 protected string Rafafa
                 {
                     get
@@ -1347,7 +1363,7 @@
             }
             @code
             {
-                protected bool _CatDoor = false;
+                protected bool _CatDoor;
                 protected bool CatDoor
                 {
                     get

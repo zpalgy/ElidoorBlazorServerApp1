@@ -223,7 +223,8 @@
 
             if (!string.IsNullOrEmpty(doorConfig.prevTabName))
             {
-                if (doorConfig.prevTabName != doorConfig.currTabName)   // a bug 
+                if (doorConfig.prevTabName != doorConfig.currTabName)   // a bug or hinges issue : e.g. staticwing jumps over hinges firectly to handle
+                                                                        //  because COMPLIENT is ELIDOOR and hinges is already filled !
                 {
                     myLogger.log.Error(string.Format("BUG: doorConfig.prevTabName  ({0}) != doorConfig.currTabName ({1}) - we fix that here",
                                      doorConfig.prevTabName, doorConfig.currTabName));
@@ -237,15 +238,15 @@
                 doorConfig.prevTabName = doorConfig.currTabName;
                 doorConfig.currTabName = tabName;
             }
-            
+
             if (tabName != doorConfig.prevTabName)
             {
                 int curr = Array.IndexOf(UiLogic.tabNames, tabName);
                 int prev = Array.IndexOf(UiLogic.tabNames, doorConfig.prevTabName);
                 if (prev < curr)
-                   UiLogic.disableTabFlds(doorConfig, doorConfig.prevTabName);
+                    UiLogic.disableTabFlds(doorConfig, doorConfig.prevTabName);
             }
-            
+            UiLogic.tabPageIsFilled(tabName, doorConfig);  //set redBorder on empty controls
             return true;
         }
         else
@@ -258,37 +259,43 @@
         //protected void showMw()
         async Task showMw()
         {
-            doorConfig.divClasses["divHeader"] =
-            doorConfig.divClasses["divProducts"] =
-            doorConfig.divClasses["divDoorTitle"] = "divNotActive";
-            doorConfig.divClasses["dynCompStyle"] = "divActive";
-            pageParams["disableLogo"] = disableLogo;
-            UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
-            doorConfig.disabledFlds["btnDoor"] = true;  //
-            if (showTabPage(typeof(Movingwing), "movingwing"))
+        doorConfig.divClasses["divHeader"] =
+        doorConfig.divClasses["divProducts"] =
+        doorConfig.divClasses["divDoorTitle"] = "divNotActive";
+        doorConfig.divClasses["dynCompStyle"] = "divActive";
+        pageParams["disableLogo"] = disableLogo;
+        UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
+        doorConfig.disabledFlds["btnDoor"] = true;  //
+        if (showTabPage(typeof(Movingwing), "movingwing"))
+        {
+            if (!UiLogic.tabPageIsNotEmpty("movingwing", doorConfig))
             {
                 StateHasChanged();
                 await Task.Delay(1);
                 await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
-
-                doorConfig.btnClasses["general"] =
-                doorConfig.btnClasses["selectprod"] =
-                doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
-                doorConfig.btnClasses["movingwing"] = "buttonActive";
-
-                // disable prev navigation buttons 
-                doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
             }
+            doorConfig.btnClasses["general"] =
+            doorConfig.btnClasses["selectprod"] =
+            doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
+            doorConfig.btnClasses["movingwing"] = "buttonActive";
+
+            // disable prev navigation buttons 
+            doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
+        }
         }
 
         async Task  showStaticwing()
         {
-            //showTabPage(typeof(Staticwing), "staticwing");
+        //showTabPage(typeof(Staticwing), "staticwing");
             if (showTabPage(typeof(Staticwing), "staticwing"))
-	        {
-		        StateHasChanged();
-		        await Task.Delay(1);
-		        await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
+            {
+                if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
+                {
+                    StateHasChanged();
+                    await Task.Delay(1);
+                    await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
+                }
+
     	    }
         }
 
@@ -1134,7 +1141,7 @@
                                             //
                                             doorConfig.borderColors["TMPSHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); // optional field 01/06/2022
                                                                                                                                     // 18/06/2022 - required
-                                            // pre CU request:  if TMPSHIPADDRESS got a non empty value SHIPADDRESS should be cleared and disabled 
+                                            // per CU request:  if TMPSHIPADDRESS got a non empty value SHIPADDRESS should be cleared and disabled 
                                             if (!string.IsNullOrEmpty(value))
                                             {
                                                 doorConfig.SHIPADDRESS = string.Empty;
@@ -1569,7 +1576,7 @@
                                            @* deleted line: class="@doorConfig.borderColors["MEASURESDOC"]" *@
                                           @{
                                             int i10 = Array.IndexOf(UiLogic.propNames, "MEASURESDOC");
-                                            <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" 
+                                            <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc"  
                                                  
                                                  disabled="@doorConfig.disabledFlds["MEASURESDOC"]" 
                                                  @ref="doorConfig.dicRefs[UiLogic.propNames[i10]]"  

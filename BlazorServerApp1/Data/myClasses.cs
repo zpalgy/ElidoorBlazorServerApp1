@@ -517,6 +517,8 @@ namespace BlazorServerApp1.Data
         public string CONFIG_SUBFORM { get; set; }
         [DataMember(Order = 10)]
         public int TABINDEX { get; set; }
+        [DataMember(Order = 11)]
+        public string MANDATORY { get; set; }   // M, O (=OPTIONAL), X (not MANDATORY - unknown ) 
     }
 
     public class ValuesConfField_Class

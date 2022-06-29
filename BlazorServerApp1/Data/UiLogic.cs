@@ -204,10 +204,12 @@ namespace BlazorServerApp1.Data
                 string controlName = tabFields[r]["CONFIG_FIELDNAME"].ToString();
                 string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
                 string fldDes = tabFields[r]["FIELDDES"].ToString();
+                bool fldIsMandatory = (tabFields[r]["MANDATORY"].ToString() == "M");
                 borderColor = string.Empty;
                 
                 if (!hideFld(doorConfig, controlThName)
                     && !controlName.StartsWith("chkb")
+                    //&& fldIsMandatory
                     && !doorFldIsFilled(doorConfig, fldName, fldDataType))
                     //&& thTdFIELDNAME.ToUpper() != "REFERENCE"
                     //&& thTdFIELDNAME.ToUpper() != "FORMDATE"
@@ -390,8 +392,13 @@ namespace BlazorServerApp1.Data
             string sval;
             int ival;
 
-            if (optionalFields.Contains(fldName))
+            if (!fldIsMandatory(fldName))
+            {
+                //bool dbg2 = fldIsMandatory(fldName);
                 return true;
+            }
+            //if (optionalFields.Contains(fldName))
+            //    return true;
             if (doorConfig.disabledFlds.ContainsKey(fldName) && doorConfig.disabledFlds[fldName])
                 return true;
             if (fldName == "HWCOLORID")
@@ -1477,6 +1484,19 @@ namespace BlazorServerApp1.Data
             DataRow[] fldRows = PrApiCalls.dtConfFields.Select(query);
             if (fldRows.Length > 0)
                 return  fldRows[0]["FIELDDATATYPE"].ToString();
+            else
+            {
+                string errMsg = string.Format("Unexpected error: FIELDNAME {0} not found in PrApiCalls.dtConfFields", fldName);
+                myLogger.log.Error(errMsg);
+                throw new Exception(errMsg);    //return string.Empty;
+            }
+        }
+        public static bool fldIsMandatory(string fldName)
+        {
+            string query = string.Format("FIELDNAME='{0}'", fldName);
+            DataRow[] fldRows = PrApiCalls.dtConfFields.Select(query);
+            if (fldRows.Length > 0)
+                return (fldRows[0]["MANDATORY"].ToString() == "M");
             else
             {
                 string errMsg = string.Format("Unexpected error: FIELDNAME {0} not found in PrApiCalls.dtConfFields", fldName);

@@ -259,7 +259,7 @@ input:focus, select:focus, .inputstyle:focus, .blueBorder:focus, .redBorder:focu
 }
 
 input:disabled, select:disabled {
-    border-color:gray;
+    border: 1px solid gray;
 }
 /*  ref:  https://stackoverflow.com/questions/4148499/how-to-style-a-checkbox-using-css
     ...
@@ -272,10 +272,15 @@ input[type="checkbox"]{
     width: 30px;
     height: 30px;
 }
-
-.thBlue {
-    color: blue;
+/*
+    does not work !
+input[type="checkbox"]:focus {
+    background-color: yellow;
 }
+*/
+.thBlue {
+        color: blue;
+    }
 .thGray {
     color:gray;
 }
