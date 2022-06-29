@@ -1576,8 +1576,7 @@
                                            @* deleted line: class="@doorConfig.borderColors["MEASURESDOC"]" *@
                                           @{
                                             int i10 = Array.IndexOf(UiLogic.propNames, "MEASURESDOC");
-                                            <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc"  
-                                                 
+                                            <input type="checkbox" name="chkbMeasuresDoc" @bind="MeasuresDoc" 
                                                  disabled="@doorConfig.disabledFlds["MEASURESDOC"]" 
                                                  @ref="doorConfig.dicRefs[UiLogic.propNames[i10]]"  
                                                  @onfocus="@( () => UiLogic.HasFocus("MEASURESDOC", doorConfig) )"
