@@ -55,15 +55,25 @@
 		doorConfig.config4 = config4;
 		doorConfig.currTabName = "staticwing";
 		doorConfig.dtTabFlds = UiLogic.getTabFields("staticwing", doorConfig, ref errMsg);
+		lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg, true); // get also HALF Cylinders 
 
-		doorConfig.disabledFlds["DOORHEIGHT"] = doorConfig.disabledFlds["CENTRALCOLCLRID"] = doorConfig.disabledFlds["OPENMODE"] =
-		doorConfig.disabledFlds["OPENSIDE"] =  doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] =
-		doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["TURBOAPPARATUS"] = doorConfig.disabledFlds["LOGO"] = true;
-		calcCentralColClrID(doorConfig);
-		applySwingHasLock();
-		string errMsg2 = string.Empty;
-		lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2, true); // get also HALF Cylinders 
+		if (!UiLogic.tabPageIsFilled("staticwing", doorConfig))
+		{
+			doorConfig.disabledFlds["DOORHEIGHT"] = doorConfig.disabledFlds["CENTRALCOLCLRID"] = doorConfig.disabledFlds["OPENMODE"] =
+			doorConfig.disabledFlds["OPENSIDE"] = doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] =
+			doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["TURBOAPPARATUS"] = doorConfig.disabledFlds["LOGO"] = 
+			doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = true;
+			calcCentralColClrID(doorConfig);
+			applySwingHasLock();
+		}
+		else
+		{
+			string errMsg2 = string.Empty;
+			 UiLogic.disableTabFlds(doorConfig, "staticwing");
+			 // restore the LOV for SWING_DRIL4HW !
+			 lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 
+		}
 		doorConfig.thClasses["TURBOAPPARATUS"] = "thGray";
 	}
 	void calcCentralColClrID(DoorConfig doorConfig)
@@ -509,8 +519,8 @@
 				<td>
 					@*   height of Dril4Lock  Read Only it's identical to doorConfig.LOCKDRILHEIGHT which is set in movingwing. Because Lock Drill Heights on all wings 
 						              should be identical *@
-					<input name="txtSwing_LockDrilHeight"   @bind="Swing_LockDrilHeight"  class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"  
-					   disabled="@doorConfig.disabledFlds["LOCKDRILHEIGHT"]"
+					<input name="txtSwing_LockDrilHeight"   @bind="Swing_LockDrilHeight"  class="@doorConfig.borderColors["SWING_LOCKDRILHEIGHT"]"  
+					   disabled="@doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"]"
 					/> 
 					@code 
 					{

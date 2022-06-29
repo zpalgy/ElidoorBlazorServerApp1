@@ -6,6 +6,8 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
+using System.Xml.Serialization;
+using System.Web.Script.Serialization;
 
 namespace BlazorServerApp1.Data
 {
@@ -1142,6 +1144,12 @@ namespace BlazorServerApp1.Data
         public string RAFAFAONSTATICWING { get; set; }   //D-1150  Y, N , ''
         [DataMember(Order = 276), Order]
         public string SWING_CATDOOR { get; set; }   //new 
+
+        //ref: https://stackoverflow.com/questions/7693391/nonserialized-on-property
+        [XmlIgnore]
+        [ScriptIgnore]
+        public int SWING_LOCKDRILHEIGHT { get; set; } // just for css class and disabled
+
         #endregion staticwing { get; set; }
         #region hinges
         [DataMember(Order = 280), Order]
@@ -1219,7 +1227,7 @@ namespace BlazorServerApp1.Data
             //ElementReference er;
             foreach (PropertyInfo pinfo in props)
             {
-                if (pinfo.Name == "CUST")
+                if (pinfo.Name == "SWING_LOCKDRILHEIGHT")
                 {
                     int dbg = 17;
                 }
