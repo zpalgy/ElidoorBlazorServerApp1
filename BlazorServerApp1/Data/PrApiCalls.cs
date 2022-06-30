@@ -4,6 +4,7 @@ using System.Web;
 using RestSharp;
 using RestSharp.Authenticators;
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Configuration;
@@ -895,7 +896,7 @@ namespace BlazorServerApp1.Data
                 dtCylinders = lstCylinders.ToDataTable<CYLINDER_Class>();
                 lstLocks = getLocks(ref errMsg);
                 dtLocks = lstLocks.ToDataTable<TRSH_LOCK_Class>();
-                
+
                 lstWindowWidths = getWindowWidths(ref errMsg);
                 dtWindowWidths = lstWindowWidths.ToDataTable<WINDOWWIDTH_Class>();
                 lstWWidth_Statics = getWWidth_Statics(ref errMsg);
@@ -971,7 +972,7 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-        public static string getColorDes (int ColorId)
+        public static string getColorDes(int ColorId)
         {
             foreach (TRSH_COLOR_Class c in lstColors)
             {
@@ -1328,8 +1329,8 @@ namespace BlazorServerApp1.Data
                 rec1.DRIL4HWDES = dril4HwRows[0]["DRIL4HWDES"].ToString();
                 return rec1;
             }
-           
-        return null;
+
+            return null;
         }
         public static List<CYLINDER_Class> getCylinders(ref string errMsg)
         {
@@ -1385,7 +1386,7 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-        public static List<CYLINDER_Class> getCylindersByModelOpenMode(DoorConfig doorConfig,  ref string errMsg, bool incHalfCyl = false)
+        public static List<CYLINDER_Class> getCylindersByModelOpenMode(DoorConfig doorConfig, ref string errMsg, bool incHalfCyl = false)
         {
             try
             {
@@ -1416,7 +1417,7 @@ namespace BlazorServerApp1.Data
                     {
                         if (incHalfCyl)
                         {
-                                lstRes.Add(cyl);
+                            lstRes.Add(cyl);
                         }
                         else
                         {
@@ -2314,9 +2315,9 @@ namespace BlazorServerApp1.Data
             }
         }
         public static string getFieldCodebyTh(string thName)
-        { 
-           string query = string.Format("CONFIG_THNAME = '{0}'", thName);
-           DataRow[] resRows = dtConfFields.Select(query);
+        {
+            string query = string.Format("CONFIG_THNAME = '{0}'", thName);
+            DataRow[] resRows = dtConfFields.Select(query);
             return (resRows.Length > 0 ? resRows[0]["FIELDCODE"].ToString() : string.Empty);
         }
         public static string getFieldCodebyTd(string tdName)
@@ -2437,7 +2438,7 @@ namespace BlazorServerApp1.Data
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     };
                     ValuesComplient_Class val = JsonConvert.DeserializeObject<ValuesComplient_Class>(response.Content);
-                    List <Complient_Class> val1 = new List<Complient_Class>();  //val.value;
+                    List<Complient_Class> val1 = new List<Complient_Class>();  //val.value;
                     foreach (Complient_Class fld in val.value)
                     {
                         val1.Add(fld);
@@ -2607,23 +2608,23 @@ namespace BlazorServerApp1.Data
 
                 // end debug  
 
-
+                //doorConfig.dtTabFlds.TableName = "xxxxx";   // temporary ref: https://www.niteshluharuka.com/cannot-serialize-the-datatable-datatable-name-is-not-set-solution/
                 string payload = JsonSerializer<DoorConfig>(doorConfig);
 
                 int xl = payload.Length;    //2373
 
                 //payload = "{ \"REFERENCE\":\"\",\"FORMDATE\":\"2022-05-24\",\"FORMFILLER\":\"x\",\"AGENT\":0,\"CUST\":1,\"TMPSHIPADDRESS\":null}";   // just to DEBUG !
-                                                                                                                                                     // this works !
-//                string payload2 = @"{
-//                    ""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""TMPSHIPADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
-//""TRSH_WINGSNUMDES"":""כנף""}";   // works
-//--------------------
+                // this works !
+                //                string payload2 = @"{
+                //                    ""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""TMPSHIPADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
+                //""TRSH_WINGSNUMDES"":""כנף""}";   // works
+                //--------------------
                 string payload21 =
 @"{""TRSH_DOORCONFIG"":0,""REFERENCE"":"""",""FORMDATE"":""2022-05-24"",""FORMFILLER"":""רר"",""AGENT"":1,""CUST"":2,""TMPSHIPADDRESS"":null,""SHIPADDRESS"":""תושיה 7  "",
 ""TRSH_WINGSNUMDES"":""כנף""" +
-                
+
 @",""OPENMODE"":null,""COMPLIENTDOOR"":""Y"",""TRSH_MODELNAME"":""MLI"",""LOCKDRILHEIGHT"":0,""OPENSIDE"":null,""DECORFORMAT"":null,""COLORSNUM"":null," +
-                
+
 @"""DOORWIDTH"":0,""DOORCOLORID"":0,""DOORHEIGHT"":0,""TURBOAPPARATUS"":""Y"",""LOGO"":"""",""TRSH_HARDWARE"":0,""HWCOLORID"":0,""DRIL4HW"":0,""TRSH_MODELNAME"":null," +
 
 @"""ELECTRICAPPARATUS"":""N"",""RAFAFAONMOVINGWING"":null,""VENTS"":null,""CATDOOR"":null,""EXTCOLORID"":0,""GRIDCOLORID"":0,""VITRAGECLRBYCTLG"":null," +
@@ -2641,7 +2642,7 @@ namespace BlazorServerApp1.Data
 @",""INTMODERNCPLATECLRID"":0,""INTCGRIDCLRID"":0,""INTHTPLATESCLRID"":0,""INTGLASSPLATECLRID"":0,""INTMODERNPLATECLRID"":0,""INTNIROSTALINESCLRID"":0" +
 @",""INTINSERTCLRID"":0,""INTCPLATE4HTDMNDNAME"":null,""INTCPLATEHTDMNDCLRID"":0,""INTVITRAGE4DIAMONDQ"":0,""INTFINMODERNCPLATE"":null" +
 @",""INTFINMODERNSEPLINE"":null,""INTFINMODERNPLATE"":null,""CENTRALCOLCLRDES"":null" +
-@",""HANDLE4DIAMONDNAME"":null" + 
+@",""HANDLE4DIAMONDNAME"":null" +
 "}";
                 //Works !
                 int xl2 = payload21.Length;   // = 1343 

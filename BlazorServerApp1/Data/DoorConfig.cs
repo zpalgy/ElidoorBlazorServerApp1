@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
 using System.Xml.Serialization;
 using System.Web.Script.Serialization;
+using System.Text.Json.Serialization;
 
 namespace BlazorServerApp1.Data
 {
+    [DataContract]
     public class DoorConfig
     {
         #region form header
@@ -84,15 +87,16 @@ namespace BlazorServerApp1.Data
         //[DataMember(Order = 24), Order]
         //public string PARTDES { get; set; }
 
-        [DataMember(Order = 18), Order]
-        public int FAMILY { get; set; }  // D-10
-                                         //[NonSerialized]
-                                         //public int FAMILY;
+        //[DataMember(Order = 18), Order]
+        [NonSerialized]
+        public int FAMILY; // { get; set; }  // D-10
+                           //[NonSerialized]
+                           //public int FAMILY;
 
         //[DataMember(Order = 22), Order]
         //public string FAMILYDES { get; set; }
         [NonSerialized]
-        public string FAMILYNAME = string.Empty;   // TRSH_DOORCONFIG.FAMILYNAME does not exist in Priority 
+        public string FAMILYNAME; // = string.Empty;   // TRSH_DOORCONFIG.FAMILYNAME does not exist in Priority 
 
         [DataMember(Order = 19), Order]
         public int TRSH_DOOR_HWCATCODE { get; set; }
@@ -466,11 +470,12 @@ namespace BlazorServerApp1.Data
         public string SWING_CATDOOR { get; set; }   //new 
 
         //ref: https://stackoverflow.com/questions/7693391/nonserialized-on-property
-        [XmlIgnore]
-        [ScriptIgnore]
+        //[XmlIgnore]
+        //[ScriptIgnore]
+        //[DataMember(Order = 277), Order]
         public int SWING_LOCKDRILHEIGHT { get; set; } // just for css class and disabled
 
-        #endregion staticwing { get; set; }
+        #endregion staticwing 
         #region hinges
         [DataMember(Order = 280), Order]
         public int HINGESNUM { get; set; }      //D-580
@@ -528,13 +533,20 @@ namespace BlazorServerApp1.Data
         public BlazorServerApp1.Pages.Configurator4 config4;
         [NonSerialized]
         public bool RestartClicked = false;
-        public Dictionary<string, string> borderColors { get; set; }
-        public Dictionary<string, string> btnClasses { get; set; }
-        public Dictionary<string, string> divClasses { get; set; }
-        public Dictionary<string, string> thClasses { get; set; }
-        public Dictionary<string, bool> disabledFlds { get; set; }
+        [NonSerialized]
+        public Dictionary<string, string> borderColors; // { get; set; }
+        [NonSerialized]
+        public Dictionary<string, string> btnClasses; // { get; set; }
+        [NonSerialized]
+        public Dictionary<string, string> divClasses; // { get; set; }
+        [NonSerialized]
+        public Dictionary<string, string> thClasses; // { get; set; }
+        [NonSerialized]
+        public Dictionary<string, bool> disabledFlds; // { get; set; }
+        [NonSerialized]
         public Dictionary<string, ElementReference> dicRefs = new Dictionary<string, ElementReference>();
-        public Dictionary<string, bool> hideBtns { get; set; }  // not used yet 
+        [NonSerialized]
+        public Dictionary<string, bool> hideBtns; // { get; set; }  // not used yet 
 
         public void initBorderColors()
         {

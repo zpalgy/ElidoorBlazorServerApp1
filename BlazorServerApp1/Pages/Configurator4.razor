@@ -1717,8 +1717,8 @@
                                         //return;
                                     }
 
-                                    if (!string.IsNullOrEmpty(doorConfig.FAMILYNAME))
-                                        doorConfig.FAMILY = PrApiCalls.getFAMILY(doorConfig.FAMILYNAME, ref errMsg);
+                                    //if (!string.IsNullOrEmpty(doorConfig.FAMILYNAME))
+                                    //    doorConfig.FAMILY = PrApiCalls.getFAMILY(doorConfig.FAMILYNAME, ref errMsg);
 
                                     clear9999Fields();
                                     var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
