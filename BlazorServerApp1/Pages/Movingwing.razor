@@ -177,6 +177,7 @@
                              <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" 
                                   disabled="@doorConfig.disabledFlds["DOORWIDTH"]"
                                   @onfocus="@( () => UiLogic.HasFocus("DOORWIDTH", doorConfig) )" 
+                                  @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                                   onkeypress="@KeyPressHandler"
                                  @ref="doorConfig.dicRefs[UiLogic.propNames[i301]]"    /> 
                                  @*  @ref="txtWingWidth"   onkeypress="return event.keyCode!=13"   *@
@@ -257,7 +258,8 @@
                        <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
                                disabled="@doorConfig.disabledFlds["DOORHEIGHT"]"
                               @onfocus="@( () => UiLogic.HasFocus("DOORHEIGHT", doorConfig) )" 
-                  onkeypress="@KeyPressHandler"
+                               @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                               onkeypress="@KeyPressHandler"
                               @ref="doorConfig.dicRefs[UiLogic.propNames[i302]]" />  
            }
             @* 
@@ -357,7 +359,8 @@
                          disabled="@doorConfig.disabledFlds["OPENSIDE"]"
                     class="@doorConfig.borderColors["OPENSIDE"]"
                                  @onfocus="@( () => UiLogic.HasFocus("OPENSIDE", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
+                                 @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                 onkeypress="@KeyPressHandler" 
                                 @ref="doorConfig.dicRefs[UiLogic.propNames[i303]]"  >
                             <option> </option>
                             <option>ימין</option>
@@ -397,7 +400,8 @@
                         <select name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]"
                           disabled="@doorConfig.disabledFlds["OPENMODE"]"
                           @onfocus="@( () => UiLogic.HasFocus("OPENMODE", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
+                           @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                           onkeypress="@KeyPressHandler" 
                                 @ref="doorConfig.dicRefs[UiLogic.propNames[i304]]" >
                             <option></option>
                             <option>פנימה</option>
@@ -438,7 +442,8 @@
                         <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]"
                              disabled="@doorConfig.disabledFlds["COLORSNUM"]"
                              @onfocus="@( () => UiLogic.HasFocus("COLORSNUM", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
+                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                             onkeypress="@KeyPressHandler" 
                              @ref="doorConfig.dicRefs[UiLogic.propNames[i305]]"  >
                             <option></option>
                             <option>מגולוון</option>
@@ -516,8 +521,9 @@
              @{  int i306 = Array.IndexOf(UiLogic.propNames, "DOORCOLORID");
                     <select name="dlstDoorColor" @bind="DoorColorId" class="@doorConfig.borderColors["DOORCOLORID"]" 
                           disabled="@doorConfig.disabledFlds["DOORCOLORID"]"  
-                                   @onfocus="@( () => UiLogic.HasFocus("DOORCOLORID", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
+                          @onfocus="@( () => UiLogic.HasFocus("DOORCOLORID", doorConfig) )" 
+                          @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                          onkeypress="@KeyPressHandler" 
                              @ref="doorConfig.dicRefs[UiLogic.propNames[i306]]" >
                         @if (PrApiCalls.lstColors != null)
                 {
@@ -577,7 +583,8 @@
              @{  int i307 = Array.IndexOf(UiLogic.propNames, "EXTCOLORID");
                 <select name="dlstExtColor" @bind="ExtColor" class="@doorConfig.borderColors["EXTCOLORID"]"
                     disabled="@doorConfig.disabledFlds["EXTCOLORID"]"  
-                        @onfocus="@( () => UiLogic.HasFocus("EXTCOLORID", doorConfig) )" 
+                    @onfocus="@( () => UiLogic.HasFocus("EXTCOLORID", doorConfig) )" 
+                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                              @ref="doorConfig.dicRefs[UiLogic.propNames[i307]]" >
                     @if (PrApiCalls.lstColors != null)
@@ -648,8 +655,9 @@
              @{  int i308 = Array.IndexOf(UiLogic.propNames, "INTCOLORID");
                 <select name="dlstIntColor" @bind="IntColor" class="@doorConfig.borderColors["INTCOLORID"]"
                     disabled="@doorConfig.disabledFlds["INTCOLORID"]"  
-                         @onfocus="@( () => UiLogic.HasFocus("INTCOLORID", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
+                    @onfocus="@( () => UiLogic.HasFocus("INTCOLORID", doorConfig) )" 
+                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                    onkeypress="@KeyPressHandler" 
                              @ref="doorConfig.dicRefs[UiLogic.propNames[i308]]" >
                     @if (PrApiCalls.lstColors != null)
                 {
@@ -694,7 +702,8 @@
                  <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" 
                         disabled="@doorConfig.disabledFlds["LOCKDRILHEIGHT"]"
                         @onfocus="@( () => UiLogic.HasFocus("LOCKDRILHEIGHT", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
+                        @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                        onkeypress="@KeyPressHandler" 
                          @ref="doorConfig.dicRefs[UiLogic.propNames[i309]]"
                  />  
              }
@@ -764,8 +773,9 @@
                 <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]" 
                     disabled="@doorConfig.disabledFlds["TRSH_HARDWARE"]"
                     @onfocus="@( () => UiLogic.HasFocus("TRSH_HARDWARE", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i310]]" >
+                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                    onkeypress="@KeyPressHandler" 
+                    @ref="doorConfig.dicRefs[UiLogic.propNames[i310]]" >
                     @{
                     string errMsg = string.Empty;
                     List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getPartHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
@@ -843,8 +853,9 @@
             <select name="dlstHwColor" @bind="HwColorId" class="@doorConfig.borderColors["HWCOLORID"]"  
                  disabled="@doorConfig.disabledFlds["HWCOLORID"]"  
                   @onfocus="@( () => UiLogic.HasFocus("HWCOLORID", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i311]]" >
+                  @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                  onkeypress="@KeyPressHandler" 
+                  @ref="doorConfig.dicRefs[UiLogic.propNames[i311]]" >
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)
@@ -886,8 +897,9 @@
             <select name="dlstDril4Hw" @bind="Dril4Hw" class="@doorConfig.borderColors["DRIL4HW"]"
               disabled="@doorConfig.disabledFlds["DRIL4HW"]" 
               @onfocus="@( () => UiLogic.HasFocus("DRIL4HW", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i312]]" >
+              @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+              onkeypress="@KeyPressHandler" 
+              @ref="doorConfig.dicRefs[UiLogic.propNames[i312]]" >
 
                 @* @if (PrApiCalls.lstDril4Hw != null)  *@
                 @if (lstD4HW1 != null)
@@ -958,8 +970,9 @@
             <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]"
                 disabled="@doorConfig.disabledFlds["CYLINDERNAME"]"
                 @onfocus="@( () => UiLogic.HasFocus("CYLINDERNAME", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i313]]" >
+                @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                onkeypress="@KeyPressHandler" 
+                @ref="doorConfig.dicRefs[UiLogic.propNames[i313]]" >
 
                 @if (PrApiCalls.lstCylinders != null)
                 {
@@ -1002,6 +1015,7 @@
             <select name="dlstElectricApparatus" @bind="ElectricApparatus" class="@doorConfig.borderColors["ELECTRICAPPARATUS"]"
                      disabled="@doorConfig.disabledFlds["CYLINDERNAME"]" 
                      @onfocus="@( () => UiLogic.HasFocus("ELECTRICAPPARATUS", doorConfig) )" 
+                     @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i314]]" >
                 <option></option>
@@ -1041,8 +1055,9 @@
             <input type="checkbox" name="chkbTurboApparatus" @bind="TurboApparatus"  
                        disabled="@doorConfig.disabledFlds["TURBOAPPARATUS"]"
                        @onfocus="@( () => UiLogic.HasFocus("TURBOAPPARATUS", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i315]]"  
+                       @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                       onkeypress="@KeyPressHandler" 
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i315]]"  
             />
             }
             @code
@@ -1077,8 +1092,9 @@
             <input type="checkbox" name="chkbLogo" @bind="Logo" 
                 disabled="@doorConfig.disabledFlds["LOGO"]"
                 @onfocus="@( () => UiLogic.HasFocus("LOGO", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i316]]"   />
+                @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                onkeypress="@KeyPressHandler" 
+                @ref="doorConfig.dicRefs[UiLogic.propNames[i316]]"   />
              }
             @code
             {
@@ -1112,8 +1128,9 @@
             <select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["LOCKNAME"]"
                  disabled="@doorConfig.disabledFlds["LOCKNAME"]"
                  @onfocus="@( () => UiLogic.HasFocus("LOCKNAME", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i317]]"  >
+                 @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                 onkeypress="@KeyPressHandler" 
+                 @ref="doorConfig.dicRefs[UiLogic.propNames[i317]]"  >
                 @{
                     List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
                     if (lstPartLocks != null)
@@ -1217,7 +1234,8 @@
                 <select name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["HANDLENAME"]" 
                 disabled="@doorConfig.disabledFlds["HANDLENAME"]"
                 @onfocus="@( () => UiLogic.HasFocus("HANDLENAME", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
+                @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i318]]"  >
                     @if (PrApiCalls.lstHandles != null)
                     {
@@ -1266,8 +1284,9 @@
             <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["VENTS"]" 
              disabled="@doorConfig.disabledFlds["VENTS"]"
             @onfocus="@( () => UiLogic.HasFocus("VENTS", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i319]]" >
+            @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+            onkeypress="@KeyPressHandler" 
+            @ref="doorConfig.dicRefs[UiLogic.propNames[i319]]" >
                 <option></option>
                 <option>ללא</option>
                 <option>1</option>
@@ -1308,8 +1327,9 @@
             <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]" 
                 disabled="@doorConfig.disabledFlds["RAFAFAONMOVINGWING"]"
                 @onfocus="@( () => UiLogic.HasFocus("RAFAFAONMOVINGWING", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i320]]" >
+                @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                onkeypress="@KeyPressHandler" 
+                @ref="doorConfig.dicRefs[UiLogic.propNames[i320]]" >
                 <option></option>
                 <option>ללא</option>
                 <option>1</option>
@@ -1358,8 +1378,9 @@
                 <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" 
                    disabled="@doorConfig.disabledFlds["CATDOOR"]"
                    @onfocus="@( () => UiLogic.HasFocus("CATDOOR", doorConfig) )" 
-                     onkeypress="@KeyPressHandler" 
-                     @ref="doorConfig.dicRefs[UiLogic.propNames[i321]]"  />
+                   @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                   onkeypress="@KeyPressHandler" 
+                   @ref="doorConfig.dicRefs[UiLogic.propNames[i321]]"  />
             }
             @code
             {

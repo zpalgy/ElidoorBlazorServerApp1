@@ -68,7 +68,7 @@
         private string surnameMessage;
         private string dbgstr = string.Empty;
         private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
-
+        ElementReference refBtnDoor;
 
         protected override async Task OnInitializedAsync()
         {
@@ -132,7 +132,7 @@
         doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
         }
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async void OnAfterRender(bool firstRender)
         {
         string errMsg = string.Empty;
         string UserName = string.Empty;
@@ -156,6 +156,8 @@
             //      UserName = httpContextAccessor.HttpContext.User.Identity.Name;
             //--------- end trial to get the client's userName 
         }
+        if (showProducts)
+            await refBtnDoor.FocusAsync();
         }
         protected DataTable uniteHeaderDoorTitleFlds()
         {
@@ -171,9 +173,9 @@
 
         void showDivProducts()
 		{
-        showProducts = true;
-        doorConfig.divClasses["divHeader"] = "divNotActive";
-        doorConfig.divClasses["divProducts"] = "divActive";
+            showProducts = true;
+            doorConfig.divClasses["divHeader"] = "divNotActive";
+            doorConfig.divClasses["divProducts"] = "divActive";
 		}
 
          async Task showDoorTitle()
@@ -1182,6 +1184,7 @@
                                                         <td id="tdBtnDoor">
                                                             <button name="btnDoor" @onclick="btnDoorClicked" class="@doorConfig.btnClasses["btnDoor"]"
                                                         disabled="@doorConfig.disabledFlds["btnDoor"]"
+                                                        @ref="@refBtnDoor"
                                                         >דלת</button>
                                         @code
                                         {
@@ -1236,6 +1239,8 @@
                         </table>
                         <!--end tblProducts -->
                     </div>
+
+                    // refBtnDoor.FocusAsync();             // didn't get a value yet , it null - invalidOperationException
                                             <!-- end divProducts -->
                     }  @* end if (showProducts) *@
 
@@ -1372,7 +1377,7 @@
                                         }
                                     </td>
                                     @code {
-                                       // private ElementReference dlstModelName;
+                                        // private ElementReference dlstModelName;
         protected string _TRSH_MODELNAME = string.Empty;
         protected string TRSH_MODELNAME
         {
@@ -1432,7 +1437,7 @@
                                                     {
                                                         errMsg2 = "לא קיים פריט  עם הדגם והמיפתח שציינת";
                                                         openMsgBox = true;
-                                                         doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
+                                                        doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
                                                         return;
                                                     }
                                                     // get PART FAMILY
@@ -1547,26 +1552,26 @@
                                         }
                                   
                                     @code
-                                    {
-        protected int _TRSH_COMPLIENT = 0;
+                                        {
+                                            protected int _TRSH_COMPLIENT = 0;
         protected int TRSH_COMPLIENT
         {
-                                        get
-                                        {
-                                            if (doorConfig != null)
+                                            get
                                             {
-                                                _TRSH_COMPLIENT = doorConfig.TRSH_COMPLIENT;
+                                                if (doorConfig != null)
+                                                {
+                                                    _TRSH_COMPLIENT = doorConfig.TRSH_COMPLIENT;
+                                                }
+                                                return _TRSH_COMPLIENT;
                                             }
-                                            return _TRSH_COMPLIENT;
-                                        }
-                                        set
-                                        {
-                                            _TRSH_COMPLIENT = value;
-                                            if (doorConfig != null)
+                                            set
                                             {
-                                                doorConfig.TRSH_COMPLIENT = _TRSH_COMPLIENT;
-                                                doorConfig.borderColors["TRSH_COMPLIENT"] = (value != 0 ? "blueBorder" : "redBorder");
-                                                UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
+                                                _TRSH_COMPLIENT = value;
+                                                if (doorConfig != null)
+                                                {
+                                                    doorConfig.TRSH_COMPLIENT = _TRSH_COMPLIENT;
+                                                    doorConfig.borderColors["TRSH_COMPLIENT"] = (value != 0 ? "blueBorder" : "redBorder");
+                                                    UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
                                             }
                                         }
         }
