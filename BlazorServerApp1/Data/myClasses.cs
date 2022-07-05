@@ -646,6 +646,32 @@ namespace BlazorServerApp1.Data
     {
         public List<Model_Class> value { get; set; }
     }
+    [DataContract]
+    public class Model_Part_Class
+    {
+        [DataMember(Order = 1)]
+        public string TRSH_MODELNAME { get; set; }
+        [DataMember(Order = 2)]
+        public string TRSH_MODELDES { get; set; }
+        [DataMember(Order = 3)]
+        public string TRSH_WINGSNUMDES { get; set; }
+        [DataMember(Order = 4)]
+        public string TRSH_WINGSNUMCODE { get; set; }
+        [DataMember(Order = 5)]
+        public string PARTNAME { get; set; }
+        [DataMember(Order = 6)]
+        public string PARTDES { get; set; }
+        [DataMember(Order = 7)]
+        public int TRSH_MODEL { get; set; }
+        [DataMember(Order = 8)]
+        public int TRSH_WINGSNUM { get; set; }
+        [DataMember(Order = 9)]
+        public int PART { get; set; }
+    }
+    public class ValuesModel_Part_Class
+    {
+        public List<Model_Part_Class> value { get; set; }
+    }
 
     [DataContract]
     public class Decoration_Class

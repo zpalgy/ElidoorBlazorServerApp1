@@ -35,6 +35,8 @@ namespace BlazorServerApp1.Data
         public static DataTable dtWingsNum = new DataTable();
         public static List<Model_Class> lstModels = new List<Model_Class>();
         public static DataTable dtModels = new DataTable();
+        public static List<Model_Part_Class> lstModel_Parts = new List<Model_Part_Class>();
+        public static DataTable dtModel_Parts = new DataTable();
         public static List<Decoration_Class> lstDecorations = new List<Decoration_Class>();
         public static DataTable dtDecorations = new DataTable();
         public static List<Complient_Class> lstComplients = new List<Complient_Class>();
@@ -415,7 +417,54 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        public static List<Model_Part_Class> getModelParts(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "TRSH_MODELNAME,TRSH_MODELDES,TRSH_WINGSNUMDES,TRSH_WINGSNUMCODE,PARTNAME,PARTDES,TRSH_MODEL,TRSH_WINGSNUM,PART";
+                request.Resource = string.Format("TRSH_MODEL_PARTS?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesModel_Part_Class val = JsonConvert.DeserializeObject<ValuesModel_Part_Class>(response.Content);
 
+                    List<Model_Part_Class> val1 = new List<Model_Part_Class>();  //val.value;
+                    Model_Part_Class emptyModel = new Model_Part_Class();
+                    emptyModel.TRSH_MODEL = 0;
+                    val1.Add(emptyModel);
+                    foreach (Model_Part_Class model in val.value)
+                    {
+                        val1.Add(model);
+                    }
+                    return val1;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+    
         public static Model_Class getModel(string TRSH_MODELNAME, ref string errMsg)
         {
             Model_Class model = new Model_Class();
@@ -876,6 +925,8 @@ namespace BlazorServerApp1.Data
                 dtWingsNum = lstWingsNum.ToDataTable<WingsNum_Class>();
                 lstModels = getAllModels(ref errMsg);
                 dtModels = lstModels.ToDataTable<Model_Class>();
+                lstModel_Parts = getModelParts(ref errMsg);
+                dtModel_Parts = lstModel_Parts.ToDataTable<Model_Part_Class>();
                 lstDecorations = getAllDecorations(ref errMsg);
                 dtDecorations = lstDecorations.ToDataTable<Decoration_Class>();
                 dtComplients = getComplients(ref errMsg);
