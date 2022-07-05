@@ -969,7 +969,9 @@ namespace BlazorServerApp1.Data
             }
             catch (Exception ex)
             {
-                throw ex;
+                string errMsg2 = string.Format("Unexpected error: {0} check Whether all Priority Forms atr Prepared/Ready", ex.Message);
+                myLogger.log.Error(errMsg2);
+                throw new Exception(errMsg2);
             }
         }
 
