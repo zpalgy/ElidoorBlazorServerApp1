@@ -60,18 +60,26 @@
 		if (!UiLogic.tabPageIsFilled("staticwing", doorConfig))
 		{
 			doorConfig.disabledFlds["DOORHEIGHT"] = doorConfig.disabledFlds["CENTRALCOLCLRID"] = doorConfig.disabledFlds["OPENMODE"] =
-			doorConfig.disabledFlds["OPENSIDE"] = doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] =
-			doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["TURBOAPPARATUS"] = doorConfig.disabledFlds["LOGO"] = 
+			doorConfig.disabledFlds["OPENSIDE"] = doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = 
+			doorConfig.disabledFlds["INTCOLORID"] =
+			doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["LOGO"] = 
+			doorConfig.disabledFlds["HW4EXTRAWING"] =                   //06/07/2022 
 			doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = true;
 			calcCentralColClrID(doorConfig);
 			applySwingHasLock();
+			doorConfig.CENTRALCOLWIDTH = 40;  //06/07/2022 
+			doorConfig.disabledFlds["SWING_HANDLENAME"] = (doorConfig.TRSH_WINGSNUMDES == "כנף וחצי"); // 06/07/2022 
+																												//doorConfig.thClasses["HW4EXTRAWING"] = "thGray";   // 06/07/2022 
+			doorConfig.HW4EXTRAWING = doorConfig.TRSH_HARDWARE;
+			doorConfig.disabledFlds["HW4EXTRAWING"] = true;
+
 		}
 		else
 		{
 			string errMsg2 = string.Empty;
-			 UiLogic.disableTabFlds(doorConfig, "staticwing");
-			 // restore the LOV for SWING_DRIL4HW !
-			 lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+			UiLogic.disableTabFlds(doorConfig, "staticwing");
+			// restore the LOV for SWING_DRIL4HW !
+			lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 
 		}
 		doorConfig.thClasses["TURBOAPPARATUS"] = "thGray";
@@ -96,24 +104,36 @@
 			doorConfig.HW4EXTRAWING = 0;
 			doorConfig.SWING_HWCOLORID = 0;
 			doorConfig.SWING_DRIL4HW = 0;
-			//doorConfig.LOCKDRILHEIGHT = 0;
+			doorConfig.TURBOAPPARATUS = string.Empty;  //06/07/2022  TURBOAPPARATUS is N when StaticWing Doesn't have a LOCK !
+																//doorConfig.LOCKDRILHEIGHT = 0;
 			doorConfig.thClasses["LOCKDRILHEIGHT"] = 
 			doorConfig.thClasses["HW4EXTRAWING"] = 
 			doorConfig.thClasses["SWING_HWCOLORID"] = 
 			doorConfig.thClasses["SWING_DRIL4HW"] = 
-			doorConfig.thClasses["CYLINDER4HALFWING"] = "thGray";
+			doorConfig.thClasses["CYLINDER4HALFWING"] =
+			doorConfig.thClasses["SWING_LOCKNAME"] = "thGray";
+			doorConfig.thClasses["TURBOAPPARATUS"] = "thGray";
 		}
 		else
 		{
 			doorConfig.thClasses["LOCKDRILHEIGHT"] = 
-			doorConfig.thClasses["HW4EXTRAWING"] = 
+			//doorConfig.thClasses["HW4EXTRAWING"] =      //HW4EXTRAWING is disabled by default 06/07/2022 
 			doorConfig.thClasses["SWING_HWCOLORID"] = 
 			doorConfig.thClasses["SWING_DRIL4HW"] = 
+			doorConfig.thClasses["SWING_LOCKNAME"] =
 			doorConfig.thClasses["CYLINDER4HALFWING"] = "thBlue";
+			doorConfig.thClasses["TURBOAPPARATUS"] = "thBlue";
+			doorConfig.thClasses["HW4EXTRAWING"] = "thBlue";
+
+			CYLINDER_Class noCyl = lstCylinders1.Find(x => x.TRSH_CYLINDER == UiLogic.IdOfNone);
+			lstCylinders1.Remove(noCyl);
+
 		}
 		doorConfig.SWINGHASLOCK = (_SwingHasLock ? "Y" : "");
-		doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = 
+		//doorConfig.disabledFlds["HW4EXTRAWING"]   // 06/07/2022 HW4EXTRAWING is disabled by default !
+		doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = 
 		doorConfig.disabledFlds["SWING_DRIL4HW"] = doorConfig.disabledFlds["CYLINDER4HALFWING"] = doorConfig.disabledFlds["SWING_LOCKNAME"] = 
+		doorConfig.disabledFlds["TURBOAPPARATUS"] = 
 		!_SwingHasLock;
 	}
 
@@ -314,7 +334,7 @@
 			
 			@code
 			{
-				protected int? _CentralColWidth = null;
+				protected int? _CentralColWidth = 40;
 				protected int? CentralColWidth
 				{
 					get
@@ -553,7 +573,7 @@
 				  @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i604]]"  >
-					 @if (PrApiCalls.lstCylinders != null)
+					 @if (lstCylinders1 != null)
 					 {
 						@foreach (CYLINDER_Class c in lstCylinders1)
 						{
@@ -599,7 +619,8 @@
 						}
 						else
 						{
-							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
+							//doorConfig.disabledFlds["HW4EXTRAWING"] =    // 06/07/2022 HW4EXTRAWING is disabled by default  !
+							doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
 							doorConfig.disabledFlds["SWING_DRIL4HW"] = false;
 							doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? doorConfig.TRSH_HARDWARE : doorConfig.HW4EXTRAWING );
 							doorConfig.SWING_HWCOLORID = (doorConfig.SWING_HWCOLORID == 0 ? doorConfig.HWCOLORID : doorConfig.SWING_HWCOLORID);
@@ -626,7 +647,7 @@
 							 @ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" >
                     @{
 						string errMsg = string.Empty;
-						List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getPartHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+						List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getDoorHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
 
 						if (lstPartHWs != null)
 						{
@@ -786,9 +807,9 @@
 			<tr>
 				
 				<th class="@doorConfig.thClasses["SWING_DRIL4HW"]">ניקוב לפירזול</th>
-				<th>מנגנון תגבור</th>
+				<th class= "@doorConfig.thClasses["TURBOAPPARATUS"]" >מנגנון תגבור</th>
 				<th>לוגו</th>
-				<th>מנעול</th>
+				<th class="@doorConfig.thClasses["SWING_LOCKNAME"]">מנעול</th>
 				<th>ידית אומנותית</th>
 				<th>אוורור</th>
 

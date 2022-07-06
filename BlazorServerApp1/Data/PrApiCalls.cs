@@ -25,6 +25,7 @@ namespace BlazorServerApp1.Data
 
         public static int ELIDOOR_COMPLIENT = 1;
         public static int MEGULVAN_ID;
+        public static int IDS_ONESIDE;
 
         public static DataTable dtMeagedFields;
         public static DataTable dtDecorSideFlds;
@@ -85,6 +86,7 @@ namespace BlazorServerApp1.Data
         //public static RestClient restClient = new RestClient();  - this is page instance specific we can't make it application specific
         static string certAlert = "Pls check whether the SSL certificate of the Default Web Site on the web server has expired";
 
+        public static List<string> lstColorsNum = new List<string> { string.Empty, "מגולוון", "1", "2" };
 
 
         public static void initRestClient(RestClient restClient)
@@ -975,7 +977,10 @@ namespace BlazorServerApp1.Data
             }
         }
 
-
+        //public static List<string> getColorsNum()
+        //{
+        //    return new List<string> { string.Empty, "מגולוון", "1", "2" };
+        //}
         public static List<TRSH_COLOR_Class> getColors(ref string errMsg)
         {
             try
@@ -1195,7 +1200,7 @@ namespace BlazorServerApp1.Data
             else
                 return false;
         }
-        public static List<TRSH_HARDWARE_Class> getPartHWs(int TRSH_DOOR_HWCATCODE, ref string errMsg)
+        public static List<TRSH_HARDWARE_Class> getDoorHWs(int TRSH_DOOR_HWCATCODE, ref string errMsg)
         {
             try
             {
@@ -1262,6 +1267,10 @@ namespace BlazorServerApp1.Data
                     foreach (DRIL4HW_Class dril4Hw in val.value)
                     {
                         val1.Add(dril4Hw);
+                        if (dril4Hw.DRIL4HWDES.Contains("IDS") && dril4Hw.DRIL4HWDES.Contains("חד צדדי"))
+                        {
+                            IDS_ONESIDE = dril4Hw.DRIL4HW;
+                        }
                     }
                     return val1;
                 }

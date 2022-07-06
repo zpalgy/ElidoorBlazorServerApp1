@@ -1350,10 +1350,16 @@
                                                         // get PART FAMILY
                                                         FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
                                                         doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
+                                                        doorConfig.borderColors["TRSH_WINGSNUMDES"] = "blueBorder";
                                                         if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
                                                         {
-                                                           // doorConfig.disabledFlds["btnDoor"] = true;
-                                                           // StateHasChanged();
+                                                        // doorConfig.disabledFlds["btnDoor"] = true;
+                                                            // StateHasChanged();
+                                                            if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                                showMw();
+                                                            else
+                                                                showStaticwing();
+                                                            return;
                                                         }
                                                     }
                                                 }
@@ -1458,7 +1464,15 @@
                                                 UiLogic.applyModelDefaults(doorConfig);
                                                 applyDecorFormat2Btns();
                                                 dbg = doorConfig.TRSH_HARDWARE;
-                                                UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
+                                                if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
+                                                {
+                                                    if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                                showMw();
+                                                            else
+                                                                showStaticwing();
+                                                            return;
+                                                }
+
                                             }
                                         }
         }
@@ -1507,15 +1521,15 @@
                                         }
                                     </td>
                                     @code {
-        protected string _DecorFormat = string.Empty;
+                                        protected string _DecorFormat = string.Empty;
         protected string DecorFormat
         {
                                         get
                                         {
-                                            //currPropName = "DECORFORMAT";
+                                        //currPropName = "DECORFORMAT";
                                             if (doorConfig != null)
                                             {
-                                                // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
+                                            // UiLogic.applyFldDefault(doorConfig, "dlstDecorFormat");
                                                 _DecorFormat = doorConfig.DECORFORMAT;
                                             }
                                             return _DecorFormat;
@@ -1529,14 +1543,20 @@
                                                 doorConfig.borderColors["DECORFORMAT"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                                                 //UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle", "proddes", "movingwing");
-                                                UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
+
                                                 applyDecorFormat2Btns();
+                                                if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
+                                                {
+                                                    if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                                showMw();
+                                                            else
+                                                                showStaticwing();
+                                                            return;
+                                                }
                                             }
                                         }
-        }
+                                      }
                                     }
-
-
 
                                     <td>
                                          @{
@@ -1582,8 +1602,15 @@
                                                 {
                                                     doorConfig.TRSH_COMPLIENT = _TRSH_COMPLIENT;
                                                     doorConfig.borderColors["TRSH_COMPLIENT"] = (value != 0 ? "blueBorder" : "redBorder");
-                                                    UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle");
-                                            }
+                                                    if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
+                                                    {
+                                                        if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                                showMw();
+                                                            else
+                                                                showStaticwing();
+                                                            return;
+                                                    }
+                                                }
                                         }
         }
                                     }
