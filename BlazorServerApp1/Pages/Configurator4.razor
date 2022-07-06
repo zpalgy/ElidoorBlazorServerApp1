@@ -299,6 +299,19 @@
 
     	    }
         }
+        async Task showMoving_Static_Wing()
+        {
+            if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+            {
+                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                showMw();
+            }
+            else
+            {
+                    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                    showStaticwing();
+            }
+        }
 
         //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
         //  the 2nd answer
@@ -1353,12 +1366,19 @@
                                                         doorConfig.borderColors["TRSH_WINGSNUMDES"] = "blueBorder";
                                                         if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
                                                         {
-                                                        // doorConfig.disabledFlds["btnDoor"] = true;
+                                                            // doorConfig.disabledFlds["btnDoor"] = true;
                                                             // StateHasChanged();
-                                                            if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
-                                                                showMw();
-                                                            else
-                                                                showStaticwing();
+                                                            //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                            //{
+                                                            //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                            //    showMw();
+                                                            //}
+                                                            //else
+                                                            //{
+                                                            //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                            //    showStaticwing();
+                                                            //}
+                                                            showMoving_Static_Wing();
                                                             return;
                                                         }
                                                     }
@@ -1466,11 +1486,18 @@
                                                 dbg = doorConfig.TRSH_HARDWARE;
                                                 if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
                                                 {
-                                                    if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
-                                                                showMw();
-                                                            else
-                                                                showStaticwing();
-                                                            return;
+                                                    //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                    //{
+                                                    //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                    //    showMw();
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                    //    showStaticwing();
+                                                    //}
+                                                    showMoving_Static_Wing();
+                                                    return;
                                                 }
 
                                             }
@@ -1547,11 +1574,18 @@
                                                 applyDecorFormat2Btns();
                                                 if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
                                                 {
-                                                    if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
-                                                                showMw();
-                                                            else
-                                                                showStaticwing();
-                                                            return;
+                                                    //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                    //{
+                                                    //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                    //    showMw();
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                    //    showStaticwing();
+                                                    //}
+                                                    showMoving_Static_Wing();
+                                                    return;
                                                 }
                                             }
                                         }
@@ -1604,11 +1638,18 @@
                                                     doorConfig.borderColors["TRSH_COMPLIENT"] = (value != 0 ? "blueBorder" : "redBorder");
                                                     if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
                                                     {
-                                                        if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
-                                                                showMw();
-                                                            else
-                                                                showStaticwing();
-                                                            return;
+                                                        //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                        //{
+                                                        //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                        //    showMw();
+                                                        //}
+                                                        //else
+                                                        //{
+                                                        //     UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                        //     showStaticwing();
+                                                        //}
+                                                        showMoving_Static_Wing();
+                                                        return;
                                                     }
                                                 }
                                         }

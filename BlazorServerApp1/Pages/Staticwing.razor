@@ -51,13 +51,18 @@
 		//UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
 
 		//Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
+
+		  string dbg = doorConfig.SWINGHASLOCK;
+		  string dbg2 = doorConfig.TURBOAPPARATUS;
+
 		string errMsg = string.Empty;
 		doorConfig.config4 = config4;
 		doorConfig.currTabName = "staticwing";
 		doorConfig.dtTabFlds = UiLogic.getTabFields("staticwing", doorConfig, ref errMsg);
 		lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg, true); // get also HALF Cylinders 
 
-		if (!UiLogic.tabPageIsFilled("staticwing", doorConfig))
+		//if (!UiLogic.tabPageIsFilled("staticwing", doorConfig))
+		if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))  // i.e. staticwing is Empty !
 		{
 			doorConfig.disabledFlds["DOORHEIGHT"] = doorConfig.disabledFlds["CENTRALCOLCLRID"] = doorConfig.disabledFlds["OPENMODE"] =
 			doorConfig.disabledFlds["OPENSIDE"] = doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = 
@@ -74,13 +79,13 @@
 			doorConfig.disabledFlds["HW4EXTRAWING"] = true;
 
 		}
-		else
+		else if (UiLogic.tabPageIsFilled("staticwing", doorConfig))  // we came here back from a prev tab and actually the current tabPage if filled
+		                                                             // so we should disable all it's fields !
 		{
 			string errMsg2 = string.Empty;
 			UiLogic.disableTabFlds(doorConfig, "staticwing");
 			// restore the LOV for SWING_DRIL4HW !
 			lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
-
 		}
 		doorConfig.thClasses["TURBOAPPARATUS"] = "thGray";
 	}
@@ -104,7 +109,7 @@
 			doorConfig.HW4EXTRAWING = 0;
 			doorConfig.SWING_HWCOLORID = 0;
 			doorConfig.SWING_DRIL4HW = 0;
-			doorConfig.TURBOAPPARATUS = string.Empty;  //06/07/2022  TURBOAPPARATUS is N when StaticWing Doesn't have a LOCK !
+			//doorConfig.TURBOAPPARATUS = string.Empty;  //06/07/2022  TURBOAPPARATUS is N when StaticWing Doesn't have a LOCK !
 																//doorConfig.LOCKDRILHEIGHT = 0;
 			doorConfig.thClasses["LOCKDRILHEIGHT"] = 
 			doorConfig.thClasses["HW4EXTRAWING"] = 

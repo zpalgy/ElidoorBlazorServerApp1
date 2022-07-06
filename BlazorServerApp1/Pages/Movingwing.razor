@@ -88,14 +88,14 @@
         //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
         //}
 
-
+        string dbg = doorConfig.TURBOAPPARATUS;
         string errMsg = string.Empty;
         doorConfig.currTabName = "movingwing";
         dtTabFlds = UiLogic.getTabFields("movingwing", doorConfig, ref errMsg);
         if (doorConfig.ELECTRICAPPARATUS == null)
             doorConfig.ELECTRICAPPARATUS = string.Empty;
 
-        if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))
+        if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))  // i.e. we just came from a prev tab
         {
             doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
             doorConfig.disabledFlds["HWCOLORID"] = true;   // new - Hardware may be with COLORED = "Y", at that point we'll ENABLE HWCOLORID .
@@ -107,7 +107,7 @@
                                                              // issue : if we come here BACK from a newer tabPage we should not 
                                                              // enable this field.
         }
-        else
+        else    // it is filled - we came back form a newer tab - all fields should be disabled !
         {
             // we're returning here from a newer tab - and our tab is actually filled .
             UiLogic.disableTabFlds(doorConfig, "movingwing");
