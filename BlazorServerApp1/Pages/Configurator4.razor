@@ -155,10 +155,9 @@
             //if (httpContextAccessor.HttpContext != null)               // it's null 
             //      UserName = httpContextAccessor.HttpContext.User.Identity.Name;
             //--------- end trial to get the client's userName 
-        }
-        if (showProducts)
-            await refBtnDoor.FocusAsync();
-        }
+           }
+        
+        }  // end onAfterRender 
         protected DataTable uniteHeaderDoorTitleFlds()
         {
         dtDivDoorTitle = UiLogic.getTabFields("divDoorTitle", doorConfig, ref errMsg2);
@@ -673,7 +672,7 @@
                                            disabled="@doorConfig.disabledFlds["FORMFILLER"]"  @ref="doorConfig.dicRefs[UiLogic.propNames[i1]]"
                                                    @onfocus="@( () => UiLogic.HasFocus("FORMFILLER", doorConfig) )"
                                                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                                               onkeypress="@doorConfig.KeyPressHandler" >
+                                                   onkeypress="@doorConfig.KeyPressHandler" >
                                                   </input >
                                     }
                                     @* onkeypress="return event.keyCode!=13" *@
@@ -717,63 +716,64 @@
 
         bool RestartClicked = true;  // initialize 
 
-        async Task KeyPressHandler(KeyboardEventArgs e)
-        {
-                                        doorConfig.RestartClicked = false;  // we're in a field not btnRestart !
-                                        //DataTable dtTabFlds = new DataTable();
-                                        if (e.Key.ToLowerInvariant() == "enter")
-                                        {
-                                            //RestartClicked = false;
-                                            int j = 0;
-                                            DataTable dtTabFlds = new DataTable();
-                                            string currTabName = UiLogic.getTabOfField(currPropName);
-                                            switch (currTabName)
-                                            {
-                                                case "divHeader":
-                                                    dtTabFlds = dtDivHeader;
-                                                    break;
-                                                case "divDoorTitle":
-                                                    dtTabFlds = dtDivHeaderDoorTitle;
-                                                    break;
-                                            }
-                                            string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, currPropName);
-                                            if (!string.IsNullOrEmpty(nextfld))
-                                            {
-                                                    // if (nextfld == "SHIPADDRESS")
-                                            // {
-                                            //     //int x = 17;
-                                            //     txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
-                                                //                                   //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-                                                //                                   //  when UiLogic.propNames[j] == "SHIPADDRESS" !!!
-                                                //
-                                                //}
-                                                // else
-                                                // {
-                                                j = Array.IndexOf(UiLogic.propNames, nextfld);
-                                                if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
-                                                    doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-                                                return;
-                                                //}
-                                            }
-                                            else
-                                            {
-                                                if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
-                                                {
-                                                    if (currTabName == "divHeader")
-                                                    {
-                                                        showProducts = true;
-                                                        this.StateHasChanged();
-                                                    }
-                                                    else if (currTabName == "divDoorTitle")
-                                                        showMw();
-                                                }
-                                            }
-                                        }
-                                        else if (e.Key.ToLowerInvariant() == "down")
-                                        {
-                                            int x = 17;
-                                        }
-        }    // end keyPressHandler() 
+        //async Task KeyPressHandler(KeyboardEventArgs e)
+        //{
+        //                                doorConfig.RestartClicked = false;  // we're in a field not btnRestart !
+        //                                //DataTable dtTabFlds = new DataTable();
+        //                                if (e.Key.ToLowerInvariant() == "enter")
+        //                                {
+        //                                    //RestartClicked = false;
+        //                                    int j = 0;
+        //                                    DataTable dtTabFlds = new DataTable();
+        //                                    string currTabName = UiLogic.getTabOfField(currPropName);
+        //                                    switch (currTabName)
+        //                                    {
+        //                                        case "divHeader":
+        //                                            dtTabFlds = dtDivHeader;
+        //                                            break;
+        //                                        case "divDoorTitle":
+        //                                            dtTabFlds = dtDivHeaderDoorTitle;
+        //                                            break;
+        //                                    }
+        //                                    string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, currPropName);
+        //                                    if (!string.IsNullOrEmpty(nextfld))
+        //                                    {
+        //                                            // if (nextfld == "SHIPADDRESS")
+        //                                    // {
+        //                                    //     //int x = 17;
+        //                                    //     txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
+        //                                        //                                   //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+        //                                        //                                   //  when UiLogic.propNames[j] == "SHIPADDRESS" !!!
+        //                                        //
+        //                                        //}
+        //                                        // else
+        //                                        // {
+        //                                        j = Array.IndexOf(UiLogic.propNames, nextfld);
+        //                                        if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+        //                                            doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+        //                                        return;
+        //                                        //}
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
+        //                                        {
+        //                                            if (currTabName == "divHeader")
+        //                                            {
+        //                                                showProducts = true;
+        //                                                await refBtnDoor.FocusAsync();
+        //                                                this.StateHasChanged();
+        //                                            }
+        //                                            else if (currTabName == "divDoorTitle")
+        //                                                showMw();
+        //                                        }
+        //                                    }
+        //                                }
+        //                                else if (e.Key.ToLowerInvariant() == "down")
+        //                                {
+        //                                    int x = 17;
+        //                                }
+        //}    // end keyPressHandler() 
 
         //-------------------
         void HasFocus(string currFldName)
@@ -996,7 +996,9 @@
                                                         doorConfig.TRSH_COMPLIENT = 0;
                                                     //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
                                                     if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
-                                                        showDivProducts();
+                                                    {
+                                                       showDivProducts();
+                                                    }
 
                                                     //if (doorConfig.dicRefs.ContainsKey("SHIPADDRESS"))
                                                     //    doorConfig.dicRefs["SHIPADDRESS"].FocusAsync();
@@ -1047,10 +1049,13 @@
                                             if (doorConfig != null)
                                             {
                                                 doorConfig.ENDCUSTDES = _ENDCUSTDES;
-                                                doorConfig.borderColors["ENDCUSTDES"] = (!string.IsNullOrEmpty(value)  ? "blueBorder" : "redBorder");  // it's an optional field 01/06/2022
+                                                //doorConfig.borderColors["ENDCUSTDES"] = (!string.IsNullOrEmpty(value)  ? "blueBorder" : "redBorder");  // it's an optional field 01/06/2022
                                                                                                                                                        // 18/06/2022 it's required !
+                                                                                                                                                       // 06/07/2022 it's Optional
                                                 if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
-                                                        showDivProducts();
+                                                {
+                                                       // showDivProducts();
+                                                }
                                             }
                                         }
 
@@ -1079,7 +1084,7 @@
                                 </td>
                                 @code {
         //ElementReference txtShipAddress;
-        protected string _ShipAddress = string.Empty;
+        protected string _ShipAddress;  // = string.Empty;
         protected string ShipAddress
         {
                                     get
@@ -1100,7 +1105,9 @@
                                             doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                             //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
                                             if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
-                                                        showDivProducts();
+                                            {
+                                                        //showDivProducts();
+                                            }
                                         }
                                     }
         }
@@ -1122,7 +1129,7 @@
                                       *@
                                 </td>
                                 @code {
-        protected string _TmpShipAddress = string.Empty;
+        protected string _TmpShipAddress; // = string.Empty;
         protected string TmpShipAddress
         {
                                     get
@@ -1141,8 +1148,9 @@
                                         {
                                             doorConfig.TMPSHIPADDRESS = _TmpShipAddress;
                                             //
-                                            doorConfig.borderColors["TMPSHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); // optional field 01/06/2022
+                                            //doorConfig.borderColors["TMPSHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); // optional field 01/06/2022
                                                                                                                                     // 18/06/2022 - required
+                                                                                                                                    // 06/07/2022 - optional
                                             // per CU request:  if TMPSHIPADDRESS got a non empty value SHIPADDRESS should be cleared and disabled 
                                             if (!string.IsNullOrEmpty(value))
                                             {
@@ -1155,7 +1163,9 @@
                                                 doorConfig.borderColors["SHIPADDRESS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                             }
                                            if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
-                                                        showDivProducts();
+                                           {
+                                                      //  showDivProducts();
+                                           }
                                         }
                                     }
         }
@@ -1188,36 +1198,37 @@
                                                         >דלת</button>
                                         @code
                                         {
-                                        private void btnDoorClicked()
-        {
-                                        if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
-                                        {
-                                            errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
-                                            // Js.InvokeVoidAsync("alert", errMsg);
-                                            openMsgBox = true;
-                                            return;
-                                        }
-                                        else
-                                        {
-                                            pageParams["doorConfig"] = doorConfig;
-                                            pageParams["disableLogo"] = disableLogo;
-                                            //dyncompType = typeof(Movingwing);
-                                            hideDivDoor = false;
-                                            doorConfig.btnClasses["general"] =   //"buttonLostFocus";
-                                            doorConfig.btnClasses["selectprod"] = "buttonFilled";
-                                            doorConfig.divClasses["divHeader"] = "divNotActive";
+                                            private void btnDoorClicked()
+                                            {
+                                                if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+                                                {
+                                                    errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
+                                                    // Js.InvokeVoidAsync("alert", errMsg);
+                                                    openMsgBox = true;
+                                                    return;
+                                                }
+                                                else
+                                                {
+                                                    pageParams["doorConfig"] = doorConfig;
+                                                    pageParams["disableLogo"] = disableLogo;
+                                                    //dyncompType = typeof(Movingwing);
+                                                    hideDivDoor = false;
+                                                    doorConfig.btnClasses["general"] =   //"buttonLostFocus";
+                                                    doorConfig.btnClasses["selectprod"] = "buttonFilled";
+                                                    doorConfig.divClasses["divHeader"] = "divNotActive";
 
-                                            doorConfig.btnClasses["proddes"] = "buttonActive";
-                                            showDoorTitle();
-                                            //doorConfig.divClasses["divProducts"] = "divNotActive";
-                                            doorConfig.divClasses["divDoorTitle"] = "divActive";
+                                                    doorConfig.btnClasses["proddes"] = "buttonActive";
+                                                    showDoorTitle();
+                                                    //doorConfig.divClasses["divProducts"] = "divNotActive";
+                                                    doorConfig.divClasses["divDoorTitle"] = "divActive";
 
-                                            doorConfig.btnClasses["btnDoor"] = "buttonActive";
-                                            UiLogic.disableTabFlds(doorConfig, "divHeader");
-                                            this.StateHasChanged();
+                                                    doorConfig.btnClasses["btnDoor"] = "buttonActive";
+                                                    UiLogic.disableTabFlds(doorConfig, "divHeader");
+                                                    this.StateHasChanged();
+                                                }
+                                            }
+                                            @*  end btnDoorClicked *@
                                         }
-        }
-}
                                 </td>
                                 <!-- end tdBtnDoor -->
                                 <td>
