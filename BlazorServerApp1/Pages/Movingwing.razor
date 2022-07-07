@@ -757,7 +757,8 @@
                             }
                             else if (doorConfig != null)
                         *@
-                        if (doorConfig != null)
+                        if (doorConfig != null && doorConfig.TRSH_COMPLIENT != PrApiCalls.ELIDOOR_COMPLIENT)  //07/07/2022 we clear the Hinges data only if 
+                                                                                                              //   the Door is not ELIDOOR_COMPLIENT
                         {
                             newLockDrilHeight = (int)value;
                             msgBorder1Style = "border:solid;border-color:red;";

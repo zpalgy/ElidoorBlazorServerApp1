@@ -1164,9 +1164,13 @@ namespace BlazorServerApp1.Data
                     for (int r=0;r<rowsArray.Length;r++)
                     {
                         string fldName = rowsArray[r]["FIELDNAME"].ToString();
+                        if (fldName == "RAFAFAONSTATICWING")
+                        {
+                            int dbg = 17;
+                        }
                         if (!hideFld(doorConfig, fldName) && !disableFld(doorConfig, fldName))  //TODO : replace !disableFld(doorConfig, fldName) by
-                                     //  !doorConfig.disabledFlds[fldName], actually here UiLogic.disableFld() should set 
-                                     //   doorConfig.disabledFlds[fldName] which should be in the HTML element of teh field.
+                                     //  !doorConfig.disabledFlds[fldName], actually here UiLogic.disableFld() that uses TRSH_DEFAULTS table should set 
+                                     //   doorConfig.disabledFlds[fldName] which should be in the HTML element of the field.
                         {
                             ConfField_Class confFld = new ConfField_Class();
                             confFld.FIELDNAME = fldName;

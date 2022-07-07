@@ -460,13 +460,18 @@ namespace BlazorServerApp1.Data
         public int CENTRALCOLWIDTH { get; set; }         //D-860
                                                          //TODO
         [DataMember(Order = 273), Order]
-        public string SWING_HANDLENAME { get; set; }   // new
+        public string SWING_TURBO { get; set; }   // new Y, N, ''  TURBOAPPARATUS for staticwing .
+
         [DataMember(Order = 274), Order]
+        public string SWING_HANDLENAME { get; set; }   // new
+        [DataMember(Order = 275), Order]
+        public int SWING_HANDLECOLORID { get; set; }   // new
+        [DataMember(Order = 276), Order]
         public string SWING_VENTS { get; set; }   //  new 
                                                   //end TODO
-        [DataMember(Order = 275), Order]
+        [DataMember(Order = 277), Order]
         public string RAFAFAONSTATICWING { get; set; }   //D-1150  Y, N , ''
-        [DataMember(Order = 276), Order]
+        [DataMember(Order = 278), Order]
         public string SWING_CATDOOR { get; set; }   //new 
 
         //ref: https://stackoverflow.com/questions/7693391/nonserialized-on-property
