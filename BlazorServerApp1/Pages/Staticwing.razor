@@ -814,6 +814,8 @@
                         doorConfig.SWING_HWCOLORID = _Swing_HwColorId;
                         //doorConfig.borderColors["SWING_HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                     }
                 }
             }
@@ -884,7 +886,9 @@
 						{
 							doorConfig.SWING_DRIL4HW = _Swing_Dril4Hw;
 							//doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
-							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+							//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+							if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
 						}
 					}
 				}
@@ -1092,6 +1096,8 @@
 				        doorConfig.SWING_HANDLECOLORID = _Swing_HandleColorID;
                         doorConfig.borderColors["SWING_HANDLECOLORID"] = (value != 0  ? string.Empty : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "handle");
+						if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                     }
 		        }
 	        }
@@ -1135,8 +1141,8 @@
                             doorConfig.SWING_VENTS = _Vents;
                            // doorConfig.borderColors["VENTS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
-                             UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
-                            config4.RefreshState();
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
@@ -1179,8 +1185,10 @@
                         {
                             doorConfig.RAFAFAONSTATICWING = _Rafafa;
                             //doorConfig.borderColors["RAFAFAONMOVINGWING"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
-                            UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
+                            //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                            
+							if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                             
                             //debug
                             
@@ -1188,7 +1196,7 @@
                             // the 2nd answer : Update Parent State by calling it's StateHasChanged method
 
                                // doorConfig.btnClasses["hinges"] = "buttonActive";
-                                config4.RefreshState();
+                               // config4.RefreshState();
                             // end debug 
                         }
                     }
@@ -1227,8 +1235,8 @@
                             doorConfig.SWING_CATDOOR = (_CatDoor ? "Y" : "N" );
                             //doorConfig.borderColors["CATDOOR"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
-                            UiLogic.try2UpdateBtnClass(doorConfig, "staticwing");
-                            config4.RefreshState();
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
