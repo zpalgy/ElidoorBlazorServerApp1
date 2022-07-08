@@ -55,6 +55,8 @@ namespace BlazorServerApp1.Data
         public static DataTable dtLock_Hinge_Dril_Heights = new DataTable();
         public static List<TRSH_HARDWARE_Class> lstHardwares = new List<TRSH_HARDWARE_Class>();
         public static DataTable dtHardwares = new DataTable();
+        public static List<HWACCESSORY_Class> lstHwAccessories = new List<HWACCESSORY_Class>();
+        public static DataTable dtHwAccessories = new DataTable();
         public static List<DRIL4HW_Class> lstDril4Hw = new List<DRIL4HW_Class>();
         public static DataTable dtDril4Hws = new DataTable();
         public static List<CYLINDER_Class> lstCylinders = new List<CYLINDER_Class>();
@@ -943,6 +945,7 @@ namespace BlazorServerApp1.Data
                 dtLock_Hinge_Dril_Heights = lstLock_Hinge_Dril_Heights.ToDataTable<TRSH_LOCKHINGE_DRILH_Class>();
                 lstHardwares = getHardwares(ref errMsg);
                 dtHardwares = lstHardwares.ToDataTable<TRSH_HARDWARE_Class>();
+                lstHwAccessories = getHwAccessories(ref errMsg);
                 lstDril4Hw = getDril4Hws(ref errMsg);
                 dtDril4Hws = lstDril4Hw.ToDataTable<DRIL4HW_Class>();
                 lstCylinders = getCylinders(ref errMsg);
@@ -1163,6 +1166,54 @@ namespace BlazorServerApp1.Data
                     foreach (TRSH_HARDWARE_Class hw in val.value)
                     {
                         val1.Add(hw);
+                    }
+                    return val1;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+        public static List<HWACCESSORY_Class> getHwAccessories(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "HWACCESSORYID,HWACCESSORYDES";
+                request.Resource = string.Format("TRSH_HWACCESSORIES?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesHWACCESSORY_Class val = JsonConvert.DeserializeObject<ValuesHWACCESSORY_Class>(response.Content);
+                    List<HWACCESSORY_Class> val1 = new List<HWACCESSORY_Class>();  //val.value;
+                    HWACCESSORY_Class emptyHwa = new HWACCESSORY_Class();
+                    emptyHwa.HWACCESSORYID = 0;
+                    emptyHwa.HWACCESSORYDES = " ";
+                    val1.Add(emptyHwa);
+
+                    foreach  (HWACCESSORY_Class hwa in val.value)
+                    {
+                        val1.Add(hwa);
                     }
                     return val1;
                 }

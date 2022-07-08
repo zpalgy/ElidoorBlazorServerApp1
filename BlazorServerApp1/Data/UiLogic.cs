@@ -1164,7 +1164,7 @@ namespace BlazorServerApp1.Data
                     for (int r=0;r<rowsArray.Length;r++)
                     {
                         string fldName = rowsArray[r]["FIELDNAME"].ToString();
-                        if (fldName == "RAFAFAONSTATICWING")
+                        if (fldName.StartsWith("RAFAFAONM"))
                         {
                             int dbg = 17;
                         }

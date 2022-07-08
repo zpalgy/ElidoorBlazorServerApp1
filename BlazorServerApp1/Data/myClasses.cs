@@ -231,6 +231,18 @@ namespace BlazorServerApp1.Data
     }
 
     [DataContract]
+    public class HWACCESSORY_Class
+    {
+        [DataMember(Order = 1)]
+        public int HWACCESSORYID { get; set; }
+        [DataMember(Order = 2)]
+        public string HWACCESSORYDES { get; set; }
+    }
+    public class ValuesHWACCESSORY_Class
+    {
+        public List<HWACCESSORY_Class> value { get; set; }
+    }
+    [DataContract]
     public class DRIL4HW_Class
     {
         [DataMember(Order = 1)]

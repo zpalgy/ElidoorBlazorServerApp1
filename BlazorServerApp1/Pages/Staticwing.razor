@@ -726,28 +726,39 @@
 			protected void setSWING_DRIL4HW()
 			{
 				if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
-                {
-                    doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
-                    doorConfig.SWING_HWCOLORID = 0;
-                    // 18/06/2022 - when HARWARE is ללא DRIL4HW should be ENABLED !
-                    //  therefore commented the three lines below.
-                    // doorConfig.disabledFlds["DRIL4HW"] = true;
-                    // doorConfig.DRIL4HW = 0;
-                    // doorConfig.borderColors["DRIL4HW"] = doorConfig.borderColors["HWCOLORID"] = string.Empty;
-                    lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();  // the full list of Drills for Hardwares
-                    return;
-                }
-                else
-                {
-                    // doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
-                    //doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
+				{
+					doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
+					doorConfig.SWING_HWCOLORID = 0;
+					// 18/06/2022 - when HARWARE is ללא DRIL4HW should be ENABLED !
+					//  therefore commented the three lines below.
+					// doorConfig.disabledFlds["DRIL4HW"] = true;
+					// doorConfig.DRIL4HW = 0;
+					// doorConfig.borderColors["DRIL4HW"] = doorConfig.borderColors["HWCOLORID"] = string.Empty;
+					lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();  // the full list of Drills for Hardwares
+					return;
+				}
+				else
+				{
+					// doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
+					//doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
 					doorConfig.SWING_DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
-                    // populate the LOV for Dril4Hw based on Hardware selected .
-                    string errMsg = string.Empty;
-                    lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
+					// populate the LOV for Dril4Hw based on Hardware selected .
+					string errMsg = string.Empty;
+					lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
+					foreach (DRIL4HW_Class d4hw in lstD4HW1)
+					{
+						if (d4hw.DRIL4HWDES.Contains("IDS") && d4hw.DRIL4HW != doorConfig.SWING_DRIL4HW) 
+						{
+							lstD4HW1.Remove(d4hw);  //07/07/2022 - Eli asked: on staticwing : if Dril4HW is IDS - the LOV should contain a single element ONE SIDE IDS Dril !
+							break;  // this can be done only once Otherwise we'll get an error on the foreach statement - the collection lstD4HW1 was changed and the foreach 
+							        //   crashed and cannot continue.
+						}
+
+
+					}
 
                     //doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
-                    UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                    //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
 
                     doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(_Hw4ExtraWing);
                     doorConfig.borderColors["SWING_HWCOLORID"] = (doorConfig.disabledFlds["SWING_HWCOLORID"] || doorConfig.HWCOLORID != 0 ? "blueBorder" : "redBorder");
@@ -802,7 +813,7 @@
                     {
                         doorConfig.SWING_HWCOLORID = _Swing_HwColorId;
                         //doorConfig.borderColors["SWING_HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
                     }
                 }
             }

@@ -138,6 +138,9 @@ namespace BlazorServerApp1.Data
         public int TRSH_HARDWARE { get; set; }  // Pirzul  D-870
                                                 //[DataMember(Order = 49), Order]
                                                 //public string HARDWAREDES { get; set; }
+        [DataMember(Order = 49), Order]
+        public int HWACCESSORYID { get; set; }   // new נילווים לפירזול
+
         [DataMember(Order = 50), Order]
         public int HWCOLORID { get; set; }      // D-880
                                                 //[DataMember(Order = 60), Order]
