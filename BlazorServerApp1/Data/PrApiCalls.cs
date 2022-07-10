@@ -2204,7 +2204,8 @@ namespace BlazorServerApp1.Data
                     val1.Add(emptyHandle);
 
                     HANDLE_Class noHandle = new HANDLE_Class();
-                    noHandle.PARTNAME = noHandle.PARTDES = "ללא";  // new per CU request 23/05/2022
+                    noHandle.PARTNAME = UiLogic.NameOfNone;
+                    noHandle.PARTDES = "ללא";  // new per CU request 23/05/2022
                     val1.Add(noHandle);
 
                     foreach (HANDLE_Class handle in val.value)

@@ -731,7 +731,7 @@
        *@
                     
         @code
-        {
+            {
                 protected int? _LockDrilHeight;
                 protected int? LockDrilHeight
                 {
@@ -749,7 +749,7 @@
                     set
                     {
                         _LockDrilHeight = value;
-                                            @* if (!int.TryParse(value,out _LockDrilHeight))
+                        @* if (!int.TryParse(value,out _LockDrilHeight))
                             {
                                 msgCaption = string.Empty;
                                 errMsg2 = "ספרות בלבד";
@@ -758,33 +758,41 @@
                             }
                             else if (doorConfig != null)
                         *@
-                        if (doorConfig != null && doorConfig.TRSH_COMPLIENT != PrApiCalls.ELIDOOR_COMPLIENT)  //07/07/2022 we clear the Hinges data only if 
-                                                                                                              //   the Door is not ELIDOOR_COMPLIENT
+                        if (doorConfig != null)
                         {
-                            newLockDrilHeight = (int)value;
-                            msgBorder1Style = "border:solid;border-color:red;";
-                            //msgHeaderClass = "modal-header redBorder";
-                            msgCaption = "שים לב:";
-                            errMsg2 = "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית ,  האם להמשיך ?";
-                            MsgTitleCssClass = string.Empty;  //"centeredMsg";
-                            ErrMsgCssClass = "centeredMsg";   //msgClass = "modal-body centeredMsg";
-                            YNissue = "lockDril";
-                            openYesNo = true;
-                            this.StateHasChanged();
+                            if (doorConfig.TRSH_COMPLIENT != PrApiCalls.ELIDOOR_COMPLIENT)  //07/07/2022 we clear the Hinges data only if 
+                                                                                                                      //   the Door is not ELIDOOR_COMPLIENT
+                                {
+                                newLockDrilHeight = (int)value;
+                                msgBorder1Style = "border:solid;border-color:red;";
+                                //msgHeaderClass = "modal-header redBorder";
+                                msgCaption = "שים לב:";
+                                errMsg2 = "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית ,  האם להמשיך ?";
+                                MsgTitleCssClass = string.Empty;  //"centeredMsg";
+                                ErrMsgCssClass = "centeredMsg";   //msgClass = "modal-body centeredMsg";
+                                YNissue = "lockDril";
+                                openYesNo = true;
+                                this.StateHasChanged();
 
-                                                @*if (!ansYes)
+                                @*if (!ansYes)
                                 return;
-                            
-                            if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
-                            { 
-                                doorConfig.LOCKDRILHEIGHT = (int)_LockDrilHeight;
-                                UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                                clearHingesMeasures(doorConfig);
-                            }
-                            doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
+
+                                if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
+                                { 
+                                    doorConfig.LOCKDRILHEIGHT = (int)_LockDrilHeight;
+                                    UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                                    clearHingesMeasures(doorConfig);
+                                }
+                                doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
                             *@
+                            }
+                            else
+                            {
+                                doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
+                                doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
+                            }
                         }
-                }
+                    }
             }
         }
         </td>
@@ -1327,7 +1335,7 @@
                 }
            
                 @code
-                {
+            {
                 protected string _Handle1;
                 protected string Handle1
                 {
@@ -1347,8 +1355,9 @@
                             doorConfig.HANDLENAME = _Handle1;
                             // Handle is Optional
                             //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                             if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            doorConfig.disabledFlds["HANDLECOLORID"] = (doorConfig.HANDLENAME == UiLogic.NameOfNone);
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                                             config4.RefreshState();
                         }
                     }

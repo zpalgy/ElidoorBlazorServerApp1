@@ -133,7 +133,7 @@
 			doorConfig.thClasses["SWING_TURBO"] = "thBlue";
 			doorConfig.thClasses["HW4EXTRAWING"] = "thBlue";
 
-			CYLINDER_Class noCyl = lstCylinders1.Find(x => x.TRSH_CYLINDER == UiLogic.IdOfNone);
+			CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == UiLogic.NameOfNone);  
 			lstCylinders1.Remove(noCyl);
 
 		}
