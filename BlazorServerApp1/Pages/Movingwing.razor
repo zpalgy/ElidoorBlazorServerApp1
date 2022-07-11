@@ -591,11 +591,11 @@
         <th id="thLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">גובה ניקוב</th>
 
         @* <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th> *@
-
+        <th id="thCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">צילינדר</th>
         <th id="thHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">פירזול</th>
         <th>נילווים לפירזול</th>
         <th id="thHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">צבע פירזול</th>
-        <th id="thDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">ניקוב לפירזול</th>
+        
     </tr>
     <tr>
         <td id="tdExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">
@@ -796,6 +796,55 @@
             }
         }
         </td>
+
+        <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
+            @{  int i313 = Array.IndexOf(UiLogic.propNames, "CYLINDERNAME");
+                <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]"
+                disabled="@doorConfig.disabledFlds["CYLINDERNAME"]"
+                    @onfocus="@( () => UiLogic.HasFocus("CYLINDERNAME", doorConfig) )" 
+                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                onkeypress="@KeyPressHandler" 
+                    @ref="doorConfig.dicRefs[UiLogic.propNames[i313]]" >
+
+                    @if (PrApiCalls.lstCylinders != null)
+                {
+                        @foreach (CYLINDER_Class c in lstCylinders1)
+                    {
+                            <option value="@c.PARTNAME">@c.PARTDES</option>
+                    }
+                }
+                </select>
+            }
+        </td>
+        @code
+        {
+            protected string _CylinderName;
+            protected string CylinderName
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _CylinderName = doorConfig.CYLINDERNAME;
+                    }
+                    return _CylinderName;
+                }
+                set
+                {
+                    _CylinderName = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.CYLINDERNAME = _CylinderName;
+                        doorConfig.borderColors["CYLINDERNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                          if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                        config4.RefreshState();
+                    }
+                }
+            }
+        }
+
+
         <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
              @{  int i310 = Array.IndexOf(UiLogic.propNames, "TRSH_HARDWARE");
                     <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]" 
@@ -982,6 +1031,40 @@
             }
         }
 
+        
+    </tr>
+</table>
+<!-- end MovingWingL2 -->
+<br />
+<table id="MovingWingL3">
+    <tr>
+        <th id="thDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">ניקוב לפירזול</th>
+        <th id="thElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">מנגנון חשמלי</th>
+        <th id="thTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">מנגנון תגבור</th>
+        <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th>
+        <th id="thHasLock" hidden="@UiLogic.hideFld(doorConfig, "HasLock")">מנעול</th>
+        @* <th id="thTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">ניקוב שני צדדים IDS</th> *@
+     @*   
+       @{
+            bool h = UiLogic.hideFld(doorConfig, "thHandle");
+        }
+        
+        @if (!h)
+        {
+            <th id="thHandle">ידית אומנויות</th>
+        }
+     *@
+        <th id="thHandle">ידית אומנויות</th>
+        <th>צבע לידית אומנויות</th>
+        <th id="thVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">פתחי אוורור</th>
+
+         <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">רפפת עשן</th>
+         @* <th>רפפת עשן</th> *@
+
+        <th id="thCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">פתח לחתול</th>
+        @* <th id="thLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEyer")">LCD עינית</th> *@
+    </tr>
+    <tr>
         <td id="tdDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">
             @{  int i312 = Array.IndexOf(UiLogic.propNames, "DRIL4HW");
                 <select name="dlstDril4Hw" @bind="Dril4Hw" class="@doorConfig.borderColors["DRIL4HW"]"
@@ -1029,85 +1112,10 @@
                 }
             }
         }
-    </tr>
-</table>
-<!-- end MovingWingL2 -->
-<br />
-<table id="MovingWingL3">
-    <tr>
-        <th id="thCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">צילינדר</th>
-        <th id="thElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">מנגנון חשמלי</th>
-        <th id="thTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">מנגנון תגבור</th>
-        <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th>
-        <th id="thHasLock" hidden="@UiLogic.hideFld(doorConfig, "HasLock")">מנעול</th>
-        @* <th id="thTwoSidesIDSDril" hidden="@UiLogic.hideFld(doorConfig, "TwoSidesIDSDril")">ניקוב שני צדדים IDS</th> *@
-     @*   
-       @{
-            bool h = UiLogic.hideFld(doorConfig, "thHandle");
-        }
+
+
+
         
-        @if (!h)
-        {
-            <th id="thHandle">ידית אומנויות</th>
-        }
-     *@
-        <th id="thHandle">ידית אומנויות</th>
-        <th>צבע לידית אומנויות</th>
-        <th id="thVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">פתחי אוורור</th>
-
-         <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">רפפת עשן</th>
-         @* <th>רפפת עשן</th> *@
-
-        <th id="thCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">פתח לחתול</th>
-        @* <th id="thLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEyer")">LCD עינית</th> *@
-    </tr>
-    <tr>
-        <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
-            @{  int i313 = Array.IndexOf(UiLogic.propNames, "CYLINDERNAME");
-                <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]"
-                disabled="@doorConfig.disabledFlds["CYLINDERNAME"]"
-                    @onfocus="@( () => UiLogic.HasFocus("CYLINDERNAME", doorConfig) )" 
-                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                onkeypress="@KeyPressHandler" 
-                    @ref="doorConfig.dicRefs[UiLogic.propNames[i313]]" >
-
-                    @if (PrApiCalls.lstCylinders != null)
-                {
-                        @foreach (CYLINDER_Class c in lstCylinders1)
-                    {
-                            <option value="@c.PARTNAME">@c.PARTDES</option>
-                    }
-                }
-                </select>
-            }
-        </td>
-        @code
-        {
-            protected string _CylinderName;
-            protected string CylinderName
-            {
-                get
-                {
-                    if (doorConfig != null)
-                    {
-                        _CylinderName = doorConfig.CYLINDERNAME;
-                    }
-                    return _CylinderName;
-                }
-                set
-                {
-                    _CylinderName = value;
-                    if (doorConfig != null)
-                    {
-                        doorConfig.CYLINDERNAME = _CylinderName;
-                        doorConfig.borderColors["CYLINDERNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                        //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                          if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
-                                        config4.RefreshState();
-                    }
-                }
-            }
-        }
 
         <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
             @{  int i314 = Array.IndexOf(UiLogic.propNames, "ELECTRICAPPARATUS");
