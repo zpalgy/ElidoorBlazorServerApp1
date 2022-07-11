@@ -1566,7 +1566,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_LOCK,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES";
+                string fields = "TRSH_LOCK,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,TRSH_ELIDOOR_LOGO";
                 request.Resource = string.Format("TRSH_LOCKS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1635,6 +1635,65 @@ namespace BlazorServerApp1.Data
                         lock1.PARTNAME = rowsArray[r]["PARTNAME"].ToString();
                         lock1.PARTDES = rowsArray[r]["PARTDES"].ToString();
                         lstPartLocks.Add(lock1);
+                    }
+                    return lstPartLocks;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+        public static List<TRSH_LOCK_Class> getPartAndLogoLocks(int TRSH_DOOR_HWCATCODE, string UseElidoorLogo, ref string errMsg)
+        {
+            try
+            {
+                DataRow[] rowsArray;
+                //string LogoCond = (UseElidoorLogo == "Y" ? "=" : "<>");
+                string query = string.Format ("TRSH_DOOR_HWCATCODE = '{0}'", TRSH_DOOR_HWCATCODE);
+                if (dtLocks == null)
+                {
+                    errMsg = "dtLocks is null, maybe caused by page refresh, recreating it";
+                    myLogger.log.Error(errMsg);
+                    lstLocks = getLocks(ref errMsg);
+                    dtLocks = lstLocks.ToDataTable<TRSH_LOCK_Class>();
+
+                }
+                rowsArray = PrApiCalls.dtLocks.Select(query);
+                if (rowsArray.Length > 0)
+                {
+                    List<TRSH_LOCK_Class> lstPartLocks = new List<TRSH_LOCK_Class>();
+                    TRSH_LOCK_Class emptyLock = new TRSH_LOCK_Class();
+                    emptyLock.PARTNAME = " ";
+                    emptyLock.PARTDES = " ";
+                    lstPartLocks.Add(emptyLock);
+                    for (int r = 0; r < rowsArray.Length; r++)
+                    {
+                        if (UseElidoorLogo == "Y")
+                        {
+                           if (rowsArray[r]["TRSH_ELIDOOR_LOGO"].ToString() == "Y")
+                           {
+                                TRSH_LOCK_Class lock1 = new TRSH_LOCK_Class();
+                                lock1.TRSH_LOCK = int.Parse(rowsArray[r]["TRSH_LOCK"].ToString());
+                                lock1.PARTNAME = rowsArray[r]["PARTNAME"].ToString();
+                                lock1.PARTDES = rowsArray[r]["PARTDES"].ToString();
+                                lstPartLocks.Add(lock1);
+                           }
+                        }
+                        else
+                        {
+                            if (rowsArray[r]["TRSH_ELIDOOR_LOGO"].ToString() != "Y")
+                            {
+                                TRSH_LOCK_Class lock1 = new TRSH_LOCK_Class();
+                                lock1.TRSH_LOCK = int.Parse(rowsArray[r]["TRSH_LOCK"].ToString());
+                                lock1.PARTNAME = rowsArray[r]["PARTNAME"].ToString();
+                                lock1.PARTDES = rowsArray[r]["PARTDES"].ToString();
+                                lstPartLocks.Add(lock1);
+                            }
+                        }
                     }
                     return lstPartLocks;
                 }

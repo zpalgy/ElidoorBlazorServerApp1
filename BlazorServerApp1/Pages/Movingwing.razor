@@ -1150,13 +1150,14 @@
             }
             @code
             {
-                protected bool _TurboApparatus;
+                        protected bool _TurboApparatus;
                 protected bool TurboApparatus
                 {
                     get
                     {
                         if (doorConfig != null)
                         {
+                            doorConfig.TURBOAPPARATUS = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
                             _TurboApparatus = (doorConfig.TURBOAPPARATUS == "Y");
                         }
                         return _TurboApparatus;
@@ -1193,6 +1194,7 @@
                     {
                         if (doorConfig != null)
                         {
+                            doorConfig.LOGO = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
                             _Logo = (doorConfig.LOGO == "Y");
                         }
                         return _Logo;
@@ -1220,7 +1222,8 @@
                      onkeypress="@KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i317]]"  >
                     @{
-                        List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartLocks(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+
+                        List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartAndLogoLocks(doorConfig.TRSH_DOOR_HWCATCODE, doorConfig.LOGO, ref errMsg);
                         if (lstPartLocks != null)
                         {
                             @foreach (TRSH_LOCK_Class c in lstPartLocks)

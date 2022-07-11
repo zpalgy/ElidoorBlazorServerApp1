@@ -287,6 +287,8 @@ namespace BlazorServerApp1.Data
         public string PARTNAME { get; set; }
         [DataMember(Order = 4)]
         public string PARTDES { get; set; }
+        [DataMember(Order = 5)]
+        public string TRSH_ELIDOOR_LOGO { get; set; }
     }
     public class ValuesTRSH_LOCK_Class
     {

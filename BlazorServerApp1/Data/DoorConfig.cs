@@ -76,6 +76,8 @@ namespace BlazorServerApp1.Data
                                                   //*******************************
                                                   // new field TRSH_MODELNAME
                                                   //[TODO]  - check that it works on sendToPriority ***
+        [NonSerialized]
+        public int TRSH_ELIDOOR_LOGO;
         [DataMember(Order = 16), Order]
         public string TRSH_MODELNAME { get; set; }    // MLI, 1029, 1040, ...
                                                       //***********************************************

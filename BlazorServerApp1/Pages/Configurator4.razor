@@ -55,7 +55,7 @@
         protected string currPropName = string.Empty;
         //protected int currPropInd;
 
-        protected bool isEComplient = true;
+        protected bool useELOGO = true;
 
         DataTable dtDivHeader;
         DataTable dtDivDoorTitle;
@@ -1002,11 +1002,16 @@
                                                     //    doorConfig.LOGO = string.Empty;   //chkbLogo.Checked = false;
                                                     //}
                                                     //
-                                                    isEComplient = (Cust.TRSH_NOTECOMPLIENT != "Y");
-                                                    if (isEComplient)
-                                                        doorConfig.TRSH_COMPLIENT = PrApiCalls.ELIDOOR_COMPLIENT;  // 1 !
+                                                    doorConfig.TRSH_COMPLIENT = PrApiCalls.ELIDOOR_COMPLIENT; // new 11/07/2022 - the default for COMPLIENT is always ELIDOOR
+                                                    useELOGO = (Cust.TRSH_NOTECOMPLIENT != "Y");
+                                                    if (useELOGO) 
+                                                    {
+                                                        doorConfig.TRSH_ELIDOOR_LOGO = PrApiCalls.ELIDOOR_COMPLIENT;  // 1 !
+                                                    }
                                                     else
-                                                        doorConfig.TRSH_COMPLIENT = 0;
+                                                    {
+                                                        doorConfig.TRSH_ELIDOOR_LOGO = 0;
+                                                    }
                                                     //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
                                                     if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
                                                     {
@@ -1231,7 +1236,7 @@
                                                     doorConfig.divClasses["divHeader"] = "divNotActive";
 
                                                     doorConfig.btnClasses["proddes"] = "buttonActive";
-                                                    showDoorTitle();
+                                                    //showDoorTitle();
                                                     //doorConfig.divClasses["divProducts"] = "divNotActive";
                                                     doorConfig.divClasses["divDoorTitle"] = "divActive";
 
