@@ -842,10 +842,12 @@
                         if (doorConfig != null)
                         {
                             doorConfig.TRSH_HARDWARE = _Hw;
-                            if (doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone) // ללא
+                            if (doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone || doorConfig.TRSH_HARDWARE == 0) // ללא
                             {
                                 doorConfig.disabledFlds["HWCOLORID"] = true;
                                 doorConfig.HWCOLORID = 0;
+                                //doorConfig.disabledFlds["HWACCESSORYID"] = true;  - it's A Mandatory filed - it can't be disabled !
+                                doorConfig.HWACCESSORYID = 0;
                                 // 18/06/2022 - when HARWARE is ללא DRIL4HW showuld be ENABLED !
                                 //  therefore commented the three lines below.
                                 // doorConfig.disabledFlds["DRIL4HW"] = true;
@@ -858,7 +860,7 @@
                             {
                                 doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? "blueBorder" : "redBorder");
                                 doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
-                                 doorConfig.disabledFlds["HANDLENAME"] = (doorConfig.DRIL4HW != PrApiCalls.IDS_ONESIDE);
+                                doorConfig.disabledFlds["HANDLENAME"] = (doorConfig.DRIL4HW != PrApiCalls.IDS_ONESIDE);
                                 // populate the LOV for Dril4Hw based on Hardware selected .
                                 string errMsg = string.Empty;
                                 lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig, ref errMsg);
@@ -868,9 +870,14 @@
 
                                 doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(value);
                                 doorConfig.borderColors["HWCOLORID"] = (doorConfig.disabledFlds["HWCOLORID"] || doorConfig.HWCOLORID != 0 ? "blueBorder" : "redBorder");
+                                doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
+                                //doorConfig.disabledFlds["HWACCESSORYID"] = (doorConfig.TRSH_HARDWARE == 0);   it's a Mandatory field so it can't be disabled !
                                 if (doorConfig.disabledFlds["HWCOLORID"])
                                     doorConfig.HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
+                               
                             }
+                            doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? "blueBorder" : "redBorder");
+                            doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
                         }
                     }
                 }
@@ -884,13 +891,17 @@
                         @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                     onkeypress="@KeyPressHandler" 
                         @ref="doorConfig.dicRefs[UiLogic.propNames[i333]]" >
-                   @{
-                       if (PrApiCalls.lstHwAccessories != null)
+                    @{
+                        if (PrApiCalls.lstHwAccessories != null)
                         {
-                                @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
+                            string HwColored = PrApiCalls.getHardware1(doorConfig.TRSH_HARDWARE).COLORED;
+                            @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
+                            {
+                                if (hwa.COLORED == HwColored)
                                 {
                                     <option value="@hwa.HWACCESSORYID">@hwa.HWACCESSORYDES</option>
                                 }
+                            }
                         }
                     }
                     </select>

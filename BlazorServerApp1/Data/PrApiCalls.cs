@@ -1194,7 +1194,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "HWACCESSORYID,HWACCESSORYDES";
+                string fields = "HWACCESSORYID,HWACCESSORYDES,COLORED";
                 request.Resource = string.Format("TRSH_HWACCESSORIES?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1210,6 +1210,10 @@ namespace BlazorServerApp1.Data
                     emptyHwa.HWACCESSORYID = 0;
                     emptyHwa.HWACCESSORYDES = " ";
                     val1.Add(emptyHwa);
+                    HWACCESSORY_Class noHwa = new HWACCESSORY_Class();
+                    noHwa.HWACCESSORYID = UiLogic.IdOfNone;
+                    noHwa.HWACCESSORYDES = "ללא";
+                    val1.Add(noHwa);
 
                     foreach  (HWACCESSORY_Class hwa in val.value)
                     {
@@ -1250,6 +1254,11 @@ namespace BlazorServerApp1.Data
             }
             else
                 return false;
+        }
+        public static TRSH_HARDWARE_Class getHardware1(int TRSH_HARDWARE)
+        {
+            TRSH_HARDWARE_Class res = lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);
+            return res;
         }
         public static List<TRSH_HARDWARE_Class> getDoorHWs(int TRSH_DOOR_HWCATCODE, ref string errMsg)
         {
