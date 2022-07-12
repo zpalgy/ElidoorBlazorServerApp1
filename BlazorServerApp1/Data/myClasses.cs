@@ -224,6 +224,12 @@ namespace BlazorServerApp1.Data
         public string DRIL4HWDES { get; set; }
         [DataMember(Order = 7)]
         public string COLORED { get; set; }   // boolean Y | '' 
+        [DataMember(Order = 8)]
+        public string PARTNAME2 { get; set; }   // dual part right -> left, or left -> right of point to itself.
+
+        [DataMember(Order = 9)]
+        public int OPPOSITESIDE_PART { get; set; }    // PART.PART of teh opposite Hardware
+
     }
     public class ValuesTRSH_HARDWARE_Class
     {

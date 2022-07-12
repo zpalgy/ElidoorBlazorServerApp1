@@ -1148,7 +1148,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,DRIL4HW,DRIL4HWDES,COLORED";
+                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,DRIL4HW,DRIL4HWDES,COLORED,PARTNAME2,OPPOSITESIDE_PART";
                 request.Resource = string.Format("TRSH_HARDWARE?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1261,6 +1261,22 @@ namespace BlazorServerApp1.Data
         {
             TRSH_HARDWARE_Class res = lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);
             return res;
+        }
+        public static int getOpposite_TRSH_HARDWARE(int TRSH_HARDWARE)
+        {
+            TRSH_HARDWARE_Class hw1 = lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);
+            if (hw1.PARTNAME == hw1.PARTNAME2)  //it point to itself 
+            {
+                return TRSH_HARDWARE;
+            }
+            else
+            {
+                TRSH_HARDWARE_Class hw2 = lstHardwares.Find(item => item.PARTNAME == hw1.PARTNAME2);
+                if (hw2 != null)
+                    return hw2.TRSH_HARDWARE;
+                else
+                    return 0;
+            }
         }
         public static List<TRSH_HARDWARE_Class> getDoorHWs(int TRSH_DOOR_HWCATCODE, ref string errMsg)
         {
