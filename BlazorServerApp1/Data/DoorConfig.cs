@@ -451,32 +451,35 @@ namespace BlazorServerApp1.Data
         public int HW4EXTRAWING { get; set; }         //D-520  was logic (== bool)  now - 26/06/2022 -  it's int - it's a foreign key for  TRSH_HARDWARE   
                                                       //  i.e. it points at a TRSH_HARDWARE record . Note TRSH_HARDWARE is a table, it's primary key is TRSH_HARDWARE.TRSH_HARDWARE
         [DataMember(Order = 267), Order]
-        public int SWING_HWCOLORID { get; set; }  // new 
+        public int SWING_HWACCESSORYID { get; set; }   // new 12/07/2022 
+
         [DataMember(Order = 268), Order]
+        public int SWING_HWCOLORID { get; set; }  // new 
+        [DataMember(Order = 269), Order]
         public int SWING_DRIL4HW { get; set; }   // new 
 
-        [DataMember(Order = 269), Order]
-        public string DESIGNEDEXTRAWING { get; set; }    //D-530  Y, N , ''
         [DataMember(Order = 270), Order]
-        public string DESIGNEDWINDOWEDWING { get; set; } //D-540   Y, N , ''
+        public string DESIGNEDEXTRAWING { get; set; }    //D-530  Y, N , ''
         [DataMember(Order = 271), Order]
-        public int EXTRAWINGWIDTH { get; set; }          //D-560
+        public string DESIGNEDWINDOWEDWING { get; set; } //D-540   Y, N , ''
         [DataMember(Order = 272), Order]
+        public int EXTRAWINGWIDTH { get; set; }          //D-560
+        [DataMember(Order = 273), Order]
         public int CENTRALCOLWIDTH { get; set; }         //D-860
                                                          //TODO
-        [DataMember(Order = 273), Order]
+        [DataMember(Order = 274), Order]
         public string SWING_TURBO { get; set; }   // new Y, N, ''  TURBOAPPARATUS for staticwing .
 
-        [DataMember(Order = 274), Order]
-        public string SWING_HANDLENAME { get; set; }   // new
         [DataMember(Order = 275), Order]
-        public int SWING_HANDLECOLORID { get; set; }   // new
+        public string SWING_HANDLENAME { get; set; }   // new
         [DataMember(Order = 276), Order]
+        public int SWING_HANDLECOLORID { get; set; }   // new
+        [DataMember(Order = 277), Order]
         public string SWING_VENTS { get; set; }   //  new 
                                                   //end TODO
-        [DataMember(Order = 277), Order]
-        public string RAFAFAONSTATICWING { get; set; }   //D-1150  Y, N , ''
         [DataMember(Order = 278), Order]
+        public string RAFAFAONSTATICWING { get; set; }   //D-1150  Y, N , ''
+        [DataMember(Order = 279), Order]
         public string SWING_CATDOOR { get; set; }   //new 
 
         //ref: https://stackoverflow.com/questions/7693391/nonserialized-on-property
@@ -487,44 +490,44 @@ namespace BlazorServerApp1.Data
 
         #endregion staticwing 
         #region hinges
-        [DataMember(Order = 280), Order]
+        [DataMember(Order = 290), Order]
         public int HINGESNUM { get; set; }      //D-580
-        [DataMember(Order = 281), Order]
+        [DataMember(Order = 291), Order]
         public int BACKPINHEIGHT { get; set; }  //D-590
-        [DataMember(Order = 282), Order]
+        [DataMember(Order = 292), Order]
         public int HINGE1HEIGHT { get; set; }   //D-600
-        [DataMember(Order = 283), Order]
+        [DataMember(Order = 293), Order]
         public int HINGE2HEIGHT { get; set; }   //D-610
-        [DataMember(Order = 284), Order]
+        [DataMember(Order = 294), Order]
         public int HINGE3HEIGHT { get; set; }   //D-620
-        [DataMember(Order = 285), Order]
+        [DataMember(Order = 295), Order]
         public int HINGE4HEIGHT { get; set; }   //D-630
-        [DataMember(Order = 286), Order]
+        [DataMember(Order = 296), Order]
         public int HINGE5HEIGHT { get; set; }   //D-640
         #endregion hinges
         #region handle
-        [DataMember(Order = 290), Order]
+        [DataMember(Order = 300), Order]
         public string HANDLENAME { get; set; }   //D-940
-        [DataMember(Order = 291), Order]
+        [DataMember(Order = 301), Order]
         public int HANDLECOLORID { get; set; }   //D-950
-        [DataMember(Order = 292), Order]
+        [DataMember(Order = 302), Order]
         public string HANDLECOLORDES { get; set; }
         #endregion handle
 
         #region accessories
-        [DataMember(Order = 300), Order]
+        [DataMember(Order = 310), Order]
         public string RAFAFALOC { get; set; }
-        [DataMember(Order = 301), Order]
+        [DataMember(Order = 311), Order]
         public string SAFELOCK { get; set; }   //D-1040
-        [DataMember(Order = 302), Order]
+        [DataMember(Order = 312), Order]
         public string WETCOLORBOX { get; set; }  //D-1050
-        [DataMember(Order = 303), Order]
+        [DataMember(Order = 313), Order]
         public string COLORSPRAY { get; set; }   //D-1060
-        [DataMember(Order = 304), Order]
+        [DataMember(Order = 314), Order]
         public string CLEANINGSPRAY { get; set; }  //D-1070
-        [DataMember(Order = 305), Order]
+        [DataMember(Order = 315), Order]
         public string CORE { get; set; }           //D-1080
-        [DataMember(Order = 306), Order]
+        [DataMember(Order = 316), Order]
         public string MEZUZA { get; set; }         //D-1090
         #endregion accessories
         [DataMember(Order = 350), Order]

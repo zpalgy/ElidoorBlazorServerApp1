@@ -30,20 +30,20 @@ namespace BlazorServerApp1.Pages
                 {
 					if (!hideBtnExtDecor)
                     {
-						prevTab = UiLogic.tabNames[t - 3];  //extdecor
-						prevText = UiLogic.tabTexts[t - 3];
+						prevTab = UiLogic.tabNames[t - 2];  //extdecor
+						prevText = UiLogic.tabTexts[t - 2];
 					}
 					else
                     {
-						prevTab = UiLogic.tabNames[t - 4];  //movingwing
-						prevText = UiLogic.tabTexts[t - 4];
+						prevTab = UiLogic.tabNames[t - 3];  //movingwing
+						prevText = UiLogic.tabTexts[t - 3];
 					}
                 }
-				if (prevTab.ToLower() == "intdecor" && hideBtnExtDecor)
-				{
-					prevTab = UiLogic.tabNames[t - 2];
-					prevText = UiLogic.tabTexts[t - 2];
-				}
+				//if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor && hideBtnExtDecor)
+				//{
+				//	prevTab = UiLogic.tabNames[t - 3];
+				//	prevText = UiLogic.tabTexts[t - 3];
+				//}
 
 				if (t == 0)
                 {
@@ -58,14 +58,8 @@ namespace BlazorServerApp1.Pages
 						doorConfig.currTabName = tabName;
 						return true; //ActivePage = page;
 					}
-					else if (tabName == "staticwing"
-			                  && doorConfig.TRSH_MODELNAME == "MLI"
-			                  && doorConfig.TRSH_WINGSNUMDES == "כנף וחצי" )
-                    {
-						return true;
-                    }
 					else
-							{
+					{
 						//string prevTabText = UiLogic.tabTexts[t - 1];
 						errMsg = UiLogic.requiredFieldsAreEmpty;   //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
 																   // Js.InvokeVoidAsync("alert", errMsg);

@@ -854,21 +854,21 @@
                     onkeypress="@KeyPressHandler" 
                         @ref="doorConfig.dicRefs[UiLogic.propNames[i310]]" >
                     @{
-                        string errMsg = string.Empty;
-                        List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_CYLINDER, doorConfig.OPENSIDE, ref errMsg);
-                       //List<TRSH_HARDWARE_Class> lstDoorHWs1 = lstDoorHWs.ToList<TRSH_HARDWARE_Class>();
-                        if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
-                        {
-                            CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא" );
-                            lstCylHws1.Remove(CHw1);
-                        }
-                    if (lstCylHws1 != null)
-                    {
-                        @foreach (CYLHW_Class c in lstCylHws1)
-                        {
-                                    <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option>
-                        }
-                    }
+                            string errMsg = string.Empty;
+                            //List<TRSH_HARDWARE_Class> lstDoorHWs1 = lstDoorHWs.ToList<TRSH_HARDWARE_Class>();
+                            List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_CYLINDER, doorConfig.OPENSIDE, ref errMsg);
+                            if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
+                            {
+                                CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא" );
+                                lstCylHws1.Remove(CHw1);
+                            }
+                            if (lstCylHws1 != null)
+                            {
+                                @foreach (CYLHW_Class c in lstCylHws1)
+                                {
+                                            <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option>
+                                }
+                            }
                         }
                     </select>
             }
@@ -910,6 +910,8 @@
                                 doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? "blueBorder" : "redBorder");
                                 doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
                                 doorConfig.disabledFlds["HANDLENAME"] = (doorConfig.DRIL4HW != PrApiCalls.IDS_ONESIDE);
+                                if (doorConfig.disabledFlds["HANDLENAME"])
+                                    doorConfig.disabledFlds["HANDLECOLORID"] = true;   //doorConfig.HANDLECOLORID
                                 // populate the LOV for Dril4Hw based on Hardware selected .
                                 string errMsg = string.Empty;
                                 lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig, ref errMsg);
@@ -975,6 +977,8 @@
                                 {
                                     doorConfig.HWACCESSORYID = _HwAccessoryId;
                                     doorConfig.borderColors["HWACCESSORYID"] = (value != 0 ? "blueBorder" : "redBorder");
+                                    if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                                 config4.RefreshState();
                                 }
                             }
                         }
@@ -1107,6 +1111,8 @@
                         doorConfig.DRIL4HW = _Dril4Hw;
                         doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
                         doorConfig.disabledFlds["HANDLENAME"] = (doorConfig.DRIL4HW != PrApiCalls.IDS_ONESIDE);
+                        if (doorConfig.disabledFlds["HANDLENAME"])
+                                    doorConfig.disabledFlds["HANDLECOLORID"] = true; 
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -1269,7 +1275,7 @@
                     {
                         doorConfig.LOCKNAME = _Lock;
                         doorConfig.borderColors["LOCKNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                          if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                             config4.RefreshState();
                     }
