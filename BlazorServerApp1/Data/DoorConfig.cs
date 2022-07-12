@@ -152,7 +152,7 @@ namespace BlazorServerApp1.Data
                                           //[DataMember(Order = 62), Order]
                                           //public string DRIL4HWDES { get; set; }
         [DataMember(Order = 63), Order]
-        public string CYLINDERNAME { get; set; }  //D-900  , table 310
+        public int TRSH_CYLINDER { get; set; }  //D-900  , table 310
                                                   //[DataMember(Order = 64), Order]
                                                   //public string PARTDES { get; set; }
         [DataMember(Order = 65), Order]
@@ -443,7 +443,7 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 263), Order]
         public string SHALVANIACLRDES { get; set; }
         [DataMember(Order = 264), Order]
-        public string CYLINDER4HALFWING { get; set; }    //D-510
+        public int TRSH_SWING_CYLINDER { get; set; }    //D-510
 
         [DataMember(Order = 265), Order]
         public string SWING_LOCKNAME { get; set; }    // new

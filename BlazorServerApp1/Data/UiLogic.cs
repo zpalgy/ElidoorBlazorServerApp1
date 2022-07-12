@@ -188,6 +188,16 @@ namespace BlazorServerApp1.Data
         }
         public static bool tabPageIsFilled (string tabName, DoorConfig doorConfig)
         {
+            //if (tabName == "movingwing")
+            //{
+            //    string nextTabName = getNextTabName(doorConfig, tabName);
+
+            //    if (   nextTabName == "staticwing" 
+            //        && doorConfig.TRSH_MODELNAME == "MLI"
+            //        && doorConfig.TRSH_WINGSNUMDES == "כנף וחצי" )
+            //        return true;     //11/07/2022 - for MLI + 1.5 wings allow moving from movingwing to staticwing even if movingwing is not filled .
+            //}
+
             string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
             int fieldsNum = tabFields.Length;

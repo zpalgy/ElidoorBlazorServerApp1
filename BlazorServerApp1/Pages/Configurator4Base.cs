@@ -58,8 +58,14 @@ namespace BlazorServerApp1.Pages
 						doorConfig.currTabName = tabName;
 						return true; //ActivePage = page;
 					}
+					else if (tabName == "staticwing"
+			                  && doorConfig.TRSH_MODELNAME == "MLI"
+			                  && doorConfig.TRSH_WINGSNUMDES == "כנף וחצי" )
+                    {
+						return true;
+                    }
 					else
-					{
+							{
 						//string prevTabText = UiLogic.tabTexts[t - 1];
 						errMsg = UiLogic.requiredFieldsAreEmpty;   //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
 																   // Js.InvokeVoidAsync("alert", errMsg);

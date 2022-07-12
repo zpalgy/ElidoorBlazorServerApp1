@@ -798,19 +798,19 @@
         </td>
 
         <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
-            @{  int i313 = Array.IndexOf(UiLogic.propNames, "CYLINDERNAME");
-                <select name="dlstCylinder" @bind="CylinderName" class="@doorConfig.borderColors["CYLINDERNAME"]"
-                disabled="@doorConfig.disabledFlds["CYLINDERNAME"]"
-                    @onfocus="@( () => UiLogic.HasFocus("CYLINDERNAME", doorConfig) )" 
+            @{  int i313 = Array.IndexOf(UiLogic.propNames, "TRSH_CYLINDER");
+                <select name="dlstCylinder" @bind="TRSH_Cylinder" class="@doorConfig.borderColors["TRSH_CYLINDER"]"
+                disabled="@doorConfig.disabledFlds["TRSH_CYLINDER"]"
+                    @onfocus="@( () => UiLogic.HasFocus("TRSH_CYLINDER", doorConfig) )" 
                     @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                 onkeypress="@KeyPressHandler" 
                     @ref="doorConfig.dicRefs[UiLogic.propNames[i313]]" >
 
-                    @if (PrApiCalls.lstCylinders != null)
+                    @if (lstCylinders1 != null)
                 {
                         @foreach (CYLINDER_Class c in lstCylinders1)
                     {
-                            <option value="@c.PARTNAME">@c.PARTDES</option>
+                            <option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
                     }
                 }
                 </select>
@@ -818,24 +818,24 @@
         </td>
         @code
         {
-            protected string _CylinderName;
-            protected string CylinderName
+            protected int _TRSH_Cylinder;
+            protected int TRSH_Cylinder
             {
                 get
                 {
                     if (doorConfig != null)
                     {
-                        _CylinderName = doorConfig.CYLINDERNAME;
+                        _TRSH_Cylinder = doorConfig.TRSH_CYLINDER;
                     }
-                    return _CylinderName;
+                    return _TRSH_Cylinder;
                 }
                 set
                 {
-                    _CylinderName = value;
+                    _TRSH_Cylinder = value;
                     if (doorConfig != null)
                     {
-                        doorConfig.CYLINDERNAME = _CylinderName;
-                        doorConfig.borderColors["CYLINDERNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        doorConfig.TRSH_CYLINDER = _TRSH_Cylinder;
+                        doorConfig.borderColors["TRSH_CYLINDER"] = (value != 0 ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                           if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                                         config4.RefreshState();
@@ -855,18 +855,18 @@
                         @ref="doorConfig.dicRefs[UiLogic.propNames[i310]]" >
                     @{
                         string errMsg = string.Empty;
-                        List<TRSH_HARDWARE_Class> lstDoorHWs = PrApiCalls.getDoorHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
-                        List<TRSH_HARDWARE_Class> lstDoorHWs1 = lstDoorHWs.ToList<TRSH_HARDWARE_Class>();
+                        List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_CYLINDER, doorConfig.OPENSIDE, ref errMsg);
+                       //List<TRSH_HARDWARE_Class> lstDoorHWs1 = lstDoorHWs.ToList<TRSH_HARDWARE_Class>();
                         if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
                         {
-                            TRSH_HARDWARE_Class Hw1 = lstDoorHWs1.Find(x => x.PARTDES == "ללא" );
-                            lstDoorHWs1.Remove(Hw1);
+                            CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא" );
+                            lstCylHws1.Remove(CHw1);
                         }
-                    if (lstDoorHWs != null)
+                    if (lstCylHws1 != null)
                     {
-                                @foreach (TRSH_HARDWARE_Class c in lstDoorHWs1)
+                        @foreach (CYLHW_Class c in lstCylHws1)
                         {
-                                    <option value="@c.TRSH_HARDWARE">@c.PARTDES</option>
+                                    <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option>
                         }
                     }
                         }
@@ -1113,14 +1113,10 @@
             }
         }
 
-
-
-        
-
         <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
             @{  int i314 = Array.IndexOf(UiLogic.propNames, "ELECTRICAPPARATUS");
                 <select name="dlstElectricApparatus" @bind="ElectricApparatus" class="@doorConfig.borderColors["ELECTRICAPPARATUS"]"
-                     disabled="@doorConfig.disabledFlds["CYLINDERNAME"]" 
+                     disabled="@doorConfig.disabledFlds["TRSH_CYLINDER"]" 
                          @onfocus="@( () => UiLogic.HasFocus("ELECTRICAPPARATUS", doorConfig) )" 
                          @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@KeyPressHandler" 
@@ -1176,7 +1172,7 @@
                     {
                         if (doorConfig != null)
                         {
-                            doorConfig.TURBOAPPARATUS = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                            //doorConfig.TURBOAPPARATUS = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
                             _TurboApparatus = (doorConfig.TURBOAPPARATUS == "Y");
                         }
                         return _TurboApparatus;
@@ -1213,7 +1209,7 @@
                     {
                         if (doorConfig != null)
                         {
-                            doorConfig.LOGO = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                           // doorConfig.LOGO = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
                             _Logo = (doorConfig.LOGO == "Y");
                         }
                         return _Logo;

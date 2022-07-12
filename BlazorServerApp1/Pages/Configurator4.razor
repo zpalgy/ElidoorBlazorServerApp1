@@ -1012,6 +1012,11 @@
                                                     {
                                                         doorConfig.TRSH_ELIDOOR_LOGO = 0;
                                                     }
+                                                    // set relevant defaults 11/07/2022
+                                                    doorConfig.LOGO = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                                                    doorConfig.TURBOAPPARATUS = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                                                    doorConfig.SWING_TURBO = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                                                    //
                                                     //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
                                                     if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))
                                                     {
@@ -1848,8 +1853,8 @@
                                         doorConfig.TRSH_HARDWARE = 0;
                                     if (doorConfig.HWCOLORID == UiLogic.IdOfNone)
                                         doorConfig.HWCOLORID = 0;
-                                    if (doorConfig.CYLINDERNAME == UiLogic.NameOfNone)
-                                        doorConfig.CYLINDERNAME = string.Empty;
+                                    if (doorConfig.TRSH_CYLINDER == UiLogic.IdOfNone)
+                                        doorConfig.TRSH_CYLINDER = 0;
         }
                                 }
                                 <td>

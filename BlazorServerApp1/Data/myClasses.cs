@@ -279,6 +279,35 @@ namespace BlazorServerApp1.Data
     }
 
     [DataContract]
+    public class CYLHW_Class
+    {
+        [DataMember(Order = 1)]
+        public int TRSH_CYLHW { get; set; }
+        [DataMember(Order = 2)]
+        public string WING_OPENMODE { get; set; }
+        [DataMember(Order = 3)]
+        public string PARTDESCYL { get; set; }
+        [DataMember(Order = 4)]
+        public string OPENSIDE { get; set; }
+        [DataMember(Order = 5)]
+        public string PARTDESHW { get; set; }
+        [DataMember(Order = 6)]
+        public int TRSH_CYLINDER { get; set; }
+        [DataMember(Order = 7)]
+        public int PARTCYL { get; set; }
+        [DataMember(Order = 8)]
+        public int TRSH_HARDWARE { get; set; }
+        [DataMember(Order = 9)]
+        public int PARTHW { get; set; }
+    }
+
+    public class ValuesCYLHW_Class
+    {
+        public List<CYLHW_Class> value { get; set; }
+    }
+
+
+    [DataContract]
     public class TRSH_LOCK_Class
     {
         [DataMember (Order = 1)]

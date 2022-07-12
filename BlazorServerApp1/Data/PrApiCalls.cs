@@ -61,6 +61,7 @@ namespace BlazorServerApp1.Data
         public static DataTable dtDril4Hws = new DataTable();
         public static List<CYLINDER_Class> lstCylinders = new List<CYLINDER_Class>();
         public static DataTable dtCylinders = new DataTable();
+        public static List<CYLHW_Class> lstCYLHWs = new List<CYLHW_Class>(); 
         public static List<TRSH_LOCK_Class> lstLocks = new List<TRSH_LOCK_Class>();
         public static DataTable dtLocks = new DataTable();
 
@@ -950,6 +951,7 @@ namespace BlazorServerApp1.Data
                 dtDril4Hws = lstDril4Hw.ToDataTable<DRIL4HW_Class>();
                 lstCylinders = getCylinders(ref errMsg);
                 dtCylinders = lstCylinders.ToDataTable<CYLINDER_Class>();
+                lstCYLHWs = getCYLHWs(ref errMsg);
                 lstLocks = getLocks(ref errMsg);
                 dtLocks = lstLocks.ToDataTable<TRSH_LOCK_Class>();
 
@@ -1556,19 +1558,96 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-        public static bool cylinderIsHalf(string PARTNAME)
+        public static bool cylinderIsHalf(int TRSH_CYLINDER)
         {
             foreach (CYLINDER_Class cyl in lstCylinders)
             {
-                if (cyl.PARTNAME == PARTNAME)
+                if (cyl.TRSH_CYLINDER == TRSH_CYLINDER)
                     return (cyl.ISHALFCYLINDER == "Y");
             }
             return false;   // error - actually this can't happen because the uer selected a Cylinder from lstCylinders !
         }
 
+        public static List<CYLHW_Class> getCYLHWs(ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "TRSH_CYLHW,WING_OPENMODE,PARTDESCYL,OPENSIDE,PARTDESHW,TRSH_CYLINDER,PARTCYL,TRSH_HARDWARE,PARTHW";
+                request.Resource = string.Format("TRSH_CYLHW?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesCYLHW_Class val = JsonConvert.DeserializeObject<ValuesCYLHW_Class>(response.Content);
+                    List<CYLHW_Class> val1 = new List<CYLHW_Class>();  //val.value;
+                    
+                    foreach (CYLHW_Class cyl in val.value)
+                    {
+                        val1.Add(cyl);
+                    }
+                    return val1;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
 
-        //getLocks" 
-        public static List<TRSH_LOCK_Class> getLocks(ref string errMsg)
+        public static List<CYLHW_Class> getCYLHWs1(int TRSH_CYLINDER, string OPENSIDE, ref string errMsg)
+        {
+            try
+            {
+                List<CYLHW_Class> res = new List<CYLHW_Class>();
+                CYLHW_Class emptyCHW = new CYLHW_Class();
+                emptyCHW.TRSH_CYLINDER = 0;
+                emptyCHW.TRSH_HARDWARE = 0;
+                emptyCHW.PARTDESHW = String.Empty;
+                res.Add(emptyCHW);
+
+                CYLHW_Class noCHW = new CYLHW_Class();
+                noCHW.TRSH_CYLINDER = 0;
+                noCHW.TRSH_HARDWARE = UiLogic.IdOfNone;
+                noCHW.PARTDESHW = "ללא";
+                res.Add(noCHW);
+
+                if (lstCYLHWs != null)
+                {
+                    foreach (CYLHW_Class chw in lstCYLHWs)
+                    {
+                        if (chw.TRSH_CYLINDER == TRSH_CYLINDER && chw.OPENSIDE == OPENSIDE)
+                            res.Add(chw);
+                    }
+                }
+                return res;
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+            //getLocks" 
+            public static List<TRSH_LOCK_Class> getLocks(ref string errMsg)
         {
             try
             {

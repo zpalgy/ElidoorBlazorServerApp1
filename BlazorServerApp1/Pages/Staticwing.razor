@@ -118,7 +118,7 @@
 			doorConfig.thClasses["HW4EXTRAWING"] = 
 			doorConfig.thClasses["SWING_HWCOLORID"] = 
 			doorConfig.thClasses["SWING_DRIL4HW"] = 
-			doorConfig.thClasses["CYLINDER4HALFWING"] =
+			doorConfig.thClasses["TRSH_SWING_CYLINDER"] =
 			doorConfig.thClasses["SWING_LOCKNAME"] = "thGray";
 			doorConfig.thClasses["SWING_TURBO"] = "thGray";
 		}
@@ -129,7 +129,7 @@
 			doorConfig.thClasses["SWING_HWCOLORID"] = 
 			doorConfig.thClasses["SWING_DRIL4HW"] = 
 			doorConfig.thClasses["SWING_LOCKNAME"] =
-			doorConfig.thClasses["CYLINDER4HALFWING"] = "thBlue";
+			doorConfig.thClasses["TRSH_SWING_CYLINDER"] = "thBlue";
 			doorConfig.thClasses["SWING_TURBO"] = "thBlue";
 			doorConfig.thClasses["HW4EXTRAWING"] = "thBlue";
 
@@ -140,7 +140,7 @@
 		doorConfig.SWINGHASLOCK = (_SwingHasLock ? "Y" : "");
 		//doorConfig.disabledFlds["HW4EXTRAWING"]   // 06/07/2022 HW4EXTRAWING is disabled by default !
 		doorConfig.disabledFlds["LOCKDRILHEIGHT"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = 
-		doorConfig.disabledFlds["SWING_DRIL4HW"] = doorConfig.disabledFlds["CYLINDER4HALFWING"] = doorConfig.disabledFlds["SWING_LOCKNAME"] = 
+		doorConfig.disabledFlds["SWING_DRIL4HW"] = doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = doorConfig.disabledFlds["SWING_LOCKNAME"] = 
 		doorConfig.disabledFlds["SWING_TURBO"] = 
 		!_SwingHasLock;
 	}
@@ -460,7 +460,7 @@
 			<th class="@doorConfig.thClasses["LOCKDRILHEIGHT"]" >גובה ניקוב</th>
 
 			@{	string thCyl = "thCylinder4HalfWing"; }
-            <th id="thCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, thCyl)" class= "@doorConfig.thClasses["CYLINDER4HALFWING"]" >צילינדר כנף קבועה</th>
+            <th id="thCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, thCyl)" class= "@doorConfig.thClasses["TRSH_SWING_CYLINDER"]" >צילינדר כנף קבועה</th>
 
 			@{ 	bool hw4 = UiLogic.hideFld(doorConfig, "thHW4ExtraWing"); 	}
 			@if (!hw4)
@@ -574,10 +574,10 @@
 				</td>
 			  
 				<td id="tdCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, "thCylinder4HalfWing")">
-				 @{  int i604 = Array.IndexOf(UiLogic.propNames, "CYLINDER4HALFWING");
-					<select name="dlstCylinder4HalfWing" @bind="Cylinder4HalfWing" class= "@doorConfig.borderColors["CYLINDER4HALFWING"]" 
-				 disabled="@doorConfig.disabledFlds["CYLINDER4HALFWING"]"
-				  	@onfocus="@( () => UiLogic.HasFocus("CYLINDER4HALFWING", doorConfig) )" 
+				 @{  int i604 = Array.IndexOf(UiLogic.propNames, "TRSH_SWING_CYLINDER");
+					<select name="dlstCylinder4HalfWing" @bind="Cylinder4HalfWing" class= "@doorConfig.borderColors["TRSH_SWING_CYLINDER"]" 
+				 disabled="@doorConfig.disabledFlds["TRSH_SWING_CYLINDER"]"
+				  	@onfocus="@( () => UiLogic.HasFocus("TRSH_SWING_CYLINDER", doorConfig) )" 
 				  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
 					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i604]]"  >
@@ -585,7 +585,7 @@
 					 {
 							@foreach (CYLINDER_Class c in lstCylinders1)
 						{
-								<option value="@c.PARTNAME">@c.PARTDES</option>
+								<option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
 						}
 					}
 					</select>
@@ -593,14 +593,14 @@
             </td>
             @code
 		{
-			protected string _Cylinder4HalfWing = string.Empty;
-			protected string Cylinder4HalfWing
+			protected int _Cylinder4HalfWing = 0;
+			protected int Cylinder4HalfWing
 			{
 				get
 				{
 					if (doorConfig != null)
 					{
-						_Cylinder4HalfWing = doorConfig.CYLINDER4HALFWING;
+						_Cylinder4HalfWing = doorConfig.TRSH_SWING_CYLINDER;
 					}
 					return _Cylinder4HalfWing;
 				}
@@ -609,9 +609,9 @@
 					_Cylinder4HalfWing = value;
 					if (doorConfig != null)
 					{
-						doorConfig.CYLINDER4HALFWING = _Cylinder4HalfWing;
-						doorConfig.borderColors["CYLINDER4HALFWING"] = (!string.IsNullOrEmpty(value)  ? "blueBorder" : "redBorder");
-						if (PrApiCalls.cylinderIsHalf(doorConfig.CYLINDER4HALFWING))
+						doorConfig.TRSH_SWING_CYLINDER = _Cylinder4HalfWing;
+						doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (value != 0  ? "blueBorder" : "redBorder");
+						if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
 						{
 							// if the user selected 1/2 Cylinder the folowing two fields are emptied and disabled !
 							doorConfig.HW4EXTRAWING = 0;
