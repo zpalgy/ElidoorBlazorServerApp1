@@ -469,16 +469,19 @@
                         }
                         @if (!hideDivDoor)
                         {
-                                                <tr>
-                                                    <td>
-                                                        <table id="tblTabButtons">
-                                                            <tr>
-                                                                <td>
-                                                                    <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
-                                                                            @onclick=@( () => @showMw())>
-                                                                        כנף נעה
-                                                                    </button>
-                                                                </td>
+                            <tr>
+                                <td>
+                                    <table id="tblTabButtons">
+                                        <tr>
+                                            <td>
+                                                @{
+                                                    bool disableMW = (doorConfig.TRSH_WINGSNUMDES == "חצי כנף");
+                                                }
+                                                    <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
+                                                            disabled="@disableMW" @onclick=@( () => @showMw())>
+                                                        כנף נעה
+                                                    </button>
+                                            </td>
                                             @{
                                                 //void showMw()
                                                 //{

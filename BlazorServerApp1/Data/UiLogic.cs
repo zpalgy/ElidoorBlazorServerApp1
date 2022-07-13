@@ -270,6 +270,10 @@ namespace BlazorServerApp1.Data
                     int t2 = Array.IndexOf(tabNames, nextTab);
                     nextTab = tabNames[t2 + 2];
                 }
+                if (nextTab == "movingwing" && doorConfig.TRSH_WINGSNUMDES == "חצי כנף")
+                {
+                    nextTab = "staticwing";   //13/07/2022 
+                }
                 if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
                 {
                     int t3 = Array.IndexOf(tabNames, nextTab);
@@ -301,7 +305,10 @@ namespace BlazorServerApp1.Data
                 case "selectprod":
                     return "proddes";
                 case "proddes":
-                    return "movingwing";
+                    if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף")
+                        return "staticwing";
+                    else
+                        return "movingwing";
                 default:
                     return getNextTabName(doorConfig, tabBtnCssName);  // movingwing, extdecor ....
             }
