@@ -434,7 +434,12 @@ namespace BlazorServerApp1.Data
         #region staticwing
         [DataMember(Order = 255), Order]
         public string SWINGHASLOCK { get; set; }  // "Y" | "" (string.empty) FIELDCODE = "SWINGHASLOCK"  - new 
+        
+        [NonSerialized]                         //TODO - in case of half wing only staticwing is filled so SWING_OPENSIDE should also be saved in Priority !
+        public string SWING_OPENSIDE;
+        
         [DataMember(Order = 260), Order]
+        
         public int CENTRALCOLCLRID { get; set; }         //D-390
         [DataMember(Order = 261), Order]
         public string CENTRALCOLCLRDES { get; set; }
