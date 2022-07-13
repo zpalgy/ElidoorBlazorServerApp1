@@ -103,9 +103,13 @@
                                                            // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
             doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
 
-            doorConfig.disabledFlds["LOGO"] = disableLogo;   //disableLogo is a parameter a flag in CUSTOMER record in Priority
+            //doorConfig.disabledFlds["LOGO"] = disableLogo;   // old stuff : disableLogo is a parameter a flag in CUSTOMER record in Priority
                                                              // issue : if we come here BACK from a newer tabPage we should not 
                                                              // enable this field.
+            doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 
+            doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
+            //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+
         }
         else    // it is filled - we came back form a newer tab - all fields should be disabled !
         {
@@ -1380,7 +1384,10 @@
                             // Handle is Optional
                             //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                            doorConfig.disabledFlds["HANDLECOLORID"] = (doorConfig.HANDLENAME == UiLogic.NameOfNone);
+                            doorConfig.disabledFlds["HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone 
+                                                                        || !PrApiCalls.isHandleColored(doorConfig.HANDLENAME));
+                            if (doorConfig.disabledFlds["HANDLECOLORID"])
+                                doorConfig.HANDLECOLORID = 0;
                             if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                                             config4.RefreshState();
                         }

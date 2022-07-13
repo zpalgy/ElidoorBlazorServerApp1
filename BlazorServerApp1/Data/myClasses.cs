@@ -541,6 +541,8 @@ namespace BlazorServerApp1.Data
         public string PARTDES { get; set; }
         [DataMember(Order = 4)]
         public int LENGTH { get; set; }
+        [DataMember(Order = 5)]
+        public string COLORED { get; set; }    // Y | ''
     }
     public class ValuesHANDLE_Class
     {

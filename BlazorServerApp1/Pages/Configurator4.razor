@@ -1006,19 +1006,23 @@
                                                     //}
                                                     //
                                                     doorConfig.TRSH_COMPLIENT = PrApiCalls.ELIDOOR_COMPLIENT; // new 11/07/2022 - the default for COMPLIENT is always ELIDOOR
-                                                    useELOGO = (Cust.TRSH_NOTECOMPLIENT != "Y");
-                                                    if (useELOGO) 
-                                                    {
-                                                        doorConfig.TRSH_ELIDOOR_LOGO = PrApiCalls.ELIDOOR_COMPLIENT;  // 1 !
-                                                    }
-                                                    else
-                                                    {
-                                                        doorConfig.TRSH_ELIDOOR_LOGO = 0;
-                                                    }
-                                                    // set relevant defaults 11/07/2022
-                                                    doorConfig.LOGO = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
-                                                    doorConfig.TURBOAPPARATUS = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
-                                                    doorConfig.SWING_TURBO = (doorConfig.TRSH_ELIDOOR_LOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                                                    doorConfig.useLOGO =  (Cust.TRSH_NOTECOMPLIENT != "Y");
+                                                    // all the foolowing login moved to movingwing and staticwing - because we can't set these fields here 
+                                                    //  before teh MODEL and WINGSNUM were selected and we know that the relevant wings will be filled .
+                                                    //if (useELOGO) 
+                                                    //{
+                                                    //    doorConfig.useLOGO = PrApiCalls.ELIDOOR_COMPLIENT;  // 1 !
+                                                    //    doorConfig.TURBOAPPARATUS = "Y";
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    doorConfig.useLOGO = 0;
+                                                    //    doorConfig.TURBOAPPARATUS = string.Empty;
+                                                    //}
+                                                    //// set relevant defaults 11/07/2022
+                                                    //doorConfig.LOGO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                                                    //doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                                                    //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
                                                     //
                                                     //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "selectprod");
                                                     if (UiLogic.try2UpdateBtnClass(doorConfig, "divHeader"))

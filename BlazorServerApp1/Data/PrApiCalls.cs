@@ -81,6 +81,7 @@ namespace BlazorServerApp1.Data
         public static List<VITRAGE4DIAMOND_Class> lstVitrages4Diamond = new List<VITRAGE4DIAMOND_Class>();
         public static List<GRID4HT1084_Class> lstGrid4HT1084 = new List<GRID4HT1084_Class>();
         public static List<HANDLE_Class> lstHandles = new List<HANDLE_Class>();
+        public static DataTable dtHandles = new DataTable();
         public static List<HANDLE4DIAMOND_Class> lstHandles4Diamond = new List<HANDLE4DIAMOND_Class>();
 
         public static string[] D60DataSource = new string[] { "ללא", "חוץ", "פנים", "דו צדדי" };
@@ -968,6 +969,7 @@ namespace BlazorServerApp1.Data
                 lstRaw4CPlates = getRaw4CPlates(ref errMsg);
                 lstProfiles4Windows = getProfiles4Windows(ref errMsg);
                 lstHandles = getHandles(ref errMsg);
+                dtHandles = lstHandles.ToDataTable<HANDLE_Class>();
                 lstHandles4Diamond = getHandles4Diamond(ref errMsg);
                 lstGrid4HT1084 = getGrid4HT1084(ref errMsg);
                 lstGrids = getGrids(ref errMsg);
@@ -2349,7 +2351,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "PARTNAME,PARTDES";
+                string fields = "PARTNAME,PARTDES,COLORED";
                 request.Resource = string.Format("TRSH_HANDLES?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -2395,7 +2397,26 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        public static bool isHandleColored(string HANDLENAME)
+        {
 
+            DataRow[] rowsArray;
+            string query = string.Format("PARTNAME = '{0}'", HANDLENAME);
+            rowsArray = PrApiCalls.dtHandles.Select(query);
+            if (rowsArray.Length > 0)
+            {
+                string COLORED = rowsArray[0]["COLORED"].ToString();
+                if (!string.IsNullOrEmpty(COLORED) && COLORED == "Y")
+                    return true;
+                else
+                    return false;
+            }
+            else
+            { 
+                return false;
+            }
+        }
+    
 
         //TRSH_HANDLE4DIAMOND   - 360
         public static List<HANDLE4DIAMOND_Class> getHandles4Diamond(ref string errMsg)
