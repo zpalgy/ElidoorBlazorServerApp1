@@ -371,9 +371,7 @@
                 }
             }
         </td>
-
-        @* TODO: replace disabled : use disabled="@doorConfig.disabledFlds["OPENSIDE"]"  *@
-        @* deleted line  : disabled="@UiLogic.disableFld(doorConfig, "OPENSIDE")"  *@
+        
         <td id="tdOpenSide" hidden="@UiLogic.hideFld(doorConfig, "OpenSide")">
              @{  int i303 = Array.IndexOf(UiLogic.propNames, "OPENSIDE");
                             <select name="dlstOpenSide" @bind="openSide" 
@@ -408,7 +406,7 @@
                         {
                             doorConfig.OPENSIDE = _openSide;
                             doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
                 }
@@ -451,7 +449,7 @@
                             doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
                             
-                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
                 }

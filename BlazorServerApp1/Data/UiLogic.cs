@@ -505,6 +505,81 @@ namespace BlazorServerApp1.Data
             bool isFilled = (doorConfig.disabledFlds["DRIL4HW"] ? true : (doorConfig.DRIL4HW != 0));
             return isFilled;
         }
+        public static void calcCentralColClrID(DoorConfig doorConfig)
+        {
+            switch (doorConfig.COLORSNUM)
+            {
+                case "מגולוון":
+                case "1":
+                    doorConfig.CENTRALCOLCLRID = doorConfig.DOORCOLORID;
+                    break;
+                case "2":
+                    doorConfig.CENTRALCOLCLRID = (doorConfig.OPENMODE == "פנימה" ? doorConfig.INTCOLORID : doorConfig.EXTCOLORID);
+                    break;
+            }
+        }
+        public static  void applySwingHasLock(DoorConfig doorConfig)
+        {
+
+            bool _SwingHasLock = (doorConfig.SWINGHASLOCK == "Y");
+
+            if (doorConfig.SWINGHASLOCK != "Y")
+            {
+                doorConfig.HW4EXTRAWING = 0;
+                doorConfig.SWING_HWACCESSORYID = 0;
+                doorConfig.SWING_HWCOLORID = 0;
+                doorConfig.SWING_DRIL4HW = 0;
+                doorConfig.TRSH_SWING_CYLINDER = 0;
+                doorConfig.SWING_LOCKNAME = string.Empty;
+
+                //doorConfig.TURBOAPPARATUS = string.Empty;  //06/07/2022  TURBOAPPARATUS is N when StaticWing Doesn't have a LOCK !
+                //doorConfig.LOCKDRILHEIGHT = 0;
+                //doorConfig.SWING_TURBO = string.Empty;   // 11/07/2022 TURBO is affected ONLY by  Cust.TRSH_NOTECOMPLIENT
+                //  so we don't change it here inside applySwingHasLock() !
+
+                doorConfig.thClasses["LOCKDRILHEIGHT"] =
+                doorConfig.thClasses["TRSH_SWING_CYLINDER"] =
+                doorConfig.thClasses["HW4EXTRAWING"] =
+                doorConfig.thClasses["SWING_HWACCESSORYID"] =
+                doorConfig.thClasses["SWING_HWCOLORID"] =
+                doorConfig.thClasses["SWING_DRIL4HW"] =
+                doorConfig.thClasses["SWING_LOCKNAME"] =
+                doorConfig.thClasses["SWING_TURBO"] = "thGray";      //TODO - check this !
+            }
+            else  // withLOCK 
+            {
+                doorConfig.thClasses["LOCKDRILHEIGHT"] =
+                doorConfig.thClasses["TRSH_SWING_CYLINDER"] =
+                doorConfig.thClasses["HW4EXTRAWING"] =
+                doorConfig.thClasses["SWING_HWACCESSORYID"] =
+                doorConfig.thClasses["SWING_HWCOLORID"] =
+                doorConfig.thClasses["SWING_DRIL4HW"] = "thBlue";
+                doorConfig.thClasses["SWING_TURBO"] = "thGray";
+                doorConfig.thClasses["SWING_LOCKNAME"] = "thBlue";
+
+                doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0 ? "blueBorder" : "redBorder");  // special for this field
+                                                                                                                                      // that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
+
+                // we do the following two statements in Staticwing.razor : applySwingHasLock(...) (a local method in Staticwing.razor). It is called also by OnInitializedAsync.
+                // we can't do that here in UiLogic.cs, because lstCylinders1 can't be populated in Halfwing OnInitializedAsync, bacause OPENMODE was not SET yet
+                //  at that moment.
+                //
+                //CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == UiLogic.NameOfNone);
+                //lstCylinders1.Remove(noCyl);
+
+            }
+            //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+            //{
+                doorConfig.disabledFlds["LOCKDRILHEIGHT"] =
+                doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] =
+                doorConfig.disabledFlds["HW4EXTRAWING"] = // 06/07/2022 HW4EXTRAWING is disabled by default !
+                doorConfig.disabledFlds["SWING_HWACCESSORYID"] =
+                doorConfig.disabledFlds["SWING_HWCOLORID"] =
+                doorConfig.disabledFlds["SWING_DRIL4HW"] = !_SwingHasLock;
+                doorConfig.disabledFlds["SWING_TURBO"] = !_SwingHasLock;   //TODO - check this ?
+                doorConfig.disabledFlds["SWING_LOCKNAME"] = !_SwingHasLock;
+            //}
+        }
         public static void clearFollowingTabFields(DoorConfig doorConfig, string tabName)
         {
             string errMsg = string.Empty;
@@ -537,7 +612,103 @@ namespace BlazorServerApp1.Data
                 }
             }
         }
-        public static void clearDoorConfig (DoorConfig doorConfig, bool applyDefaults=true)
+        public static void setHingesAndWindowsData(DoorConfig doorConfig, ref string errMsg)
+        {
+            try
+            {
+                if (doorConfig.TRSH_DOOR_HWCATCODE == 0)
+                {
+                    errMsg = string.Format(@"שגיאה : קטגוריית הפרזול של הדלת   {0} לא נשמרה - לא ניתן לחשב את גובה הניקוב ללשונית",
+                      doorConfig.PARTNAME);
+                    return;
+                }
+
+                string query = string.Format("TRSH_DOOR_HWCATCODE = {0} AND DOORHEIGHTMIN <= {1} AND {1} <= DOORHEIGHTMAX", doorConfig.TRSH_DOOR_HWCATCODE, doorConfig.DOORHEIGHT);
+                DataRow[] rowsArray = PrApiCalls.dtLock_Hinge_Dril_Heights.Select(query);
+                if (rowsArray.Length == 0)
+                {
+                    errMsg = string.Format("לא נמצאה שורת 'מידות צירים וניקוב (תואם אלידור)' מתאימה לקטגורית הפרזול {0} ולגובה הדלת {1} - אנא בדוק את הטבלה הזו",
+                                    doorConfig.TRSH_DOOR_HWCATCODE, doorConfig.DOORHEIGHT);
+                    //UiLogic.displayErrMsg(lblMsgL1, errMsg);
+                    return;
+                }
+                doorConfig.LOCKDRILHEIGHT = int.Parse(rowsArray[0]["LOCKDRILHEIGHT"].ToString());
+                doorConfig.BACKPINHEIGHT = int.Parse(rowsArray[0]["BACKPINHEIGHT"].ToString());
+                doorConfig.HINGESNUM = int.Parse(rowsArray[0]["HINGESNUM"].ToString());
+                doorConfig.HINGE1HEIGHT = int.Parse(rowsArray[0]["HINGE1HEIGHT"].ToString());
+                doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
+                if (doorConfig.HINGESNUM > 2)
+                {
+                    doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+                    if (doorConfig.HINGESNUM > 3)
+                    {
+                        doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
+                        if (doorConfig.HINGESNUM == 5)
+                            doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+                        else
+                            doorConfig.HINGE5HEIGHT = 0;
+                    }
+                    else
+                    {
+                        doorConfig.HINGE4HEIGHT = 0;
+                        doorConfig.HINGE5HEIGHT = 0;
+                    }
+                }
+                else
+                {
+                    doorConfig.HINGE4HEIGHT = 0;
+                    doorConfig.HINGE5HEIGHT = 0;
+                    doorConfig.HINGE5HEIGHT = 0;
+                }
+                //check if txtWindowHeight is visible before calculating WindowHeight and windowWidth
+                // if one of them is visible and the other NOT - BUG in Meaged definition.
+
+                if (!UiLogic.hideFld(doorConfig, "WindowHeight"))
+                {
+                    doorConfig.WINDOWHEIGHT = calcWindowHeight(doorConfig, ref errMsg);
+                    //doorConfig.WINDOWWIDTH= calcWindowWidth();
+                }
+            }
+            catch (Exception ex)
+            {
+                string errMsg2 = string.Format("שגיאה : אנא פנה למנהל המערכת : {0} , {1}    י", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg2);
+                //UiLogic.displayErrMsg(lblMsgL1, errMsg2);
+                return;
+            }
+        }
+        public static int calcWindowHeight(DoorConfig doorConfig, ref string errMsg)
+        {
+            try
+            {
+                //string query = string.Format("PARTNAME='{0}'", doorConfig.TRSH_MODELNAME);
+                string query = string.Format("TRSH_MODELNAME='{0}'", doorConfig.TRSH_MODELNAME);  //temporary till we update the TRSH_WINDOWHEIGHT table in priority
+                DataRow[] rowsArray = PrApiCalls.dtWindowHeights.Select(query);
+                if (rowsArray.Length == 0)
+                {
+                    return 0;  // A DOOR  without WINDOW is legal 
+                }
+                query = string.Format("TRSH_MODELNAME='{0}'  AND MINDOORHEIGHT <= {1} AND {1} <= MAXDOORHEIGHT", doorConfig.TRSH_MODELNAME, doorConfig.DOORHEIGHT);
+                rowsArray = PrApiCalls.dtWindowHeights.Select(query);
+                if (rowsArray.Length > 0)
+                    return int.Parse(rowsArray[0]["WINDOWHEIGHT"].ToString());
+                else
+                {
+                    string errMsg2 = string.Format("שגיאה: לא נמצא גובה חלון לדלת {0} בגובה {1}  בטבלת גובה חלון ", doorConfig.PARTNAME, doorConfig.DOORHEIGHT);
+                    myLogger.log.Error(errMsg2);
+                    //UiLogic.displayErrMsg(lblMsgL1, errMsg2);
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                string errMsg2 = string.Format("שגיאה : אנא פנה למנהל המערכת : {0} , {1}    י", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg2);
+                //UiLogic.displayErrMsg(lblMsgL1, errMsg2);
+                return 0;
+            }
+        }
+            public static void clearDoorConfig (DoorConfig doorConfig, bool applyDefaults=true)
         {
             string errMsg = string.Empty;
             doorConfig.PARTNAME = string.Empty;

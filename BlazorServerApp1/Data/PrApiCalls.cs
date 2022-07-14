@@ -1474,6 +1474,15 @@ namespace BlazorServerApp1.Data
 
             return null;
         }
+        public static DRIL4HW_Class getDril4HalfCylinder()
+        {
+            foreach (DRIL4HW_Class dril in lstDril4Hw)
+            {
+                if (dril.DRIL4HWDES.Contains("חצי צילינדר"))
+                    return dril;
+            }
+            return null;
+        }
         public static List<CYLINDER_Class> getCylinders(ref string errMsg)
         {
             try

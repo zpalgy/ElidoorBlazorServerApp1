@@ -155,8 +155,8 @@
             //if (httpContextAccessor.HttpContext != null)               // it's null 
             //      UserName = httpContextAccessor.HttpContext.User.Identity.Name;
             //--------- end trial to get the client's userName 
-           }
-        
+        }
+
         }  // end onAfterRender 
         protected DataTable uniteHeaderDoorTitleFlds()
         {
@@ -172,9 +172,9 @@
 
         void showDivProducts()
 		{
-            showProducts = true;
-            doorConfig.divClasses["divHeader"] = "divNotActive";
-            doorConfig.divClasses["divProducts"] = "divActive";
+        showProducts = true;
+        doorConfig.divClasses["divHeader"] = "divNotActive";
+        doorConfig.divClasses["divProducts"] = "divActive";
 		}
 
          async Task showDoorTitle()
@@ -288,7 +288,11 @@
         async Task  showStaticwing()
         {
         //showTabPage(typeof(Staticwing), "staticwing");
-            if (showTabPage(typeof(Staticwing), "staticwing"))
+
+            Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" ? typeof(Staticwing) : typeof(Halfwing));
+
+            //if (showTabPage(typeof(Staticwing), "staticwing"))
+            if (showTabPage(staticwingType, "staticwing"))
             {
                 if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
                 {
