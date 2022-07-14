@@ -31,10 +31,16 @@ namespace BlazorServerApp1.Data
         public static int[] propIndex;
         
         public static string borderColor = string.Empty;
-        public static List<string> optionalFields = new List<string>(){ "REFERENCE", "FORMDATE", "CUSTORDNAME", "FAMILYNAME",
-                             "HANDLENAME", "VENTS", "RAFAFAONMOVINGWING",
-                           "HW4EXTRAWING", "SWING_HWCOLORID", "SWING_DRIL4HW", "SWING_LOCKNAME", "SWING_HANDLENAME", "SWING_VENTS", "RAFAFAONSTATICWING", "SWING_CATDOOR"
-                              ,"SHALVANIACLRID", "DESIGNEDEXTRAWING", "DESIGNEDWINDOWEDWING"};  //temporarily unused fields in Staticwing
+        // obsolete stuff - now we get the list of Optional and Mandatory fields from TRSH_CONF_FIELDS table !
+        //public static List<string> optionalFields = new List<string>(){ "REFERENCE", "FORMDATE", "CUSTORDNAME", "FAMILYNAME",
+        //                     "HANDLENAME", "VENTS", "RAFAFAONMOVINGWING",
+        //                   "HW4EXTRAWING", "SWING_HWCOLORID", "SWING_DRIL4HW", "SWING_LOCKNAME", "SWING_HANDLENAME", "SWING_VENTS", "RAFAFAONSTATICWING", "SWING_CATDOOR"
+        //                      ,"SHALVANIACLRID", "DESIGNEDEXTRAWING", "DESIGNEDWINDOWEDWING"};  //temporarily unused fields in Staticwing
+        //
+        // halfwing tabPage is actually staticwing with some changes in the list of Mandatory and optional fields .
+        //  so I keep the halfwing mandatory fields in a special in-memory table.
+        public static List<string> lstHalfwingMfields = new List<string> { "EXTRAWINGWIDTH", "DOORHEIGHT", "CENTRALCOLWIDTH", "SWING_HANDLENAME",
+                                          "OPENMODE", "OPENSIDE"};
 
         public static int IdOfNone = 99999;
         public static string NameOfNone = "9999999";
@@ -197,6 +203,10 @@ namespace BlazorServerApp1.Data
             //        && doorConfig.TRSH_WINGSNUMDES == "כנף וחצי" )
             //        return true;     //11/07/2022 - for MLI + 1.5 wings allow moving from movingwing to staticwing even if movingwing is not filled .
             //}
+            if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף" && tabName == "staticwing")
+            {
+                return halfWingIsFilled(doorConfig);
+            }
 
             string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
@@ -236,6 +246,22 @@ namespace BlazorServerApp1.Data
             }
             return isFilled;
         }
+        public static bool halfWingIsFilled(DoorConfig doorConfig)
+        {
+            bool isFilled = true;
+            foreach (string fldName in lstHalfwingMfields)
+            {
+                string fldDataType = getFldDataType(fldName);
+                if (!doorFldIsFilled(doorConfig, fldName, fldDataType))
+                {
+                    borderColor = "redBorder";
+                    doorConfig.borderColors[fldName] = "redBorder";
+                    isFilled = false;
+                }
+            }
+            return isFilled;
+        }
+
         public static bool try2UpdateBtnClass(DoorConfig doorConfig, string tabName) //  , string tabBtn, string nextTabBtn )
         {
             string tabBtnCssName = getTabBtnCssName(doorConfig, tabName);

@@ -95,6 +95,9 @@
             TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID); 
             lstColors1.Remove(megulvan);
         }
+
+        doorConfig.borderColors["DOORHEIGHT"] = (doorConfig.DOORHEIGHT != 0 ? "blueBorder" : "redBorder");
+
     }
 
     void calcCentralColClrID(DoorConfig doorConfig)
