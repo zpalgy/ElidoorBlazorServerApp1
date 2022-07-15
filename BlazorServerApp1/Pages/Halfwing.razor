@@ -84,10 +84,13 @@
                                                                           //doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
             doorConfig.SWING_TURBO = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
             doorConfig.disabledFlds["LOGO"] = true;
+            doorConfig.disabledFlds["CENTRALCOLCLRID"] = true;
         }
 
         doorConfig.thClasses["SWING_TURBO"] = "thGray";
         lstColorsNum1 =  PrApiCalls.lstColorsNum.ToList<string>();
+
+        // copied from movingwing ! 14/07/2022 
         lstColors1 = PrApiCalls.lstColors.ToList<TRSH_COLOR_Class>();
         if (doorConfig.TRSH_MODELNAME == "MLI")
         {
@@ -99,6 +102,64 @@
         doorConfig.borderColors["DOORHEIGHT"] = (doorConfig.DOORHEIGHT != 0 ? "blueBorder" : "redBorder");
 
     }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        applyColorsNum();
+    }
+    protected void applyColorsNum()
+    {
+        if (doorConfig != null)
+        {
+            if (doorConfig.COLORSNUM == null)
+                 doorConfig.COLORSNUM = "";
+
+            switch ( doorConfig.COLORSNUM.Trim())
+            {
+                case "":
+                    doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;
+                    doorConfig.DOORCOLORID = doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
+                    this.StateHasChanged();
+                    break;
+                case "מגולוון":
+                    doorConfig.DOORCOLORID = PrApiCalls.MEGULVAN_ID;   // 22/06/2022
+                    //disableColor = disableExtColor = disableIntColor = true;
+                    doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;
+                    doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
+                    this.StateHasChanged();
+                    //doorConfig.INTCOLORDES = string.Empty;
+                    break;
+                case "1":
+                    //disableColor = false;
+                    doorConfig.disabledFlds["DOORCOLORID"] = false;
+                    doorConfig.borderColors["DOORCOLORID"] = (doorConfig.DOORCOLORID != 0 ? "blueBorder" : "redBorder");
+
+                    //disableExtColor = true;
+                    doorConfig.disabledFlds["EXTCOLORID"] = true;
+                    //doorConfig.hideBtns["EXTCOLORID"] = true;  not used yet
+
+                    //disableIntColor = true;
+                    doorConfig.disabledFlds["INTCOLORID"] = true;
+                    //doorConfig.hideBtns["INTCOLORID"] = true;  not used yet
+
+                    doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
+                    //doorConfig.INTCOLORDES = string.Empty;
+                    break;
+                case "2":
+                    //disableColor = true;
+                    doorConfig.disabledFlds["DOORCOLORID"] = true;
+                    //disableExtColor = disableIntColor = false;
+                    doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
+                    doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");
+                    doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
+                    //doorConfig.hideBtns["EXTCOLORID"] = doorConfig.hideBtns["INTCOLORID"] = false;  not used yet
+                    doorConfig.DOORCOLORID = 0;
+                    break;
+            }
+            //doorConfig.borderColors["COLORSNUM"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); // it's not mandatory !
+            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+        }
+     }
 
     void calcCentralColClrID(DoorConfig doorConfig)
     {
@@ -346,7 +407,7 @@
 						{
 							doorConfig.CENTRALCOLWIDTH = (_CentralColWidth != null ? (int)_CentralColWidth : 0);
 							doorConfig.borderColors["CENTRALCOLWIDTH"] = (value != 0 ? "blueBorder" : "redBorder");
-							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+							//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
 							if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
                                   config4.RefreshState();
 							
@@ -476,26 +537,32 @@
                         if (doorConfig != null)
                         {
                             doorConfig.COLORSNUM = _ColorsNum;
-                            switch (_ColorsNum.Trim())
+                            applyColorsNum();
+                            @*    switch (_ColorsNum.Trim())
                             {
-                                //case "":
+                                case "":
+                                    doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;
+                                    doorConfig.DOORCOLORID = doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
+                                    this.StateHasChanged();
+                                    break;
                                 case "מגולוון":
                                     doorConfig.DOORCOLORID = PrApiCalls.MEGULVAN_ID;   // 22/06/2022
-                                    disableColor = disableExtColor = disableIntColor = true;
+                                    //disableColor = disableExtColor = disableIntColor = true;
                                     doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;
                                     doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
                                     this.StateHasChanged();
                                     //doorConfig.INTCOLORDES = string.Empty;
                                     break;
                                 case "1":
-                                    disableColor = false;
+                                    //disableColor = false;
                                     doorConfig.disabledFlds["DOORCOLORID"] = false;
+                                    doorConfig.borderColors["DOORCOLORID"] = (doorConfig.DOORCOLORID != 0 ? "blueBorder" : "redBorder");
 
-                                    disableExtColor = true;
+                                    //disableExtColor = true;
                                     doorConfig.disabledFlds["EXTCOLORID"] = true;
                                     //doorConfig.hideBtns["EXTCOLORID"] = true;  not used yet
 
-                                    disableIntColor = true;
+                                    //disableIntColor = true;
                                     doorConfig.disabledFlds["INTCOLORID"] = true;
                                     //doorConfig.hideBtns["INTCOLORID"] = true;  not used yet
 
@@ -503,16 +570,18 @@
                                     //doorConfig.INTCOLORDES = string.Empty;
                                     break;
                                 case "2":
-                                    disableColor = true;
+                                    //disableColor = true;
                                     doorConfig.disabledFlds["DOORCOLORID"] = true;
-                                    disableExtColor = disableIntColor = false;
+                                    //disableExtColor = disableIntColor = false;
                                     doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
+                                    doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");
+                                    doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
                                     //doorConfig.hideBtns["EXTCOLORID"] = doorConfig.hideBtns["INTCOLORID"] = false;  not used yet
                                     doorConfig.DOORCOLORID = 0;
                                     break;
                             }
-                            doorConfig.borderColors["COLORSNUM"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            //doorConfig.borderColors["COLORSNUM"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); // it's not mandatory !
+                            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");*@
                         }
                     }
                 }

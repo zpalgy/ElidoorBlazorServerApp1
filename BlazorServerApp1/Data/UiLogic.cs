@@ -45,6 +45,10 @@ namespace BlazorServerApp1.Data
         public static int IdOfNone = 99999;
         public static string NameOfNone = "9999999";
         public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
+
+        public static string NoColor = "מגולוון";
+        public static List<string> lstColorsNum1 = new List<string>();
+        
         //public static string currentMeaged = string.Empty;
         //public static string decoreSideCode = string.Empty;
 
@@ -436,7 +440,7 @@ namespace BlazorServerApp1.Data
             string sval;
             int ival;
 
-            if (!fldIsMandatory(fldName))
+            if (!fldIsMandatory(doorConfig, fldName))
             {
                 //bool dbg2 = fldIsMandatory(fldName);
                 return true;
@@ -547,7 +551,7 @@ namespace BlazorServerApp1.Data
         public static  void applySwingHasLock(DoorConfig doorConfig)
         {
 
-            bool _SwingHasLock = (doorConfig.SWINGHASLOCK == "Y");
+            //bool _SwingHasLock = (doorConfig.SWINGHASLOCK == "Y");
 
             if (doorConfig.SWINGHASLOCK != "Y")
             {
@@ -596,14 +600,14 @@ namespace BlazorServerApp1.Data
             }
             //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
             //{
-                doorConfig.disabledFlds["LOCKDRILHEIGHT"] =
-                doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] =
-                doorConfig.disabledFlds["HW4EXTRAWING"] = // 06/07/2022 HW4EXTRAWING is disabled by default !
-                doorConfig.disabledFlds["SWING_HWACCESSORYID"] =
-                doorConfig.disabledFlds["SWING_HWCOLORID"] =
-                doorConfig.disabledFlds["SWING_DRIL4HW"] = !_SwingHasLock;
-                doorConfig.disabledFlds["SWING_TURBO"] = !_SwingHasLock;   //TODO - check this ?
-                doorConfig.disabledFlds["SWING_LOCKNAME"] = !_SwingHasLock;
+            doorConfig.disabledFlds["LOCKDRILHEIGHT"] =
+            doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] =
+            doorConfig.disabledFlds["HW4EXTRAWING"] = // 06/07/2022 HW4EXTRAWING is disabled by default !
+            doorConfig.disabledFlds["SWING_HWACCESSORYID"] =
+            doorConfig.disabledFlds["SWING_HWCOLORID"] =
+            doorConfig.disabledFlds["SWING_DRIL4HW"] = (doorConfig.SWINGHASLOCK != "Y");
+            doorConfig.disabledFlds["SWING_TURBO"] = (doorConfig.SWINGHASLOCK != "Y");    //TODO - check this ?
+            doorConfig.disabledFlds["SWING_LOCKNAME"] = (doorConfig.SWINGHASLOCK != "Y");
             //}
         }
         public static void clearFollowingTabFields(DoorConfig doorConfig, string tabName)
@@ -1710,10 +1714,14 @@ namespace BlazorServerApp1.Data
                 throw new Exception(errMsg);    //return string.Empty;
             }
         }
-        public static bool fldIsMandatory(string fldName)
+        public static bool fldIsMandatory(DoorConfig doorConfig, string fldName)
         {
             string query = string.Format("FIELDNAME='{0}'", fldName);
             DataRow[] fldRows = PrApiCalls.dtConfFields.Select(query);
+            if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף")  //new 15/07/2022
+            {
+                return (lstHalfwingMfields.Contains(fldName));
+            }
             if (fldRows.Length > 0)
                 return (fldRows[0]["MANDATORY"].ToString() == "M");
             else
@@ -1728,7 +1736,9 @@ namespace BlazorServerApp1.Data
             //doorConfig.currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
             string fldDataType = getFldDataType(doorConfig.currPropName);
             bool fldIsFilled = doorFldIsFilled(doorConfig, doorConfig.currPropName, fldDataType);
-            doorConfig.borderColors[doorConfig.currPropName] = (fldIsFilled ? "blueBorder" : "redBorder");
+            // do not do set border color to red if field is not Mandatory . e.g COLORSNUM in Halfwing !
+            if (fldIsMandatory(doorConfig, doorConfig.currPropName))
+                doorConfig.borderColors[doorConfig.currPropName] = (fldIsFilled ? "blueBorder" : "redBorder");
         }
 
         //static List<string> lstThNames = new List<string>();

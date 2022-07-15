@@ -432,11 +432,12 @@ namespace BlazorServerApp1.Data
         #endregion Internal decoration (intdecor)
 
         #region staticwing
+        
         [DataMember(Order = 255), Order]
         public string SWINGHASLOCK { get; set; }  // "Y" | "" (string.empty) FIELDCODE = "SWINGHASLOCK"  - new 
         
-        [NonSerialized]                         //TODO - in case of half wing only staticwing is filled so SWING_OPENSIDE should also be saved in Priority !
-        public string SWING_OPENSIDE;
+        //[NonSerialized]                         //TODO - check this : in case of half wing only staticwing is filled so SWING_OPENSIDE should also be saved in Priority !
+        public string SWING_OPENSIDE { get; set; }  // at present - this field is not SERIALIZED !
         
         [DataMember(Order = 260), Order]
         
@@ -577,9 +578,9 @@ namespace BlazorServerApp1.Data
             //ElementReference er;
             foreach (PropertyInfo pinfo in props)
             {
-                if (pinfo.Name == "SWING_LOCKDRILHEIGHT")
+                if (pinfo.Name == "SWING_OPENSIDE")
                 {
-                    int dbg = 17;
+                    int dbg = 17;  
                 }
                 borderColors.Add(pinfo.Name, "blueBorder"); //string.Empty);
                 thClasses.Add(pinfo.Name, "thBlue");
