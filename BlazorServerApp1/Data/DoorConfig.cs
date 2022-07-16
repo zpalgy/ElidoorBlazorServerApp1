@@ -183,8 +183,8 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 70), Order]
         public string RAFAFAONMOVINGWING { get; set; }  // D-1010
 
-        [DataMember(Order = 71), Order]
-        public string LCDEYE { get; set; }  // Y, N, ''  //D-1030
+        //[DataMember(Order = 71), Order]
+        //public string LCDEYE { get; set; }  // Y, N, ''  //D-1030   moved to accessories tabPage 
 
         //[NonSerialized]
         //public string LCDEYE;
@@ -521,20 +521,32 @@ namespace BlazorServerApp1.Data
         #endregion handle
 
         #region accessories
+        //[DataMember(Order = 310), Order]
+        //public string RAFAFALOC { get; set; }
         [DataMember(Order = 310), Order]
-        public string RAFAFALOC { get; set; }
-        [DataMember(Order = 311), Order]
-        public string SAFELOCK { get; set; }   //D-1040
+        public int WETCOLORBOXID { get; set; }  //D-1050  - renamed and type changed
+        [DataMember(Order = 311), Order]        // new 
+        public int WETCOLORBOXQ { get; set; }
         [DataMember(Order = 312), Order]
-        public string WETCOLORBOX { get; set; }  //D-1050
+        public int COLORSPRAYID { get; set; }   //D-1060 - renamed and type changed
         [DataMember(Order = 313), Order]
-        public string COLORSPRAY { get; set; }   //D-1060
+        public int COLORSPRAYQ { get; set; }   //new 
         [DataMember(Order = 314), Order]
         public string CLEANINGSPRAY { get; set; }  //D-1070
         [DataMember(Order = 315), Order]
-        public string CORE { get; set; }           //D-1080
+        public string LCDEYE { get; set; }   //D-1030  // Y, N, ''  moved here from movingwing tabPage  - 
+
         [DataMember(Order = 316), Order]
-        public string MEZUZA { get; set; }         //D-1090
+        public string SAFELOCK { get; set; }   //D-1040  // Y, N, '' 
+
+
+
+
+        //[DataMember(Order = 315), Order]
+        //public string CORE { get; set; }           //D-1080
+        //[DataMember(Order = 316), Order]
+        //public string MEZUZA { get; set; }         //D-1090
+
         #endregion accessories
         [DataMember(Order = 350), Order]
         public string COMMENTS { get; set; } = string.Empty;

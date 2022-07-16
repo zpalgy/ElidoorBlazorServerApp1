@@ -70,13 +70,28 @@
         </td>
     </tr>
 </table>
-                                            <table id="tblAccessoriesL1">
-                                                <tr>
-                                                    @{bool rl = UiLogic.hideFld(doorConfig, "thRafafaLocation");}
-                                                    @if (!rl) 
+           <table id="tblAccessoriesL1">
+                <tr>
+                                                    @{bool wcb = UiLogic.hideFld(doorConfig, "thWetColorBox");}
+                                                    @if (!wcb)
                                                     {
-                                                        <th id="thRafafaLocation" >מיקום רפפה עשן\פתח איוורור</th>
+                                                        <th id="thWetColorBox" >קופסאת צבע רטוב</th>
                                                     }
+                                                    <th>כמות</th>
+                                                    @{bool csp = UiLogic.hideFld(doorConfig, "thColorSpray");}
+                                                    @if (!csp)
+                                                    {
+                                                        <th id="thColorSpray" >תרסיס צבע</th>
+                                                    }
+                                                    <th>כמות</th>
+                                                    
+                                                    @{bool clsp = UiLogic.hideFld(doorConfig, "thCleaningSpray");}
+                                                     @if (!clsp)
+                                                    {
+                                                        <th id="thCleaningSpray" >תרסיס ניקוי</th>
+                                                    }
+
+                                                    <th id="thLCDEye">LCD עינית</th>
 
                                                     @{bool sl = UiLogic.hideFld(doorConfig, "thSafeLock");}
                                                     @if (!sl)
@@ -84,154 +99,140 @@
                                                         <th id="thSafeLock" >מנעול כספת</th>
                                                     }
 
-                                                    @{bool wcb = UiLogic.hideFld(doorConfig, "thWetColorBox");}
-                                                    @if (!wcb)
-                                                    {
-                                                        <th id="thWetColorBox" >קופסאת צבע רטוב</th>
-                                                    }
+                                                    @*
+                                                         @{bool cr = UiLogic.hideFld(doorConfig, "thCore");}
+                                                         @if (!cr)
+                                                         {
+                                                            <th id="thCore" >ליבה</th>
+                                                         }
 
-                                                    @{bool csp = UiLogic.hideFld(doorConfig, "thColorSpray");}
-                                                    @if (!csp)
-                                                    {
-                                                        <th id="thColorSpray" >תרסיס צבע</th>
-                                                    }
-
-                                                     @{bool clsp = UiLogic.hideFld(doorConfig, "thCleaningSpray");}
-                                                     @if (!clsp)
-                                                    {
-                                                        <th id="thCleaningSpray" >תרסיס ניקוי</th>
-                                                    }
-
-                                                     @{bool cr = UiLogic.hideFld(doorConfig, "thCore");}
-                                                     @if (!cr)
-                                                     {
-                                                        <th id="thCore" >ליבה</th>
-                                                     }
-
-                                                    @{bool mz = UiLogic.hideFld(doorConfig, "thMezuza");}
-                                                    @if (!mz)
-                                                    {  
-                                                        <th id="thMezuza" >מזוזה</th>
-                                                    }
+                                                        @{bool mz = UiLogic.hideFld(doorConfig, "thMezuza");}
+                                                        @if (!mz)
+                                                        {  
+                                                            <th id="thMezuza" >מזוזה</th>
+                                                        }
+                                                    *@
                                                 </tr>
 
                                                 <tr>
-                                                @if (!rl)
-                                                {
-                                                    <td id="tdRafafaLocation" >
-                                                        <select name="dlstRafafaLocation" @bind="RafafaLocation" class= "@doorConfig.borderColors["RAFAFALOC"]">
-                                                            <option></option>
-                                                            <option>17</option>
-                                                            <option>53</option>
-                                                        </select>
-                                                    </td>
-                                                }
-                                                @code
-                                                {
-	                                                protected string _RafafaLocation = string.Empty;
-	                                                protected string RafafaLocation
-	                                                {
-		                                                get
-		                                                {
-			                                                if (doorConfig != null)
-			                                                {
-				                                                _RafafaLocation = doorConfig.RAFAFALOC;
-			                                                }
-			                                                return _RafafaLocation;
-		                                                }
-		                                                set
-		                                                {
-			                                                _RafafaLocation = value;
-			                                                if (doorConfig != null)
-                                                            {
-				                                                doorConfig.RAFAFALOC = _RafafaLocation;
-                                                                doorConfig.borderColors["RAFAFALOC"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                                                                UiLogic.clearFollowingTabFields(doorConfig, "accessories");
-                                                            }
-		                                                }
-	                                                }
-                                                 }
-                                                 @if (!sl) {
-                                                    <td id="tdSafeLock" >
-                                                        <input type="checkbox" name="chkbSafeLock" @bind="SafeLock" />
-                                                    </td>
-                                                 }
-                                                    @code
-                                                    {
-	                                                    protected bool _SafeLock = false;
-	                                                    protected bool SafeLock
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _SafeLock = (doorConfig.SAFELOCK == "Y");
-			                                                    }
-			                                                    return _SafeLock;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _SafeLock = value;
-			                                                    if (doorConfig != null)
-				                                                    doorConfig.SAFELOCK = (_SafeLock ? "Y" : "");
-		                                                    }
-	                                                    }
-                                                    }
-
                                                     @if (!wcb)
                                                     {
                                                         <td id="tdWetColorBox" >
-                                                            <input type="checkbox" name="chkbWetColorBox" @bind="WetColorBox" />
+
+                                                            <select  @bind="WetColorBoxID" >
+                                                            </select>
                                                         </td>
                                                     }
                                                     @code
                                                     {
-	                                                    protected bool _WetColorBox = false;
-	                                                    protected bool WetColorBox
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _WetColorBox = (doorConfig.WETCOLORBOX == "Y");
-			                                                    }
-			                                                    return _WetColorBox;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _WetColorBox = value;
-			                                                    if (doorConfig != null)
-				                                                    doorConfig.WETCOLORBOX = (_WetColorBox ? "Y" : "");
-		                                                    }
+                                                            protected int _WetColorBoxID = 0;
+                                                        protected int WetColorBoxID
+                                                        {
+                                                            get
+                                                            {
+                                                                if (doorConfig != null)
+                                                                {
+                                                                    _WetColorBoxID = doorConfig.WETCOLORBOXID;
+                                                                }
+                                                                return _WetColorBoxID;
+                                                            }
+                                                            set
+                                                            {
+                                                                _WetColorBoxID = value;
+                                                                if (doorConfig != null)
+                                                                    doorConfig.WETCOLORBOXID = _WetColorBoxID;
+                                                            }
 	                                                    }
                                                     }
 
+                                                    @* WETCOLORBOXQ *@
+                                                    <td>
+                                                        <input type="number"  @bind="@WetColorBoxQ" class= "@doorConfig.borderColors["WETCOLORBOXQ"]" />
+                                                    </td>
+                                                    @code
+							                        {
+								                        protected int _WetColorBoxQ = 0;
+								                        protected int WetColorBoxQ
+								                        {
+									                        get
+									                        {
+										                        if (doorConfig != null)
+										                        {
+											                        _WetColorBoxQ = doorConfig.WETCOLORBOXQ;
+										                        }
+										                        return _WetColorBoxQ;
+									                        }
+									                        set
+									                        {
+										                        _WetColorBoxQ = value;
+										                        if (doorConfig != null)
+										                        {
+											                        doorConfig.WETCOLORBOXQ = _WetColorBoxQ;
+											                        //doorConfig.borderColors["WETCOLORBOXQ"] = (value != 0 ? "blueBorder" : "redBorder"); // optional 
+											                        //UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										                        }
+									                        }
+								                        }
+							                        }
+
                                                     @if (!csp) {
                                                         <td id="tdColorSpray" >
-                                                            <input type="checkbox" name="chkbColorSpray" @bind="ColorSpray" />
+                                                            <select @bind="ColorSprayID" >
+                                                            </select>
                                                         </td>
                                                     }
                                                     @code
                                                     {
-	                                                    protected bool _ColorSpray = false;
-	                                                    protected bool ColorSpray
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _ColorSpray = (doorConfig.COLORSPRAY == "Y");
-			                                                    }
-			                                                    return _ColorSpray;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _ColorSpray = value;
-			                                                    if (doorConfig != null)
-				                                                    doorConfig.COLORSPRAY = (_ColorSpray ? "Y" : "");
-		                                                    }
+                                                        protected int _ColorSprayID = 0;
+                                                        protected int ColorSprayID
+                                                        {
+                                                            get
+                                                            {
+                                                                if (doorConfig != null)
+                                                                {
+                                                                    _ColorSprayID = doorConfig.COLORSPRAYID;
+                                                                }
+                                                                return _ColorSprayID;
+                                                            }
+                                                            set
+                                                            {
+                                                                _ColorSprayID = value;
+                                                                if (doorConfig != null)
+                                                                    doorConfig.COLORSPRAYID = _ColorSprayID;
+                                                            }
 	                                                    }
                                                     }
+
+                                                    @* COLORSPRAYQ*@
+                                                    <td>
+                                                        <input type="number"  @bind="@ColorSprayQ" class= "@doorConfig.borderColors["COLORSPRAYQ"]" />
+                                                    </td>
+                                                    @code
+							                        {
+								                        protected int _ColorSprayQ = 0;
+								                        protected int ColorSprayQ
+								                        {
+									                        get
+									                        {
+										                        if (doorConfig != null)
+										                        {
+											                        _ColorSprayQ = doorConfig.COLORSPRAYQ;
+										                        }
+										                        return _ColorSprayQ;
+									                        }
+									                        set
+									                        {
+										                        _ColorSprayQ = value;
+										                        if (doorConfig != null)
+										                        {
+											                        doorConfig.COLORSPRAYQ = _ColorSprayQ;
+											                        //doorConfig.borderColors["WETCOLORBOXQ"] = (value != 0 ? "blueBorder" : "redBorder"); // optional 
+											                        //UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+										                        }
+									                        }
+								                        }
+							                        }
+
 
                                                     @if (!clsp) {
                                                     <td id="tdCleaningSpray" >
@@ -261,6 +262,61 @@
 	                                                    }
                                                     }
 
+           <td id="tdLCDEye" hidden="@UiLogic.hideFld(doorConfig, "LCDEye")">
+              <input type="checkbox" name="chkbLCDEye" @bind="LCDEye" />
+            @code
+            {
+                protected bool _LCDEye = false;
+                protected bool LCDEye
+                {
+                    get
+                    {
+                        if (doorConfig != null)
+                        {
+                        _LCDEye = (doorConfig.LCDEYE == "Y");
+                        }
+                        return _LCDEye;
+                    }
+                    set
+                    {
+                        _LCDEye = value;
+                        if (doorConfig != null)
+                        doorConfig.LCDEYE = (_LCDEye ? "Y" : "");
+                    }
+                }
+            }
+            </td>
+
+
+
+                                                 @if (!sl) {
+                                                    <td id="tdSafeLock" >
+                                                        <input type="checkbox" name="chkbSafeLock" @bind="SafeLock" />
+                                                    </td>
+                                                 }
+                                                    @code
+                                                    {
+	                                                    protected bool _SafeLock = false;
+	                                                    protected bool SafeLock
+	                                                    {
+		                                                    get
+		                                                    {
+			                                                    if (doorConfig != null)
+			                                                    {
+				                                                    _SafeLock = (doorConfig.SAFELOCK == "Y");
+			                                                    }
+			                                                    return _SafeLock;
+		                                                    }
+		                                                    set
+		                                                    {
+			                                                    _SafeLock = value;
+			                                                    if (doorConfig != null)
+				                                                    doorConfig.SAFELOCK = (_SafeLock ? "Y" : "");
+		                                                    }
+	                                                    }
+                                                    }
+
+  @*
                                                     @if (!cr)
                                                     {
                                                         <td id="tdCore" >
@@ -315,7 +371,8 @@
 				                                                    doorConfig.MEZUZA = (_Mezuza ? "Y" : "");
 		                                                    }
 	                                                    }
-}
+                                                    }
+            *@
 
                                                 </tr>
                                         </table>

@@ -40,7 +40,7 @@ namespace BlazorServerApp1.Data
         // halfwing tabPage is actually staticwing with some changes in the list of Mandatory and optional fields .
         //  so I keep the halfwing mandatory fields in a special in-memory table.
         public static List<string> lstHalfwingMfields = new List<string> { "EXTRAWINGWIDTH", "DOORHEIGHT", "CENTRALCOLWIDTH", "SWING_HANDLENAME",
-                                          "OPENMODE", "OPENSIDE"};
+                                          "OPENMODE", "OPENSIDE", "COLORSNUM"};
 
         public static int IdOfNone = 99999;
         public static string NameOfNone = "9999999";
