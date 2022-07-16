@@ -19,9 +19,17 @@ namespace BlazorServerApp1.Pages
 
 			if (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES) && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
 			{
-				if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף" && tabName == "staticwing")
+				if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף")
 				{
-					prevTab = "divDoorTitle";
+					switch (tabName)
+					{
+						case "staticwing":
+							prevTab = "divDoorTitle";
+							break;
+						case "accessories":
+					    	prevTab = "staticwing";
+							break;
+					}
 				}
 				else
 				{

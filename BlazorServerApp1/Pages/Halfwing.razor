@@ -1411,7 +1411,7 @@
                 }
            
                 @code
-                {
+            {
                 protected string _Swing_Handle = string.Empty;
                 protected string Swing_Handle
                 {
@@ -1431,15 +1431,23 @@
                             doorConfig.SWING_HANDLENAME = _Swing_Handle;
                             // Handle is a Required field independent of the HASLOCK flag ! 07/07/2022
                             doorConfig.borderColors["SWING_HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-							 doorConfig.disabledFlds["SWING_HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone 
-                                                                        || !PrApiCalls.isHandleColored(doorConfig.SWING_HANDLENAME));
+                            doorConfig.disabledFlds["SWING_HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone 
+                                                                       || !PrApiCalls.isHandleColored(doorConfig.SWING_HANDLENAME));
                             if (doorConfig.disabledFlds["SWING_HANDLECOLORID"])
                                 doorConfig.SWING_HANDLECOLORID = 0;
 
+                            doorConfig.borderColors["SWING_HANDLECOLORID"] = (doorConfig.SWING_HANDLECOLORID != 0  ? "blueBorder" : "redBorder");
 
                             //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
-                             if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
-                                       config4.RefreshState();
+
+                            if (!PrApiCalls.isHandleColored(doorConfig.SWING_HANDLENAME) && UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                config4.RefreshState();
+                            if (PrApiCalls.isHandleColored(doorConfig.SWING_HANDLENAME) && doorConfig.SWING_HANDLECOLORID == 0)
+                            {
+                                UiLogic.deactivateBtnClass(doorConfig, "staticwing");
+                                config4.RefreshState();
+                            }
+
                         }
                     }
                 }

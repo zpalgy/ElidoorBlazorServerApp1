@@ -590,37 +590,42 @@
                                                                         נילווים
                                                                     </button>
                                                                 </td>
-                                                                @{
-                                                                    void showAccessories()
-                                                                    {
-                                                                        showTabPage(typeof(Accessories), "accessories");
-                                                                    }
-                                                                }
-                                                            </tr>
-                                                             <tr>
-                                                                <td>
-                                                                    <button name="btnManagerApproval" class="@doorConfig.btnClasses["managerapproval"]"
-                                                                       @onclick="showManagerApproval">
-                                                                        אישור מנהל
-                                                                    </button>
-                                                                </td>
-                                                                @{
-                                                                    void showManagerApproval() {}
-                                                                }
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <button name="btnSave" class="@doorConfig.btnClasses["save"]"
-                                                                      @onclick="btnSave_Click">
-                                                                        שמירה בפריוריטי
-                                                                    </button>
-                                                                </td>
-                                                                @{
+                                            @{
+                                                async Task showAccessories()
+                                                {
+                                                    if (showTabPage(typeof(Accessories), "accessories"))
+                                                    {
+                                                        StateHasChanged();
+                                                        await Task.Delay(1);
+                                                        await doorConfig.dicRefs["WETCOLORBOXID"].FocusAsync();
+                                                    }
+                                                }
+                                              }
+                                </tr>
+                                    <tr>
+                                    <td>
+                                        <button name="btnManagerApproval" class="@doorConfig.btnClasses["managerapproval"]"
+                                            @onclick="showManagerApproval">
+                                            אישור מנהל
+                                        </button>
+                                    </td>
+                                    @{
+                                        void showManagerApproval() {}
+                                    }
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button name="btnSave" class="@doorConfig.btnClasses["save"]"
+                                            @onclick="btnSave_Click">
+                                            שמירה בפריוריטי
+                                        </button>
+                                    </td>
+                                    @{
                                                                     
-                                                                }
-                                                            </tr>
-                                                        </table>
-                                                        <!-- end tblTabButtons -->
+                                    }
+                                </tr>
+                            </table>
+                            <!-- end tblTabButtons -->
                                                 </td>
                                                 </tr>
                         }

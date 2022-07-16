@@ -263,6 +263,9 @@ namespace BlazorServerApp1.Data
                     isFilled = false;
                 }
             }
+            //Harcode for Halfwing SWING_HANDLENAME and SWING_HANDLECOLORID 
+            if (PrApiCalls.isHandleColored(doorConfig.SWING_HANDLENAME) && doorConfig.SWING_HANDLECOLORID == 0)
+                isFilled = false;
             return isFilled;
         }
 
@@ -274,6 +277,19 @@ namespace BlazorServerApp1.Data
             {
                 doorConfig.btnClasses[tabBtnCssName] = "buttonFilled";
                 doorConfig.btnClasses[nextTabBtnCssName] = "buttonActive";
+                return true;
+            }
+            else
+                return false;
+        }
+        public static bool deactivateBtnClass (DoorConfig doorConfig, string tabName)
+        {
+            string tabBtnCssName = getTabBtnCssName(doorConfig, tabName);
+            string nextTabBtnCssName = getNextTabBtnCssName(doorConfig, tabBtnCssName);
+            if (!UiLogic.tabPageIsFilled(tabName, doorConfig))
+            {
+                doorConfig.btnClasses[tabBtnCssName] = "buttonActive";  //"buttonFilled";
+                doorConfig.btnClasses[nextTabBtnCssName] = "button";    //"buttonActive";
                 return true;
             }
             else
