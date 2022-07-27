@@ -1557,10 +1557,13 @@ namespace BlazorServerApp1.Data
                 emptyCyl.PARTNAME = string.Empty;
                 emptyCyl.PARTDES = string.Empty;
                 lstRes.Add(emptyCyl);
-                CYLINDER_Class noCylinder = new CYLINDER_Class();
-                noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
-                noCylinder.PARTDES = "ללא";
-                lstRes.Add(noCylinder);
+                if (doorConfig.TRSH_MODELNAME != "MLI")  // added on 27/07/2022 per Eli's request 
+                {
+                    CYLINDER_Class noCylinder = new CYLINDER_Class();
+                    noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
+                    noCylinder.PARTDES = "ללא";
+                    lstRes.Add(noCylinder);
+                }
                 foreach (CYLINDER_Class cyl in lstCylinders)
                 {
                     if (cyl.TRSH_MODELNAME == doorConfig.TRSH_MODELNAME

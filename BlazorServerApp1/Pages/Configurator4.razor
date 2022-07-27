@@ -282,13 +282,14 @@
 
             // disable prev navigation buttons 
             doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
+            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
         }
         }
 
         async Task  showStaticwing()
         {
         //showTabPage(typeof(Staticwing), "staticwing");
-
+             UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
             Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" ? typeof(Staticwing) : typeof(Halfwing));
 
             //if (showTabPage(typeof(Staticwing), "staticwing"))
@@ -305,6 +306,7 @@
         }
         async Task showMoving_Static_Wing()
         {
+             UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
             if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
             {
                 UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
