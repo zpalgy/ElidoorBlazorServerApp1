@@ -94,7 +94,7 @@
                                                              // issue : if we come here BACK from a newer tabPage we should not 
                                                              // enable this field.
             doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 
-            doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
+            doorConfig.TURBOAPPARATUS = (doorConfig.useTurbo ? "Y" : string.Empty);   // new 31/07/2022 
             //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
 
         }
@@ -186,6 +186,7 @@
         <td id="tdDoorWidth" hidden="@UiLogic.hideFld(doorConfig, "DoorWidth")">
             @{  int i301 = Array.IndexOf(UiLogic.propNames, "DOORWIDTH");
                                  <input name="txtWingWidth" type="number" @bind="DoorWidth" class="@doorConfig.borderColors["DOORWIDTH"]" 
+                                   autocomplete="off" 
                                   disabled="@doorConfig.disabledFlds["DOORWIDTH"]"
                                       @onfocus="@( () => UiLogic.HasFocus("DOORWIDTH", doorConfig) )" 
                                       @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
@@ -267,6 +268,7 @@
                  int i302 = Array.IndexOf(UiLogic.propNames, "DOORHEIGHT");
 
                            <input name="txtDoorHeight" type="number" @bind="DoorHeight" class="@doorConfig.borderColors["DOORHEIGHT"]" 
+                               autocomplete="off"
                                disabled="@doorConfig.disabledFlds["DOORHEIGHT"]"
                                   @onfocus="@( () => UiLogic.HasFocus("DOORHEIGHT", doorConfig) )" 
                                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
@@ -495,6 +497,7 @@
                                 case "1":
                                     disableColor = false;
                                     doorConfig.disabledFlds["DOORCOLORID"] = false;
+                                    doorConfig.borderColors["DOORCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");
 
                                     disableExtColor = true;
                                     doorConfig.disabledFlds["EXTCOLORID"] = true;
@@ -512,6 +515,8 @@
                                     doorConfig.disabledFlds["DOORCOLORID"] = true;
                                     disableExtColor = disableIntColor = false;
                                     doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
+                                    doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "resBorder");
+                                    doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "resBorder");
                                     //doorConfig.hideBtns["EXTCOLORID"] = doorConfig.hideBtns["INTCOLORID"] = false;  not used yet
                                     doorConfig.DOORCOLORID = 0;
                                     break;
@@ -565,7 +570,7 @@
                     {
                         doorConfig.DOORCOLORID = _DoorColorId;
                         doorConfig.borderColors["DOORCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
             }
@@ -628,7 +633,7 @@
                             doorConfig.EXTCOLORID = _ExtColor;
                             doorConfig.borderColors["EXTCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                             compareExtIntColors();
-                            UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                            //UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
                         }
                     }
                 }
@@ -1021,7 +1026,7 @@
                     {
                         doorConfig.HWCOLORID = _HwColorId;
                         doorConfig.borderColors["HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
             }
@@ -1146,6 +1151,8 @@
                     {
                         doorConfig.ELECTRICAPPARATUS = _ElectricApparatus;
                         doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                            config4.RefreshState();
                         //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }

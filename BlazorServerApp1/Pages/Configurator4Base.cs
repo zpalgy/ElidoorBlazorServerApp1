@@ -50,8 +50,12 @@ namespace BlazorServerApp1.Pages
 						}
 						else
 						{
-							prevTab = UiLogic.tabNames[t - 3];  //movingwing
+							prevTab = UiLogic.tabNames[t - 3];  //extdecor or movingwing
 							prevText = UiLogic.tabTexts[t - 3];
+							if (prevTab.ToLower() == "extdecor" && hideBtnExtDecor)
+                            {
+								prevTab = "movingwing";
+                            }
 						}
 					}
 					//if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor && hideBtnExtDecor)

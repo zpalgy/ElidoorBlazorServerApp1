@@ -232,6 +232,11 @@ namespace BlazorServerApp1.Data
                 bool fldIsMandatory = (tabFields[r]["MANDATORY"].ToString() == "M");
                 borderColor = string.Empty;
                 
+                if (fldName == "ELECTRICAPPARATUS")
+                {
+                    int dbg = 18;
+                }
+
                 if (!hideFld(doorConfig, controlThName)
                     && !controlName.StartsWith("chkb")
                     //&& fldIsMandatory

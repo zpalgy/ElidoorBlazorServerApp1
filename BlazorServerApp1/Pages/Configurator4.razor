@@ -107,6 +107,8 @@
         formDate = DateTime.Now; // <<<
         UiLogic.tabPageIsFilled("divHeader", doorConfig);
 
+        doorConfig.disabledFlds["proddes"] = true;  // added 28/07/2022
+
         //string UserName = httpContextAccessor.HttpContext.User.Identity.Name;  // httpContextAccessor.HttpContext is null !    
 
         //var authState = await authenticationStateTask;
@@ -130,6 +132,7 @@
 
         doorConfig.currTabName = "divHeader";
         doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
+        doorConfig.disabledFlds["proddes"] = true;     // added: 28/07/2022
         }
 
         protected override async void OnAfterRender(bool firstRender)
@@ -451,6 +454,7 @@
                                         //doorConfig.divClasses["divHeader"] = "divNotActive";
                                         //doorConfig.divClasses["divProducts"] = "divActive";
                                         showDivProducts();
+                                        doorConfig.disabledFlds["proddes"] = true;
                                         UiLogic.disableTabFlds(doorConfig, "divHeader");
                                     }
                                 }
@@ -1018,8 +1022,10 @@
                                                     //
                                                     doorConfig.TRSH_COMPLIENT = PrApiCalls.ELIDOOR_COMPLIENT; // new 11/07/2022 - the default for COMPLIENT is always ELIDOOR
                                                     doorConfig.useLOGO =  (Cust.TRSH_NOTECOMPLIENT != "Y");
-                                                    // all the foolowing login moved to movingwing and staticwing - because we can't set these fields here 
-                                                    //  before teh MODEL and WINGSNUM were selected and we know that the relevant wings will be filled .
+                                                    //doorConfig.TURBOAPPARATUS = Cust.TRSH_TURBO;
+                                                    doorConfig.useTurbo = (Cust.TRSH_TURBO == "Y");  //no serialized just to persist cust info
+                                                    // all the following logic moved to movingwing and staticwing - because we can't set these fields here 
+                                                    //  before the MODEL and WINGSNUM were selected and we know that the relevant wings will be filled .
                                                     //if (useELOGO) 
                                                     //{
                                                     //    doorConfig.useLOGO = PrApiCalls.ELIDOOR_COMPLIENT;  // 1 !
@@ -1239,27 +1245,28 @@
                                                         >דלת</button>
                                         @code
                                         {
-                                            private void btnDoorClicked()
+                                        private void btnDoorClicked()
                                             {
-                                                if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
-                                                {
-                                                    errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
-                                                    // Js.InvokeVoidAsync("alert", errMsg);
-                                                    openMsgBox = true;
-                                                    return;
-                                                }
-                                                else
-                                                {
-                                                    pageParams["doorConfig"] = doorConfig;
-                                                    pageParams["disableLogo"] = disableLogo;
-                                                    //dyncompType = typeof(Movingwing);
-                                                    hideDivDoor = false;
-                                                    doorConfig.btnClasses["general"] =   //"buttonLostFocus";
-                                                    doorConfig.btnClasses["selectprod"] = "buttonFilled";
-                                                    doorConfig.divClasses["divHeader"] = "divNotActive";
+                                        if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
+                                        {
+                                            errMsg2 = string.Format("יש למלא את כל השדות בכותרת");
+                                            // Js.InvokeVoidAsync("alert", errMsg);
+                                            openMsgBox = true;
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            pageParams["doorConfig"] = doorConfig;
+                                            pageParams["disableLogo"] = disableLogo;
+                                            //dyncompType = typeof(Movingwing);
+                                            hideDivDoor = false;
+                                            doorConfig.btnClasses["general"] =   //"buttonLostFocus";
+                                            doorConfig.btnClasses["selectprod"] = "buttonFilled";
+                                            doorConfig.divClasses["divHeader"] = "divNotActive";
 
-                                                    doorConfig.btnClasses["proddes"] = "buttonActive";
-                                                    //showDoorTitle();
+                                            doorConfig.btnClasses["proddes"] = "buttonActive";
+                                            doorConfig.disabledFlds["proddes"] = false;
+                                            //showDoorTitle();
                                                     //doorConfig.divClasses["divProducts"] = "divNotActive";
                                                     doorConfig.divClasses["divDoorTitle"] = "divActive";
 

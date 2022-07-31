@@ -65,15 +65,16 @@
 			//doorConfig.disabledFlds["HW4EXTRAWING"] = true;
 
 			doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 , in case we didn't open movingwing (WINGSNUMDES == Half Wing ) we set LOGO here.
-																				//  in case both WINGSNUMDES has more than one wing LOGO is always the same on both wings - see doc from 22/06/2022 !
-																				//  that doc also states the the LOGO field in the staticwing is always disabled !
-																				//  11.	"לוגו" יועתק מהכנף הנעה ולא ניתן יהיה לשינוי.
-																				//doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
-			doorConfig.SWING_TURBO = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
+															//  in case both WINGSNUMDES has more than one wing LOGO is always the same on both wings - see doc from 22/06/2022 !
+															//  that doc also states the the LOGO field in the staticwing is always disabled !
+															//  11.	"לוגו" יועתק מהכנף הנעה ולא ניתן יהיה לשינוי.
+															//doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
+
+			doorConfig.SWING_TURBO = ((doorConfig.SWINGHASLOCK == "Y" &&  doorConfig.useLOGO) ? "Y" : string.Empty);   // new 11/07/2022 , updated 28/07/2022 
 			doorConfig.disabledFlds["LOGO"] = true;
 		}
 
-		if (doorConfig.HW4EXTRAWING == 0 && doorConfig.TRSH_HARDWARE != 0)
+		if (doorConfig.SWINGHASLOCK == "Y" && doorConfig.HW4EXTRAWING == 0 && doorConfig.TRSH_HARDWARE != 0)
 		{
 			doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE); 
 		}
@@ -106,6 +107,8 @@
 			doorConfig.TRSH_SWING_CYLINDER = 0;
 			doorConfig.SWING_LOCKNAME = string.Empty;
 
+			doorConfig.SWING_TURBO = string.Empty;  // new 28/07/2022 
+
 			//doorConfig.TURBOAPPARATUS = string.Empty;  //06/07/2022  TURBOAPPARATUS is N when StaticWing Doesn't have a LOCK !
 			//doorConfig.LOCKDRILHEIGHT = 0;
 			//doorConfig.SWING_TURBO = string.Empty;   // 11/07/2022 TURBO is affected ONLY by  Cust.TRSH_NOTECOMPLIENT
@@ -128,7 +131,8 @@
 			doorConfig.thClasses["SWING_HWACCESSORYID"] =
 			doorConfig.thClasses["SWING_HWCOLORID"] =
 			doorConfig.thClasses["SWING_DRIL4HW"] = "thBlue";
-			doorConfig.thClasses["SWING_TURBO"] = "thGray";
+			doorConfig.thClasses["SWING_TURBO"] = "thGray";    //[TODO]: check this because doorConfig.SWING_TURBO  can be set if Cust.TRSH_TURBO is Y 
+		                                                       //I.e. doorConfig.useTurbo is true !
 			doorConfig.thClasses["SWING_LOCKNAME"] = "thBlue";
 
 			doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0  ? "blueBorder" : "redBorder");  // special for this field
@@ -136,6 +140,8 @@
 
 			CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == UiLogic.NameOfNone);  
 			lstCylinders1.Remove(noCyl);
+
+			doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 
 
 		}
 		if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")

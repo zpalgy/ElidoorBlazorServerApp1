@@ -290,7 +290,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "CUST,CUSTNAME,CUSTDES,ADDRESS,ADDRESS2,ADDRESS3,TRSH_NOTECOMPLIENT";
+                string fields = "CUST,CUSTNAME,CUSTDES,ADDRESS,ADDRESS2,ADDRESS3,TRSH_NOTECOMPLIENT,TRSH_TURBO";
                 request.Resource = string.Format("CUSTOMERS?$filter=CUST eq {0}&$select={1}", CUST, fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)

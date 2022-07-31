@@ -78,6 +78,8 @@ namespace BlazorServerApp1.Data
                                                   //[TODO]  - check that it works on sendToPriority ***
         [NonSerialized]
         public bool useLOGO;
+        [NonSerialized]
+        public bool useTurbo;
         [DataMember(Order = 16), Order]
         public string TRSH_MODELNAME { get; set; }    // MLI, 1029, 1040, ...
                                                       //***********************************************

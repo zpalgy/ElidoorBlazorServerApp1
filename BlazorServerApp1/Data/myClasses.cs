@@ -59,7 +59,9 @@ namespace BlazorServerApp1.Data
         public string ADDRESS3 { get; set; }
         [DataMember(Order = 7)]
         public string TRSH_NOTECOMPLIENT { get; set; }   // bool Y | ''
-        //public string TRSH_LOGO { get; set; }
+                                                         //public string TRSH_LOGO { get; set; }
+        [DataMember(Order = 7)]
+        public string TRSH_TURBO { get; set; }   // bool Y | ''
     }
     public class ValuesCUSTOMER_Class
     {
