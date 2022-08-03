@@ -657,8 +657,9 @@ namespace BlazorServerApp1.Data
                 for (int r = 0; r < tabFields.Length; r++)
                 {
                     string fldName = tabFields[r]["FIELDNAME"].ToString();
-                    string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
-                    clearConfField(doorConfig, fldName, fldDataType, ref errMsg);
+                    //string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
+                    //clearConfField(doorConfig, fldName, fldDataType, ref errMsg);
+                    clearConfField(doorConfig, fldName, ref errMsg);
                     applyFldDefault(doorConfig, fldName);
                 }
             }
@@ -770,28 +771,33 @@ namespace BlazorServerApp1.Data
                 DataRow row = PrApiCalls.dtConfFields.Rows[r];
                 string fldname = row["FIELDNAME"].ToString();
                 //debug
-                if (fldname == "CUST")
+                if (fldname == "TRSH_CYLINDER")
                 {
                     int x = 17;
                 }
                 //end debug
                 string dataType = row["FIELDDATATYPE"].ToString();
                 if (dataType != "Date" && fldname != "PARTNAME")
-                    clearConfField(doorConfig, fldname, dataType, ref errMsg);
+                {
+                    //clearConfField(doorConfig, fldname, dataType, ref errMsg);
+                    clearConfField(doorConfig, fldname, ref errMsg);
+                }
                 if (applyDefaults)
                     applyFldDefault(doorConfig, fldname);
             }
             doorConfig.initBorderColors();
             UiLogic.tabPageIsFilled("divHeader", doorConfig);  //set redborder on Required fields in divHeader
         }
-        public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
+        //public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
+        public static void clearConfField(DoorConfig doorConfig, string fldName, ref string errMsg)
         {
             string sval;
             int ival;
+            string dataType1;
 
             Type objType = doorConfig.GetType();
             PropertyInfo[] props = objType.GetProperties();
-            if (fldName == "EXTCOLORID")
+            if (fldName == "EXTCOLORID" || fldName == "MEASURESDOC")
             {
                 int x = 17;
             }
@@ -800,10 +806,13 @@ namespace BlazorServerApp1.Data
                 int p = Array.IndexOf(propNames, fldName);
                 if (p >= 0)
                 {
-                    switch (dataType)
+                    dataType1 = props[p].PropertyType.ToString();
+                    string dataType2 = dataType1.Split('.')[1];
+                    switch (dataType2.ToLower())
                     {
-                        case "CHAR":
-                        case "RCHAR":
+                        //case "CHAR":
+                        //case "RCHAR":
+                        case "string":
                                 sval = string.Empty;
                             try
                             {
@@ -816,7 +825,8 @@ namespace BlazorServerApp1.Data
                                 myLogger.log.Error(errMsg);
                             }
                             return;
-                        case "INT":
+                        //case "INT":
+                        case "int32":
                                 ival = 0;
                             try
                             {
@@ -829,6 +839,10 @@ namespace BlazorServerApp1.Data
                                 myLogger.log.Error(errMsg);
                             }
                             return;
+                        default:
+                            errMsg = string.Format("unexpected data type of DoorConfig.{0} - {1}", fldName, dataType2);
+                            myLogger.log.Error(errMsg);
+                            throw new Exception(errMsg);
                     }
                 }
             }
