@@ -48,7 +48,7 @@
 		else // page not filled , it's not empty because even if we come here for the 1st time some fields are 
 				// copied from movingwing .
 		{
-			
+
 
 			// these are handled in applySwingHasLock() here below !
 			//doorConfig.disabledFlds["HW4EXTRAWING"] =                   //06/07/2022 
@@ -60,7 +60,12 @@
 																														// doorConfig.disabledFlds["SWING_HANDLENAME"] = (doorConfig.TRSH_WINGSNUMDES == "כנף וחצי"); // 06/07/2022 
 																														//doorConfig.thClasses["HW4EXTRAWING"] = "thGray";   // 06/07/2022 
 																														//   07/07/2022 - Eli asked to make this field Mandatory
-			doorConfig.SWING_OPENSIDE = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+			if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" && !string.IsNullOrEmpty(doorConfig.OPENSIDE))
+			{
+				doorConfig.SWING_OPENSIDE = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+				doorConfig.disabledFlds["SWING_OPENSIDE"] = true;
+				doorConfig.disabledFlds["OPENMODE"] = true;
+			}
 
 			//doorConfig.disabledFlds["HW4EXTRAWING"] = true;
 
@@ -438,8 +443,8 @@
 			</td>
 
 		    <td id="tdOpenDirection" >
-                <input name="txtOpenDirection"   @bind="OpenDirection"  class="@doorConfig.borderColors["OPENSIDE"]"   
-				   disabled="@doorConfig.disabledFlds["OPENSIDE"]"   /> 
+                <input name="txtOpenDirection"   @bind="OpenDirection"  class="@doorConfig.borderColors["SWING_OPENSIDE"]"   
+				   disabled="@doorConfig.disabledFlds["SWING_OPENSIDE"]"   /> 
             </td>
             @code
             {
@@ -811,7 +816,7 @@
                             {
                                 if (hwa.COLORED == HwColored)
                                 {
-                                    <option value="@hwa.HWACCESSORYID">@hwa.HWACCESSORYDES</option>
+                                    <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option>
                                 }
                             }
                         }

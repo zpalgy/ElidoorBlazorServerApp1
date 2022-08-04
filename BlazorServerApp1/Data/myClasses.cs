@@ -244,8 +244,11 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 1)]
         public int HWACCESSORYID { get; set; }
         [DataMember(Order = 2)]
-        public string HWACCESSORYDES { get; set; }
+        public string PARTNAME { get; set; }
         [DataMember(Order = 3)]
+        public string PARTDES { get; set; }
+        //public string HWACCESSORYDES { get; set; }
+        [DataMember(Order = 4)]
         public string COLORED { get; set; }   // boolean Y | '' 
     }
     public class ValuesHWACCESSORY_Class

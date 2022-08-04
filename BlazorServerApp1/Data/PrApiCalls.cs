@@ -1198,7 +1198,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "HWACCESSORYID,HWACCESSORYDES,COLORED";
+                string fields = "HWACCESSORYID,PARTNAME,PARTDES,COLORED"; //"HWACCESSORYID,HWACCESSORYDES,COLORED";
                 request.Resource = string.Format("TRSH_HWACCESSORIES?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1212,11 +1212,12 @@ namespace BlazorServerApp1.Data
                     List<HWACCESSORY_Class> val1 = new List<HWACCESSORY_Class>();  //val.value;
                     HWACCESSORY_Class emptyHwa = new HWACCESSORY_Class();
                     emptyHwa.HWACCESSORYID = 0;
-                    emptyHwa.HWACCESSORYDES = " ";
+                    //emptyHwa.HWACCESSORYDES = " ";
+                    emptyHwa.PARTDES = " ";
                     val1.Add(emptyHwa);
                     HWACCESSORY_Class noHwa = new HWACCESSORY_Class();
                     noHwa.HWACCESSORYID = UiLogic.IdOfNone;
-                    noHwa.HWACCESSORYDES = "ללא";
+                    noHwa.PARTDES = "ללא";
                     val1.Add(noHwa);
 
                     foreach  (HWACCESSORY_Class hwa in val.value)

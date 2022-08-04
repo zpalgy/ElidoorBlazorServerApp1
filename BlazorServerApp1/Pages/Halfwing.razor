@@ -64,6 +64,20 @@
         {
             string errMsg2 = string.Empty;
             UiLogic.disableTabFlds(doorConfig, "staticwing");
+            // disable "manually" fields that are actually registered in "movingwing" and are Enabled  here in HalfWing
+            //  because movingwing was skipped .
+            UiLogic.disableTabFlds(doorConfig, "movingwing");
+
+            //doorConfig.disabledFlds["OPENMODE"] = true;
+            //doorConfig.disabledFlds["OPENSIDE"] = true;
+            //doorConfig.disabledFlds["DOORHEIGHT"] = true;
+            //doorConfig.disabledFlds["COLORSNUM"] = true;
+            //doorConfig.disabledFlds["DOORCOLORID"] = true;
+            //doorConfig.disabledFlds["EXTCOLORID"] = true;
+            //doorConfig.disabledFlds["INTCOLORID"] = true;
+            //doorConfig.disabledFlds["LOCKDRILHEIGHT"] = true;
+            //doorConfig.disabledFlds["LOGO"] = true;
+
             // restore the LOV for SWING_DRIL4HW !
             lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
         }
@@ -1116,7 +1130,7 @@
                             {
                                 if (hwa.COLORED == HwColored)
                                 {
-                                    <option value="@hwa.HWACCESSORYID">@hwa.HWACCESSORYDES</option>
+                                    <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option>
                                 }
                             }
                         }
