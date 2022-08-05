@@ -945,7 +945,7 @@
                             string HwColored = PrApiCalls.getHardware1(doorConfig.TRSH_HARDWARE).COLORED;
                             @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
                             {
-                                if (hwa.COLORED == HwColored)
+                                if (hwa.COLORED == HwColored || hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == UiLogic.IdOfNone)
                                 {
                                     <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option>
                                 }
