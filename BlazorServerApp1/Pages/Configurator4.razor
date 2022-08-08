@@ -1447,7 +1447,10 @@
                                                     }
                                                 }
                                             </select>
+                                            replaced html <select> by html <datalist> .
+                                            ref: https://jscurious.com/html-datalist-tag-for-filter-search/
                                             *@
+                                            
                                             <input list="lstModels1" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
                                              disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" 
                                               @ref="doorConfig.dicRefs[UiLogic.propNames[i7]]"  
