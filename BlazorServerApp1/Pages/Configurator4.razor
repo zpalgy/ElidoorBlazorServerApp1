@@ -1454,9 +1454,9 @@
                                             <input list="lstModels1" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
                                              disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" 
                                               @ref="doorConfig.dicRefs[UiLogic.propNames[i7]]"  
-                                            @onfocus="@( () => UiLogic.HasFocus("TRSH_MODELNAME", doorConfig) )"  
-                                                   @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                                                   onkeypress="@doorConfig.KeyPressHandler"
+                                              @onfocus="@( () => UiLogic.HasFocus("TRSH_MODELNAME", doorConfig) )"  
+                                              @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                              onkeypress="@doorConfig.KeyPressHandler"
                                             />
                                             <datalist id="lstModels1" >
                                             @if (PrApiCalls.lstModels != null)
