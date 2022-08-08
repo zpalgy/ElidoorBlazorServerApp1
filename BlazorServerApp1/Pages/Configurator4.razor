@@ -1431,7 +1431,8 @@
                                          @{
                                             int i7 = Array.IndexOf(UiLogic.propNames, "TRSH_MODELNAME");
                                             //currPropInd = i7;
-                                                <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
+                                            @*
+                                            <select name="dlstModelName" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
                                               disabled="@doorConfig.disabledFlds["TRSH_MODELNAME"]" 
                                               @ref="doorConfig.dicRefs[UiLogic.propNames[i7]]"  
                                                    @onfocus="@( () => UiLogic.HasFocus("TRSH_MODELNAME", doorConfig) )"  
@@ -1446,6 +1447,21 @@
                                                     }
                                                 }
                                             </select>
+                                            *@
+                                            <input list="lstModels1" @bind="TRSH_MODELNAME" class="@doorConfig.borderColors["TRSH_MODELNAME"]" 
+                                            @onfocus="@( () => UiLogic.HasFocus("TRSH_MODELNAME", doorConfig) )"  
+                                                   @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                                                   onkeypress="@doorConfig.KeyPressHandler"
+                                            />
+                                            <datalist id="lstModels1" >
+                                            @if (PrApiCalls.lstModels != null)
+                                                {
+                                                    @foreach (Model_Class m in PrApiCalls.lstModels)
+                                                    {
+                                                          <option value="@m.TRSH_MODELNAME">@m.TRSH_MODELDES</option>
+                                                    }
+                                                }
+                                            </datalist>
                                         }
                                     </td>
                                     @code {
