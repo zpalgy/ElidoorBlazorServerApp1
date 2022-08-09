@@ -345,7 +345,7 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 1)]
         public int WINDOWHEIGHT_ID { get; set; }
         [DataMember(Order = 2)]
-        public string PARTNAME { get; set; }
+        public string TRSH_MODELNAME { get; set; }
         [DataMember(Order = 3)]
         public int MINDOORHEIGHT { get; set; }
         [DataMember(Order = 4)]

@@ -2025,7 +2025,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "WINDOWHEIGHT_ID,PARTNAME,MINDOORHEIGHT,MAXDOORHEIGHT,MEASURENAME,WINDOWHEIGHT,HEIGHT4DRIL";
+                string fields = "WINDOWHEIGHT_ID,TRSH_MODELNAME,MINDOORHEIGHT,MAXDOORHEIGHT,MEASURENAME,WINDOWHEIGHT,HEIGHT4DRIL";
                 request.Resource = string.Format("TRSH_WINDOWHEIGHT?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
