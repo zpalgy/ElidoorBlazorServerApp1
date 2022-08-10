@@ -1728,8 +1728,67 @@ namespace BlazorServerApp1.Data
 
         public static string colorTypeAndDes(TRSH_COLOR_Class c)
         {
-            return string.Format("{0} {1}", c.TRSH_COLORTYPEDES, c.PARTDES);
+            return string.Format("{0}:{1}", c.TRSH_COLORTYPEDES, c.PARTDES);
         }
+        #region unused methods
+        //public static string colorTypeAndDes(int ColorId)
+        //{
+        //    TRSH_COLOR_Class color = PrApiCalls.getColorById(ColorId);
+        //    if (color != null && !string.IsNullOrEmpty(color.TRSH_COLORTYPEDES))
+        //        return string.Format("{0}:{1}", color.TRSH_COLORTYPEDES, color.PARTDES);
+        //    else
+        //        return string.Empty;
+        //}
+        //public static string colorName(int ColorId)
+        //{
+        //    TRSH_COLOR_Class color = PrApiCalls.getColorById(ColorId);
+        //    if (color != null)
+        //        return color.PARTNAME;
+        //    else
+        //        return string.Empty;
+        //}
+        //public static int getColorIdByClrName(string ClrName)
+        //{
+        //    foreach (TRSH_COLOR_Class color in PrApiCalls.lstColors)
+        //    {
+        //        if (color.PARTNAME == ClrName)
+        //            return color.TRSH_COLORID;
+        //    }
+        //    return 0;
+        //}
+        //public static int getColorIdByTypeAndDes(string typeAndDes)
+        //{
+        //    string[] cTypeAndDes = typeAndDes.Split(':');
+        //    foreach (TRSH_COLOR_Class color in PrApiCalls.lstColors)
+        //    {
+        //        if (color.TRSH_COLORTYPEDES == cTypeAndDes[0] && color.PARTDES == cTypeAndDes[1])
+        //            return color.TRSH_COLORID;
+        //    }
+        //    return 0;
+        //}
+        #endregion unused methods
+        public static string colorDes (int ColorId)
+        {
+            TRSH_COLOR_Class color = PrApiCalls.getColorById(ColorId);
+            if (ColorId > 0)
+            {
+                int dbg = 17;
+            }
+            if (color != null)
+                return color.PARTDES;
+            else
+                return string.Empty;
+        }
+        public static int getColorIdByClrDes(string ClrDes)
+        {
+            foreach (TRSH_COLOR_Class color in PrApiCalls.lstColors)
+            {
+                if (color.PARTDES == ClrDes)
+                    return color.TRSH_COLORID;
+            }
+            return 0;
+        }
+        
         public static void HasFocus(string currFldName, DoorConfig doorConfig)
         {
             doorConfig.currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
