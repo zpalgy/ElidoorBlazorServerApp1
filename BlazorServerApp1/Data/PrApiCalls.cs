@@ -1141,6 +1141,19 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        public static List<TRSH_LOCKHINGE_DRILH_Class> getLockHingeDrilHeights1(DoorConfig doorConfig)
+        {
+            List<TRSH_LOCKHINGE_DRILH_Class> lstLockDH1 = new List<TRSH_LOCKHINGE_DRILH_Class>();
+            foreach (TRSH_LOCKHINGE_DRILH_Class LockDH in lstLock_Hinge_Dril_Heights)
+            {
+                if (LockDH.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE)
+                {
+                    lstLockDH1.Add(LockDH);
+                }
+            }
+            List<TRSH_LOCKHINGE_DRILH_Class> SortedList = lstLockDH1.OrderBy(o => o.LOCKDRILHEIGHT).ToList();
+            return SortedList;
+        }
 
         //getHardwares
         public static List<TRSH_HARDWARE_Class> getHardwares(ref string errMsg)

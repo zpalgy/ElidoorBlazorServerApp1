@@ -715,13 +715,23 @@
 
         <td id="tdLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">
              @{  int i309 = Array.IndexOf(UiLogic.propNames, "LOCKDRILHEIGHT");
-                     <input name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" 
+                     <input list="lstLockDrilHeight" name="txtLockDrilHeight" type="number" @bind="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]" 
                         disabled="@doorConfig.disabledFlds["LOCKDRILHEIGHT"]"
                             @onfocus="@( () => UiLogic.HasFocus("LOCKDRILHEIGHT", doorConfig) )" 
                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                        onkeypress="@KeyPressHandler" 
-                             @ref="doorConfig.dicRefs[UiLogic.propNames[i309]]"
-                     />  
+                            onkeypress="@KeyPressHandler" 
+                            @ref="doorConfig.dicRefs[UiLogic.propNames[i309]]"
+                     />
+                     <datalist id="lstLockDrilHeight" >
+                       @if (PrApiCalls.lstLock_Hinge_Dril_Heights != null)
+                        {
+                            List<TRSH_LOCKHINGE_DRILH_Class> lstLockDH1 = PrApiCalls.getLockHingeDrilHeights1(doorConfig);
+                            @foreach (TRSH_LOCKHINGE_DRILH_Class lockDH in lstLockDH1)
+                            {
+                                <option value="@lockDH.LOCKDRILHEIGHT" >@lockDH.LOCKDRILHEIGHT</option>
+                            }
+                        }
+                    </datalist>
              }
        @* <InputText name="txtLockDrilHeight" type="number" @bind-Value="LockDrilHeight" class="@doorConfig.borderColors["LOCKDRILHEIGHT"]"
               style="outline:none" onkeypress="return event.keyCode!=13"/>
