@@ -734,8 +734,12 @@
                             List<TRSH_LOCKHINGE_DRILH_Class> lstLockDH1 = PrApiCalls.getLockHingeDrilHeights1(doorConfig);
                             @foreach (TRSH_LOCKHINGE_DRILH_Class lockDH in lstLockDH1)
                             {
-                                <option value="@lockDH.LOCKDRILHEIGHT" >@lockDH.LOCKDRILHEIGHT</option>
+                            if (lockDH.LOCKDRILHEIGHT > 0)
+                            {
+                                string DrilDes = string.Format("{0} ( {1} )", lockDH.LOCKDRILHEIGHT, lockDH.MEASURENAME);
+                                <option value="@lockDH.LOCKDRILHEIGHT">@DrilDes</option>
                             }
+                        }
                         }
                     </datalist>
              }
