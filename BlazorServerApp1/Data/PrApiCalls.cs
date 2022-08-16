@@ -239,8 +239,8 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "CUST,CUSTNAME,CUSTDES";  //,ADDRESS,ADDRESS2,ADDRES3";
-                request.Resource = string.Format("CUSTOMERS?$select={0}", fields);
+                string fields = "CUST,CUSTNAME,CUSTDES,TRSH_SALESMAN";  //,ADDRESS,ADDRESS2,ADDRES3";
+                request.Resource = string.Format("CUSTOMERS?$filter=TRSH_SALESMAN eq 'Y'&$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
                 {

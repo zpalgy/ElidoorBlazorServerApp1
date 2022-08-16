@@ -48,7 +48,17 @@ namespace BlazorServerApp1.Data
 
         public static string NoColor = "מגולוון";
         public static List<string> lstColorsNum1 = new List<string>();
-        
+
+        public static int MAX_ANYWING_W = 1400;
+        public static int MIN_MOVINWING_W = 300;
+        //public static int MAX_MOVINWING = 1400;
+
+        public static int MIN_SWING_WITHLOCK_W = 300;
+        //public static int MAX_SWING_WITHLOCK = 1400;
+
+        public static int MIN_SWING_NOLOCK_W = 160;
+        //public static int MAX_SWING_NOLOCK = 1400;
+
         //public static string currentMeaged = string.Empty;
         //public static string decoreSideCode = string.Empty;
 
@@ -1833,6 +1843,11 @@ namespace BlazorServerApp1.Data
             // do not do set border color to red if field is not Mandatory . e.g COLORSNUM in Halfwing !
             if (fldIsMandatory(doorConfig, doorConfig.currPropName))
                 doorConfig.borderColors[doorConfig.currPropName] = (fldIsFilled ? "blueBorder" : "redBorder");
+        }
+
+        public static bool wingWidthIsOk (DoorConfig doorConfig , int wingwidth, ref string errMsg)
+        {
+            return true;  //[TODO] this is just a placeHolder
         }
 
         //static List<string> lstThNames = new List<string>();

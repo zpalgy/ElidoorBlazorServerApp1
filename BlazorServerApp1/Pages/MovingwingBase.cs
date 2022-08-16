@@ -35,7 +35,7 @@ namespace BlazorServerApp1.Pages
                         doorConfig.TRSH_MODELNAME, doorConfig.TRSH_WINGSNUMDES, wingWidth);
 
             rowsArray = PrApiCalls.dtWindowWidths.Select(query);
-            if (rowsArray.Length == 0)
+            if (rowsArray.Length == 0 && (wingWidth < UiLogic.MIN_MOVINWING_W || wingWidth > UiLogic.MAX_ANYWING_W ))
             {
                 errMsg = "רוחב כנף חורג מהטולרנס שהוגדר נא למלא רוחב כנף מתאים";
                 myLogger.log.Error(errMsg);

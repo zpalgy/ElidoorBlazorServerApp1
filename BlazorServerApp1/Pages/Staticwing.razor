@@ -28,6 +28,20 @@
 	List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
 	List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
 
+	protected bool openMsgBox = false;
+    private bool openYesNo = false;
+    string errMsg2 = string.Empty;
+    string errMsg3 = "xxxxxxxxxxxxxxxxxx";
+    private string msgCaption = "שגיאה";
+    string msgClass = "modal-body centeredMsg";
+    private string MsgTitleCssClass = string.Empty;
+    string msgHeaderClass = "modal-header";
+    string msgBorder1Style = string.Empty;
+
+    private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg" 
+    string YNissue = string.Empty;
+    private bool ansYes = false;
+
 	protected override async Task OnInitializedAsync()
 	{
 
@@ -304,11 +318,28 @@
 					set
 					{
 						_ExtraWingWidth = value;
-						if (doorConfig != null)
-						{
-							doorConfig.EXTRAWINGWIDTH = (_ExtraWingWidth != null ? (int)_ExtraWingWidth : 0);
-							doorConfig.borderColors["EXTRAWINGWIDTH"] = (value != 0 ? "blueBorder" : "redBorder");
-							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						if (value == null || value == 0 || !UiLogic.wingWidthIsOk(doorConfig, (int)value, ref errMsg2))
+                        {
+                            errMsg2 = (value == null || value == 0 ? "חובה לציין רוחב דלת" : errMsg2);
+                            msgCaption = string.Empty;
+                            msgClass = "modal-body centeredMsg";
+                            // the error text is in errMsg2 which was populated in wingWidthIsOk(...) 
+                            openMsgBox = true;
+                            value = _ExtraWingWidth = 0;
+                            StateHasChanged();
+                            doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
+                            doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+                            //this.StateHasChanged();
+                        }
+                        else
+                        {
+
+							if (doorConfig != null)
+							{
+								doorConfig.EXTRAWINGWIDTH = (_ExtraWingWidth != null ? (int)_ExtraWingWidth : 0);
+								doorConfig.borderColors["EXTRAWINGWIDTH"] = (value != 0 ? "blueBorder" : "redBorder");
+								//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+							}
 						}
 					}
 				}
@@ -1336,4 +1367,60 @@
         </tr>
     </table>
     <!-- end table staticWingL3 -->
+	@if (openMsgBox)
+{
+    <MsgBox Caption="@msgCaption"
+        Message="@errMsg2"
+        OnClose="OnDialogClose"
+        MsgTitleCssClass="@MsgTitleCssClass"
+        ErrMsgCssClass="@msgClass"
+        Border1Style = "@msgBorder1Style"
+    >
+    </MsgBox>
+    @code
+    {
+        private void OnDialogClose()
+        {
+            openMsgBox = false;
+            errMsg2 = string.Empty;
+        }
+    }
+}
+@if (openYesNo)
+{
+  <MsgBox Caption="@msgCaption"
+        Type="MsgBox.Category.YesNo"
+        Message="@errMsg2"
+        OnClose="OnCloseYesNo"
+        MsgTitleCssClass="@MsgTitleCssClass"
+        ErrMsgCssClass="@ErrMsgCssClass"
+        Border1Style = "@msgBorder1Style" >
+  </MsgBox>
+    @code
+    {
+    private void OnCloseYesNo(bool isYes)
+    {
+        if (isYes)   // yesNo here is just for btnRestart !
+        {
+            ansYes = true;
+            switch (YNissue)
+            {
+                case "lockDril":
+                    @*  [TODO] 
+					if (newLockDrilHeight != doorConfig.LOCKDRILHEIGHT)  //(_LockDrilHeight != doorConfig.LOCKDRILHEIGHT )
+                    {
+                        doorConfig.LOCKDRILHEIGHT = newLockDrilHeight;   //(int)_LockDrilHeight;
+                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        clearHingesMeasures(doorConfig);
+                    }
+                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");
+					*@
+                    break;
+            }
+        }
+        openYesNo = false;
+        errMsg2 = string.Empty;
+    }
+}
+}
  

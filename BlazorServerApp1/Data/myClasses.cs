@@ -62,6 +62,8 @@ namespace BlazorServerApp1.Data
                                                          //public string TRSH_LOGO { get; set; }
         [DataMember(Order = 7)]
         public string TRSH_TURBO { get; set; }   // bool Y | ''
+        [DataMember(Order = 8)]
+        public string TRSH_SALESMAN { get; set; }  // bool Y | ''
     }
     public class ValuesCUSTOMER_Class
     {
