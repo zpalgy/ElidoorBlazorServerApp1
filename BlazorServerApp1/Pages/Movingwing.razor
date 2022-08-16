@@ -1011,6 +1011,7 @@
         <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
             @{  int i311 = Array.IndexOf(UiLogic.propNames, "HWCOLORID");
                 <input list="lstHwClr"  name="dlstHwColor" @bind="HwColorDes" class="@doorConfig.borderColors["HWCOLORID"]"  
+                 autocomplete="off"
                  disabled="@doorConfig.disabledFlds["HWCOLORID"]"  
                       @onfocus="@( () => UiLogic.HasFocus("HWCOLORID", doorConfig) )" 
                       @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 

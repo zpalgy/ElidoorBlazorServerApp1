@@ -48,7 +48,7 @@ namespace BlazorServerApp1.Data
 
         public static string NoColor = "מגולוון";
         public static List<string> lstColorsNum1 = new List<string>();
-
+        
         public static int MAX_ANYWING_W = 1400;
         public static int MIN_MOVINWING_W = 300;
         //public static int MAX_MOVINWING = 1400;
@@ -1845,8 +1845,28 @@ namespace BlazorServerApp1.Data
                 doorConfig.borderColors[doorConfig.currPropName] = (fldIsFilled ? "blueBorder" : "redBorder");
         }
 
-        public static bool wingWidthIsOk (DoorConfig doorConfig , int wingwidth, ref string errMsg)
+        public static bool wingWidthIsOk (DoorConfig doorConfig , int wingWidth, ref string errMsg)
         {
+            int minWingWidth = MIN_SWING_WITHLOCK_W;
+            if (doorConfig.currTabName == "staticwing" && doorConfig.SWINGHASLOCK != "Y")
+                minWingWidth = MIN_SWING_NOLOCK_W;
+
+            if (wingWidth < minWingWidth || wingWidth > MAX_ANYWING_W)
+            {
+                errMsg = "רוחב כנף חורג מהטולרנס שהוגדר נא למלא רוחב כנף מתאים";
+                return false;
+            }
+
+            string query = string.Format("TRSH_MODELNAME='{0}'", doorConfig.TRSH_MODELNAME);
+            DataRow[] rowsArray = PrApiCalls.dtWindowWidths.Select(query);
+            if (rowsArray.Length == 0)
+            {
+                //return 0;  // A DOOR  without WINDOW is legal 
+                errMsg = "דגם זה לא קיים בטבלת מידות רוחב חלון - אנא פנה למנהל המערכת";  // now (21/06/2022) any MODEL should be in  TRSH_WINDOWWIDTH 
+                                                                                         // even if it doesn't have a Window !
+                myLogger.log.Error(errMsg);
+                return false;
+            }
             return true;  //[TODO] this is just a placeHolder
         }
 

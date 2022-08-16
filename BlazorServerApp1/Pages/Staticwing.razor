@@ -159,7 +159,7 @@
 
 			CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == UiLogic.NameOfNone);  
 			lstCylinders1.Remove(noCyl);
-
+			
 			doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 
 
 		}
@@ -281,6 +281,9 @@
 						if (doorConfig != null)
 						{
 							doorConfig.SWINGHASLOCK = (_SwingHasLock ? "Y" : string.Empty);
+							doorConfig.EXTRAWINGWIDTH = 0;  // here we switched changed SWINGHASLOCK
+			                                // by that we force the user to enter EXTRAWINGWIDTH so that it can be validated against UiLogic.MIN_SWING_WITHLOCK_W
+											// or UiLogic.MIN_SWING_NOLOCK_W which are diffrent
 							applySwingHasLock();
 							//UiLogic.clearFollowingTabFields(doorConfig, "staticgwing");
                         }
@@ -327,8 +330,8 @@
                             openMsgBox = true;
                             value = _ExtraWingWidth = 0;
                             StateHasChanged();
-                            doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
-                            doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+                            doorConfig.borderColors["EXTRAWINGWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
+                            doorConfig.dicRefs["EXTRAWINGWIDTH"].FocusAsync();
                             //this.StateHasChanged();
                         }
                         else
@@ -890,6 +893,7 @@
         <td>
             @{  int i606 = Array.IndexOf(UiLogic.propNames, "SWING_HWCOLORID");
 				<select name="dlstSwing_HwColor" @bind="Swing_HwColorId" class="@doorConfig.borderColors["SWING_HWCOLORID"]"  
+				 autocomplete="off" 
                  disabled="@doorConfig.disabledFlds["SWING_HWCOLORID"]"  
 				  	@onfocus="@( () => UiLogic.HasFocus("SWING_HWCOLORID", doorConfig) )" 
 				  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
@@ -1367,7 +1371,7 @@
         </tr>
     </table>
     <!-- end table staticWingL3 -->
-	@if (openMsgBox)
+@if (openMsgBox)
 {
     <MsgBox Caption="@msgCaption"
         Message="@errMsg2"
