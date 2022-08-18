@@ -1666,7 +1666,7 @@ namespace BlazorServerApp1.Data
             }
         }
 
-        public static List<CYLHW_Class> getCYLHWs1(int TRSH_CYLINDER, string OPENSIDE, ref string errMsg)
+        public static List<CYLHW_Class> getCYLHWs1(int TRSH_CYLINDER, string OPENSIDE, string OPENMODE, ref string errMsg)
         {
             try
             {
@@ -1687,7 +1687,8 @@ namespace BlazorServerApp1.Data
                 {
                     foreach (CYLHW_Class chw in lstCYLHWs)
                     {
-                        if (chw.TRSH_CYLINDER == TRSH_CYLINDER && chw.OPENSIDE == OPENSIDE)
+
+                        if (chw.TRSH_CYLINDER == TRSH_CYLINDER && chw.OPENSIDE == OPENSIDE && chw.WING_OPENMODE == OPENMODE)
                             res.Add(chw);
                     }
                 }

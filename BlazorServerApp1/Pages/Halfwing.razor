@@ -972,7 +972,7 @@
 							//doorConfig.SWING_HWCOLORID = (doorConfig.SWING_HWCOLORID == 0 ? doorConfig.HWCOLORID : doorConfig.SWING_HWCOLORID);
 							//find the SWING_DRIL4HW that is associated with HW4EXTRAWING
                             string errMsg = string.Empty;
-                            lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.OPENSIDE, ref errMsg);
+                            lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg);
 							if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
 							{
 								CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא" );
