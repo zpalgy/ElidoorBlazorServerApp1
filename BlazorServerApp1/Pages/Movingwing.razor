@@ -936,7 +936,8 @@
                                     doorConfig.disabledFlds["HANDLECOLORID"] = true;   //doorConfig.HANDLECOLORID
                                                                                        // populate the LOV for Dril4Hw based on Hardware selected .
                                 string errMsg = string.Empty;
-                                lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig, ref errMsg);
+                                lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig, ref errMsg);  //Eli's request on 07/07/2022: if the DRIL4HW is IDS,lstD4HW1 will contain the two IDS dril types
+                                                                                            //  for other dril types, lstD4HW1 will contain a single element !
 
                                 doorConfig.borderColors["DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
@@ -1110,8 +1111,8 @@
                     @* @if (PrApiCalls.lstDril4Hw != null)  *@
                     @if (lstD4HW1 != null)
                 {
-                        @* @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw) *@
-                        @foreach (DRIL4HW_Class c in lstD4HW1)
+                    @* @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw) *@
+                    @foreach (DRIL4HW_Class c in lstD4HW1)
                     {
                             <option value="@c.DRIL4HW">@c.DRIL4HWDES</option>
                     }

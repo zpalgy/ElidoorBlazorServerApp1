@@ -29,18 +29,18 @@
 	List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
 
 	protected bool openMsgBox = false;
-    private bool openYesNo = false;
-    string errMsg2 = string.Empty;
-    string errMsg3 = "xxxxxxxxxxxxxxxxxx";
-    private string msgCaption = "שגיאה";
-    string msgClass = "modal-body centeredMsg";
-    private string MsgTitleCssClass = string.Empty;
-    string msgHeaderClass = "modal-header";
-    string msgBorder1Style = string.Empty;
+	private bool openYesNo = false;
+	string errMsg2 = string.Empty;
+	string errMsg3 = "xxxxxxxxxxxxxxxxxx";
+	private string msgCaption = "שגיאה";
+	string msgClass = "modal-body centeredMsg";
+	private string MsgTitleCssClass = string.Empty;
+	string msgHeaderClass = "modal-header";
+	string msgBorder1Style = string.Empty;
 
-    private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg" 
-    string YNissue = string.Empty;
-    private bool ansYes = false;
+	private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg" 
+	string YNissue = string.Empty;
+	private bool ansYes = false;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -84,10 +84,10 @@
 			//doorConfig.disabledFlds["HW4EXTRAWING"] = true;
 
 			doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 , in case we didn't open movingwing (WINGSNUMDES == Half Wing ) we set LOGO here.
-															//  in case both WINGSNUMDES has more than one wing LOGO is always the same on both wings - see doc from 22/06/2022 !
-															//  that doc also states the the LOGO field in the staticwing is always disabled !
-															//  11.	"לוגו" יועתק מהכנף הנעה ולא ניתן יהיה לשינוי.
-															//doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
+																				//  in case both WINGSNUMDES has more than one wing LOGO is always the same on both wings - see doc from 22/06/2022 !
+																				//  that doc also states the the LOGO field in the staticwing is always disabled !
+																				//  11.	"לוגו" יועתק מהכנף הנעה ולא ניתן יהיה לשינוי.
+																				//doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
 
 			doorConfig.SWING_TURBO = ((doorConfig.SWINGHASLOCK == "Y" &&  doorConfig.useLOGO) ? "Y" : string.Empty);   // new 11/07/2022 , updated 28/07/2022 
 			doorConfig.disabledFlds["LOGO"] = true;
@@ -151,17 +151,29 @@
 			doorConfig.thClasses["SWING_HWCOLORID"] =
 			doorConfig.thClasses["SWING_DRIL4HW"] = "thBlue";
 			doorConfig.thClasses["SWING_TURBO"] = "thGray";    //[TODO]: check this because doorConfig.SWING_TURBO  can be set if Cust.TRSH_TURBO is Y 
-		                                                       //I.e. doorConfig.useTurbo is true !
+																		//I.e. doorConfig.useTurbo is true !
 			doorConfig.thClasses["SWING_LOCKNAME"] = "thBlue";
 
 			doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0  ? "blueBorder" : "redBorder");  // special for this field
-			                                                         // that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
+																																		// that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
 
 			CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == UiLogic.NameOfNone);  
 			lstCylinders1.Remove(noCyl);
-			
-			doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 
 
+			// 16/08/2022 : Eli asked to copy the cylinder and hardware from the movingwing here when setting SWINGHASLOCK to Y ! 
+			//  copy also : Hardware Color, Dril4Hw , Hanlde, Handle Color from movingwing !
+			doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;  
+			doorConfig.HW4EXTRAWING = doorConfig.TRSH_HARDWARE;
+			doorConfig.SWING_DRIL4HW = doorConfig.DRIL4HW;
+			if (doorConfig.SWING_DRIL4HW == PrApiCalls.IDS_TWOSIDES)  //16/08/2022 in staticwing if DRIL4HW is IDS it's always IDS_ONESIDE !
+				doorConfig.SWING_DRIL4HW = PrApiCalls.IDS_ONESIDE;  
+			doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;
+
+			doorConfig.SWING_HANDLENAME = doorConfig.HANDLENAME;
+			doorConfig.SWING_HANDLECOLORID = doorConfig.HANDLECOLORID;
+
+			doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 , requested again on 16/08/2022
+			// LOGO is also copied, but there is no special field SWING_LOGO for staticwing as always we use teh LOGO of teh movinwing !
 		}
 		if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
 		{
@@ -671,11 +683,15 @@
 						{
 							// if the user selected 1/2 Cylinder the folowing two fields are emptied and disabled !
 							doorConfig.HW4EXTRAWING = 0;
-							doorConfig.SWING_HWCOLORID = 0;
-							doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] = true;
+							//doorConfig.SWING_HWCOLORID = 0;  - 16/08/2022 - do not empty this field, copy it from movingwing !
+							//                           copy HWCOLORID from movingwing is done in applySwingHasLock(...)
+							//doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] = true;
+							//   16/08/2022 - HW4EXTRAWING and SWING_DRIL4HW are ACTIVE , their values can be only those that can be used with Half Cylinder !
+
+							doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
 
 							// as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
-							//  the value in SWING_DRIL4HW
+							//  IDS_ONESIDE !
 							lstD4HW1 = new List<DRIL4HW_Class>();
 							DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
 							lstD4HW1.Add(dril4HalfCyl);
@@ -712,7 +728,7 @@
 						@{
 							string errMsg = string.Empty;
 							//List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getDoorHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
-							 List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_CYLINDER, doorConfig.SWING_OPENSIDE, doorConfig.OPENMODE, ref errMsg);
+							 List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.SWING_OPENSIDE, doorConfig.OPENMODE, ref errMsg);
 							 if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
 							{
 								CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא" );

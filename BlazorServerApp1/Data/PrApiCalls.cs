@@ -26,6 +26,7 @@ namespace BlazorServerApp1.Data
         public static int ELIDOOR_COMPLIENT = 1;
         public static int MEGULVAN_ID;
         public static int IDS_ONESIDE;
+        public static int IDS_TWOSIDES;
 
         public static DataTable dtMeagedFields;
         public static DataTable dtDecorSideFlds;
@@ -1370,9 +1371,12 @@ namespace BlazorServerApp1.Data
                     foreach (DRIL4HW_Class dril4Hw in val.value)
                     {
                         val1.Add(dril4Hw);
-                        if (dril4Hw.DRIL4HWDES.Contains("IDS") && dril4Hw.DRIL4HWDES.Contains("חד צדדי"))
+                        if (dril4Hw.DRIL4HWDES.Contains("IDS"))
                         {
-                            IDS_ONESIDE = dril4Hw.DRIL4HW;
+                            if (dril4Hw.DRIL4HWDES.Contains("חד צדדי"))
+                                IDS_ONESIDE = dril4Hw.DRIL4HW;
+                            else
+                                IDS_TWOSIDES = dril4Hw.DRIL4HW;
                         }
                     }
                     return val1;
@@ -1404,16 +1408,16 @@ namespace BlazorServerApp1.Data
                 DRIL4HW_Class d1 = getDril4HwRec1(doorConfig);
                 lstDril4Hw1.Add(d1);
 
-                if (d1.DRIL4HWDES.Contains("IDS"))
+                if (d1.DRIL4HWDES.Contains("IDS"))  //it's either IDS_ONESIDE or ID_TWOSIDES
                 {
                     foreach (DRIL4HW_Class d in lstDril4Hw)
                     {
-                        if (d.DRIL4HWDES.Contains("IDS") && d.DRIL4HW != d1.DRIL4HW)
+                        if (d.DRIL4HWDES.Contains("IDS") && d.DRIL4HW != d1.DRIL4HW)  // it's teh 2nd IDS drill
                         {
                             DRIL4HW_Class d2 = new DRIL4HW_Class();
                             d2.DRIL4HW = d.DRIL4HW;
                             d2.DRIL4HWDES = d.DRIL4HWDES;
-                            lstDril4Hw1.Add(d2);
+                            lstDril4Hw1.Add(d2);   //now lstDril4Hw1 contains the two IDS drills !
                             break;
                         }
                     }
@@ -1458,12 +1462,13 @@ namespace BlazorServerApp1.Data
         }
         public static int getDril4HwOfHw(DoorConfig doorConfig)
         {
+            // note: per Eli's request: in  thw table TRSH_HARDWARE :  if the TRSH_HARDWARE.DRIL4HW should be IDS it's always IDS_ONESIDE !
             if (doorConfig != null)
             {
                 string query = string.Format("TRSH_HARDWARE={0}", doorConfig.TRSH_HARDWARE);
                 DataRow[] dril4HwRows = dtHardwares.Select(query);
                 if (dril4HwRows.Length > 0)
-                    return int.Parse(dril4HwRows[0]["DRIL4HW"].ToString());
+                    return int.Parse(dril4HwRows[0]["DRIL4HW"].ToString());  //if it should return IDS, it always returns IDS_ONESIDE 
             }
             return 0;
         }
