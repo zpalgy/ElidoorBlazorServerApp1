@@ -164,6 +164,9 @@
 			//  copy also : Hardware Color, Dril4Hw , Hanlde, Handle Color from movingwing !
 			doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;  
 			doorConfig.HW4EXTRAWING = doorConfig.TRSH_HARDWARE;
+			if (lstD4HW1 == null || lstD4HW1.Count == 0)
+				setSWING_DRIL4HW();    // populate lstD4Hw1 - so that doorConfig.SWING_DRIL4HW can get a value from this LOV. Otherwise it'll not get
+				                       //   a value, because this LOV acts also as a validator for the value of teh field. Thta value must exist in teh LOV of the field.
 			doorConfig.SWING_DRIL4HW = doorConfig.DRIL4HW;
 			if (doorConfig.SWING_DRIL4HW == PrApiCalls.IDS_TWOSIDES)  //16/08/2022 in staticwing if DRIL4HW is IDS it's always IDS_ONESIDE !
 				doorConfig.SWING_DRIL4HW = PrApiCalls.IDS_ONESIDE;  
@@ -755,6 +758,10 @@
 						{
 							//_Hw4ExtraWing = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.HW4EXTRAWING);
 							_Hw4ExtraWing = doorConfig.HW4EXTRAWING;
+							if (doorConfig.HW4EXTRAWING == 0)
+							{
+								int dbg = 18;
+							}
 						}
 						return _Hw4ExtraWing;
 					}
@@ -981,21 +988,21 @@
 				@* SWING_DRIL4HW *@
 				@{  int i607 = Array.IndexOf(UiLogic.propNames, "SWING_DRIL4HW");
 				<select name="dlstSwing_Dril4Hw" @bind="Swing_Dril4Hw" class="@doorConfig.borderColors["SWING_DRIL4HW"]"
-              disabled="@doorConfig.disabledFlds["SWING_DRIL4HW"]" 
-			  	@onfocus="@( () => UiLogic.HasFocus("SWING_DRIL4HW", doorConfig) )" 
-			  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i607]]" >
+					disabled="@doorConfig.disabledFlds["SWING_DRIL4HW"]" 
+			  		@onfocus="@( () => UiLogic.HasFocus("SWING_DRIL4HW", doorConfig) )" 
+			  		@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                    onkeypress="@doorConfig.KeyPressHandler" 
+					@ref="doorConfig.dicRefs[UiLogic.propNames[i607]]" >
 
 					@* @if (PrApiCalls.lstDril4Hw != null)  *@
 					@if (lstD4HW1 != null)
-                {
+					{
 						@* @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw) *@
 						@foreach (DRIL4HW_Class c in lstD4HW1)
-                    {
+						{
 							<option value="@c.DRIL4HW">@c.DRIL4HWDES</option>
-                    }
-                }
+						}
+					}
 				</select>
             }
 			</td>
