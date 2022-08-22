@@ -1267,6 +1267,27 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        public static HWACCESSORY_Class getHwAcc(int HwAccId)
+        {
+            HWACCESSORY_Class res = lstHwAccessories.Find(item => item.HWACCESSORYID == HwAccId);
+            return res;
+        }
+        public static string getHwAccDes (int HwAccId)
+        {
+            HWACCESSORY_Class hwAcc = getHwAcc(HwAccId);
+            if (hwAcc != null)
+                return hwAcc.PARTDES;
+            else
+                return String.Empty;
+        }
+        public static int getHwAccIdbyDes (string HwAccDes)
+        {
+            HWACCESSORY_Class hwAcc = lstHwAccessories.Find(item => item.PARTDES == HwAccDes);
+            if (hwAcc != null)
+                return hwAcc.HWACCESSORYID;
+            else
+                return 0;
+        }
         public static bool isHWColored(int TRSH_HARDWARE)
         {
             DataRow[] rowsArray;
@@ -1290,7 +1311,7 @@ namespace BlazorServerApp1.Data
         }
         public static string getHwDes (int TRSH_HARDWARE)
         {
-            TRSH_HARDWARE_Class hw1 = lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);
+            TRSH_HARDWARE_Class hw1 = getHardware1(TRSH_HARDWARE);  //lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);
             if (hw1 != null)
                 return hw1.PARTDES;
             else

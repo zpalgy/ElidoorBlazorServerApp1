@@ -972,31 +972,37 @@
         </td>
         <td>
              @{  int i333 = Array.IndexOf(UiLogic.propNames, "HWACCESSORYID");
-             <select name="dlstHw" @bind="HwAccessoryId" class="@doorConfig.borderColors["HWACCESSORYID"]" 
-                    disabled="@doorConfig.disabledFlds["HWACCESSORYID"]"
+             <input list="lstHwAcc"  name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]" autocomplete="off"
+                        disabled="@doorConfig.disabledFlds["HWACCESSORYID"]"
                         @onfocus="@( () => UiLogic.HasFocus("HWACCESSORYID", doorConfig) )" 
                         @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                    onkeypress="@KeyPressHandler" 
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i333]]" >
+                        onkeypress="@KeyPressHandler" 
+                        @ref="doorConfig.dicRefs[UiLogic.propNames[i333]]" 
+                  />
+                  <datalist id="lstHwAcc">
                     @{
                         if (PrApiCalls.lstHwAccessories != null)
                         {
                             string HwColored = PrApiCalls.getHardware1(doorConfig.TRSH_HARDWARE).COLORED;
                             @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
                             {
+                                // show all HwAccessories with same COLORED value as the HW.
+                                //  UNION HwAccessory with ID == 0 || 99999 with any value of COLORED 
                                 if (hwa.COLORED == HwColored || hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == UiLogic.IdOfNone)
                                 {
-                                    <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option>
+                                    @* <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option> *@
+                                    <option value="@hwa.PARTDES">@hwa.PARTDES</option>
                                 }
                             }
                         }
                     }
-                    </select>
+                    </datalist>
                     }
                     @code
                     {
                         protected int _HwAccessoryId;
-                        protected int HwAccessoryId
+                        //protected int HwAccessoryId
+                        protected string HwAccDes
                         {
                             get
                             {
@@ -1004,21 +1010,21 @@
                                 {
                                     _HwAccessoryId = doorConfig.HWACCESSORYID;
                                 }
-                                return _HwAccessoryId;
+                                return PrApiCalls.getHwAccDes(_HwAccessoryId);  //_HwAccessoryId;
                             }
                             set
                             {
-                                _HwAccessoryId = value;
+                                _HwAccessoryId = PrApiCalls.getHwAccIdbyDes(value);  //value;
                                 if (doorConfig != null)
                                 {
                                     doorConfig.HWACCESSORYID = _HwAccessoryId;
-                                    doorConfig.borderColors["HWACCESSORYID"] = (value != 0 ? "blueBorder" : "redBorder");
+                                    doorConfig.borderColors["HWACCESSORYID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");  //(value != 0 ? "blueBorder" : "redBorder");
                                     if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
-                                                 config4.RefreshState();
+                                                    config4.RefreshState();
                                 }
                             }
                         }
-                    }
+                   }
         </td>
 
         @{
