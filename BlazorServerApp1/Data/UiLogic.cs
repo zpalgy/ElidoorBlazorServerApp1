@@ -1791,12 +1791,16 @@ namespace BlazorServerApp1.Data
         }
         public static int getColorIdByClrDes(string ClrDes)
         {
-            foreach (TRSH_COLOR_Class color in PrApiCalls.lstColors)
-            {
-                if (color.PARTDES == ClrDes)
-                    return color.TRSH_COLORID;
-            }
-            return 0;
+            TRSH_COLOR_Class color = PrApiCalls.lstColors.Find(item => item.PARTDES == ClrDes);
+            //foreach (TRSH_COLOR_Class color in PrApiCalls.lstColors)
+            //{
+            //    if (color.PARTDES == ClrDes)
+            //        return color.TRSH_COLORID;
+            //}
+            if (color != null)
+                return color.TRSH_COLORID;
+            else
+                return 0;
         }
         
         public static void HasFocus(string currFldName, DoorConfig doorConfig)

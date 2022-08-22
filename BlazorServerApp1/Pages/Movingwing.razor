@@ -873,12 +873,14 @@
 
         <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
              @{  int i310 = Array.IndexOf(UiLogic.propNames, "TRSH_HARDWARE");
-                    <select name="dlstHw" @bind="Hw" class="@doorConfig.borderColors["TRSH_HARDWARE"]" 
-                    disabled="@doorConfig.disabledFlds["TRSH_HARDWARE"]"
+                    <input list="lstHw" name="dlstHw" @bind="HwDes" class="@doorConfig.borderColors["TRSH_HARDWARE"]"  autocomplete="off"
+                        disabled="@doorConfig.disabledFlds["TRSH_HARDWARE"]"
                         @onfocus="@( () => UiLogic.HasFocus("TRSH_HARDWARE", doorConfig) )" 
                         @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                    onkeypress="@KeyPressHandler" 
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i310]]" >
+                        onkeypress="@KeyPressHandler" 
+                        @ref="doorConfig.dicRefs[UiLogic.propNames[i310]]" 
+                        />
+                        <datalist id="lstHw">
                     @{
                         string errMsg = string.Empty;
                         //List<TRSH_HARDWARE_Class> lstDoorHWs1 = lstDoorHWs.ToList<TRSH_HARDWARE_Class>();
@@ -893,20 +895,22 @@
                                 int dbg = 17;
                             }
                         }
-                            if (lstCylHws1 != null)
+                        if (lstCylHws1 != null)
+                        {
+                            @foreach (CYLHW_Class c in lstCylHws1)
                             {
-                                @foreach (CYLHW_Class c in lstCylHws1)
-                                {
-                                            <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option>
-                                }
+                                        @* <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option> *@
+                                        <option value="@c.PARTDESHW">@c.PARTDESHW</option>
                             }
                         }
-                    </select>
+                     }
+                    </datalist>
             }
             @code
             {
                 protected int _Hw;
-                protected int Hw
+                //protected int Hw
+                protected string HwDes
                 {
                     get
                     {
@@ -914,11 +918,11 @@
                         {
                             _Hw = doorConfig.TRSH_HARDWARE;
                         }
-                        return _Hw;
+                        return PrApiCalls.getHwDes(_Hw);
                     }
                     set
                     {
-                        _Hw = value;
+                        _Hw = PrApiCalls.getHwIdByDes(value);  // value;
                         if (doorConfig != null)
                         {
                             doorConfig.TRSH_HARDWARE = _Hw;
@@ -938,7 +942,7 @@
                             }
                             else
                             {
-                                doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? "blueBorder" : "redBorder");
+                                doorConfig.borderColors["TRSH_HARDWARE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");  // (value != 0 ? "blueBorder" : "redBorder");
                                 doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
                                 doorConfig.disabledFlds["HANDLENAME"] = (doorConfig.DRIL4HW != PrApiCalls.IDS_ONESIDE);
                                 if (doorConfig.disabledFlds["HANDLENAME"])
@@ -951,7 +955,7 @@
                                 doorConfig.borderColors["DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
 
-                                doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(value);
+                                doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(_Hw); //value);
                                 doorConfig.borderColors["HWCOLORID"] = (doorConfig.disabledFlds["HWCOLORID"] || doorConfig.HWCOLORID != 0 ? "blueBorder" : "redBorder");
                                 doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
                                 //doorConfig.disabledFlds["HWACCESSORYID"] = (doorConfig.TRSH_HARDWARE == 0);   it's a Mandatory field so it can't be disabled !
@@ -959,7 +963,7 @@
                                     doorConfig.HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
                                 StateHasChanged();
                             }
-                            doorConfig.borderColors["TRSH_HARDWARE"] = (value != 0 ? "blueBorder" : "redBorder");
+                            doorConfig.borderColors["TRSH_HARDWARE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); //(value != 0 ? "blueBorder" : "redBorder");
                             doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
                         }
                     }
