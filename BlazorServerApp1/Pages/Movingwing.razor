@@ -980,8 +980,8 @@
                         @ref="doorConfig.dicRefs[UiLogic.propNames[i333]]" 
                   />
                   <datalist id="lstHwAcc">
-                    @{
-                        if (PrApiCalls.lstHwAccessories != null)
+                    
+                        @if (PrApiCalls.lstHwAccessories != null)
                         {
                             string HwColored = PrApiCalls.getHardware1(doorConfig.TRSH_HARDWARE).COLORED;
                             @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
@@ -995,7 +995,7 @@
                                 }
                             }
                         }
-                    }
+                    
                     </datalist>
                     }
                     @code
@@ -1121,10 +1121,10 @@
         <td id="tdDril4Hw" hidden="@UiLogic.hideFld(doorConfig, "Dril4Hw")">
             @{  int i312 = Array.IndexOf(UiLogic.propNames, "DRIL4HW");
                 <select name="dlstDril4Hw" @bind="Dril4Hw" class="@doorConfig.borderColors["DRIL4HW"]"
-              disabled="@doorConfig.disabledFlds["DRIL4HW"]" 
+                  disabled="@doorConfig.disabledFlds["DRIL4HW"]" 
                   @onfocus="@( () => UiLogic.HasFocus("DRIL4HW", doorConfig) )" 
                   @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-              onkeypress="@KeyPressHandler" 
+                  onkeypress="@KeyPressHandler" 
                   @ref="doorConfig.dicRefs[UiLogic.propNames[i312]]" >
 
                     @* @if (PrApiCalls.lstDril4Hw != null)  *@
@@ -1393,54 +1393,58 @@
         
             <td id="tdHandle">
                  @{  int i318 = Array.IndexOf(UiLogic.propNames, "HANDLENAME");
-                    <select name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["HANDLENAME"]" 
-                disabled="@doorConfig.disabledFlds["HANDLENAME"]"
-                    @onfocus="@( () => UiLogic.HasFocus("HANDLENAME", doorConfig) )" 
-                    @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                onkeypress="@KeyPressHandler" 
-                         @ref="doorConfig.dicRefs[UiLogic.propNames[i318]]"  >
+                    <input list="lstHandles" name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["HANDLENAME"]"  autocomplete="off"
+                        disabled="@doorConfig.disabledFlds["HANDLENAME"]"
+                        @onfocus="@( () => UiLogic.HasFocus("HANDLENAME", doorConfig) )" 
+                        @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+                        onkeypress="@KeyPressHandler" 
+                        @ref="doorConfig.dicRefs[UiLogic.propNames[i318]]"  
+                    />
+                    <datalist id="lstHandles">
                         @if (PrApiCalls.lstHandles != null)
-                    {
-                            @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
                         {
+                            @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
+                            {
+                                @* <option value="@c.PARTNAME">@c.PARTDES</option> *@
                                 <option value="@c.PARTNAME">@c.PARTDES</option>
+                            }
                         }
-                    }
-                    </select>
+                    </datalist>
                 }
            
                 @code
-            {
-                protected string _Handle1;
-                protected string Handle1
                 {
-                    get
+                    protected string _Handle1;
+                    protected string Handle1
+                    //protected string HandleDes1
                     {
-                        if (doorConfig != null)
+                        get
                         {
-                            _Handle1 = doorConfig.HANDLENAME;
+                            if (doorConfig != null)
+                            {
+                                _Handle1 = doorConfig.HANDLENAME;
+                            }
+                            return _Handle1;
                         }
-                        return _Handle1;
-                    }
-                    set
-                    {
-                        _Handle1 = value;
-                        if (doorConfig != null)
+                        set
                         {
-                            doorConfig.HANDLENAME = _Handle1;
-                            // Handle is Optional
-                            //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                            doorConfig.disabledFlds["HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone 
-                                                                        || !PrApiCalls.isHandleColored(doorConfig.HANDLENAME));
-                            if (doorConfig.disabledFlds["HANDLECOLORID"])
-                                doorConfig.HANDLECOLORID = 0;
-                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
-                                            config4.RefreshState();
+                            _Handle1 = value;
+                            if (doorConfig != null)
+                            {
+                                doorConfig.HANDLENAME = _Handle1;
+                                // Handle is Optional
+                                //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                                //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                                doorConfig.disabledFlds["HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone 
+                                                                            || !PrApiCalls.isHandleColored(doorConfig.HANDLENAME));
+                                if (doorConfig.disabledFlds["HANDLECOLORID"])
+                                    doorConfig.HANDLECOLORID = 0;
+                                if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                                config4.RefreshState();
+                            }
                         }
                     }
                 }
-            }
             </td>
         
             @* end  tdHandle *@
