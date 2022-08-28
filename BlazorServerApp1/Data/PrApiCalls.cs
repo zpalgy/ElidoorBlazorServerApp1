@@ -1309,6 +1309,18 @@ namespace BlazorServerApp1.Data
             TRSH_HARDWARE_Class res = lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);
             return res;
         }
+        public static TRSH_HARDWARE_Class getHardwareByPARTNAME(string PARTNAME)
+        {
+            TRSH_HARDWARE_Class res = lstHardwares.Find(item => item.PARTNAME == PARTNAME);
+            return res;
+        }
+        public static TRSH_HARDWARE_Class getOpositeSideHw (int TRSH_HARDWARE)
+        {
+            TRSH_HARDWARE_Class Hw = getHardware1(TRSH_HARDWARE);
+            string OpositeHwPARTNAME = Hw.PARTNAME2;
+            TRSH_HARDWARE_Class res = getHardwareByPARTNAME(OpositeHwPARTNAME);
+            return res;
+        }
         public static string getHwDes (int TRSH_HARDWARE)
         {
             TRSH_HARDWARE_Class hw1 = getHardware1(TRSH_HARDWARE);  //lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);

@@ -163,7 +163,7 @@
 			// 16/08/2022 : Eli asked to copy the cylinder and hardware from the movingwing here when setting SWINGHASLOCK to Y ! 
 			//  copy also : Hardware Color, Dril4Hw , Hanlde, Handle Color from movingwing !
 			doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;  
-			doorConfig.HW4EXTRAWING = doorConfig.TRSH_HARDWARE;
+			doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);  //doorConfig.TRSH_HARDWARE;
 			if (lstD4HW1 == null || lstD4HW1.Count == 0)
 				setSWING_DRIL4HW();    // populate lstD4Hw1 - so that doorConfig.SWING_DRIL4HW can get a value from this LOV. Otherwise it'll not get
 				                       //   a value, because this LOV acts also as a validator for the value of teh field. Thta value must exist in teh LOV of the field.
@@ -300,6 +300,7 @@
 			                                // by that we force the user to enter EXTRAWINGWIDTH so that it can be validated against UiLogic.MIN_SWING_WITHLOCK_W
 											// or UiLogic.MIN_SWING_NOLOCK_W which are diffrent
 							applySwingHasLock();
+							StateHasChanged();
 							//UiLogic.clearFollowingTabFields(doorConfig, "staticgwing");
                         }
                     }
@@ -705,7 +706,8 @@
 							//doorConfig.disabledFlds["HW4EXTRAWING"] =    // 06/07/2022 HW4EXTRAWING is disabled by default  !
 							doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
 							doorConfig.disabledFlds["SWING_DRIL4HW"] = false;
-							doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? doorConfig.TRSH_HARDWARE : doorConfig.HW4EXTRAWING );
+							doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? 
+							             PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE) : doorConfig.HW4EXTRAWING );
 							doorConfig.SWING_HWCOLORID = (doorConfig.SWING_HWCOLORID == 0 ? doorConfig.HWCOLORID : doorConfig.SWING_HWCOLORID);
 							//find the SWING_DRIL4HW that is associated with HW4EXTRAWING
 							setSWING_DRIL4HW();
@@ -724,10 +726,10 @@
 					 @{  int i605 = Array.IndexOf(UiLogic.propNames, "HW4EXTRAWING");
 						<select name="dlstHw" @bind="Hw4ExtraWing" class="@doorConfig.borderColors["HW4EXTRAWING"]" 
 					        disabled="@doorConfig.disabledFlds["HW4EXTRAWING"]"
-								@onfocus="@( () => UiLogic.HasFocus("HW4EXTRAWING", doorConfig) )" 
-								@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-							 onkeypress="@doorConfig.KeyPressHandler" 
-							 	@ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" >
+							@onfocus="@( () => UiLogic.HasFocus("HW4EXTRAWING", doorConfig) )" 
+							@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+							onkeypress="@doorConfig.KeyPressHandler" 
+							@ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" >
 						@{
 							string errMsg = string.Empty;
 							//List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getDoorHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);

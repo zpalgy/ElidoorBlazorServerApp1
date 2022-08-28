@@ -232,8 +232,7 @@ namespace BlazorServerApp1.Data
         public string PARTNAME2 { get; set; }   // dual part right -> left, or left -> right of point to itself.
 
         [DataMember(Order = 9)]
-        public int OPPOSITESIDE_PART { get; set; }    // PART.PART of teh opposite Hardware
-
+        public int OPPOSITESIDE_PART { get; set; }    // PART.PART of the opposite Hardware
     }
     public class ValuesTRSH_HARDWARE_Class
     {
