@@ -141,6 +141,16 @@
 			doorConfig.thClasses["SWING_DRIL4HW"] = 
 			doorConfig.thClasses["SWING_LOCKNAME"] = 
 			doorConfig.thClasses["SWING_TURBO"] = "thGray";      //TODO - check this !
+
+			//doorConfig.SWING_HANDLENAME , doorConfig.HANDLENAME;
+			//doorConfig.SWING_HANDLECOLORID , doorConfig.HANDLECOLORID;
+
+			// Eli's request on 11/09/2022
+			doorConfig.SWING_HANDLENAME = string.Empty;
+			doorConfig.SWING_HANDLECOLORID = 0;
+			doorConfig.disabledFlds["SWING_HANDLENAME"] = doorConfig.disabledFlds["SWING_HANDLECOLORID"] = string.IsNullOrEmpty(doorConfig.HANDLENAME);
+            doorConfig.borderColors["SWING_HANDLENAME"] = (!string.IsNullOrEmpty(doorConfig.SWING_HANDLENAME) ? "blueBorder" : "redBorder");
+			doorConfig.borderColors["SWING_HANDLECOLORID"] = (doorConfig.SWING_HANDLECOLORID != 0 ? "blueBorder" : "redBorder");
 		}
 		else  // withLOCK 
 		{

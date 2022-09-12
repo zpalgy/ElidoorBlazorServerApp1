@@ -91,11 +91,11 @@
             doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
 
             //doorConfig.disabledFlds["LOGO"] = disableLogo;   // old stuff : disableLogo is a parameter a flag in CUSTOMER record in Priority
-                                                             // issue : if we come here BACK from a newer tabPage we should not 
-                                                             // enable this field.
+            // issue : if we come here BACK from a newer tabPage we should not 
+            // enable this field.
             doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 
             doorConfig.TURBOAPPARATUS = (doorConfig.useTurbo ? "Y" : string.Empty);   // new 31/07/2022 
-            //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+                                                                                      //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
 
         }
         else    // it is filled - we came back form a newer tab - all fields should be disabled !
@@ -112,7 +112,7 @@
         //NoColor = (doorConfig.TRSH_MODELNAME == "MLI" ? "ללא" : "מגולוון") ;
         lstColorsNum1 =  PrApiCalls.lstColorsNum.ToList<string>();
         lstColors1 = PrApiCalls.lstColors.ToList<TRSH_COLOR_Class>();
-                
+
         if (doorConfig.TRSH_MODELNAME == "MLI")
         {
             lstColorsNum1.Remove("מגולוון");
@@ -130,33 +130,45 @@
     // Otherwise I would have create a single event handler in UiLogic class 
 
     async Task KeyPressHandler(KeyboardEventArgs e)
+    {
+        string currTabName = "movingwing";
+        doorConfig.RestartClicked = false; 
+        if (e.Key.ToLowerInvariant() == "enter")
         {
-            string currTabName = "movingwing";
-            doorConfig.RestartClicked = false; 
-            if (e.Key.ToLowerInvariant() == "enter")
+            //RestartClicked = false;
+            int j = 0;
+            //DataTable dtTabFlds = new DataTable();
+            //string currTabName = UiLogic.getTabOfField(doorConfig.currPropName);
+            string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, doorConfig.currPropName);
+            if (!string.IsNullOrEmpty(nextfld))
             {
-                //RestartClicked = false;
-                int j = 0;
-                //DataTable dtTabFlds = new DataTable();
-                //string currTabName = UiLogic.getTabOfField(doorConfig.currPropName);
-                string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, doorConfig.currPropName);
-                if (!string.IsNullOrEmpty(nextfld))
+                j = Array.IndexOf(UiLogic.propNames, nextfld);
+                if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+                    doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                return;
+            }
+            else
+            {
+                string nextTabName = UiLogic.getNextTabName(doorConfig, currTabName);
+                if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
                 {
-                    j = Array.IndexOf(UiLogic.propNames, nextfld);
-                    if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
-                        doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-                    return;
-                }
-                else
-                {
-                    string nextTabName = UiLogic.getNextTabName(doorConfig, currTabName);
-                    if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
-                    {
-                        config4.RefreshState();
-                    }
+                    config4.RefreshState();
                 }
             }
         }
+    }
+    void applyOpenSideModeChanged()
+    {
+        doorConfig.TRSH_CYLINDER = 0;
+        doorConfig.TRSH_HARDWARE = 0;
+        doorConfig.HWACCESSORYID = 0;
+        doorConfig.HWCOLORID = 0;
+    }
+    void applyHardwareChanged()
+    {
+        doorConfig.HANDLENAME = string.Empty;
+        doorConfig.HANDLECOLORID = 0;
+    }
   }
 <br />
 <table>
@@ -398,6 +410,7 @@
                         {
                             doorConfig.OPENSIDE = _openSide;
                             doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                            //applyOpenSideModeChanged();
                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -1406,7 +1419,8 @@
                             @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
                             {
                                 @* <option value="@c.PARTNAME">@c.PARTDES</option> *@
-                                <option value="@c.PARTNAME">@c.PARTDES</option>
+                                string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא");
+                                <option value="@partName">@c.PARTDES</option>
                             }
                         }
                     </datalist>
