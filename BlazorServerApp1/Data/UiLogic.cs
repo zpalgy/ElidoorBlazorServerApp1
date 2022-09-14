@@ -320,7 +320,7 @@ namespace BlazorServerApp1.Data
                 nextTab = tabNames[t + 1];
                 if (   (nextTab == "extdecor" && doorConfig.DECORFORMAT == "פנים")
                     || (nextTab == "intdecor" && doorConfig.DECORFORMAT == "חוץ")
-                    || (nextTab == "hinges")
+                    //|| (nextTab == "hinges") - commented on 14/09/2022
                     )
                 {
                     int t1 = Array.IndexOf(tabNames, nextTab);

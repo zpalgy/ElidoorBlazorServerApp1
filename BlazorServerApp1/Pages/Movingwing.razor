@@ -410,7 +410,7 @@
                         {
                             doorConfig.OPENSIDE = _openSide;
                             doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            //applyOpenSideModeChanged();
+                            applyOpenSideModeChanged();
                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -453,7 +453,8 @@
                             doorConfig.OPENMODE = _openMode;
                             doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
-                            
+                            applyOpenSideModeChanged();
+
                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -976,6 +977,7 @@
                                     doorConfig.HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
                                 StateHasChanged();
                             }
+                            applyHardwareChanged();
                             doorConfig.borderColors["TRSH_HARDWARE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); //(value != 0 ? "blueBorder" : "redBorder");
                             doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
                         }
@@ -1466,6 +1468,7 @@
          <td id="tdHandleColorID" >
             @{  int i325 = Array.IndexOf(UiLogic.propNames, "HANDLECOLORID");
             <input list="lstHandleClrs" name="dlstHandleColorID"  @bind="HandleColorDes"  class= "@doorConfig.borderColors["HANDLECOLORID"]" 
+                     autocomplete="off"
                     disabled="@doorConfig.disabledFlds["HANDLECOLORID"]"	
 				  	@onfocus="@( () => UiLogic.HasFocus("HANDLECOLORID", doorConfig) )" 
 				  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 

@@ -145,12 +145,22 @@
 			//doorConfig.SWING_HANDLENAME , doorConfig.HANDLENAME;
 			//doorConfig.SWING_HANDLECOLORID , doorConfig.HANDLECOLORID;
 
+			doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = true;
 			// Eli's request on 11/09/2022
 			doorConfig.SWING_HANDLENAME = string.Empty;
 			doorConfig.SWING_HANDLECOLORID = 0;
 			doorConfig.disabledFlds["SWING_HANDLENAME"] = doorConfig.disabledFlds["SWING_HANDLECOLORID"] = string.IsNullOrEmpty(doorConfig.HANDLENAME);
-            doorConfig.borderColors["SWING_HANDLENAME"] = (!string.IsNullOrEmpty(doorConfig.SWING_HANDLENAME) ? "blueBorder" : "redBorder");
-			doorConfig.borderColors["SWING_HANDLECOLORID"] = (doorConfig.SWING_HANDLECOLORID != 0 ? "blueBorder" : "redBorder");
+
+			if (!string.IsNullOrEmpty(doorConfig.HANDLENAME))
+			{
+				//doorConfig.disabledFlds["SWING_HANDLENAME"] = doorConfig.disabledFlds["SWING_HANDLECOLORID"] = false;
+				doorConfig.borderColors["SWING_HANDLENAME"] = (!string.IsNullOrEmpty(doorConfig.SWING_HANDLENAME) ? "blueBorder" : "redBorder");
+				doorConfig.borderColors["SWING_HANDLECOLORID"] = (doorConfig.SWING_HANDLECOLORID != 0 ? "blueBorder" : "redBorder");
+			}
+			//else
+			//{
+			//	doorConfig.disabledFlds["SWING_HANDLENAME"] = doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true;  //string.IsNullOrEmpty(doorConfig.HANDLENAME);
+			//}
 		}
 		else  // withLOCK 
 		{
@@ -162,10 +172,8 @@
 			doorConfig.thClasses["SWING_DRIL4HW"] = "thBlue";
 			doorConfig.thClasses["SWING_TURBO"] = "thGray";    //[TODO]: check this because doorConfig.SWING_TURBO  can be set if Cust.TRSH_TURBO is Y 
 																		//I.e. doorConfig.useTurbo is true !
+            doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = false; // it was disabled when !_SwingHasLock  - staticwing without Lock 
 			doorConfig.thClasses["SWING_LOCKNAME"] = "thBlue";
-
-			doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0  ? "blueBorder" : "redBorder");  // special for this field
-																																		// that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
 
 			CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == UiLogic.NameOfNone);  
 			lstCylinders1.Remove(noCyl);
@@ -173,6 +181,8 @@
 			// 16/08/2022 : Eli asked to copy the cylinder and hardware from the movingwing here when setting SWINGHASLOCK to Y ! 
 			//  copy also : Hardware Color, Dril4Hw , Hanlde, Handle Color from movingwing !
 			doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;  
+			doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0  ? "blueBorder" : "redBorder");  // special for this field
+																	   // that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
 			doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);  //doorConfig.TRSH_HARDWARE;
 			if (lstD4HW1 == null || lstD4HW1.Count == 0)
 				setSWING_DRIL4HW();    // populate lstD4Hw1 - so that doorConfig.SWING_DRIL4HW can get a value from this LOV. Otherwise it'll not get
@@ -190,7 +200,7 @@
 		}
 		if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
 		{
-			doorConfig.disabledFlds["LOCKDRILHEIGHT"] =
+			doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] =
 			doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] =
 			doorConfig.disabledFlds["HW4EXTRAWING"] = // 06/07/2022 HW4EXTRAWING is disabled by default !
 			doorConfig.disabledFlds["SWING_HWACCESSORYID"] =
@@ -636,24 +646,30 @@
 					/> 
 					@code 
 					{
-						protected int _Swing_LockDrilHeight = 0;
-						protected int Swing_LockDrilHeight
+				protected int? _Swing_LockDrilHeight = 0;
+				protected int? Swing_LockDrilHeight
+				{
+					get
+					{
+						if (doorConfig != null ) 
 						{
-							get
+							//_Swing_LockDrilHeight = (doorConfig.SWINGHASLOCK == "Y" ? doorConfig.LOCKDRILHEIGHT : 0 );
+							if (doorConfig.SWINGHASLOCK == "Y" && doorConfig.LOCKDRILHEIGHT > 0)
 							{
-								if (doorConfig != null)
-								{
-									_Swing_LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
-								}
-								return _Swing_LockDrilHeight;
+								_Swing_LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
 							}
-							set
-							{
-								_Swing_LockDrilHeight = value;
-							}
+							else
+								_Swing_LockDrilHeight = null;
 						}
+						return _Swing_LockDrilHeight;
 					}
-				</td>
+					set
+					{
+						_Swing_LockDrilHeight = value;
+					}
+				}
+			}
+			</td>
 			  
 				<td id="tdCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, "thCylinder4HalfWing")">
 				 @{  int i604 = Array.IndexOf(UiLogic.propNames, "TRSH_SWING_CYLINDER");
@@ -683,6 +699,7 @@
 					if (doorConfig != null)
 					{
 						_Cylinder4HalfWing = doorConfig.TRSH_SWING_CYLINDER;
+						//doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (_Cylinder4HalfWing != 0  ? "blueBorder" : "redBorder");
 					}
 					return _Cylinder4HalfWing;
 				}
