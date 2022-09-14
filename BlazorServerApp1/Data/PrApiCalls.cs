@@ -93,6 +93,9 @@ namespace BlazorServerApp1.Data
 
         public static List<string> lstColorsNum = new List<string> { string.Empty, "מגולוון", "1", "2" };
 
+        public static string defLockwithLogo = "880001";                 //11/09/2022 default LOCKNAMEs with and without Logo
+        public static string defLockwithOutLogo = "LCK00002";
+
 
         public static void initRestClient(RestClient restClient)
         {

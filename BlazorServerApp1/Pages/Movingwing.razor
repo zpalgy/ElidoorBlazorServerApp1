@@ -96,6 +96,7 @@
             doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 
             doorConfig.TURBOAPPARATUS = (doorConfig.useTurbo ? "Y" : string.Empty);   // new 31/07/2022 
                                                                                       //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
+            doorConfig.LOCKNAME = (doorConfig.useLOGO ? PrApiCalls.defLockwithLogo : PrApiCalls.defLockwithOutLogo);
 
         }
         else    // it is filled - we came back form a newer tab - all fields should be disabled !
@@ -107,6 +108,7 @@
             //  all other select fields depend on static LOVs and are restored OK !
             lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
             lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
+
         }
         //Js.InvokeVoidAsync("SayHelloJS");
         //NoColor = (doorConfig.TRSH_MODELNAME == "MLI" ? "ללא" : "מגולוון") ;
