@@ -298,6 +298,9 @@
             //if (showTabPage(typeof(Staticwing), "staticwing"))
             if (showTabPage(staticwingType, "staticwing"))
             {
+                if (staticwingType == typeof(Staticwing))
+                      doorConfig.btnClasses["movingwing"] = "buttonFilled";
+
                 if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
                 {
                     StateHasChanged();

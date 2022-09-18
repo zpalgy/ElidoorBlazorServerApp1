@@ -149,6 +149,8 @@
 			// Eli's request on 11/09/2022
 			doorConfig.SWING_HANDLENAME = string.Empty;
 			doorConfig.SWING_HANDLECOLORID = 0;
+			doorConfig.SWING_LOCKNAME = string.Empty;
+
 			doorConfig.disabledFlds["SWING_HANDLENAME"] = doorConfig.disabledFlds["SWING_HANDLECOLORID"] = string.IsNullOrEmpty(doorConfig.HANDLENAME);
 
 			if (!string.IsNullOrEmpty(doorConfig.HANDLENAME))
@@ -172,7 +174,7 @@
 			doorConfig.thClasses["SWING_DRIL4HW"] = "thBlue";
 			doorConfig.thClasses["SWING_TURBO"] = "thGray";    //[TODO]: check this because doorConfig.SWING_TURBO  can be set if Cust.TRSH_TURBO is Y 
 																		//I.e. doorConfig.useTurbo is true !
-            doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = false; // it was disabled when !_SwingHasLock  - staticwing without Lock 
+			doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = false; // it was disabled when !_SwingHasLock  - staticwing without Lock 
 			doorConfig.thClasses["SWING_LOCKNAME"] = "thBlue";
 
 			CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == UiLogic.NameOfNone);  
@@ -182,17 +184,20 @@
 			//  copy also : Hardware Color, Dril4Hw , Hanlde, Handle Color from movingwing !
 			doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;  
 			doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0  ? "blueBorder" : "redBorder");  // special for this field
-																	   // that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
+																																		// that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
 			doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);  //doorConfig.TRSH_HARDWARE;
 			if (lstD4HW1 == null || lstD4HW1.Count == 0)
 				setSWING_DRIL4HW();    // populate lstD4Hw1 - so that doorConfig.SWING_DRIL4HW can get a value from this LOV. Otherwise it'll not get
-				                       //   a value, because this LOV acts also as a validator for the value of teh field. Thta value must exist in teh LOV of the field.
+												//   a value, because this LOV acts also as a validator for the value of teh field. Thta value must exist in teh LOV of the field.
 			doorConfig.SWING_DRIL4HW = doorConfig.DRIL4HW;
 			if (doorConfig.SWING_DRIL4HW == PrApiCalls.IDS_TWOSIDES)  //16/08/2022 in staticwing if DRIL4HW is IDS it's always IDS_ONESIDE !
 				doorConfig.SWING_DRIL4HW = PrApiCalls.IDS_ONESIDE;  
 			doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;
 
 			doorConfig.SWING_HANDLENAME = doorConfig.HANDLENAME;
+			doorConfig.disabledFlds["SWING_HANDLECOLORID"] = (!PrApiCalls.isHandleColored(doorConfig.HANDLENAME)
+			                                                  || doorConfig.HANDLENAME == UiLogic.NameOfNone);
+
 			doorConfig.SWING_HANDLECOLORID = doorConfig.HANDLECOLORID;
 
 			doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 , requested again on 16/08/2022
@@ -208,6 +213,8 @@
 			doorConfig.disabledFlds["SWING_DRIL4HW"] = !_SwingHasLock;
 			doorConfig.disabledFlds["SWING_TURBO"] = !_SwingHasLock;   //TODO - check this ?
 			doorConfig.disabledFlds["SWING_LOCKNAME"] = !_SwingHasLock;
+
+			doorConfig.SWING_LOCKNAME = doorConfig.LOCKNAME;
 		}
 	}
 
@@ -1197,7 +1204,7 @@
 		<td>
 			@* handle 4 static wing   new *@
 			 @{  int i609 = Array.IndexOf(UiLogic.propNames, "SWING_HANDLENAME");
-					<input list="lstHandles2" name="dlstHandle" @bind="Swing_Handle" class="@doorConfig.borderColors["SWING_HANDLENAME"]" 
+					<input list="lstHandles2" name="dlstHandle" @bind="Swing_HandleDes" class="@doorConfig.borderColors["SWING_HANDLENAME"]" 
 					autocomplete="off"
 				  disabled="@doorConfig.disabledFlds["SWING_HANDLENAME"]"	
 				  	@onfocus="@( () => UiLogic.HasFocus("SWING_HANDLENAME", doorConfig) )" 
@@ -1207,36 +1214,39 @@
 					/>
 					<datalist id="lstHandles2">
 						@if (PrApiCalls.lstHandles != null)
-                    {
+	                    {
 							@foreach (HANDLE_Class c in PrApiCalls.lstHandles)
-                        {
-								@* <option value="@c.PARTNAME">@c.PARTDES</option> *@
-								string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא");
-                                <option value="@partName">@c.PARTDES</option>
-                        }
-                    }
+							{
+								if (c.PARTNAME == doorConfig.HANDLENAME || c.PARTNAME == UiLogic.NameOfNone)
+								{
+									@* <option value="@c.PARTNAME">@c.PARTDES</option> *@
+									string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא");
+									<option value="@c.PARTDES">@c.PARTDES</option>
+								}
+							}
+						}
 					</datalist>
                 }
            
                 @code
                 {
-                protected string _Swing_Handle = string.Empty;
-                protected string Swing_Handle
+                protected string _Swing_HandleName = string.Empty;
+                protected string Swing_HandleDes
                 {
                     get
                     {
                         if (doorConfig != null)
                         {
-                            _Swing_Handle = doorConfig.SWING_HANDLENAME;
+                            _Swing_HandleName = doorConfig.SWING_HANDLENAME;
                         }
-                        return _Swing_Handle;
+                        return (string.IsNullOrEmpty(_Swing_HandleName) ? string.Empty : PrApiCalls.getHandleDesByName(_Swing_HandleName));
                     }
                     set
                     {
-                        _Swing_Handle = value;
+                        _Swing_HandleName = PrApiCalls.getHandleNameByDes(value);
                         if (doorConfig != null)
                         {
-                            doorConfig.SWING_HANDLENAME = _Swing_Handle;
+                            doorConfig.SWING_HANDLENAME = _Swing_HandleName;
                             // Handle is a Required field independent of the HASLOCK flag ! 07/07/2022
                             doorConfig.borderColors["SWING_HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
 							 doorConfig.disabledFlds["SWING_HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone 

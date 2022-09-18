@@ -270,6 +270,7 @@
                                 doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
                                 UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
                                // UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                               if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                                 config4.RefreshState();
                             }
                         }
@@ -370,7 +371,8 @@
                             {
                                 UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                                config4.RefreshState();
+                                if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                    config4.RefreshState();
                             }
                         }
                     }
@@ -414,6 +416,8 @@
                             doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             applyOpenSideModeChanged();
                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                              config4.RefreshState();
                         }
                     }
                 }
@@ -456,7 +460,8 @@
                             doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
                             applyOpenSideModeChanged();
-
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                            config4.RefreshState();
                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         }
                     }
@@ -538,7 +543,9 @@
                                     break;
                             }
                             doorConfig.borderColors["COLORSNUM"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                               config4.RefreshState();
                         }
                     }
                 }
@@ -591,7 +598,8 @@
                         doorConfig.DOORCOLORID = _DoorColorId;
                         //doorConfig.borderColors["DOORCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                         doorConfig.borderColors["DOORCOLORID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                            config4.RefreshState();
                         //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                     }
                 }
@@ -661,6 +669,8 @@
                             doorConfig.borderColors["EXTCOLORID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             compareExtIntColors();
                             //UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                config4.RefreshState();
                         }
                     }
                 }
@@ -737,6 +747,8 @@
                             doorConfig.borderColors["INTCOLORID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");  //(value != 0 ? "blueBorder" : "redBorder");
                             compareExtIntColors();
                             //UiLogic.clearFollowingTabFields(doorConfig, "intdecor");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                               config4.RefreshState();
                         }
                     }
                 }
@@ -832,6 +844,8 @@
                             {
                                 doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
                                 doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
+                                if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                    config4.RefreshState();
                             }
                         }
                     }
@@ -851,9 +865,9 @@
                     @if (lstCylinders1 != null)
                 {
                         @foreach (CYLINDER_Class c in lstCylinders1)
-                    {
-                            <option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
-                    }
+                        {
+                           <option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
+                        }
                 }
                 </select>
             }
@@ -982,6 +996,8 @@
                             applyHardwareChanged();
                             doorConfig.borderColors["TRSH_HARDWARE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); //(value != 0 ? "blueBorder" : "redBorder");
                             doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                config4.RefreshState();
                         }
                     }
                 }
@@ -1096,6 +1112,8 @@
                         //doorConfig.borderColors["HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                         doorConfig.borderColors["HWCOLORID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -1179,7 +1197,9 @@
                         doorConfig.disabledFlds["HANDLENAME"] = (doorConfig.DRIL4HW != PrApiCalls.IDS_ONESIDE);
                         if (doorConfig.disabledFlds["HANDLENAME"])
                                     doorConfig.disabledFlds["HANDLECOLORID"] = true; 
-                        UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -1195,8 +1215,14 @@
                          @ref="doorConfig.dicRefs[UiLogic.propNames[i314]]" >
                     <option></option>
                     <option>ללא</option>
+                    @if (doorConfig.OPENSIDE == "ימין" )
+                    {
                     <option>R</option>
-                    <option>L</option>
+                    }
+                    @if (doorConfig.OPENSIDE == "שמאל")
+                    {
+                        <option>L</option>
+                    }
                 </select>
             }
         </td>
@@ -1410,7 +1436,7 @@
         
             <td id="tdHandle">
                  @{  int i318 = Array.IndexOf(UiLogic.propNames, "HANDLENAME");
-                    <input list="lstHandles" name="dlstHandle" @bind="Handle1" class="@doorConfig.borderColors["HANDLENAME"]"  autocomplete="off"
+                    <input list="lstHandles" name="dlstHandle" @bind="HandleDes" class="@doorConfig.borderColors["HANDLENAME"]"  autocomplete="off"
                         disabled="@doorConfig.disabledFlds["HANDLENAME"]"
                         @onfocus="@( () => UiLogic.HasFocus("HANDLENAME", doorConfig) )" 
                         @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
@@ -1424,7 +1450,7 @@
                             {
                                 @* <option value="@c.PARTNAME">@c.PARTDES</option> *@
                                 string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא");
-                                <option value="@partName">@c.PARTDES</option>
+                                <option value="@c.PARTDES">@c.PARTDES</option>
                             }
                         }
                     </datalist>
@@ -1432,24 +1458,24 @@
            
                 @code
                 {
-                    protected string _Handle1;
-                    protected string Handle1
+                    protected string _HandleName;
+                    protected string HandleDes
                     //protected string HandleDes1
                     {
                         get
                         {
                             if (doorConfig != null)
                             {
-                                _Handle1 = doorConfig.HANDLENAME;
+                                _HandleName = doorConfig.HANDLENAME;
                             }
-                            return _Handle1;
+                            return (string.IsNullOrEmpty(_HandleName) ? string.Empty : PrApiCalls.getHandleDesByName(_HandleName));
                         }
                         set
                         {
-                            _Handle1 = value;
+                            _HandleName = PrApiCalls.getHandleNameByDes(value);
                             if (doorConfig != null)
                             {
-                                doorConfig.HANDLENAME = _Handle1;
+                                doorConfig.HANDLENAME = _HandleName;
                                 // Handle is Optional
                                 //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");

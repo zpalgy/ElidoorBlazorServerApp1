@@ -2509,8 +2509,16 @@ namespace BlazorServerApp1.Data
                 return false;
             }
         }
-    
-
+        public static string getHandleNameByDes (string handleDes)
+        {
+            HANDLE_Class h = lstHandles.Find(item => item.PARTDES == handleDes);
+            return h.PARTNAME;
+        }
+        public static string getHandleDesByName(string handleName)
+        {
+            HANDLE_Class h = lstHandles.Find(item => item.PARTNAME == handleName);
+            return h.PARTDES;
+        }
         //TRSH_HANDLE4DIAMOND   - 360
         public static List<HANDLE4DIAMOND_Class> getHandles4Diamond(ref string errMsg)
         {
