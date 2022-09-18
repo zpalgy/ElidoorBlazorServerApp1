@@ -225,23 +225,25 @@
             //doorConfig.btnClasses[tabName] = "buttonActive";
             doorConfig.markButton(tabName);
 
-            if (!string.IsNullOrEmpty(doorConfig.prevTabName))
-            {
-                if (doorConfig.prevTabName != doorConfig.currTabName)   // a bug or hinges issue : e.g. staticwing jumps over hinges firectly to handle
-                                                                        //  because COMPLIENT is ELIDOOR and hinges is already filled !
-                {
-                    myLogger.log.Error(string.Format("BUG: doorConfig.prevTabName  ({0}) != doorConfig.currTabName ({1}) - we fix that here",
-                                     doorConfig.prevTabName, doorConfig.currTabName));
-                    doorConfig.prevTabName = doorConfig.currTabName;
-                    //doorConfig.currTabName = tabName;
-                }
-            }
-            else
-            {
-                //string dbg = doorConfig.currTabName;
-                doorConfig.prevTabName = doorConfig.currTabName;
-                doorConfig.currTabName = tabName;
-            }
+            // commented on 18/09/2022
+            //if (!string.IsNullOrEmpty(doorConfig.prevTabName))
+            //{
+            //    if (doorConfig.prevTabName != doorConfig.currTabName)   // a bug or hinges issue : e.g. staticwing jumps over hinges directly to handle
+            //                                                            //  because COMPLIENT is ELIDOOR and hinges is already filled !
+            //    {
+            //        myLogger.log.Error(string.Format("BUG: doorConfig.prevTabName  ({0}) != doorConfig.currTabName ({1}) - we fix that here",
+            //                         doorConfig.prevTabName, doorConfig.currTabName));
+            //        doorConfig.prevTabName = doorConfig.currTabName;
+            //        //doorConfig.currTabName = tabName;
+            //    }
+            //}
+            //else
+            //{
+            //    //string dbg = doorConfig.currTabName;
+            //    doorConfig.prevTabName = doorConfig.currTabName;
+            //    doorConfig.currTabName = tabName;
+            //    doorConfig.btnClasses[doorConfig.prevTabName] = "buttonFilled";
+            //}
 
             if (tabName != doorConfig.prevTabName)
             {
@@ -249,7 +251,15 @@
                 int prev = Array.IndexOf(UiLogic.tabNames, doorConfig.prevTabName);
                 if (prev < curr)
                     UiLogic.disableTabFlds(doorConfig, doorConfig.prevTabName);
+                // 18/09/2022 : hardcoded setting the movingwing button to "buttonfilled" color
+                //  because when we're at "hinges" and prec is "staticwing" 
+                //  it sets teh color of "staticwing" OK but then clears teh color of "movingwing" !! a bug to invetigate 
+                if (curr > Array.IndexOf(UiLogic.tabNames, "movingwing"))
+                   doorConfig.btnClasses["movingwing"] = "buttonFilled";
             }
+
+            doorConfig.btnClasses[doorConfig.prevTabName] = "buttonFilled";
+
             UiLogic.tabPageIsFilled(tabName, doorConfig);  //set redBorder on empty controls
             return true;
         }

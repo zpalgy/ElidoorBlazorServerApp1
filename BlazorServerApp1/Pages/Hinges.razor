@@ -82,12 +82,12 @@
 <table id="tblHinges">
                                                 <tr>
                                                     <th id="thHingesNum" >מספר צירים</th>
-                                                    <th id="thBackPinHeight" >גובה עוקץ אחורי</th>
                                                     <th id="thHinge1Height" >גובה מרכז ציר 1</th>
                                                     <th id="thHinge2Height" >גובה מרכז ציר 2</th>
   													<th id="thHinge3Height" >גובה מרכז ציר 3</th>
                                                     <th id="thHinge4Height" >גובה מרכז ציר 4</th>
                                                     <th id="thHinge5Height" >גובה מרכז ציר 5</th>
+													<th id="thBackPinHeight" >גובה עוקץ אחורי</th>
                                                 </tr>
                                                 <tr>
                                                     <td id="tdHingesNum" >
@@ -95,71 +95,96 @@
                                                     </td>
                                                     @code
                                                     {
-														protected int _HingesNum = 0;
-														protected int HingesNum
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_HingesNum = doorConfig.HINGESNUM;
-																}
-																return _HingesNum;
-															}
-															set
-															{
-																_HingesNum = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.HINGESNUM = _HingesNum;
-																	if (_HingesNum < 5)
-																		doorConfig.HINGE5HEIGHT = 0;
-																	if (_HingesNum < 4)
-																		doorConfig.HINGE4HEIGHT = 0;
-																	if (_HingesNum < 3)
-																		doorConfig.HINGE3HEIGHT = 0;
-																	if (_HingesNum < 2)
-																	{
-																		errMsg3 = "מספר הצירים לא יכול להיות נמוך מ-2";
-																		openMsgBox = true;
-																	}
-																	doorConfig.borderColors["HINGESNUM"] = (value != 0 ? "blueBorder" : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+			protected int _HingesNum = 0;
+			protected int HingesNum
+			{
+				get
+				{
+					if (doorConfig != null)
+					{
+						_HingesNum = doorConfig.HINGESNUM;
+					}
+					return _HingesNum;
+				}
+				set
+				{
+					int oldHingesNum = doorConfig.HINGESNUM;
+					_HingesNum = value;
+					if (doorConfig != null)
+					{
+						doorConfig.HINGESNUM = _HingesNum;
+						@*
+							if (_HingesNum < 5)
+								doorConfig.HINGE5HEIGHT = 0;
+							if (_HingesNum < 4)
+								doorConfig.HINGE4HEIGHT = 0;
+							if (_HingesNum < 3)
+								doorConfig.HINGE3HEIGHT = 0;
+						*@
+						if (_HingesNum < 2 || _HingesNum > 5)
+						{
+							errMsg3 = "מספר הצירים חייב להיות בין 2 ל-5";
+							openMsgBox = true;
+						}
+						else
+						{
+							int lastHingeH = getLastHingeH(oldHingesNum);
+							setHingesHeights(_HingesNum, lastHingeH);
+						}
+						doorConfig.borderColors["HINGESNUM"] = (value != 0 ? "blueBorder" : "redBorder");
+						//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
 
-																}
-															}
-														}
-												   }
-                                                    <td id="tdBackPinHeight"  >
-                                                        <input type="number" name="txtBackPinHeight"  @bind="BackPinHeight" 
-														     class= "@doorConfig.borderColors["BACKPINHEIGHT"]" />
-                                                    </td>
-                                                    @code
-                                                    {
-	                                                    protected int _BackPinHeight = 0;
-	                                                    protected int BackPinHeight
-	                                                    {
-		                                                    get
-		                                                    {
-			                                                    if (doorConfig != null)
-			                                                    {
-				                                                    _BackPinHeight = doorConfig.BACKPINHEIGHT;
-			                                                    }
-			                                                    return _BackPinHeight;
-		                                                    }
-		                                                    set
-		                                                    {
-			                                                    _BackPinHeight = value;
-			                                                    if (doorConfig != null)
-																{
-				                                                    doorConfig.BACKPINHEIGHT = _BackPinHeight;
-																	doorConfig.borderColors["BACKPINHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
-																}
-		                                                    }
-	                                                    }
-                                                    }
+					}
+				}
+			}
+			int getLastHingeH(int hingesNum)
+			{
+				switch (hingesNum)
+				{
+					case 2:
+						return doorConfig.HINGE2HEIGHT;
+					case 3:
+						return doorConfig.HINGE3HEIGHT;
+					case 4:
+						return doorConfig.HINGE4HEIGHT;
+					case 5:
+						return doorConfig.HINGE5HEIGHT;
+				}
+				return 0;
+			}
+			void setHingesHeights (int newHingesNum, int lastHingeH)
+			{
+				doorConfig.HINGE3HEIGHT = doorConfig.HINGE4HEIGHT = doorConfig.HINGE5HEIGHT = 0; // init
+				int gap = 0;
+				switch (newHingesNum)
+				{
+					case 2:
+						doorConfig.HINGE2HEIGHT = lastHingeH;
+						doorConfig.HINGE3HEIGHT = doorConfig.HINGE4HEIGHT = doorConfig.HINGE5HEIGHT = 0;
+						return;
+					case 3:
+						doorConfig.HINGE3HEIGHT = lastHingeH;
+						gap = (lastHingeH - doorConfig.HINGE1HEIGHT) / 2;
+						doorConfig.HINGE2HEIGHT = doorConfig.HINGE1HEIGHT + gap;
+						return;
+					case 4:
+						doorConfig.HINGE4HEIGHT = lastHingeH;
+						gap = (lastHingeH - doorConfig.HINGE1HEIGHT) / 3;
+						doorConfig.HINGE2HEIGHT = doorConfig.HINGE1HEIGHT + gap;
+						doorConfig.HINGE3HEIGHT = doorConfig.HINGE2HEIGHT + gap;
+						return;
+					case 5:
+						doorConfig.HINGE5HEIGHT = lastHingeH;
+						gap = (lastHingeH - doorConfig.HINGE1HEIGHT) / 4;
+						doorConfig.HINGE2HEIGHT = doorConfig.HINGE1HEIGHT + gap;
+						doorConfig.HINGE3HEIGHT = doorConfig.HINGE2HEIGHT + gap;
+						doorConfig.HINGE4HEIGHT = doorConfig.HINGE3HEIGHT + gap;
+						return;
+				}
+			}
 
+	 }
+                                                    
                                                     <td id="tdHinge1Height" class= "@doorConfig.borderColors["HINGE1HEIGHT"]" >
                                                         <input type="number" name="txtHinge1Height"  @bind="Hinge1Height" 
 														   class= "@doorConfig.borderColors["HINGE1HEIGHT"]" />
@@ -306,6 +331,37 @@
 															}
 														}
 													}
+
+													<td id="tdBackPinHeight"  >
+                                                        <input type="number" name="txtBackPinHeight"  @bind="BackPinHeight" 
+														     class= "@doorConfig.borderColors["BACKPINHEIGHT"]" />
+                                                    </td>
+                                                    @code
+                                                    {
+	                                                    protected int _BackPinHeight = 0;
+	                                                    protected int BackPinHeight
+	                                                    {
+		                                                    get
+		                                                    {
+			                                                    if (doorConfig != null)
+			                                                    {
+				                                                    _BackPinHeight = doorConfig.BACKPINHEIGHT;
+			                                                    }
+			                                                    return _BackPinHeight;
+		                                                    }
+		                                                    set
+		                                                    {
+			                                                    _BackPinHeight = value;
+			                                                    if (doorConfig != null)
+																{
+				                                                    doorConfig.BACKPINHEIGHT = _BackPinHeight;
+																	doorConfig.borderColors["BACKPINHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
+																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																}
+		                                                    }
+	                                                    }
+                                                    }
+
                                                 </tr>
 </table>
 @if (openMsgBox)

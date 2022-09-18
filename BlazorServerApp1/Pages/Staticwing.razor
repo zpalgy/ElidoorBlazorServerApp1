@@ -385,6 +385,8 @@
 								doorConfig.EXTRAWINGWIDTH = (_ExtraWingWidth != null ? (int)_ExtraWingWidth : 0);
 								doorConfig.borderColors["EXTRAWINGWIDTH"] = (value != 0 ? "blueBorder" : "redBorder");
 								//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+								if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                       config4.RefreshState();
 							}
 						}
 					}
@@ -488,6 +490,8 @@
 		            set
 		            {
 			            _CentralColClrDes = value;
+						if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                       config4.RefreshState();
 		            }
 	            }
             }
