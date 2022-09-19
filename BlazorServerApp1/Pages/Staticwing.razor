@@ -194,7 +194,7 @@
 				doorConfig.SWING_DRIL4HW = PrApiCalls.IDS_ONESIDE;  
 			doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;
 
-			doorConfig.SWING_HANDLENAME = doorConfig.HANDLENAME;
+			// doorConfig.SWING_HANDLENAME = doorConfig.HANDLENAME;  commented on 19/09/2022 per Tzvi Okun's request .
 			doorConfig.disabledFlds["SWING_HANDLECOLORID"] = (!PrApiCalls.isHandleColored(doorConfig.HANDLENAME)
 			                                                  || doorConfig.HANDLENAME == UiLogic.NameOfNone);
 
@@ -873,7 +873,7 @@
 				{
 					// doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
 					//doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
-					doorConfig.SWING_DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
+					doorConfig.SWING_DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig.HW4EXTRAWING);
 					// populate the LOV for Dril4Hw based on Hardware selected .
 					string errMsg = string.Empty;
 					lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
@@ -1221,7 +1221,7 @@
 	                    {
 							@foreach (HANDLE_Class c in PrApiCalls.lstHandles)
 							{
-								if (c.PARTNAME == doorConfig.HANDLENAME || c.PARTNAME == UiLogic.NameOfNone)
+								if (c.PARTNAME == doorConfig.HANDLENAME || c.PARTNAME == UiLogic.NameOfNone || string.IsNullOrEmpty(c.PARTNAME))
 								{
 									@* <option value="@c.PARTNAME">@c.PARTDES</option> *@
 									string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא");

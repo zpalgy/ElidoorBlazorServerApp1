@@ -1524,6 +1524,16 @@ namespace BlazorServerApp1.Data
             }
             return 0;
         }
+        public static int getDril4HwOfHw(int HwId)
+        {
+            // note: per Eli's request: in  thw table TRSH_HARDWARE :  if the TRSH_HARDWARE.DRIL4HW should be IDS it's always IDS_ONESIDE !
+                string query = string.Format("TRSH_HARDWARE={0}", HwId);
+                DataRow[] dril4HwRows = dtHardwares.Select(query);
+                if (dril4HwRows.Length > 0)
+                    return int.Parse(dril4HwRows[0]["DRIL4HW"].ToString());  //if it should return IDS, it always returns IDS_ONESIDE 
+                else
+                    return 0;
+        }
         public static DRIL4HW_Class getDril4HwRec1(DoorConfig doorConfig)
         {
             if (doorConfig != null)
