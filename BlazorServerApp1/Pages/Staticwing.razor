@@ -149,7 +149,6 @@
 			// Eli's request on 11/09/2022
 			doorConfig.SWING_HANDLENAME = string.Empty;
 			doorConfig.SWING_HANDLECOLORID = 0;
-			doorConfig.SWING_LOCKNAME = string.Empty;
 
 			doorConfig.disabledFlds["SWING_HANDLENAME"] = doorConfig.disabledFlds["SWING_HANDLECOLORID"] = string.IsNullOrEmpty(doorConfig.HANDLENAME);
 
@@ -202,6 +201,8 @@
 
 			doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 , requested again on 16/08/2022
 			// LOGO is also copied, but there is no special field SWING_LOGO for staticwing as always we use teh LOGO of teh movinwing !
+			if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+			     doorConfig.SWING_LOCKNAME = doorConfig.LOCKNAME;
 		}
 		if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
 		{
@@ -213,8 +214,6 @@
 			doorConfig.disabledFlds["SWING_DRIL4HW"] = !_SwingHasLock;
 			doorConfig.disabledFlds["SWING_TURBO"] = !_SwingHasLock;   //TODO - check this ?
 			doorConfig.disabledFlds["SWING_LOCKNAME"] = !_SwingHasLock;
-
-			doorConfig.SWING_LOCKNAME = doorConfig.LOCKNAME;
 		}
 	}
 
@@ -750,14 +749,14 @@
 							//find the SWING_DRIL4HW that is associated with HW4EXTRAWING
 							setSWING_DRIL4HW();
 
-							}
+						}
 							//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
 							 if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
                                   config4.RefreshState();
-						}
 					}
 				}
 			}
+		}
 				
 				<td id="dlstHW4EXTRAWING" >  
 					@* HW4EXTRAWING *@
@@ -816,6 +815,9 @@
 						{
 							doorConfig.HW4EXTRAWING = _Hw4ExtraWing;
 							setSWING_DRIL4HW();
+							if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                  config4.RefreshState();
+
 						    @*if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
                             {
                                 doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
