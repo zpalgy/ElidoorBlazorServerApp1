@@ -229,9 +229,13 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 7)]
         public string COLORED { get; set; }   // boolean Y | '' 
         [DataMember(Order = 8)]
+        public string NIKEL { get; set; }   // boolean Y | '' 
+        [DataMember(Order = 9)]
+        public string BRONZE { get; set; }   // boolean Y | '' 
+        [DataMember(Order = 10)]
         public string PARTNAME2 { get; set; }   // dual part right -> left, or left -> right of point to itself.
 
-        [DataMember(Order = 9)]
+        [DataMember(Order = 11)]
         public int OPPOSITESIDE_PART { get; set; }    // PART.PART of the opposite Hardware
     }
     public class ValuesTRSH_HARDWARE_Class
@@ -251,6 +255,11 @@ namespace BlazorServerApp1.Data
         //public string HWACCESSORYDES { get; set; }
         [DataMember(Order = 4)]
         public string COLORED { get; set; }   // boolean Y | '' 
+        [DataMember(Order = 5)]
+        public string NIKEL { get; set; }   // boolean Y | '' 
+        [DataMember(Order = 6)]
+        public string BRONZE { get; set; }   // boolean Y | '' 
+        
     }
     public class ValuesHWACCESSORY_Class
     {

@@ -278,7 +278,7 @@ namespace BlazorServerApp1.Data
                     isFilled = false;
                 }
             }
-            //Harcode for Halfwing SWING_HANDLENAME and SWING_HANDLECOLORID 
+            //Hardcode for Halfwing SWING_HANDLENAME and SWING_HANDLECOLORID 
             if (PrApiCalls.isHandleColored(doorConfig.SWING_HANDLENAME) && doorConfig.SWING_HANDLECOLORID == 0)
                 isFilled = false;
             return isFilled;

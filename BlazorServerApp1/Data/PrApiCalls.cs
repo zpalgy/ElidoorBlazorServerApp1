@@ -1176,7 +1176,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,DRIL4HW,DRIL4HWDES,COLORED,PARTNAME2,OPPOSITESIDE_PART";
+                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,DRIL4HW,DRIL4HWDES,COLORED,NIKEL,BRONZE,PARTNAME2,OPPOSITESIDE_PART";
                 request.Resource = string.Format("TRSH_HARDWARE?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1224,7 +1224,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "HWACCESSORYID,PARTNAME,PARTDES,COLORED"; //"HWACCESSORYID,HWACCESSORYDES,COLORED";
+                string fields = "HWACCESSORYID,PARTNAME,PARTDES,COLORED,NIKEL,BRONZE"; //"HWACCESSORYID,HWACCESSORYDES,COLORED";
                 request.Resource = string.Format("TRSH_HWACCESSORIES?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1300,6 +1300,38 @@ namespace BlazorServerApp1.Data
             {
                 string COLORED = rowsArray[0]["COLORED"].ToString();
                 if (!string.IsNullOrEmpty(COLORED) && COLORED == "Y")
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        public static bool isHWNikel(int TRSH_HARDWARE)
+        {
+            DataRow[] rowsArray;
+            string query = string.Format("TRSH_HARDWARE = '{0}'", TRSH_HARDWARE);
+            rowsArray = PrApiCalls.dtHardwares.Select(query);
+            if (rowsArray.Length > 0)
+            {
+                string NIKEL = rowsArray[0]["NIKEL"].ToString();
+                if (!string.IsNullOrEmpty(NIKEL) && NIKEL == "Y")
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        public static bool isHWBronze(int TRSH_HARDWARE)
+        {
+            DataRow[] rowsArray;
+            string query = string.Format("TRSH_HARDWARE = '{0}'", TRSH_HARDWARE);
+            rowsArray = PrApiCalls.dtHardwares.Select(query);
+            if (rowsArray.Length > 0)
+            {
+                string BRONZE = rowsArray[0]["BRONZE"].ToString();
+                if (!string.IsNullOrEmpty(BRONZE) && BRONZE == "Y")
                     return true;
                 else
                     return false;

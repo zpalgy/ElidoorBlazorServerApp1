@@ -580,7 +580,8 @@ namespace BlazorServerApp1.Data
         public Dictionary<string, ElementReference> dicRefs = new Dictionary<string, ElementReference>();
         [NonSerialized]
         public Dictionary<string, bool> hideBtns; // { get; set; }  // not used yet 
-
+        [NonSerialized]
+        public bool staticwingChanged = false;
         public void initBorderColors()
         {
             Type objType = this.GetType();
