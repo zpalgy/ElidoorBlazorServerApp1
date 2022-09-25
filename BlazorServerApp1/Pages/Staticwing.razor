@@ -85,8 +85,9 @@
 			if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" )
 			{
 				doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true;
-				if (doorConfig.HANDLENAME == UiLogic.NameOfNone)
+				if (doorConfig.HANDLENAME == null || string.IsNullOrEmpty(doorConfig.HANDLENAME) || doorConfig.HANDLENAME == UiLogic.NameOfNone )
 				{
+					doorConfig.HANDLENAME = string.Empty;
 					doorConfig.disabledFlds["SWING_HANDLENAME"] = true;
 				}
 				//21/09/2022 Eli - in any case, independent of WithLock values of SWING_HANDLE* are copied from movingwing. !
@@ -204,7 +205,7 @@
 			doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;  
 			doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0  ? "blueBorder" : "redBorder");  // special for this field
 																																		// that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
-			doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);  //doorConfig.TRSH_HARDWARE;
+			doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);  
 			if (lstD4HW1 == null || lstD4HW1.Count == 0)
 				setSWING_DRIL4HW();    // populate lstD4Hw1 - so that doorConfig.SWING_DRIL4HW can get a value from this LOV. Otherwise it'll not get
 												//   a value, because this LOV acts also as a validator for the value of teh field. Thta value must exist in teh LOV of the field.
@@ -752,21 +753,28 @@
 						doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (value != 0  ? "blueBorder" : "redBorder");
 						if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
 						{
-							// if the user selected 1/2 Cylinder the folowing two fields are emptied and disabled !
-							doorConfig.HW4EXTRAWING = 0;
+
+							// Obsolete logic ! if the user selected 1/2 Cylinder the folowing two fields are emptied and disabled !
+							//doorConfig.HW4EXTRAWING = 0;
+
 							//doorConfig.SWING_HWCOLORID = 0;  - 16/08/2022 - do not empty this field, copy it from movingwing !
 							//                           copy HWCOLORID from movingwing is done in applySwingHasLock(...)
 							//doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] = true;
 							//   16/08/2022 - HW4EXTRAWING and SWING_DRIL4HW are ACTIVE , their values can be only those that can be used with Half Cylinder !
 
-							doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
+							doorConfig.disabledFlds["SWING_HWCOLORID"] = true;  //TODO check if this is OK !
+							doorConfig.HW4EXTRAWING = 0;   // it got value from movingwing i.e. doorConfig.TRSH_HARDWARE
+							         // in ApplyHasLock() : doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);
+									 //   so we have to clear the field here, as the cylinder is not that of the movingwing.
 
 							// as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
 							//  IDS_ONESIDE !
-							lstD4HW1 = new List<DRIL4HW_Class>();
-							DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
-							lstD4HW1.Add(dril4HalfCyl);
-							doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+							//  This logic is problematic as there is no need for DRIL4HW if there is no HW !
+							
+							//lstD4HW1 = new List<DRIL4HW_Class>();
+							//DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
+							//lstD4HW1.Add(dril4HalfCyl);
+							//doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
 						}
 						else
 						{
@@ -803,6 +811,10 @@
 					@{
 						string errMsg = string.Empty;
 						//List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getDoorHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
+						if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
+						{
+							int dbg = 17;
+						}
 						List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.SWING_OPENSIDE, doorConfig.OPENMODE, ref errMsg);
 						if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
 						{
@@ -915,7 +927,7 @@
 					doorConfig.SWING_HWACCESSORYID = 0;
 					doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
 					doorConfig.SWING_HWCOLORID = 0;
-					
+
 					// 18/06/2022 - when HARWARE is ללא DRIL4HW should be ENABLED !
 					//  therefore commented the three lines below.
 					// doorConfig.disabledFlds["DRIL4HW"] = true;
@@ -924,7 +936,7 @@
 					lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();  // the full list of Drills for Hardwares
 					return;
 				}
-				else
+				else if (!PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
 				{
 					// doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
 					//doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
@@ -934,15 +946,29 @@
 					lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 					foreach (DRIL4HW_Class d4hw in lstD4HW1)
 					{
-						if (d4hw.DRIL4HWDES.Contains("IDS") && d4hw.DRIL4HW != doorConfig.SWING_DRIL4HW) 
+						if (d4hw.DRIL4HWDES.Contains("IDS") && d4hw.DRIL4HW != doorConfig.SWING_DRIL4HW)
 						{
 							lstD4HW1.Remove(d4hw);  //07/07/2022 - Eli asked: on staticwing : if Dril4HW is IDS - the LOV should contain a single element ONE SIDE IDS Dril !
 							break;  // this can be done only once Otherwise we'll get an error on the foreach statement - the collection lstD4HW1 was changed and the foreach 
-							        //   crashed and cannot continue.
+									//   crashed and cannot continue.
 						}
-
-
 					}
+				}
+				else
+				{
+					//DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
+					//doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+									
+                    // As doorConfig.SWING_DRIL4HW is a <select> field - the value we assign to it must be in the LOV
+					//  thus we create a new LOV and put in it just the single value dril4HalfCyl.DRIL4HW
+					//   which we then assign to doorConfig.SWING_DRIL4HW .
+
+					lstD4HW1 = new List<DRIL4HW_Class>();
+					DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
+					lstD4HW1.Add(dril4HalfCyl);
+					doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+
+				}
 
                     //doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
                     //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
@@ -951,9 +977,9 @@
                     doorConfig.borderColors["SWING_HWCOLORID"] = (doorConfig.disabledFlds["SWING_HWCOLORID"] || doorConfig.SWING_HWCOLORID != 0 ? "blueBorder" : "redBorder");
                     if (doorConfig.disabledFlds["SWING_HWCOLORID"])
                         doorConfig.SWING_HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
-                }
-			}
-		   }
+            }
+	    }
+		   
 		      
 		   @* SWING_HWACCESSORYID   new 12/07/2022 *@
 		   <td>
