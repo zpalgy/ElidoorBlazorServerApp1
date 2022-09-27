@@ -762,7 +762,9 @@
 							//doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] = true;
 							//   16/08/2022 - HW4EXTRAWING and SWING_DRIL4HW are ACTIVE , their values can be only those that can be used with Half Cylinder !
 
-							doorConfig.disabledFlds["SWING_HWCOLORID"] = true;  //TODO check if this is OK !
+							doorConfig.disabledFlds["SWING_HWCOLORID"] = true;  //הערות לבדיקות סופיות דלת חלקה - חצי צילינדר.docx : 
+							  // on staticwing -half cylinder the HWCOLOR is copied from movingwing and is not changeable.
+							  // doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;  is executed in applySwingHasLock() when hasLock is set to true.
 							doorConfig.HW4EXTRAWING = 0;   // it got value from movingwing i.e. doorConfig.TRSH_HARDWARE
 							         // in ApplyHasLock() : doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);
 									 //   so we have to clear the field here, as the cylinder is not that of the movingwing.
