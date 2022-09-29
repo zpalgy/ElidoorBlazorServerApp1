@@ -255,7 +255,7 @@
                 //  because when we're at "hinges" and prec is "staticwing" 
                 //  it sets teh color of "staticwing" OK but then clears teh color of "movingwing" !! a bug to invetigate 
                 if (curr > Array.IndexOf(UiLogic.tabNames, "movingwing"))
-                   doorConfig.btnClasses["movingwing"] = "buttonFilled";
+                    doorConfig.btnClasses["movingwing"] = "buttonFilled";
             }
 
             doorConfig.btnClasses[doorConfig.prevTabName] = "buttonFilled";
@@ -302,22 +302,30 @@
         async Task  showStaticwing()
         {
         //showTabPage(typeof(Staticwing), "staticwing");
-             UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-            Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" ? typeof(Staticwing) : typeof(Halfwing));
+        UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+        Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" ? typeof(Staticwing) : typeof(Halfwing));
 
-            //if (showTabPage(typeof(Staticwing), "staticwing"))
-            if (showTabPage(staticwingType, "staticwing"))
+        //if (showTabPage(typeof(Staticwing), "staticwing"))
+        if (showTabPage(staticwingType, "staticwing"))
+        {
+            if (staticwingType == typeof(Staticwing))
+                doorConfig.btnClasses["movingwing"] = "buttonFilled";
+
+            if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
             {
-                if (staticwingType == typeof(Staticwing))
-                      doorConfig.btnClasses["movingwing"] = "buttonFilled";
-
-                if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
-                {
-                    StateHasChanged();
-                    await Task.Delay(1);
-                    await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
-                }
-
+                StateHasChanged();
+                await Task.Delay(1);
+                await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
+            }
+            // debug 
+            if (doorConfig.staticwingChanged)
+            {
+                int dbg = 17;
+            }
+            else
+            {
+                int dbg2 = 18;
+            }
     	    }
         }
         async Task showMoving_Static_Wing()

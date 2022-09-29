@@ -59,33 +59,43 @@
 			// restore the LOV for SWING_DRIL4HW !
 			lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 		}
-		else if (!doorConfig.staticwingChanged)// page not filled , it's not empty because even if we come here for the 1st time some fields are 
+
+		else
+		{
+			if (doorConfig.CENTRALCOLCLRID == 0)
+				calcCentralColClrID(doorConfig);
+			
+			if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" && !string.IsNullOrEmpty(doorConfig.OPENSIDE))
+			{
+				if (string.IsNullOrEmpty(doorConfig.SWING_OPENSIDE))
+						doorConfig.SWING_OPENSIDE = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+				
+				doorConfig.disabledFlds["SWING_OPENSIDE"] = true;
+				doorConfig.disabledFlds["OPENMODE"] = true;
+			}
+			// if we come here after going back to movingwing and then back here the LOV of SWING_DRIL4HW, which is a local
+			// variable, may be empty and then SWING_DRIL4HW will not displayed , because it's not in the LOV (which is empty).
+			//  so we repopulate it here !
+			if (lstD4HW1.Count == 0 && doorConfig.HW4EXTRAWING != 0 )
+				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
+
+
+		 if (!doorConfig.staticwingChanged)// page not filled , it's not empty because even if we come here for the 1st time some fields are 
 														// copied from movingwing .
 														// The following code should be executed only once, when we come here for the 1st time in the session.
 		{
-			// these are handled in applySwingHasLock() here below !
-			//doorConfig.disabledFlds["HW4EXTRAWING"] =                   //06/07/2022 
-			//doorConfig.disabledFlds["SWING_HWACCESSORYID"] =            //12/07/2022
-			//doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = true;
-
-			calcCentralColClrID(doorConfig);
 			applySwingHasLock();
 			//doorConfig.CENTRALCOLWIDTH = (doorConfig.CENTRALCOLWIDTH == 0 ? 40 : doorConfig.CENTRALCOLWIDTH) ;  //06/07/2022 
 			// doorConfig.disabledFlds["SWING_HANDLENAME"] = (doorConfig.TRSH_WINGSNUMDES == "כנף וחצי"); // 06/07/2022 
 			//doorConfig.thClasses["HW4EXTRAWING"] = "thGray";   // 06/07/2022 
 			//   07/07/2022 - Eli asked to make this field Mandatory
-			if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" && !string.IsNullOrEmpty(doorConfig.OPENSIDE))
-			{
-				doorConfig.SWING_OPENSIDE = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
-				doorConfig.disabledFlds["SWING_OPENSIDE"] = true;
-				doorConfig.disabledFlds["OPENMODE"] = true;
-			}
+			
 
 			//21-23/09/2022
-			if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" )
+			if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
 			{
 				doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true;
-				if (doorConfig.HANDLENAME == null || string.IsNullOrEmpty(doorConfig.HANDLENAME) || doorConfig.HANDLENAME == UiLogic.NameOfNone )
+				if (doorConfig.HANDLENAME == null || string.IsNullOrEmpty(doorConfig.HANDLENAME) || doorConfig.HANDLENAME == UiLogic.NameOfNone)
 				{
 					doorConfig.HANDLENAME = string.Empty;
 					doorConfig.disabledFlds["SWING_HANDLENAME"] = true;
@@ -98,17 +108,16 @@
 
 			}
 
-
-			
 			doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 , in case we didn't open movingwing (WINGSNUMDES == Half Wing ) we set LOGO here.
 																				//  in case both WINGSNUMDES has more than one wing LOGO is always the same on both wings - see doc from 22/06/2022 !
 																				//  that doc also states the the LOGO field in the staticwing is always disabled !
 																				//  11.	"לוגו" יועתק מהכנף הנעה ולא ניתן יהיה לשינוי.
 																				//doorConfig.TURBOAPPARATUS = (doorConfig.useLOGO ? "Y" : string.Empty);   // new 11/07/2022 
 
-			doorConfig.SWING_TURBO = ((doorConfig.SWINGHASLOCK == "Y" &&  doorConfig.useLOGO) ? "Y" : string.Empty);   // new 11/07/2022 , updated 28/07/2022 
+			doorConfig.SWING_TURBO = ((doorConfig.SWINGHASLOCK == "Y" && doorConfig.useLOGO) ? "Y" : string.Empty);   // new 11/07/2022 , updated 28/07/2022 
 			doorConfig.disabledFlds["LOGO"] = true;
 		}
+	}
 
 		if (doorConfig.SWINGHASLOCK == "Y" && doorConfig.HW4EXTRAWING == 0 && doorConfig.TRSH_HARDWARE != 0)
 		{
@@ -213,8 +222,8 @@
 			if (doorConfig.SWING_DRIL4HW == PrApiCalls.IDS_TWOSIDES)  //16/08/2022 in staticwing if DRIL4HW is IDS it's always IDS_ONESIDE !
 				doorConfig.SWING_DRIL4HW = PrApiCalls.IDS_ONESIDE;  
 			doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;
-	
-		    //Eli 21/09/2022 : HANDLE NAME and Color get the value that is in movingwing. It does not depend on WithLock value !
+
+			//Eli 21/09/2022 : HANDLE NAME and Color get the value that is in movingwing. It does not depend on WithLock value !
 			// thereFore we set their value in on OnInitializedAsync() and disable these two fields if the number of wings in the door is greater than ONE !
 			//if (doorConfig.TRSH_MODELNAME != "חצי כנף")
 			// 		doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
@@ -225,12 +234,13 @@
 
 			//doorConfig.SWING_HANDLECOLORID = doorConfig.HANDLECOLORID;
 			//-- end of SWING_HANDLE* issue on 21/09/2022
-			
+
 			doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 , requested again on 16/08/2022
-			// LOGO is also copied, but there is no special field SWING_LOGO for staticwing as always we use teh LOGO of teh movinwing !
+																						// LOGO is also copied, but there is no special field SWING_LOGO for staticwing as always we use teh LOGO of teh movinwing !
 			if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
-			     doorConfig.SWING_LOCKNAME = doorConfig.LOCKNAME;
+				doorConfig.SWING_LOCKNAME = doorConfig.LOCKNAME;
 		}
+
 		if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
 		{
 			doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] =
@@ -241,6 +251,19 @@
 			doorConfig.disabledFlds["SWING_DRIL4HW"] = !_SwingHasLock;
 			doorConfig.disabledFlds["SWING_TURBO"] = !_SwingHasLock;   //TODO - check this ?
 			doorConfig.disabledFlds["SWING_LOCKNAME"] = !_SwingHasLock;
+
+			// independent of doorConfig.SWINGHASLOCK 
+			if (doorConfig.HWCOLORID == 0)
+			{
+				doorConfig.SWING_HWCOLORID = 0;
+				doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
+			}
+			else
+			{
+				if (!doorConfig.disabledFlds["SWING_HWCOLORID"])
+					doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;   
+			}
+
 		}
 		
 	}
