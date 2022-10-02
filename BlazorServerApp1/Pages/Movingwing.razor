@@ -951,6 +951,11 @@
                         _Hw = PrApiCalls.getHwIdByDes(value);  // value;
                         if (doorConfig != null)
                         {
+                            // 02/10/2022 Eli's request 
+                            if (doorConfig.TRSH_HARDWARE != 0 && _Hw != doorConfig.TRSH_HARDWARE)
+                            {
+                                doorConfig.HWCOLORID = doorConfig.HWACCESSORYID = 0;
+                            }
                             doorConfig.TRSH_HARDWARE = _Hw;
                             if (doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone || doorConfig.TRSH_HARDWARE == 0) // ללא
                             {
@@ -1471,29 +1476,30 @@
                 }
            
                 @code
+            {
+                protected string _HandleName;
+                protected string HandleDes
+                //protected string HandleDes1
                 {
-                    protected string _HandleName;
-                    protected string HandleDes
-                    //protected string HandleDes1
+                    get
                     {
-                        get
+                        if (doorConfig != null)
                         {
-                            if (doorConfig != null)
-                            {
-                                _HandleName = doorConfig.HANDLENAME;
-                            }
-                            return (string.IsNullOrEmpty(_HandleName) ? string.Empty : PrApiCalls.getHandleDesByName(_HandleName));
+                            _HandleName = doorConfig.HANDLENAME;
                         }
-                        set
-                        {
-                            _HandleName = PrApiCalls.getHandleNameByDes(value);
-                            if (doorConfig != null)
+                        return (string.IsNullOrEmpty(_HandleName) ? string.Empty : PrApiCalls.getHandleDesByName(_HandleName));
+                    }
+                    set
+                    {
+                        _HandleName = (!string.IsNullOrEmpty(value) ? PrApiCalls.getHandleNameByDes(value) : string.Empty);
+                        if (doorConfig != null)
                             {
                                 doorConfig.HANDLENAME = _HandleName;
                                 // Handle is Optional
                                 //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                                doorConfig.disabledFlds["HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone 
+                                doorConfig.disabledFlds["HANDLECOLORID"] = (   string.IsNullOrEmpty(doorConfig.HANDLENAME) 
+                                                                            || doorConfig.HANDLENAME == UiLogic.NameOfNone 
                                                                             || !PrApiCalls.isHandleColored(doorConfig.HANDLENAME));
                                 if (doorConfig.disabledFlds["HANDLECOLORID"])
                                     doorConfig.HANDLECOLORID = 0;

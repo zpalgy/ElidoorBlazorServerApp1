@@ -295,7 +295,16 @@ namespace BlazorServerApp1.Data
                 return true;
             }
             else
-                return false;
+            {
+                doorConfig.btnClasses[tabBtnCssName] = "buttonActive";
+                if (doorConfig.btnClasses[nextTabBtnCssName] == "buttonActive")  // it was already set to ACTIVE - we rollback this
+                {
+                    doorConfig.btnClasses[nextTabBtnCssName] = "button";
+                    return true;  // rollback button colors
+                }
+                else
+                    return false;
+            }
         }
         public static bool deactivateBtnClass (DoorConfig doorConfig, string tabName)
         {
