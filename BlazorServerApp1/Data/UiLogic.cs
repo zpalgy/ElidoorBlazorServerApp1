@@ -806,6 +806,7 @@ namespace BlazorServerApp1.Data
             }
             doorConfig.initBorderColors();
             UiLogic.tabPageIsFilled("divHeader", doorConfig);  //set redborder on Required fields in divHeader
+            doorConfig.staticwingChanged = false;
         }
         //public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
         public static void clearConfField(DoorConfig doorConfig, string fldName, ref string errMsg)

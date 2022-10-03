@@ -797,10 +797,14 @@
 							//  IDS_ONESIDE !
 							//  This logic is problematic as there is no need for DRIL4HW if there is no HW !
 							
-							//lstD4HW1 = new List<DRIL4HW_Class>();
-							//DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
-							//lstD4HW1.Add(dril4HalfCyl);
-							//doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+							//03/10/2022 : Eli says: if Cylinder is HALF Cylinder , SWING_DRIL4HW MUST be Dril 4 Half Cylinder !
+							// As doorConfig.SWING_DRIL4HW is a <select> field - the value we assign to it must be in the LOV
+							//  thus we create a new LOV and put in it just the single value dril4HalfCyl.DRIL4HW
+							//   which we then assign to doorConfig.SWING_DRIL4HW .
+							lstD4HW1 = new List<DRIL4HW_Class>();
+							DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
+							lstD4HW1.Add(dril4HalfCyl);
+							doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
 						}
 						else
 						{
@@ -962,7 +966,8 @@
 					lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();  // the full list of Drills for Hardwares
 					return;
 				}
-				else if (!PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
+				else if (!PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))  //HW4EXTRAWING is not ללא , it's mandatory so it's not EMPTY !
+				                                                                      // and TRSH_SWING_CYLINDER is not HALF
 				{
 					// doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
 					//doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
@@ -980,8 +985,9 @@
 						}
 					}
 				}
-				else
+				else  // Cylinder is Half !
 				{
+					//03/10/2022 : the following two lines were executed in the setter of TRSH_SWING_CYLINDER
 					//DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
 					//doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
 									
@@ -989,11 +995,12 @@
 					//  thus we create a new LOV and put in it just the single value dril4HalfCyl.DRIL4HW
 					//   which we then assign to doorConfig.SWING_DRIL4HW .
 
-					lstD4HW1 = new List<DRIL4HW_Class>();
-					DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
-					lstD4HW1.Add(dril4HalfCyl);
-					doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
-
+					// 03/10/2022 : per Eli's request : the following 4 lines are executed in the setter of TRSH_SWING_CYLINDER 
+					//               and not here. So I commented them out !
+					//lstD4HW1 = new List<DRIL4HW_Class>();
+					//DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
+					//lstD4HW1.Add(dril4HalfCyl);
+					//doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
 				}
 
                     //doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
