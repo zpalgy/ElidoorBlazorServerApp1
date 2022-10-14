@@ -1161,8 +1161,8 @@
             <th id="thHandle">ידית אומנויות</th>
         }
      *@
-        <th id="thHandle">ידית אומנויות</th>
-        <th>צבע לידית אומנויות</th>
+        <th id="thHandle" hidden="@UiLogic.hideFld(doorConfig, "Handle")">ידית אומנויות</th>
+        <th id= "thHandleColorID" hidden="@UiLogic.hideFld(doorConfig, "HandleColorID")">צבע לידית אומנויות</th>
         <th id="thVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">פתחי אוורור</th>
 
          <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">רפפת עשן</th>
@@ -1453,7 +1453,7 @@
             </td>
         *@
         
-            <td id="tdHandle">
+            <td id="tdHandle" hidden="@UiLogic.hideFld(doorConfig, "Handle")" >
                  @{  int i318 = Array.IndexOf(UiLogic.propNames, "HANDLENAME");
                     <input list="lstHandles" name="dlstHandle" @bind="HandleDes" class="@doorConfig.borderColors["HANDLENAME"]"  autocomplete="off"
                         disabled="@doorConfig.disabledFlds["HANDLENAME"]"
@@ -1513,7 +1513,7 @@
         
             @* end  tdHandle *@
 
-         <td id="tdHandleColorID" >
+         <td id="tdHandleColorID"   hidden="@UiLogic.hideFld(doorConfig, "HandleColorID")" >
             @{  int i325 = Array.IndexOf(UiLogic.propNames, "HANDLECOLORID");
             <input list="lstHandleClrs" name="dlstHandleColorID"  @bind="HandleColorDes"  class= "@doorConfig.borderColors["HANDLECOLORID"]" 
                      autocomplete="off"
