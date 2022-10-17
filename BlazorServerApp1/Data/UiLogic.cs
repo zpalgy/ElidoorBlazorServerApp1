@@ -86,7 +86,7 @@ namespace BlazorServerApp1.Data
                 return true;  // hardcoded -these fields are temporarily not visible 22/05/2022
 
             //debug
-            if (fldName == "Handle" || fldName == "HandleColorID")
+            if (fldName == "HWACCESSORYID")
             {
                 int x = 17;
             }
@@ -100,7 +100,6 @@ namespace BlazorServerApp1.Data
                     showByMeaged = true;
                 else
                     return true;   //showByMeaged = false;  //hide
-                
                 // if we're here showByMeaged == true
                 if (HiddenDecorSideFldsContains(fldName, PrApiCalls.dtDecorSideFlds, Helper.DecorFormat2Code(doorConfig.DECORFORMAT)))
                     return true;  //hide

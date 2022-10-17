@@ -494,6 +494,12 @@ namespace BlazorServerApp1.Data
         //[XmlIgnore]
         //[ScriptIgnore]
         //[DataMember(Order = 277), Order]
+        
+        // fields added on 17/10/2022 for handling meaged 903 - of Model A-GLVN  
+        public int SWINGCOLORID { get; set; } // just for css class disabled and hidden actually gets the value of movingwing DOORCOLORID (D-510)
+        public int SWINGEXTCOLORID { get; set; } //  just for css class disabled and hidden actually gets the value of movingwing EXTCOLORID
+        public int SWINGINTTCOLORID { get; set; } //  just for css class disabled and hidden actually gets the value of movingwing INTCOLORID
+        //  end of 17/10/2022 fields 
         public int SWING_LOCKDRILHEIGHT { get; set; } // just for css class and disabled
 
         #endregion staticwing 

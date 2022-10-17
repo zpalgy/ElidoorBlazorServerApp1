@@ -621,7 +621,7 @@
         @* <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th> *@
         <th id="thCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">צילינדר</th>
         <th id="thHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">פירזול</th>
-        <th>נילווים לפירזול</th>
+        <th hidden="@UiLogic.hideFld(doorConfig, "HWACCESSORYID")">נילווים לפירזול</th>
         <th id="thHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">צבע פירזול</th>
         
     </tr>
@@ -1004,7 +1004,7 @@
                 }
             }
         </td>
-        <td>
+        <td id="dlstHWACCESSORYID" hidden="@UiLogic.hideFld(doorConfig, "HWACCESSORYID")" >
              @{  int i333 = Array.IndexOf(UiLogic.propNames, "HWACCESSORYID");
              <input list="lstHwAcc"  name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]" autocomplete="off"
                         disabled="@doorConfig.disabledFlds["HWACCESSORYID"]"
@@ -1182,6 +1182,10 @@
                   @ref="doorConfig.dicRefs[UiLogic.propNames[i312]]" >
 
                     @* @if (PrApiCalls.lstDril4Hw != null)  *@
+                    @if (lstD4HW1 == null || lstD4HW1.Count == 0)
+                    {
+                        lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+                    }
                     @if (lstD4HW1 != null)
                 {
                     @* @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw) *@
