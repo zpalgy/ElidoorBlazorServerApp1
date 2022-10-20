@@ -41,9 +41,21 @@
     private bool ansYes = false;
     int newLockDrilHeight = 0;
 
-    private bool disableColor = true;
+    // private bool disableColor = true;
     private bool disableExtColor = true;
     private bool disableIntColor = true;
+
+    bool hideColorsNum = false;
+    bool hideDoorColor = false;
+    bool hideExtColr = false;
+    bool hideIntColor = false;
+    bool hideCylinder = false;
+    bool hideHw = false;
+    bool hideHwColor = false;
+    bool hideHwAccessory = false;
+    bool hideHandle = false;
+    bool hideHandleColor = false;
+
 
     //protected string currPropName = string.Empty;
     DataTable dtTabFlds = new DataTable();
@@ -123,14 +135,48 @@
             TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID); 
             lstColors1.Remove(megulvan);
         }
+        setHiddens(doorConfig);
 
+    }
+    void setHiddens(DoorConfig doorConfig)
+    {
+        hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
+        hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
+        hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
+        hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
+        hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
+        hideHw = UiLogic.hideFld(doorConfig, "Hw");
+        hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
+        hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
+        hideHandle = UiLogic.hideFld(doorConfig, "Handle");
+        hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
 
+        doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
+        doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
+        doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
+        doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
+        doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
+        doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
+        doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
+        doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
+        doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
+        doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
+                        
+        doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
+        doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
+        doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
+        doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
+        doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
+        doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
+        doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
+        doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
+        doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
+        doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
     }
 
     // We must have this event handler in every tabPage because it uses doorConfig , and we can't pass it as a parameter to
     //   this type of method. Teh only parameter that can be passwed to this method is KeyboardEventArgs !
     // Otherwise I would have create a single event handler in UiLogic class 
-
     async Task KeyPressHandler(KeyboardEventArgs e)
     {
         string currTabName = "movingwing";
@@ -194,9 +240,8 @@
         <th id="thOpenMode">פתיחה</th>   @* פנימה\החוצה *@
         @*  <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>  moved to Configurator4.razor divDoorTitle*@
 
-        @{  doorConfig.thClasses["COLORSNUM"] = (UiLogic.hideFld(doorConfig, "ColorsNum") ? "thGray" : "thBlue");  }
         <th id="thColorsNum" class= "@doorConfig.thClasses["COLORSNUM"]" >מספר גוונים</th>
-        <th id="thWingColor" hidden="@UiLogic.hideFld(doorConfig, "thDoorColor")">גוון</th>
+        <th id="thWingColor" class= "@doorConfig.thClasses["DOORCOLORID"]" hidden="@UiLogic.hideFld(doorConfig, "thDoorColor")">גוון</th>
     </tr>
     <tr>
 
@@ -475,7 +520,6 @@
         <td id="tdColorsNum" >
              @{
                 int i305 = Array.IndexOf(UiLogic.propNames, "COLORSNUM");
-                doorConfig.disabledFlds["COLORSNUM"] = UiLogic.hideFld(doorConfig, "ColorsNum");
                 <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]"
                              disabled="@doorConfig.disabledFlds["COLORSNUM"]"
                                  @onfocus="@( () => UiLogic.HasFocus("COLORSNUM", doorConfig) )" 
@@ -514,14 +558,14 @@
                                 //case "":
                                 case "מגולוון":
                                     doorConfig.DOORCOLORID = PrApiCalls.MEGULVAN_ID;   // 22/06/2022
-                                    disableColor = disableExtColor = disableIntColor = true;
+                                    //disableColor = disableExtColor = disableIntColor = true;
                                     doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true;
                                     doorConfig.EXTCOLORID = doorConfig.INTCOLORID = 0;
                                     this.StateHasChanged();
                                     //doorConfig.INTCOLORDES = string.Empty;
                                     break;
                                 case "1":
-                                    disableColor = false;
+                                    //disableColor = false;
                                     doorConfig.disabledFlds["DOORCOLORID"] = false;
                                     doorConfig.borderColors["DOORCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");
 
@@ -537,7 +581,7 @@
                                     //doorConfig.INTCOLORDES = string.Empty;
                                     break;
                                 case "2":
-                                    disableColor = true;
+                                    //disableColor = true;
                                     doorConfig.disabledFlds["DOORCOLORID"] = true;
                                     disableExtColor = disableIntColor = false;
                                     doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
@@ -560,7 +604,7 @@
 
 
 
-        <td id="tdDoorColor" hidden="@UiLogic.hideFld(doorConfig, "DoorColor")">
+        <td id="tdDoorColor" >
              @{  int i306 = Array.IndexOf(UiLogic.propNames, "DOORCOLORID");
                         <input list="lstDColors" name="dlstDoorColor" @bind="clrDes" class="@doorConfig.borderColors["DOORCOLORID"]" autocomplete="off"
                               disabled="@doorConfig.disabledFlds["DOORCOLORID"]"  
@@ -618,19 +662,19 @@
 <table id="MovingWingL2">
     <tr>
         @* <th id="thTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">מנגנון תגבור</th> *@
-        <th id="thExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">גוון חוץ</th>  @* was in Extdecor.razor *@
-        <th id="thIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">גוון פנים</th>  @* was in Intdecor.razor L1  *@
+        <th id="thExtColor"  class= "@doorConfig.thClasses["EXTCOLORID"]" >גוון חוץ</th>  @* was in Extdecor.razor *@
+        <th id="thIntColor" class= "@doorConfig.thClasses["INTCOLORID"]">גוון פנים</th>  @* was in Intdecor.razor L1  *@
         <th id="thLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">גובה ניקוב</th>
 
         @* <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th> *@
-        <th id="thCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">צילינדר</th>
-        <th id="thHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">פירזול</th>
-        <th hidden="@UiLogic.hideFld(doorConfig, "HWACCESSORYID")">נילווים לפירזול</th>
-        <th id="thHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">צבע פירזול</th>
+        <th id="thCylinder" class= "@doorConfig.thClasses["TRSH_CYLINDER"]">צילינדר</th>
+        <th id="thHw" class= "@doorConfig.thClasses["TRSH_HARDWARE"]">פירזול</th>
+        <th class= "@doorConfig.thClasses["HWACCESSORYID"]">נילווים לפירזול</th>
+        <th id="thHwColor" class= "@doorConfig.thClasses["HWCOLORID"]">צבע פירזול</th>
         
     </tr>
     <tr>
-        <td id="tdExtColor" hidden="@UiLogic.hideFld(doorConfig, "ExtColor")">
+        <td id="tdExtColor" >
              @{  int i307 = Array.IndexOf(UiLogic.propNames, "EXTCOLORID");
                     <input list="lstExtColors" name="dlstExtColor" @bind="ExtClrDes" class="@doorConfig.borderColors["EXTCOLORID"]" autocomplete="off"
                         disabled="@doorConfig.disabledFlds["EXTCOLORID"]"  
@@ -709,7 +753,7 @@
             }
         </td>
 
-        <td id="tdIntColor" hidden="@UiLogic.hideFld(doorConfig, "thIntColor")">
+        <td id="tdIntColor" >
              @{  int i308 = Array.IndexOf(UiLogic.propNames, "INTCOLORID");
                     <input list="lstIntColors"  name="dlstIntColor" @bind="IntClrDes" class="@doorConfig.borderColors["INTCOLORID"]" autocomplete="off"
                         disabled="@doorConfig.disabledFlds["INTCOLORID"]"  
@@ -858,7 +902,7 @@
         }
         </td>
 
-        <td id="tdCylinder" hidden="@UiLogic.hideFld(doorConfig, "Cylinder")">
+        <td id="tdCylinder" >
             @{  int i313 = Array.IndexOf(UiLogic.propNames, "TRSH_CYLINDER");
                 <select name="dlstCylinder" @bind="TRSH_Cylinder" class="@doorConfig.borderColors["TRSH_CYLINDER"]"
                 disabled="@doorConfig.disabledFlds["TRSH_CYLINDER"]"
@@ -906,7 +950,7 @@
         }
 
 
-        <td id="tdHw" hidden="@UiLogic.hideFld(doorConfig, "Hw")">
+        <td id="tdHw" >
              @{  int i310 = Array.IndexOf(UiLogic.propNames, "TRSH_HARDWARE");
                     <input list="lstHw" name="dlstHw" @bind="HwDes" class="@doorConfig.borderColors["TRSH_HARDWARE"]"  autocomplete="off"
                         disabled="@doorConfig.disabledFlds["TRSH_HARDWARE"]"
@@ -1008,7 +1052,7 @@
                 }
             }
         </td>
-        <td id="dlstHWACCESSORYID" hidden="@UiLogic.hideFld(doorConfig, "HWACCESSORYID")" >
+        <td id="dlstHWACCESSORYID" >
              @{  int i333 = Array.IndexOf(UiLogic.propNames, "HWACCESSORYID");
              <input list="lstHwAcc"  name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]" autocomplete="off"
                         disabled="@doorConfig.disabledFlds["HWACCESSORYID"]"
@@ -1089,7 +1133,7 @@
             //DataTable tmpDtColors = new DataTable();
             //tmpDtColors = tmpLstColors.ToDataTable<TRSH_COLOR_Class>();
         }
-        <td id="tdHwColor" hidden="@UiLogic.hideFld(doorConfig, "HwColor")">
+        <td id="tdHwColor" >
             @{  int i311 = Array.IndexOf(UiLogic.propNames, "HWCOLORID");
                 <input list="lstHwClr"  name="dlstHwColor" @bind="HwColorDes" class="@doorConfig.borderColors["HWCOLORID"]"  
                  autocomplete="off"
@@ -1165,8 +1209,8 @@
             <th id="thHandle">ידית אומנויות</th>
         }
      *@
-        <th id="thHandle" hidden="@UiLogic.hideFld(doorConfig, "Handle")">ידית אומנויות</th>
-        <th id= "thHandleColorID" hidden="@UiLogic.hideFld(doorConfig, "HandleColorID")">צבע לידית אומנויות</th>
+        <th id="thHandle" class= "@doorConfig.thClasses["HANDLENAME"]">ידית אומנויות</th>
+        <th id= "thHandleColorID" class= "@doorConfig.thClasses["HANDLECOLORID"]">צבע לידית אומנויות</th>
         <th id="thVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">פתחי אוורור</th>
 
          <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">רפפת עשן</th>
@@ -1461,7 +1505,7 @@
             </td>
         *@
         
-            <td id="tdHandle" hidden="@UiLogic.hideFld(doorConfig, "Handle")" >
+            <td id="tdHandle" >
                  @{  int i318 = Array.IndexOf(UiLogic.propNames, "HANDLENAME");
                     <input list="lstHandles" name="dlstHandle" @bind="HandleDes" class="@doorConfig.borderColors["HANDLENAME"]"  autocomplete="off"
                         disabled="@doorConfig.disabledFlds["HANDLENAME"]"
@@ -1521,7 +1565,7 @@
         
             @* end  tdHandle *@
 
-         <td id="tdHandleColorID"   hidden="@UiLogic.hideFld(doorConfig, "HandleColorID")" >
+         <td id="tdHandleColorID" >
             @{  int i325 = Array.IndexOf(UiLogic.propNames, "HANDLECOLORID");
             <input list="lstHandleClrs" name="dlstHandleColorID"  @bind="HandleColorDes"  class= "@doorConfig.borderColors["HANDLECOLORID"]" 
                      autocomplete="off"
