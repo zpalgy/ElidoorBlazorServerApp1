@@ -193,7 +193,9 @@
     @* ימין\שמאל*@
         <th id="thOpenMode">פתיחה</th>   @* פנימה\החוצה *@
         @*  <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>  moved to Configurator4.razor divDoorTitle*@
-        <th id="thColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">מספר גוונים</th>
+
+        @{  doorConfig.thClasses["COLORSNUM"] = (UiLogic.hideFld(doorConfig, "ColorsNum") ? "thGray" : "thBlue");  }
+        <th id="thColorsNum" class= "@doorConfig.thClasses["COLORSNUM"]" >מספר גוונים</th>
         <th id="thWingColor" hidden="@UiLogic.hideFld(doorConfig, "thDoorColor")">גוון</th>
     </tr>
     <tr>
@@ -470,9 +472,11 @@
             }
         </td>
 
-        <td id="tdColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">
-             @{  int i305 = Array.IndexOf(UiLogic.propNames, "COLORSNUM");
-                            <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]"
+        <td id="tdColorsNum" >
+             @{
+                int i305 = Array.IndexOf(UiLogic.propNames, "COLORSNUM");
+                doorConfig.disabledFlds["COLORSNUM"] = UiLogic.hideFld(doorConfig, "ColorsNum");
+                <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]"
                              disabled="@doorConfig.disabledFlds["COLORSNUM"]"
                                  @onfocus="@( () => UiLogic.HasFocus("COLORSNUM", doorConfig) )" 
                                  @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
