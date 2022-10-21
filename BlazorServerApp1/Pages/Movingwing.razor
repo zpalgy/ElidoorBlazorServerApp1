@@ -136,7 +136,7 @@
             lstColors1.Remove(megulvan);
         }
         setHiddens(doorConfig);
-
+        
     }
     void setHiddens(DoorConfig doorConfig)
     {
@@ -963,20 +963,35 @@
                     @{
                         string errMsg = string.Empty;
                         //List<TRSH_HARDWARE_Class> lstDoorHWs1 = lstDoorHWs.ToList<TRSH_HARDWARE_Class>();
-                        List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_CYLINDER, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg);
-                        if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
+                        if (doorConfig.TRSH_CYLINDER > 0)
                         {
-                            CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא" );
-                            lstCylHws1.Remove(CHw1);
-                        }
-                        if (lstCylHws1 != null)
-                        {
-                            @foreach (CYLHW_Class c in lstCylHws1)
+                            List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_CYLINDER, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg);
+
+                            if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
                             {
-                                        @* <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option> *@
-                                        <option value="@c.PARTDESHW">@c.PARTDESHW</option>
+                                CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא");
+                                lstCylHws1.Remove(CHw1);
+                            }
+                            if (lstCylHws1 != null)
+                            {
+                                @foreach (CYLHW_Class c in lstCylHws1)
+                                {
+                                            @* <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option> *@
+                                            <option value="@c.PARTDESHW">@c.PARTDESHW</option>
+                                }
                             }
                         }
+                        else  // HW without Cylinder - e.g. TRSH_MODEL is E or similar,  select from all hardwares
+                        {
+                            if (PrApiCalls.lstHardwares != null)
+                            {
+                                @foreach (TRSH_HARDWARE_Class h in PrApiCalls.lstHardwares)
+                                {
+                                            <option value="@h.PARTDES">@h.PARTDES</option>
+                                }
+                            }
+                        }
+                        
                      }
                     </datalist>
             }
