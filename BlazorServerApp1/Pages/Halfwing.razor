@@ -40,6 +40,38 @@
     private bool disableExtColor = true;
     private bool disableIntColor = true;
 
+    #region hide variables
+    // Halfwing acts actually like Movingwing because when it's launched there is no Movingwing
+    //   it's also like Staticwing , i.e its fields are those of Staticwing.
+    //   So we use here both hide* variables of Movingwing and Staticwing.
+
+    // Movingwing.razor hide* variables
+    bool hideColorsNum = false;
+    bool hideDoorColor = false;
+    bool hideExtColr = false;
+    bool hideIntColor = false;
+    bool hideCylinder = false;
+    bool hideHw = false;
+    bool hideHwColor = false;
+    bool hideHwAccessory = false;
+    bool hideHandle = false;
+    bool hideHandleColor = false;
+
+    // Staticwing.razor hide* variables
+    bool hideCentralColWidth = false;
+    bool hideCentralColClr = false;
+	bool hideSwingClr = false;
+	bool hideSwingExtClr = false;
+	bool hideSwingIntClr = false;
+	bool hideSwingCyl = false;
+	bool hideHW4ExtraWing = false;
+	bool hideSwingHwAcc = false;
+	bool hideSwingHwClr = false;
+	bool hideSwingHandle = false;
+	bool hideSwingHandleClr = false;
+
+    #endregion hide variables
+
     string NoColor = "מגולוון";
     List<string> lstColorsNum1 = new List<string>();
     List<TRSH_COLOR_Class> lstColors1 = new List<TRSH_COLOR_Class>();
@@ -59,6 +91,8 @@
         //lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg, true); // get also HALF Cylinders - 
         //   Here we are the only wing, OPENMODE is not set yet. This can be done ONLY after doorConfig.OPENMODE is set 
 
+        setHiddens(doorConfig);
+
         if (UiLogic.tabPageIsFilled("staticwing", doorConfig))  // we came here back from a prev tab and actually the current tabPage is filled
                                                                 // so we should disable all it's fields !
         {
@@ -68,17 +102,7 @@
             //  because movingwing was skipped .
             UiLogic.disableTabFlds(doorConfig, "movingwing");
 
-            //doorConfig.disabledFlds["OPENMODE"] = true;
-            //doorConfig.disabledFlds["OPENSIDE"] = true;
-            //doorConfig.disabledFlds["DOORHEIGHT"] = true;
-            //doorConfig.disabledFlds["COLORSNUM"] = true;
-            //doorConfig.disabledFlds["DOORCOLORID"] = true;
-            //doorConfig.disabledFlds["EXTCOLORID"] = true;
-            //doorConfig.disabledFlds["INTCOLORID"] = true;
-            //doorConfig.disabledFlds["LOCKDRILHEIGHT"] = true;
-            //doorConfig.disabledFlds["LOGO"] = true;
-
-            // restore the LOV for SWING_DRIL4HW !
+           // restore the LOV for SWING_DRIL4HW !
             lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
         }
         else // like movingwing we can be here only if we came from divDoorTitle, i.e. the page is empty. 
@@ -90,6 +114,12 @@
                                                                                                                //doorConfig.thClasses["HW4EXTRAWING"] = "thGray";   // 06/07/2022 
                                                                                                                //   07/07/2022 - Eli asked to make this field Mandatory
                                                                                                                //doorConfig.SWING_OPENSIDE = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+           //populate the LOV of Dril4Hw in case it's empty 
+           if (lstD4HW1.Count == 0 && doorConfig.HW4EXTRAWING != 0 )
+				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
+
+			if (hideHW4ExtraWing && lstD4HW1.Count == 0)
+			    lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 
             doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 , in case we didn't open movingwing (WINGSNUMDES == Half Wing ) we set LOGO here.
                                                                           //  in case both WINGSNUMDES has more than one wing LOGO is always the same on both wings - see doc from 22/06/2022 !
@@ -114,8 +144,83 @@
         }
 
         doorConfig.borderColors["DOORHEIGHT"] = (doorConfig.DOORHEIGHT != 0 ? "blueBorder" : "redBorder");
-
     }
+
+    void setHiddens(DoorConfig doorConfig)
+	{
+        //Movingwing
+        hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
+        hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
+        hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
+        hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
+        hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
+        hideHw = UiLogic.hideFld(doorConfig, "Hw");
+        hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
+        hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
+        hideHandle = UiLogic.hideFld(doorConfig, "Handle");
+        hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
+
+        doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
+        doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
+        doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
+        doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
+        doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
+        doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
+        doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
+        doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
+        doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
+        doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
+                        
+        doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
+        doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
+        doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
+        doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
+        doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
+        doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
+        doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
+        doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
+        doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
+        doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
+
+        //Staticwing
+
+        hideCentralColWidth = UiLogic.hideFld(doorConfig, "thCentralColWidth");
+		hideCentralColClr = UiLogic.hideFld(doorConfig,"CentralColClrID");
+		hideSwingClr = UiLogic.hideFld(doorConfig,"SwingColorID");
+		hideSwingExtClr = UiLogic.hideFld(doorConfig,"SwingExtColorID");
+		hideSwingIntClr = UiLogic.hideFld(doorConfig,"SwingIntColorID");
+		hideSwingCyl = UiLogic.hideFld(doorConfig,"Cylinder4HalfWing");
+		hideHW4ExtraWing = UiLogic.hideFld(doorConfig,"thHW4ExtraWing");
+		hideSwingHwAcc = UiLogic.hideFld(doorConfig,"SWING_HWACCESSORYID");
+		hideSwingHwClr = UiLogic.hideFld(doorConfig,"SWING_HWCOLORID");
+		hideSwingHandle = UiLogic.hideFld(doorConfig,"SWING_HANDLENAME");
+		hideSwingHandleClr = UiLogic.hideFld(doorConfig,"SWING_HANDLECOLORID");
+        
+        doorConfig.thClasses["CENTRALCOLWIDTH"] = (hideCentralColWidth ? "thGray" : "thBlue");
+		doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
+		doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
+		doorConfig.thClasses["EXTCOLORID"] = (hideSwingExtClr ? "thGray" : "thBlue");
+		doorConfig.thClasses["INTCOLORID"] = (hideSwingIntClr ? "thGray" : "thBlue");
+		doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
+		doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
+		doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
+		doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
+		doorConfig.thClasses["SWING_HANDLENAME"] = (hideSwingHandle ? "thGray" : "thBlue");
+		doorConfig.thClasses["SWING_HANDLECOLORID"] = (hideSwingHandleClr ? "thGray" : "thBlue");
+
+		doorConfig.disabledFlds["CENTRALCOLCLRID"] = hideCentralColClr;
+		doorConfig.disabledFlds["DOORCOLORID"] = hideSwingClr;
+		doorConfig.disabledFlds["EXTCOLORID"] = hideSwingExtClr;
+		doorConfig.disabledFlds["INTCOLORID"] = hideSwingIntClr;
+		doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl;
+		doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing;
+		doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc;
+		doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr;
+		doorConfig.disabledFlds["SWING_HANDLENAME"] = hideSwingHandle;
+		doorConfig.disabledFlds["SWING_HANDLECOLORID"] = hideSwingHandleClr;
+
+	}
+
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -214,19 +319,14 @@
 <table id="staticWingL1">
         <tr>
 			<th>נעילה</th>
-            <th id="thExtraWingWidth" @hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")">רוחב כנף</th>
+            <th id="thExtraWingWidth">רוחב כנף</th>
 			<th>גובה כנף</th>
-
-            @{
-				bool ccw = UiLogic.hideFld(doorConfig, "thCentralColWidth"); 
-				ccw = false;		
-		    }
-		    @if (!ccw) 	
-			 { 	<th id="thCentralColWidth" >רוחב עמוד מרכזי</th> }
+		     	                                                   
+			<th id="thCentralColWidth" class= "@doorConfig.thClasses["CENTRALCOLWIDTH"]" >רוחב עמוד מרכזי</th>
 			 
 			 <th>פתיחה</th>
 			<th id="thOpenDirection" >צד פתיחה</th>
-			<th id="thColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">מספר גוונים</th>
+			<th id="thColorsNum" class = "@doorConfig.thClasses["COLORSNUM"]">מספר גוונים</th>
 		 </tr>
 		 
 		 <tr>
@@ -299,7 +399,9 @@
 						{
 							doorConfig.EXTRAWINGWIDTH = (_ExtraWingWidth != null ? (int)_ExtraWingWidth : 0);
 							doorConfig.borderColors["EXTRAWINGWIDTH"] = (value != 0 ? "blueBorder" : "redBorder");
-							UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+							//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
 						}
 					}
 				}
@@ -380,12 +482,14 @@
                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                                 config4.RefreshState();
                             }
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
             }
         </td>
-		    <td id="tdCentralColWidth" @hidden="@false" >
+		    <td id="tdCentralColWidth" >
 				 @{  int i603 = Array.IndexOf(UiLogic.propNames, "CENTRALCOLWIDTH");
 						<select name="dlstCentralColWidth" @bind="CentralColWidth" class= "@doorConfig.borderColors["CENTRALCOLWIDTH"]" 
 					   disabled="@doorConfig.disabledFlds["CENTRALCOLWIDTH"]"
@@ -466,6 +570,8 @@
                             lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
                             
                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
@@ -507,6 +613,8 @@
                             doorConfig.OPENSIDE = _openSide;
                             doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
@@ -516,7 +624,7 @@
        
         
 
-        <td id="tdColorsNum" hidden="@UiLogic.hideFld(doorConfig, "ColorsNum")">
+        <td id="tdColorsNum" >
              @{  int i305 = Array.IndexOf(UiLogic.propNames, "COLORSNUM");
                             <select name="dlstColorsNum"  @bind="ColorsNum"  class="@doorConfig.borderColors["COLORSNUM"]"
                              disabled="@doorConfig.disabledFlds["COLORSNUM"]"
@@ -610,20 +718,15 @@
 
             <table id="staticWingL2">
             <tr>
-		    <th>גוון כנף קבועה</th>
-			<th>גוון חוץ כנף קבועה</th>
-			<th>גוון פנים כנף קבועה</th>
-            <th id="thCentralColClrID" >גוון עמוד מרכזי</th>
+		    <th class="@doorConfig.thClasses["DOORCOLORID"]" >גוון כנף קבועה</th>
+			<th class="@doorConfig.thClasses["EXTCOLORID"]">גוון חוץ כנף קבועה</th>
+			<th class="@doorConfig.thClasses["INTCOLORID"]">גוון פנים כנף קבועה</th>
+            <th id="thCentralColClrID" class="@doorConfig.thClasses["CENTRALCOLCLRID"]">גוון עמוד מרכזי</th>
             <th class="@doorConfig.thClasses["LOCKDRILHEIGHT"]" >גובה ניקוב</th>
 
-			@{	string thCyl = "thCylinder4HalfWing"; }
-            <th id="thCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, thCyl)" class= "@doorConfig.thClasses["TRSH_SWING_CYLINDER"]" >צילינדר כנף קבועה</th>
-
-			@{ 	bool hw4 = UiLogic.hideFld(doorConfig, "thHW4ExtraWing"); 	}
-			@if (!hw4)
-			{
-				<th id="thHW4ExtraWing" class="@doorConfig.thClasses["HW4EXTRAWING"]">פירזול כנף קבועה</th>
-			}
+            <th id="thCylinder4HalfWing" class= "@doorConfig.thClasses["TRSH_SWING_CYLINDER"]" >צילינדר כנף קבועה</th>
+			<th id="thHW4ExtraWing" class="@doorConfig.thClasses["HW4EXTRAWING"]">פירזול כנף קבועה</th>
+			
 			<th class="@doorConfig.thClasses["SWING_HWACCESSORYID"]" >נילווים לפירזול כ. ק.</th>
 			<th class="@doorConfig.thClasses["SWING_HWCOLORID"]">צבע פירזול</th>
 
@@ -638,12 +741,12 @@
                           onkeypress="@doorConfig.KeyPressHandler" 
                                  @ref="doorConfig.dicRefs[UiLogic.propNames[i306]]" >
                             @if (PrApiCalls.lstColors != null)
-                {
-                                @foreach (TRSH_COLOR_Class c in lstColors1)
-                    {
-                                    <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
-                    }
-                }
+                            {
+                                            @foreach (TRSH_COLOR_Class c in lstColors1)
+                                {
+                                                <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
+                                }
+                            }
                         </select>
             }
         @code
@@ -669,6 +772,8 @@
                         doorConfig.borderColors["DOORCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                         calcCentralColClrID(doorConfig);
                         //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                     }
                 }
             }
@@ -683,12 +788,12 @@
                      onkeypress="@doorConfig.KeyPressHandler" 
                                  @ref="doorConfig.dicRefs[UiLogic.propNames[i307]]" >
                         @if (PrApiCalls.lstColors != null)
-                {
+                        {
                             @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                    {
-                                <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
-                    }
-                }
+                            {
+                                        <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
+                            }
+                        }
                     </select>
             }
             @code
@@ -714,6 +819,8 @@
                             compareExtIntColors();
                             calcCentralColClrID(doorConfig);
                             //UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
@@ -755,12 +862,12 @@
                     onkeypress="@doorConfig.KeyPressHandler" 
                                  @ref="doorConfig.dicRefs[UiLogic.propNames[i308]]" >
                         @if (PrApiCalls.lstColors != null)
-                {
+                        {
                             @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                    {
-                                <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
-                    }
-                }
+                            {
+                                        <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
+                            }
+                        }
                     </select>
             }
             @code
@@ -786,6 +893,8 @@
                             compareExtIntColors();
                             calcCentralColClrID(doorConfig);
                             //UiLogic.clearFollowingTabFields(doorConfig, "intdecor");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
@@ -817,6 +926,8 @@
 		            set
 		            {
 			            _CentralColClrDes = value;
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
 		            }
 	            }
             }
@@ -907,13 +1018,15 @@
                                 doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
                                 doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
                             }
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
             }
         }
         </td>
 
-        <td id="tdCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, "thCylinder4HalfWing")">
+        <td id="tdCylinder4HalfWing">
 				 @{  int i604 = Array.IndexOf(UiLogic.propNames, "TRSH_SWING_CYLINDER");
 					<select name="dlstCylinder4HalfWing" @bind="Cylinder4HalfWing" class= "@doorConfig.borderColors["TRSH_SWING_CYLINDER"]" 
 				 disabled="@doorConfig.disabledFlds["TRSH_SWING_CYLINDER"]"
@@ -922,11 +1035,11 @@
                      onkeypress="@doorConfig.KeyPressHandler" 
 					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i604]]"  >
 					 	@if (lstCylinders1 != null)
-					 {
+					    {
 							@foreach (CYLINDER_Class c in lstCylinders1)
-						{
-								<option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
-						}
+						    {
+								    <option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
+						    }
 					}
 					</select>
 				}
@@ -1039,6 +1152,9 @@
 						{
 							doorConfig.HW4EXTRAWING = _Hw4ExtraWing;
 							setSWING_DRIL4HW();
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
+
 						    @*if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
                             {
                                 doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
@@ -1167,6 +1283,8 @@
                                 {
                                     doorConfig.SWING_HWACCESSORYID = _HwAccessoryId;
                                     doorConfig.borderColors["SWING_HWACCESSORYID"] = (value != 0 ? "blueBorder" : "redBorder");
+                                    if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                                 }
                             }
                         }
@@ -1237,13 +1355,11 @@
 				<th class= "@doorConfig.thClasses["SWING_TURBO"]" >מנגנון תגבור</th>
 				<th>לוגו</th>
 				<th class="@doorConfig.thClasses["SWING_LOCKNAME"]">מנעול</th>
-				<th>ידית אומנותית</th>
-				<th>צבע ידית אומנותית</th>
-				<th>אוורור</th>
 
-			@*	@{ bool rsw = UiLogic.hideFld(doorConfig, "thRafafaOnStaticWing"); }
-				@if (!rsw) 	{ <th id="thRafafaOnStaticWing" >רפפת עשן</th> 	}
-			*@
+				<th class="@doorConfig.thClasses["SWING_HANDLENAME"]"> ידית אומנותית</th>
+				<th class="@doorConfig.thClasses["SWING_HANDLECOLORID"]">צבע ידית אומנותית</th>
+
+				<th>אוורור</th>
 			    <th id="thRafafaOnStaticWing" >רפפת עשן</th>
 				<th>פתח לחתול</th>
 		    </tr>
@@ -1332,6 +1448,8 @@
                         {
                             doorConfig.SWING_TURBO = (_Swing_Turbo ? "Y" : "");
                             //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
@@ -1361,6 +1479,8 @@
                         {
                             doorConfig.LOGO = (_Logo ? "Y" : "");   // note: we change here also the LOGO field in movingwing !
                             //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }
@@ -1472,7 +1592,8 @@
                                 UiLogic.deactivateBtnClass(doorConfig, "staticwing");
                                 config4.RefreshState();
                             }
-
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                   config4.RefreshState();
                         }
                     }
                 }

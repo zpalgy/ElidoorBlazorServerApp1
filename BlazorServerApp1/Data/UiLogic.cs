@@ -589,6 +589,18 @@ namespace BlazorServerApp1.Data
         }
         public static  void applySwingHasLock(DoorConfig doorConfig)
         {
+            //Staticwing   setHiddens() logic
+            bool hideCentralColClr = UiLogic.hideFld(doorConfig, "CentralColClrID");
+            bool hideSwingClr = UiLogic.hideFld(doorConfig, "SwingColorID");
+            bool hideSwingExtClr = UiLogic.hideFld(doorConfig, "SwingExtColorID");
+            bool hideSwingIntClr = UiLogic.hideFld(doorConfig, "SwingIntColorID");
+            bool hideSwingCyl = UiLogic.hideFld(doorConfig, "Cylinder4HalfWing");
+            bool hideHW4ExtraWing = UiLogic.hideFld(doorConfig, "thHW4ExtraWing");
+            bool hideSwingHwAcc = UiLogic.hideFld(doorConfig, "SWING_HWACCESSORYID");
+            bool hideSwingHwClr = UiLogic.hideFld(doorConfig, "SWING_HWCOLORID");
+            bool hideSwingHandle = UiLogic.hideFld(doorConfig, "SWING_HANDLENAME");
+            bool hideSwingHandleClr = UiLogic.hideFld(doorConfig, "SWING_HANDLECOLORID");
+
 
             //bool _SwingHasLock = (doorConfig.SWINGHASLOCK == "Y");
 
@@ -617,16 +629,17 @@ namespace BlazorServerApp1.Data
             }
             else  // withLOCK 
             {
-                doorConfig.thClasses["LOCKDRILHEIGHT"] =
-                doorConfig.thClasses["TRSH_SWING_CYLINDER"] =
-                doorConfig.thClasses["HW4EXTRAWING"] =
-                doorConfig.thClasses["SWING_HWACCESSORYID"] =
-                doorConfig.thClasses["SWING_HWCOLORID"] =
+                doorConfig.thClasses["LOCKDRILHEIGHT"] = "thBlue";
+                doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingClr ? "thGray" : "thBlue");
+                doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
+                doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
+                doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
                 doorConfig.thClasses["SWING_DRIL4HW"] = "thBlue";
                 doorConfig.thClasses["SWING_TURBO"] = "thGray";
                 doorConfig.thClasses["SWING_LOCKNAME"] = "thBlue";
 
-                doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0 ? "blueBorder" : "redBorder");  // special for this field
+                if (!hideSwingCyl)
+                    doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0 ? "blueBorder" : "redBorder");  // special for this field
                                                                                                                                       // that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
 
                 // we do the following two statements in Staticwing.razor : applySwingHasLock(...) (a local method in Staticwing.razor). It is called also by OnInitializedAsync.
@@ -639,11 +652,14 @@ namespace BlazorServerApp1.Data
             }
             //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
             //{
-            doorConfig.disabledFlds["LOCKDRILHEIGHT"] =
-            doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] =
-            doorConfig.disabledFlds["HW4EXTRAWING"] = // 06/07/2022 HW4EXTRAWING is disabled by default !
-            doorConfig.disabledFlds["SWING_HWACCESSORYID"] =
-            doorConfig.disabledFlds["SWING_HWCOLORID"] =
+            doorConfig.disabledFlds["LOCKDRILHEIGHT"] = (doorConfig.SWINGHASLOCK != "Y");
+            doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl || (doorConfig.SWINGHASLOCK != "Y");
+            
+            // 06/07/2022 HW4EXTRAWING is disabled by default !
+            doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing || (doorConfig.SWINGHASLOCK != "Y");
+
+            doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc || (doorConfig.SWINGHASLOCK != "Y");
+            doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr || (doorConfig.SWINGHASLOCK != "Y");
             doorConfig.disabledFlds["SWING_DRIL4HW"] = (doorConfig.SWINGHASLOCK != "Y");
             doorConfig.disabledFlds["SWING_TURBO"] = (doorConfig.SWINGHASLOCK != "Y");    //TODO - check this ?
             doorConfig.disabledFlds["SWING_LOCKNAME"] = (doorConfig.SWINGHASLOCK != "Y");
