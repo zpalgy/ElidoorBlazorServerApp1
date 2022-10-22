@@ -241,7 +241,7 @@
         @*  <th id="thDecorFormat" hidden="@UiLogic.hideFld(doorConfig, "DecorFormat")">עיצוב דקורציה (חוץ,פנים,דו צדדי)</th>  moved to Configurator4.razor divDoorTitle*@
 
         <th id="thColorsNum" class= "@doorConfig.thClasses["COLORSNUM"]" >מספר גוונים</th>
-        <th id="thWingColor" class= "@doorConfig.thClasses["DOORCOLORID"]" hidden="@UiLogic.hideFld(doorConfig, "thDoorColor")">גוון</th>
+        <th id="thWingColor" class= "@doorConfig.thClasses["DOORCOLORID"]" >גוון</th>
     </tr>
     <tr>
 
@@ -1294,7 +1294,7 @@
         <td id="tdElectricApparatus" hidden="@UiLogic.hideFld(doorConfig, "ElectricApparatus")">
             @{  int i314 = Array.IndexOf(UiLogic.propNames, "ELECTRICAPPARATUS");
                 <select name="dlstElectricApparatus" @bind="ElectricApparatus" class="@doorConfig.borderColors["ELECTRICAPPARATUS"]"
-                     disabled="@doorConfig.disabledFlds["TRSH_CYLINDER"]" 
+                     disabled="@doorConfig.disabledFlds["ELECTRICAPPARATUS"]" 
                          @onfocus="@( () => UiLogic.HasFocus("ELECTRICAPPARATUS", doorConfig) )" 
                          @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@KeyPressHandler" 

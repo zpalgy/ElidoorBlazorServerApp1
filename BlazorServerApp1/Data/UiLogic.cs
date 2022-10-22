@@ -86,7 +86,7 @@ namespace BlazorServerApp1.Data
                 return true;  // hardcoded -these fields are temporarily not visible 22/05/2022
 
             //debug
-            if (fldName == "HWACCESSORYID")
+            if (fldName == "ELECTRICAPPARATUS")
             {
                 int x = 17;
             }
