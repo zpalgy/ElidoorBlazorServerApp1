@@ -1176,7 +1176,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,DRIL4HW,DRIL4HWDES,COLORED,NIKEL,BRONZE,PARTNAME2,OPPOSITESIDE_PART";
+                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,OPENSIDE,DRIL4HW,DRIL4HWDES,COLORED,NIKEL,BRONZE,PARTNAME2,OPPOSITESIDE_PART";
                 request.Resource = string.Format("TRSH_HARDWARE?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1290,6 +1290,18 @@ namespace BlazorServerApp1.Data
                 return hwAcc.HWACCESSORYID;
             else
                 return 0;
+        }
+        public static bool isHwOpenSideOK(int TRSH_HARDWARE, string OPENSIDE)
+        {
+            DataRow[] rowsArray;
+            string query = string.Format("TRSH_HARDWARE = '{0}'", TRSH_HARDWARE);
+            rowsArray = PrApiCalls.dtHardwares.Select(query);
+            if (rowsArray.Length > 0)
+            {
+                string hwOpenSide = rowsArray[0]["OPENSIDE"].ToString();
+                return (hwOpenSide == OPENSIDE || string.IsNullOrEmpty(hwOpenSide));
+            }
+            return false;  // error - no Hw found for this TRSH_HARDWARE 
         }
         public static bool isHWColored(int TRSH_HARDWARE)
         {

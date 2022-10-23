@@ -136,7 +136,8 @@
             lstColors1.Remove(megulvan);
         }
         setHiddens(doorConfig);
-        
+        doorConfig.borderColors["CATDOOR"] = (doorConfig.disabledFlds["CATDOOR"] ? "blackBorder" : "blueBorder");
+
     }
     void setHiddens(DoorConfig doorConfig)
     {
@@ -987,7 +988,10 @@
                             {
                                 @foreach (TRSH_HARDWARE_Class h in PrApiCalls.lstHardwares)
                                 {
+                                     if (h.OPENSIDE == doorConfig.OPENSIDE || string.IsNullOrEmpty(h.OPENSIDE))
+                                     {
                                             <option value="@h.PARTDES">@h.PARTDES</option>
+                                     }
                                 }
                             }
                         }
@@ -1729,7 +1733,7 @@
         </td>
         <td id="tdCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">
             @{  int i321 = Array.IndexOf(UiLogic.propNames, "CATDOOR");
-                    <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" 
+                    <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" class="@doorConfig.borderColors["CATDOOR"]"
                    disabled="@doorConfig.disabledFlds["CATDOOR"]"
                        @onfocus="@( () => UiLogic.HasFocus("CATDOOR", doorConfig) )" 
                        @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 

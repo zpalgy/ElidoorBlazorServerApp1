@@ -630,7 +630,7 @@ namespace BlazorServerApp1.Data
             else  // withLOCK 
             {
                 doorConfig.thClasses["LOCKDRILHEIGHT"] = "thBlue";
-                doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingClr ? "thGray" : "thBlue");
+                doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
                 doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
                 doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
                 doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
