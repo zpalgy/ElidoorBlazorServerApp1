@@ -1781,6 +1781,9 @@ namespace BlazorServerApp1.Data
         {
             try
             {
+                if (TRSH_CYLINDER == 0)
+                    return null;
+
                 List<CYLHW_Class> res = new List<CYLHW_Class>();
                 CYLHW_Class emptyCHW = new CYLHW_Class();
                 emptyCHW.TRSH_CYLINDER = 0;

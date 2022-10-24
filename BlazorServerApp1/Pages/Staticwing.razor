@@ -938,7 +938,7 @@
 								int dbg = 17;
 							}
 							List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.SWING_OPENSIDE, doorConfig.OPENMODE, ref errMsg);
-							if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
+							if (doorConfig.TRSH_MODELNAME == "MLI" && lstCylHws1 != null)   //hardcode for MLI 06/07/2022
 							{
 								CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא");
 								lstCylHws1.Remove(CHw1);
@@ -970,7 +970,24 @@
 											<option value="@c.PARTDESHW">@c.PARTDESHW</option>
 										}
 									}
+							}
+						} 
+						else // HW without Cylinder - e.g. TRSH_MODEL is E or similar,  select from all hardwares
+						{
+							if (PrApiCalls.lstHardwares != null)
+							{
+								//OpenDirection is set in tdOpenDirection above it is actually SWING_OPENSIDE
+								//string OpenDirection = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+								
+								@foreach (TRSH_HARDWARE_Class h in PrApiCalls.lstHardwares)
+									{
+										 if (h.OPENSIDE == OpenDirection || string.IsNullOrEmpty(h.OPENSIDE))
+										 {
+												<option value="@h.PARTDES">@h.PARTDES</option>
+										 }
+									}
 								}
+
 							}
 						}
 					</datalist>
