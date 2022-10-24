@@ -60,6 +60,7 @@
     // Staticwing.razor hide* variables
     bool hideCentralColWidth = false;
     bool hideCentralColClr = false;
+    bool hideShalvaniaClr = false;
 	bool hideSwingClr = false;
 	bool hideSwingExtClr = false;
 	bool hideSwingIntClr = false;
@@ -186,6 +187,7 @@
 
         hideCentralColWidth = UiLogic.hideFld(doorConfig, "thCentralColWidth");
 		hideCentralColClr = UiLogic.hideFld(doorConfig,"CentralColClrID");
+        hideShalvaniaClr = UiLogic.hideFld(doorConfig, "ShalvaniaClrID");
 		hideSwingClr = UiLogic.hideFld(doorConfig,"SwingColorID");
 		hideSwingExtClr = UiLogic.hideFld(doorConfig,"SwingExtColorID");
 		hideSwingIntClr = UiLogic.hideFld(doorConfig,"SwingIntColorID");
@@ -198,6 +200,7 @@
         
         doorConfig.thClasses["CENTRALCOLWIDTH"] = (hideCentralColWidth ? "thGray" : "thBlue");
 		doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
+        doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
 		doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
 		doorConfig.thClasses["EXTCOLORID"] = (hideSwingExtClr ? "thGray" : "thBlue");
 		doorConfig.thClasses["INTCOLORID"] = (hideSwingIntClr ? "thGray" : "thBlue");
@@ -209,6 +212,7 @@
 		doorConfig.thClasses["SWING_HANDLECOLORID"] = (hideSwingHandleClr ? "thGray" : "thBlue");
 
 		doorConfig.disabledFlds["CENTRALCOLCLRID"] = hideCentralColClr;
+        doorConfig.disabledFlds["SHALVANIACLRID"] = hideShalvaniaClr;
 		doorConfig.disabledFlds["DOORCOLORID"] = hideSwingClr;
 		doorConfig.disabledFlds["EXTCOLORID"] = hideSwingExtClr;
 		doorConfig.disabledFlds["INTCOLORID"] = hideSwingIntClr;
@@ -287,9 +291,11 @@
             case "מגולוון" :
             case "1":
                 doorConfig.CENTRALCOLCLRID = doorConfig.DOORCOLORID;
+                doorConfig.SHALVANIACLRID = doorConfig.DOORCOLORID;
                 break;
             case "2":
                 doorConfig.CENTRALCOLCLRID = (doorConfig.OPENMODE == "פנימה" ? doorConfig.INTCOLORID : doorConfig.EXTCOLORID);
+                doorConfig.SHALVANIACLRID  = (doorConfig.OPENMODE == "פנימה" ? doorConfig.EXTCOLORID : doorConfig.INTCOLORID);
                 break;
         }
     }
@@ -722,6 +728,7 @@
 			<th class="@doorConfig.thClasses["EXTCOLORID"]">גוון חוץ כנף קבועה</th>
 			<th class="@doorConfig.thClasses["INTCOLORID"]">גוון פנים כנף קבועה</th>
             <th id="thCentralColClrID" class="@doorConfig.thClasses["CENTRALCOLCLRID"]">גוון עמוד מרכזי</th>
+            <th class= "@doorConfig.thClasses["SHALVANIACLRID"]">גוון שלווניה</th>
             <th class="@doorConfig.thClasses["LOCKDRILHEIGHT"]" >גובה ניקוב</th>
 
             <th id="thCylinder4HalfWing" class= "@doorConfig.thClasses["TRSH_SWING_CYLINDER"]" >צילינדר כנף קבועה</th>
@@ -928,6 +935,36 @@
 			            _CentralColClrDes = value;
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
                                    config4.RefreshState();
+		            }
+	            }
+            }
+
+            @* Shalvania Color - dual to CentalCol Color*@
+			<td id="tdShalvaniaClrID" >
+                <input name="dlstShalvaniaClrID" @bind="ShalvaniaClrDes" class= "@doorConfig.borderColors["SHALVANIACLRID"]"  
+				   disabled="@doorConfig.disabledFlds["SHALVANIACLRID"]"
+				/>
+                
+            </td>
+            @code
+            {
+	            protected int _ShalvaniaClrID = 0;
+				protected string _ShalvaniaClrDes = string.Empty;
+	            protected string ShalvaniaClrDes
+	            {
+		            get
+		            {
+			            if (doorConfig != null)
+			            {
+				            _ShalvaniaClrID = doorConfig.SHALVANIACLRID;
+			            }
+			            return PrApiCalls.getColorDes(_ShalvaniaClrID);
+		            }
+		            set
+		            {
+			            _ShalvaniaClrDes = value;
+						if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                       config4.RefreshState();
 		            }
 	            }
             }

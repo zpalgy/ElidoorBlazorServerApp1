@@ -43,6 +43,7 @@
 	private bool ansYes = false;
 
 	bool hideCentralColClr = false;
+	bool hideShalvaniaClr = false;
 	bool hideSwingClr = false;
 	bool hideSwingExtClr = false;
 	bool hideSwingIntClr = false;
@@ -92,7 +93,7 @@
 				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 
 			if (hideHW4ExtraWing && lstD4HW1.Count == 0)
-			    lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+				lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 
 			if (!doorConfig.staticwingChanged)// page not filled , it's not empty because even if we come here for the 1st time some fields are 
 													// copied from movingwing .
@@ -145,6 +146,7 @@
 	void setHiddens(DoorConfig doorConfig)
 	{
 		hideCentralColClr = UiLogic.hideFld(doorConfig,"CentralColClrID");
+		hideShalvaniaClr = UiLogic.hideFld(doorConfig, "ShalvaniaClrID");
 		hideSwingClr = UiLogic.hideFld(doorConfig,"SwingColorID");
 		hideSwingExtClr = UiLogic.hideFld(doorConfig,"SwingExtColorID");
 		hideSwingIntClr = UiLogic.hideFld(doorConfig,"SwingIntColorID");
@@ -156,6 +158,7 @@
 		hideSwingHandleClr = UiLogic.hideFld(doorConfig,"SWING_HANDLECOLORID");
 
 		doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
+		doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
 		doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
 		doorConfig.thClasses["EXTCOLORID"] = (hideSwingExtClr ? "thGray" : "thBlue");
 		doorConfig.thClasses["INTCOLORID"] = (hideSwingIntClr ? "thGray" : "thBlue");
@@ -167,6 +170,7 @@
 		doorConfig.thClasses["SWING_HANDLECOLORID"] = (hideSwingHandleClr ? "thGray" : "thBlue");
 
 		doorConfig.disabledFlds["CENTRALCOLCLRID"] = hideCentralColClr;
+		doorConfig.disabledFlds["SHALVANIACLRID"] = hideShalvaniaClr;
 		//doorConfig.disabledFlds["DOORCOLORID"] = hideSwingClr;
 		//doorConfig.disabledFlds["EXTCOLORID"] = hideSwingExtClr;
 		//doorConfig.disabledFlds["INTCOLORID"] = hideSwingIntClr;
@@ -185,9 +189,11 @@
 			case "מגולוון" :
 			case "1":
 				doorConfig.CENTRALCOLCLRID = doorConfig.DOORCOLORID;
+				doorConfig.SHALVANIACLRID = doorConfig.DOORCOLORID;
 				break;
 			case "2":
 				doorConfig.CENTRALCOLCLRID = (doorConfig.OPENMODE == "פנימה" ? doorConfig.INTCOLORID : doorConfig.EXTCOLORID);
+				doorConfig.SHALVANIACLRID  = (doorConfig.OPENMODE == "פנימה" ? doorConfig.EXTCOLORID : doorConfig.INTCOLORID);
 				break;
 		}
 	}
@@ -375,6 +381,7 @@
 			<th>גובה כנף</th>
     		<th id="thCentralColWidth" >רוחב עמוד מרכזי</th> 
 			<th id="thCentralColClrID" class= "@doorConfig.thClasses["CENTRALCOLCLRID"]" >גוון עמוד מרכזי</th>
+			<th class= "@doorConfig.thClasses["SHALVANIACLRID"]">גוון שלווניה</th>
 			<th>פתיחה</th>
 			<th id="thOpenDirection" >צד פתיחה</th>
 			           
@@ -603,7 +610,38 @@
 		            }
 	            }
             }
-            
+            @* Shalvania Color - dual to CentalCol Color*@
+			<td id="tdShalvaniaClrID" >
+                <input name="dlstShalvaniaClrID" @bind="ShalvaniaClrDes" class= "@doorConfig.borderColors["SHALVANIACLRID"]"  
+				   disabled="@doorConfig.disabledFlds["SHALVANIACLRID"]"
+				/>
+                
+            </td>
+            @code
+            {
+	            protected int _ShalvaniaClrID = 0;
+				protected string _ShalvaniaClrDes = string.Empty;
+	            protected string ShalvaniaClrDes
+	            {
+		            get
+		            {
+			            if (doorConfig != null)
+			            {
+				            _ShalvaniaClrID = doorConfig.SHALVANIACLRID;
+			            }
+			            return PrApiCalls.getColorDes(_ShalvaniaClrID);
+		            }
+		            set
+		            {
+			            _ShalvaniaClrDes = value;
+						if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                       config4.RefreshState();
+		            }
+	            }
+            }
+ 
+
+
 		
 				<td id="tdOpenMode">
                         <input name="dlstOpenMode" @bind="openMode" class="@doorConfig.borderColors["OPENMODE"]" 

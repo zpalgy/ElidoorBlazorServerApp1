@@ -321,7 +321,10 @@ namespace BlazorServerApp1.Data
         public static string getNextTabName(DoorConfig doorConfig, string tabName)
         {
             string nextTab = string.Empty;
-            
+
+            if (tabName == "staticwing")
+                return "accessories";      //24/10/2022
+
             int t = Array.IndexOf(tabNames, tabName);
             if (t > -1 && t < tabNames.Length - 1)
             {
