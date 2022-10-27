@@ -109,10 +109,12 @@
             doorConfig.TURBOAPPARATUS = (doorConfig.useTurbo ? "Y" : string.Empty);   // new 31/07/2022 
                                                                                       //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
             doorConfig.LOCKNAME = (doorConfig.useLOGO ? PrApiCalls.defLockwithLogo : PrApiCalls.defLockwithOutLogo);
+            setHiddens(doorConfig);
 
         }
         else    // it is filled - we came back form a newer tab - all fields should be disabled !
         {
+             setHiddens(doorConfig);
             // we're returning here from a newer tab - and our tab is actually filled .
             UiLogic.disableTabFlds(doorConfig, "movingwing");
             // in order to restore  DRIL4HW and CYLINDER that depend on lists created dynamically  in this tab page
@@ -135,7 +137,7 @@
             TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID); 
             lstColors1.Remove(megulvan);
         }
-        setHiddens(doorConfig);
+        //setHiddens(doorConfig);
         doorConfig.borderColors["CATDOOR"] = (doorConfig.disabledFlds["CATDOOR"] ? "blackBorder" : "blueBorder");
 
     }
