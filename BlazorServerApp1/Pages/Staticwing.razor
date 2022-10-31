@@ -62,7 +62,7 @@
 		doorConfig.currTabName = "staticwing";
 		doorConfig.dtTabFlds = UiLogic.getTabFields("staticwing", doorConfig, ref errMsg);
 		lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg, true); // get also HALF Cylinders 
-		setHiddens(doorConfig);
+		//setHiddens(doorConfig);
 
 		if (UiLogic.tabPageIsFilled("staticwing", doorConfig))  // we came here back from a prev tab and actually the current tabPage is filled
 																// so we should disable all it's fields !
@@ -73,8 +73,9 @@
 			lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 		}
 
-		else
+		else  //tabPage is not filled 
 		{
+			setHiddens(doorConfig);
 			if (doorConfig.CENTRALCOLCLRID == 0)
 				calcCentralColClrID(doorConfig);
 
@@ -189,7 +190,8 @@
 			case "מגולוון" :
 			case "1":
 				doorConfig.CENTRALCOLCLRID = doorConfig.DOORCOLORID;
-				doorConfig.SHALVANIACLRID = doorConfig.DOORCOLORID;
+				doorConfig.SHALVANIACLRID = 0; //Eli 31/10/2022   //doorConfig.DOORCOLORID;
+				doorConfig.disabledFlds["SHALVANIACLRID"] = true;  //Eli 31/10/2022
 				break;
 			case "2":
 				doorConfig.CENTRALCOLCLRID = (doorConfig.OPENMODE == "פנימה" ? doorConfig.INTCOLORID : doorConfig.EXTCOLORID);

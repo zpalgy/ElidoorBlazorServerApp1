@@ -2568,11 +2568,16 @@ namespace BlazorServerApp1.Data
         }
         public static string getHandleNameByDes (string handleDes)
         {
+            if (handleDes == "ללא")
+                return UiLogic.NameOfNone;
+
             HANDLE_Class h = lstHandles.Find(item => item.PARTDES == handleDes);
             return h.PARTNAME;
         }
         public static string getHandleDesByName(string handleName)
         {
+            if (handleName == UiLogic.NameOfNone)
+                return "ללא";
             HANDLE_Class h = lstHandles.Find(item => item.PARTNAME == handleName);
             return h.PARTDES;
         }

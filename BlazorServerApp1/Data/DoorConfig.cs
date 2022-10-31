@@ -522,6 +522,8 @@ namespace BlazorServerApp1.Data
         #region handle
         [DataMember(Order = 300), Order]
         public string HANDLENAME { get; set; }   //D-940
+        [NonSerialized]
+        public string handleName1;   
         [DataMember(Order = 301), Order]
         public int HANDLECOLORID { get; set; }   //D-950
         [DataMember(Order = 302), Order]

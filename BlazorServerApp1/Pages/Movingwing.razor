@@ -122,7 +122,10 @@
             //  all other select fields depend on static LOVs and are restored OK !
             lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
             lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
-
+            if (string.IsNullOrEmpty(doorConfig.HANDLENAME) && doorConfig.handleName1 == UiLogic.NameOfNone)
+            {
+                 doorConfig.HANDLENAME = UiLogic.NameOfNone;
+            }
         }
         //Js.InvokeVoidAsync("SayHelloJS");
         //NoColor = (doorConfig.TRSH_MODELNAME == "MLI" ? "ללא" : "מגולוון") ;
@@ -984,7 +987,7 @@
                                 }
                             }
                         }
-                        else  // HW without Cylinder - e.g. TRSH_MODEL is E or similar,  select from all hardwares
+                        else  if (hideCylinder) // HW without Cylinder - e.g. TRSH_MODEL is E or similar,  select from all hardwares
                         {
                             if (PrApiCalls.lstHardwares != null)
                             {
@@ -1541,7 +1544,7 @@
                             @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
                             {
                                 @* <option value="@c.PARTNAME">@c.PARTDES</option> *@
-                                string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא");
+                                @* string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא"); *@
                                 <option value="@c.PARTDES">@c.PARTDES</option>
                             }
                         }
@@ -1558,6 +1561,10 @@
                     {
                         if (doorConfig != null)
                         {
+                            if (string.IsNullOrEmpty(doorConfig.HANDLENAME) && doorConfig.handleName1 == UiLogic.NameOfNone)
+                            {
+                                doorConfig.HANDLENAME = UiLogic.NameOfNone;
+                            }
                             _HandleName = doorConfig.HANDLENAME;
                         }
                         return (string.IsNullOrEmpty(_HandleName) ? string.Empty : PrApiCalls.getHandleDesByName(_HandleName));
@@ -1566,9 +1573,10 @@
                     {
                         _HandleName = (!string.IsNullOrEmpty(value) ? PrApiCalls.getHandleNameByDes(value) : string.Empty);
                         if (doorConfig != null)
-                            {
-                                doorConfig.HANDLENAME = _HandleName;
-                                // Handle is Optional
+                        {
+                            doorConfig.HANDLENAME = _HandleName;
+                            doorConfig.handleName1 = _HandleName;  
+                            // Handle is Optional
                                 //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                 //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                                 doorConfig.disabledFlds["HANDLECOLORID"] = (   string.IsNullOrEmpty(doorConfig.HANDLENAME) 

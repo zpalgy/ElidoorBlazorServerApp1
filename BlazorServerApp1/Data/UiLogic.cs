@@ -405,6 +405,10 @@ namespace BlazorServerApp1.Data
                 string fldDes = tabFields[r]["FIELDDES"].ToString();
 
                 doorConfig.disabledFlds[fldName] = true;
+                if (fldName == "HANDLENAME")
+                {
+                    string dbg = doorConfig.HANDLENAME;
+                }
             }
         }
         public static bool doorFldIsNotEmpty(DoorConfig doorConfig, string fldName, string fldDataType)
@@ -802,6 +806,7 @@ namespace BlazorServerApp1.Data
             string errMsg = string.Empty;
             doorConfig.PARTNAME = string.Empty;
             doorConfig.COMMENTS = string.Empty;
+            doorConfig.handleName1 = string.Empty;
 
             for (int r=0;r<PrApiCalls.dtConfFields.Rows.Count; r++)
             {
