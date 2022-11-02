@@ -142,7 +142,10 @@
 		}
 
 		doorConfig.thClasses["SWING_TURBO"] = "thGray";
-
+		// in any case : if doorConfig.HW4EXTRAWING is empty then SWING_HWACCESSORYID is disabled - 02/11/2022
+		if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
+		     doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
+		     
 	}
 	void setHiddens(DoorConfig doorConfig)
 	{
@@ -177,7 +180,12 @@
 		//doorConfig.disabledFlds["INTCOLORID"] = hideSwingIntClr;
 		doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl;
 		doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing;
+		
 		doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc;
+		// in any case : if doorConfig.HW4EXTRAWING is empty then SWING_HWACCESSORYID is disabled - 02/11/2022
+		if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
+		     doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
+
 		doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr;
 		doorConfig.disabledFlds["SWING_HANDLENAME"] = hideSwingHandle;
 		doorConfig.disabledFlds["SWING_HANDLECOLORID"] = hideSwingHandleClr;
@@ -995,7 +1003,7 @@
 					</datalist>
 				}
 				@code
-				{
+			{
 				protected int _Hw4ExtraWing;
 				//protected int Hw4ExtraWing
 				protected string Hw4ExtraWingDes
@@ -1021,6 +1029,7 @@
 							doorConfig.HW4EXTRAWING = _Hw4ExtraWing;
 							setSWING_DRIL4HW();
 							doorConfig.staticwingChanged = true;
+
 							if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
 								config4.RefreshState();
 
@@ -1062,7 +1071,7 @@
 		@code	{
 			protected void setSWING_DRIL4HW()
 			{
-				if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
+				if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
 				{
 					doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 					doorConfig.SWING_HWACCESSORYID = 0;

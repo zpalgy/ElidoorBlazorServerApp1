@@ -96,8 +96,10 @@
 
         if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))  // i.e. we just came from a prev tab
         {
+            setHiddens(doorConfig);
             doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
-            doorConfig.disabledFlds["HWCOLORID"] = true;   // new - Hardware may be with COLORED = "Y", at that point we'll ENABLE HWCOLORID .
+            doorConfig.disabledFlds["HWACCESSORYID"] = true;  //(hideHwAccessory || doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone); 
+            doorConfig.disabledFlds["HWCOLORID"] = true;   // new - Hardware may be with COLORED == "Y", at that point we'll ENABLE HWCOLORID .
                                                            // we can't do that here because we may return to the page after all it's fields were disabled.
                                                            // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
             doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
@@ -109,7 +111,7 @@
             doorConfig.TURBOAPPARATUS = (doorConfig.useTurbo ? "Y" : string.Empty);   // new 31/07/2022 
                                                                                       //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
             doorConfig.LOCKNAME = (doorConfig.useLOGO ? PrApiCalls.defLockwithLogo : PrApiCalls.defLockwithOutLogo);
-            setHiddens(doorConfig);
+           
 
         }
         else    // it is filled - we came back form a newer tab - all fields should be disabled !
@@ -1029,12 +1031,14 @@
                                 doorConfig.HWCOLORID = doorConfig.HWACCESSORYID = 0;
                             }
                             doorConfig.TRSH_HARDWARE = _Hw;
-                            if (doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone || doorConfig.TRSH_HARDWARE == 0) // ללא
+                            if (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone ) // ללא
                             {
                                 doorConfig.disabledFlds["HWCOLORID"] = true;
                                 doorConfig.HWCOLORID = 0;
-                                //doorConfig.disabledFlds["HWACCESSORYID"] = true;  - it's A Mandatory filed - it can't be disabled !
+                                
+                                doorConfig.disabledFlds["HWACCESSORYID"]  = true; //it's mandatory only if TRSH_HARDWARE is not empty 
                                 doorConfig.HWACCESSORYID = 0;
+                                
                                 // 18/06/2022 - when HARWARE is ללא DRIL4HW showuld be ENABLED !
                                 //  therefore commented the three lines below.
                                 // doorConfig.disabledFlds["DRIL4HW"] = true;
@@ -1061,7 +1065,7 @@
                                 doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(_Hw); //value);
                                 doorConfig.borderColors["HWCOLORID"] = (doorConfig.disabledFlds["HWCOLORID"] || doorConfig.HWCOLORID != 0 ? "blueBorder" : "redBorder");
                                 doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
-                                //doorConfig.disabledFlds["HWACCESSORYID"] = (doorConfig.TRSH_HARDWARE == 0);   it's a Mandatory field so it can't be disabled !
+                                doorConfig.disabledFlds["HWACCESSORYID"] = (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone); 
                                 if (doorConfig.disabledFlds["HWCOLORID"])
                                     doorConfig.HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
                                 StateHasChanged();

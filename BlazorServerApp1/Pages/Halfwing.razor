@@ -291,7 +291,8 @@
             case "מגולוון" :
             case "1":
                 doorConfig.CENTRALCOLCLRID = doorConfig.DOORCOLORID;
-                doorConfig.SHALVANIACLRID = doorConfig.DOORCOLORID;
+                doorConfig.SHALVANIACLRID = 0; //Eli 31/10/2022   //doorConfig.DOORCOLORID;
+				doorConfig.disabledFlds["SHALVANIACLRID"] = true;  //Eli 31/10/2022
                 break;
             case "2":
                 doorConfig.CENTRALCOLCLRID = (doorConfig.OPENMODE == "פנימה" ? doorConfig.INTCOLORID : doorConfig.EXTCOLORID);
@@ -1246,7 +1247,7 @@
      	  @code	{
 			protected void setSWING_DRIL4HW()
 			{
-				if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
+				if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
 				{
 					doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 					doorConfig.SWING_HWACCESSORYID = 0;
@@ -1263,6 +1264,9 @@
 				}
 				else
 				{
+                    doorConfig.disabledFlds["SWING_HWACCESSORYID"] = false;
+                    doorConfig.borderColors["SWING_HWACCESSORYID"] = (doorConfig.SWING_HWACCESSORYID != 0 ? "blueBorder" : "redBorder"); // it's mandatory after 
+                                                                                                                      // HW4EXTRAWING was set 
 					// doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
 					//doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
 					doorConfig.SWING_DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);

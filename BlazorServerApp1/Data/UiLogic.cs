@@ -664,9 +664,9 @@ namespace BlazorServerApp1.Data
             
             // 06/07/2022 HW4EXTRAWING is disabled by default !
             doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing || (doorConfig.SWINGHASLOCK != "Y");
-
-            doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc || (doorConfig.SWINGHASLOCK != "Y");
-            doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr || (doorConfig.SWINGHASLOCK != "Y");
+            // SWING_HWACCESSORYID and SWING_HWCOLORID are enabled only after HW4EXTRAWING was set - here they're disabled.
+            doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true; //hideSwingHwAcc || (doorConfig.SWINGHASLOCK != "Y");
+            doorConfig.disabledFlds["SWING_HWCOLORID"] = true;     //hideSwingHwClr || (doorConfig.SWINGHASLOCK != "Y");
             doorConfig.disabledFlds["SWING_DRIL4HW"] = (doorConfig.SWINGHASLOCK != "Y");
             doorConfig.disabledFlds["SWING_TURBO"] = (doorConfig.SWINGHASLOCK != "Y");    //TODO - check this ?
             doorConfig.disabledFlds["SWING_LOCKNAME"] = (doorConfig.SWINGHASLOCK != "Y");
