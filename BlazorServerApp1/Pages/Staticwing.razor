@@ -75,7 +75,7 @@
 
 		else  //tabPage is not filled 
 		{
-			setHiddens(doorConfig);
+			//setHiddens(doorConfig);
 			if (doorConfig.CENTRALCOLCLRID == 0)
 				calcCentralColClrID(doorConfig);
 
@@ -93,13 +93,17 @@
 			if (lstD4HW1.Count == 0 && doorConfig.HW4EXTRAWING != 0 )
 				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 
-			if (hideHW4ExtraWing && lstD4HW1.Count == 0)
+			if (hideHW4ExtraWing  && lstD4HW1.Count == 0)
 				lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+			else if (doorConfig.SWINGHASLOCK != "Y"  && lstD4HW1.Count == 0)
+			    lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+			   
 
 			if (!doorConfig.staticwingChanged)// page not filled , it's not empty because even if we come here for the 1st time some fields are 
 													// copied from movingwing .
 													// The following code should be executed only once, when we come here for the 1st time in the session.
 			{
+				setHiddens(doorConfig);
 				applySwingHasLock();
 				//doorConfig.CENTRALCOLWIDTH = (doorConfig.CENTRALCOLWIDTH == 0 ? 40 : doorConfig.CENTRALCOLWIDTH) ;  //06/07/2022 
 				// doorConfig.disabledFlds["SWING_HANDLENAME"] = (doorConfig.TRSH_WINGSNUMDES == "כנף וחצי"); // 06/07/2022 
@@ -421,12 +425,12 @@
         <tr>
 			<td>
  			  @{  int i601 = Array.IndexOf(UiLogic.propNames, "SWINGHASLOCK");
-				 	<input type="checkbox" name="chkbSwingHasLock" @bind="SwingHasLock"  
+					 	<input type="checkbox" name="chkbSwingHasLock" @bind="SwingHasLock"  
 				      disabled="@doorConfig.disabledFlds["SWINGHASLOCK"]"
-					   	@onfocus="@( () => UiLogic.HasFocus("SWINGHASLOCK", doorConfig) )" 
+						   	@onfocus="@( () => UiLogic.HasFocus("SWINGHASLOCK", doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i601]]"  
-				/>
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i601]]"  
+					/>
 			}
             @code
 			{
@@ -447,28 +451,43 @@
 						if (doorConfig != null)
 						{
 							doorConfig.SWINGHASLOCK = (_SwingHasLock ? "Y" : string.Empty);
-							doorConfig.EXTRAWINGWIDTH = 0;  // here we switched changed SWINGHASLOCK
-															// by that we force the user to enter EXTRAWINGWIDTH so that it can be validated against UiLogic.MIN_SWING_WITHLOCK_W
-															// or UiLogic.MIN_SWING_NOLOCK_W which are diffrent
+							//doorConfig.EXTRAWINGWIDTH = 0;  // here we switched changed SWINGHASLOCK
+												// by that we force the user to enter EXTRAWINGWIDTH so that it can be validated against UiLogic.MIN_SWING_WITHLOCK_W
+												// or UiLogic.MIN_SWING_NOLOCK_W which are diffrent
 							applySwingHasLock();
-							StateHasChanged();
+							//-- there are different Minimun EXTRAWINGWIDTH for staticwing with/witout lock 
+							//  so if we change EXTRAWINGWIDTH we should re-validate EXTRAWINGWIDTH 
+							// we do that here.
+							if (doorConfig.EXTRAWINGWIDTH != 0 && !UiLogic.wingWidthIsOk(doorConfig, doorConfig.EXTRAWINGWIDTH, ref errMsg2))
+						    {
+								 msgCaption = string.Empty;
+	  							 msgClass = "modal-body centeredMsg";
+								// the error text is in errMsg2 which was populated in wingWidthIsOk(...) 
+								openMsgBox = true;
+							    //doorConfig.EXTRAWINGWIDTH = 0;
+								doorConfig.borderColors["EXTRAWINGWIDTH"] = (doorConfig.EXTRAWINGWIDTH == 0 ? "redBorder" : string.Empty );
+							    doorConfig.dicRefs["EXTRAWINGWIDTH"].FocusAsync();
+								//StateHasChanged();
+							//--
 							//UiLogic.clearFollowingTabFields(doorConfig, "staticgwing");
 							doorConfig.staticwingChanged = true;
 						}
+						StateHasChanged();
                     }
                 }
             }
+			}
 			</td>
 
 			<td id="tdExtraWingWidth">
 				 @{  int i602 = Array.IndexOf(UiLogic.propNames, "EXTRAWINGWIDTH");
-					<input type="number"  name="txtExtraWingWidth" @bind="ExtraWingWidth" class= "@doorConfig.borderColors["EXTRAWINGWIDTH"]" 
+						<input type="number"  name="txtExtraWingWidth" @bind="ExtraWingWidth" class= "@doorConfig.borderColors["EXTRAWINGWIDTH"]" 
 				    disabled="@doorConfig.disabledFlds["EXTRAWINGWIDTH"]"
-				   	@onfocus="@( () => UiLogic.HasFocus("EXTRAWINGWIDTH", doorConfig) )" 
-				   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+					   	@onfocus="@( () => UiLogic.HasFocus("EXTRAWINGWIDTH", doorConfig) )" 
+					   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i602]]"  
-					/>
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i602]]"  
+						/>
 				}
            	@code
 			{
@@ -549,17 +568,17 @@
 
 			<td id="tdCentralColWidth"  >
 				 @{  int i603 = Array.IndexOf(UiLogic.propNames, "CENTRALCOLWIDTH");
-						<select name="dlstCentralColWidth" @bind="CentralColWidth" class= "@doorConfig.borderColors["CENTRALCOLWIDTH"]" 
+							<select name="dlstCentralColWidth" @bind="CentralColWidth" class= "@doorConfig.borderColors["CENTRALCOLWIDTH"]" 
 					   disabled="@doorConfig.disabledFlds["CENTRALCOLWIDTH"]"   autocomplete = "off"
-					  	@onfocus="@( () => UiLogic.HasFocus("CENTRALCOLWIDTH", doorConfig) )" 
-					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+						  	@onfocus="@( () => UiLogic.HasFocus("CENTRALCOLWIDTH", doorConfig) )" 
+						  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i603]]"  
-						>
-							<option>0</option>
-							<option>30</option>
-							<option>40</option>
-						</select>
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i603]]"  
+							>
+								<option>0</option>
+								<option>30</option>
+								<option>40</option>
+							</select>
 					}
 				</td>
 			
@@ -837,20 +856,20 @@
 			<td id="tdCylinder4HalfWing" >
 				@{
 					int i604 = Array.IndexOf(UiLogic.propNames, "TRSH_SWING_CYLINDER");
-					<select name="dlstCylinder4HalfWing" @bind="Cylinder4HalfWing" class= "@doorConfig.borderColors["TRSH_SWING_CYLINDER"]" 
+						<select name="dlstCylinder4HalfWing" @bind="Cylinder4HalfWing" class= "@doorConfig.borderColors["TRSH_SWING_CYLINDER"]" 
 				 disabled="@doorConfig.disabledFlds["TRSH_SWING_CYLINDER"]"
-				  	@onfocus="@( () => UiLogic.HasFocus("TRSH_SWING_CYLINDER", doorConfig) )" 
-				  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+					  	@onfocus="@( () => UiLogic.HasFocus("TRSH_SWING_CYLINDER", doorConfig) )" 
+					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i604]]"  >
-						@if (lstCylinders1 != null)
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i604]]"  >
+							@if (lstCylinders1 != null)
 						{
-							@foreach (CYLINDER_Class c in lstCylinders1)
+								@foreach (CYLINDER_Class c in lstCylinders1)
 							{
-								<option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
+									<option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
 							}
 						}
-					</select>
+						</select>
 				}
 			</td>
 		
@@ -932,15 +951,15 @@
 				@* HW4EXTRAWING *@
 				@{
 					int i605 = Array.IndexOf(UiLogic.propNames, "HW4EXTRAWING");
-					<input list="lstHw"  name="dlstHw" @bind="Hw4ExtraWingDes" class="@doorConfig.borderColors["HW4EXTRAWING"]" autocomplete="off"
+						<input list="lstHw"  name="dlstHw" @bind="Hw4ExtraWingDes" class="@doorConfig.borderColors["HW4EXTRAWING"]" autocomplete="off"
 					        disabled="@doorConfig.disabledFlds["HW4EXTRAWING"]"
-							@onfocus="@( () => UiLogic.HasFocus("HW4EXTRAWING", doorConfig) )" 
-							@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+								@onfocus="@( () => UiLogic.HasFocus("HW4EXTRAWING", doorConfig) )" 
+								@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
 							onkeypress="@doorConfig.KeyPressHandler" 
-							@ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" 
-							/>
-					<datalist id="lstHw">
-						@{
+								@ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" 
+								/>
+						<datalist id="lstHw">
+							@{
 							string errMsg = string.Empty;
 							//List<TRSH_HARDWARE_Class> lstPartHWs = PrApiCalls.getDoorHWs(doorConfig.TRSH_DOOR_HWCATCODE, ref errMsg);
 							if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
@@ -965,19 +984,19 @@
 								//isHwNikel = PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
 								//isHwBronze = PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
 
-								@foreach (CYLHW_Class c in lstCylHws1)
+										@foreach (CYLHW_Class c in lstCylHws1)
 								{
-									@* <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option> *@
+											@* <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option> *@
 									if (doorConfig.TRSH_MODELNAME == "חצי כנף")
 									{
-										<option value="@c.PARTDESHW">@c.PARTDESHW</option>
+												<option value="@c.PARTDESHW">@c.PARTDESHW</option>
 									}
 									else
 									{
 										TRSH_HARDWARE_Class hw = PrApiCalls.getHardware1(c.TRSH_HARDWARE);
 										if (hw != null && hw.COLORED == MwHw.COLORED && hw.NIKEL == MwHw.NIKEL && hw.BRONZE == MwHw.BRONZE)
 										{
-											<option value="@c.PARTDESHW">@c.PARTDESHW</option>
+													<option value="@c.PARTDESHW">@c.PARTDESHW</option>
 										}
 									}
 							}
@@ -989,18 +1008,18 @@
 								//OpenDirection is set in tdOpenDirection above it is actually SWING_OPENSIDE
 								//string OpenDirection = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
 								
-								@foreach (TRSH_HARDWARE_Class h in PrApiCalls.lstHardwares)
+										@foreach (TRSH_HARDWARE_Class h in PrApiCalls.lstHardwares)
 									{
 										 if (h.OPENSIDE == OpenDirection || string.IsNullOrEmpty(h.OPENSIDE))
 										 {
-												<option value="@h.PARTDES">@h.PARTDES</option>
+														<option value="@h.PARTDES">@h.PARTDES</option>
 										 }
 									}
 								}
 
 							}
-						}
-					</datalist>
+							}
+						</datalist>
 				}
 				@code
 			{
@@ -1033,7 +1052,7 @@
 							if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
 								config4.RefreshState();
 
-							@*if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
+								@*if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
                             {
                                 doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
                                 doorConfig.SWING_HWCOLORID = 0;
@@ -1137,30 +1156,30 @@
 		   @* SWING_HWACCESSORYID   new 12/07/2022 *@
 		   <td>
 		   @{  int i617 = Array.IndexOf(UiLogic.propNames, "SWING_HWACCESSORYID");
-             <input list="lstHwAcc2" name="dlstHw2" @bind="HwAccDes2" class="@doorConfig.borderColors["SWING_HWACCESSORYID"]" autocomplete="off"
+			 	<input list="lstHwAcc2" name="dlstHw2" @bind="HwAccDes2" class="@doorConfig.borderColors["SWING_HWACCESSORYID"]" autocomplete="off"
                         disabled="@doorConfig.disabledFlds["SWING_HWACCESSORYID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("SWING_HWACCESSORYID", doorConfig) )" 
-                        @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+							@onfocus="@( () => UiLogic.HasFocus("SWING_HWACCESSORYID", doorConfig) )" 
+							@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                         onkeypress="@doorConfig.KeyPressHandler" 
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i617]]" 
-			/>
-			<datalist id="lstHwAcc2">
-                    @{
+							@ref="doorConfig.dicRefs[UiLogic.propNames[i617]]" 
+				/>
+				<datalist id="lstHwAcc2">
+						@{
                         if (PrApiCalls.lstHwAccessories != null)
                         {
                             string HwColored = PrApiCalls.getHardware1(doorConfig.HW4EXTRAWING).COLORED;
-                            @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
+									@foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
                             {
                                 //if (hwa.COLORED == HwColored || hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == UiLogic.IdOfNone)
 								if (hwa.HWACCESSORYID == doorConfig.HWACCESSORYID || hwa.HWACCESSORYID == UiLogic.IdOfNone || string.IsNullOrEmpty(hwa.PARTDES))
                                 {
-                                   @* <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option> *@
-								   <option value="@hwa.PARTDES">@hwa.PARTDES</option>
+								   		@* <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option> *@
+								   		<option value="@hwa.PARTDES">@hwa.PARTDES</option>
                                 }
                             }
                         }
-                    }
-                    </datalist>
+						}
+						</datalist>
                     }
 					 @code
                     {
@@ -1201,25 +1220,25 @@
         }
         <td>
             @{  int i606 = Array.IndexOf(UiLogic.propNames, "SWING_HWCOLORID");
-				<input list="lstHwColor2"  name="dlstSwing_HwColor" @bind="Swing_HwColorDes" class="@doorConfig.borderColors["SWING_HWCOLORID"]"  
+					<input list="lstHwColor2"  name="dlstSwing_HwColor" @bind="Swing_HwColorDes" class="@doorConfig.borderColors["SWING_HWCOLORID"]"  
 				 autocomplete="off" 
                  disabled="@doorConfig.disabledFlds["SWING_HWCOLORID"]"  
-				  	@onfocus="@( () => UiLogic.HasFocus("SWING_HWCOLORID", doorConfig) )" 
-				  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+					  	@onfocus="@( () => UiLogic.HasFocus("SWING_HWCOLORID", doorConfig) )" 
+					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i606]]" 
-				/>
-				<datalist id="lstHwColor2">
-					@if (PrApiCalls.lstColors != null)
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i606]]" 
+					/>
+					<datalist id="lstHwColor2">
+						@if (PrApiCalls.lstColors != null)
                 {
-						@foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)
+							@foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)
                     {
-							@* <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option> *@
-							<option value="@c.PARTDES">@c.PARTDES</option>
+								@* <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option> *@
+								<option value="@c.PARTDES">@c.PARTDES</option>
 
                     }
                 }
-				</datalist>
+					</datalist>
             }
 			</td>
 			@code
@@ -1279,23 +1298,23 @@
 				<td id="tdSwing_Dril4Hw">
 				@* SWING_DRIL4HW *@
 				@{  int i607 = Array.IndexOf(UiLogic.propNames, "SWING_DRIL4HW");
-				<select name="dlstSwing_Dril4Hw" @bind="Swing_Dril4Hw" class="@doorConfig.borderColors["SWING_DRIL4HW"]"
+					<select name="dlstSwing_Dril4Hw" @bind="Swing_Dril4Hw" class="@doorConfig.borderColors["SWING_DRIL4HW"]"
 					disabled="@doorConfig.disabledFlds["SWING_DRIL4HW"]" 
-			  		@onfocus="@( () => UiLogic.HasFocus("SWING_DRIL4HW", doorConfig) )" 
-			  		@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+					  	@onfocus="@( () => UiLogic.HasFocus("SWING_DRIL4HW", doorConfig) )" 
+					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                     onkeypress="@doorConfig.KeyPressHandler" 
-					@ref="doorConfig.dicRefs[UiLogic.propNames[i607]]" >
+						@ref="doorConfig.dicRefs[UiLogic.propNames[i607]]" >
 
-					@* @if (PrApiCalls.lstDril4Hw != null)  *@
-					@if (lstD4HW1 != null)
+						@* @if (PrApiCalls.lstDril4Hw != null)  *@
+						@if (lstD4HW1 != null)
 					{
-						@* @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw) *@
-						@foreach (DRIL4HW_Class c in lstD4HW1)
+							@* @foreach (DRIL4HW_Class c in PrApiCalls.lstDril4Hw) *@
+							@foreach (DRIL4HW_Class c in lstD4HW1)
 						{
-							<option value="@c.DRIL4HW">@c.DRIL4HWDES</option>
+								<option value="@c.DRIL4HW">@c.DRIL4HWDES</option>
 						}
 					}
-				</select>
+					</select>
             }
 			</td>
 			@code
@@ -1329,13 +1348,13 @@
 
             <td id="tdSwing_Turbo" class="@doorConfig.thClasses["SWING_TURBO"]" >
 			@{  int i613 = Array.IndexOf(UiLogic.propNames, "SWING_TURBO");
-				<input type="checkbox" name="chkbSwing_Turbo" @bind="Swing_Turbo"  
+					<input type="checkbox" name="chkbSwing_Turbo" @bind="Swing_Turbo"  
 			   disabled="@doorConfig.disabledFlds["SWING_TURBO"]"
-			   	@onfocus="@( () => UiLogic.HasFocus("SWING_TURBO", doorConfig) )"
-				   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+				   	@onfocus="@( () => UiLogic.HasFocus("SWING_TURBO", doorConfig) )"
+					   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i613]]" 
-				/>
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i613]]" 
+					/>
 			}
             @code
             {
@@ -1399,24 +1418,24 @@
         <td id="tdLock"  class="@doorConfig.thClasses["SWING_LOCKNAME"]">
             @{
 				int i608 = Array.IndexOf(UiLogic.propNames, "SWING_LOCKNAME");
-				<select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["SWING_LOCKNAME"]" 
+					<select name="dlstLock" @bind="Lock" class="@doorConfig.borderColors["SWING_LOCKNAME"]" 
 			     disabled="@doorConfig.disabledFlds["SWING_LOCKNAME"]"
-				 	@onfocus="@( () => UiLogic.HasFocus("SWING_LOCKNAME", doorConfig) )"
-				 	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+					 	@onfocus="@( () => UiLogic.HasFocus("SWING_LOCKNAME", doorConfig) )"
+					 	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i608]]"  >
-					@{
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i608]]"  >
+						@{
 						string errMsg3 = string.Empty;
 						List<TRSH_LOCK_Class> lstPartLocks = PrApiCalls.getPartAndLogoLocks(doorConfig.TRSH_DOOR_HWCATCODE, doorConfig.LOGO, ref errMsg3);
                     if (lstPartLocks != null)
                     {
-								@foreach (TRSH_LOCK_Class c in lstPartLocks)
+										@foreach (TRSH_LOCK_Class c in lstPartLocks)
                         {
-									<option value="@c.PARTNAME">@c.PARTDES</option>
+											<option value="@c.PARTNAME">@c.PARTDES</option>
                         }
                     }
-					}
-				</select>
+						}
+					</select>
             }
         </td>
         @code {
@@ -1450,28 +1469,28 @@
 		<td>
 			@* handle 4 static wing   new *@
 			 @{  int i609 = Array.IndexOf(UiLogic.propNames, "SWING_HANDLENAME");
-					<input list="lstHandles2" name="dlstHandle" @bind="Swing_HandleDes" class="@doorConfig.borderColors["SWING_HANDLENAME"]" 
+						<input list="lstHandles2" name="dlstHandle" @bind="Swing_HandleDes" class="@doorConfig.borderColors["SWING_HANDLENAME"]" 
 					autocomplete="off"
 				  disabled="@doorConfig.disabledFlds["SWING_HANDLENAME"]"	
-				  	@onfocus="@( () => UiLogic.HasFocus("SWING_HANDLENAME", doorConfig) )" 
-				  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+					  	@onfocus="@( () => UiLogic.HasFocus("SWING_HANDLENAME", doorConfig) )" 
+					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i609]]"  
-					/>
-					<datalist id="lstHandles2">
-						@if (PrApiCalls.lstHandles != null)
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i609]]"  
+						/>
+						<datalist id="lstHandles2">
+							@if (PrApiCalls.lstHandles != null)
 	                    {
-							@foreach (HANDLE_Class c in PrApiCalls.lstHandles)
+								@foreach (HANDLE_Class c in PrApiCalls.lstHandles)
 							{
 								if (c.PARTNAME == doorConfig.HANDLENAME || c.PARTNAME == UiLogic.NameOfNone || string.IsNullOrEmpty(c.PARTNAME))
 								{
-									@* <option value="@c.PARTNAME">@c.PARTDES</option> *@
+										@* <option value="@c.PARTNAME">@c.PARTDES</option> *@
 									string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא");
-									<option value="@c.PARTDES">@c.PARTDES</option>
+										<option value="@c.PARTDES">@c.PARTDES</option>
 								}
 							}
 						}
-					</datalist>
+						</datalist>
                 }
            
                 @code
@@ -1524,24 +1543,24 @@
 		</td>
 		<td>
 			 @{  int i614 = Array.IndexOf(UiLogic.propNames, "SWING_HANDLECOLORID");
-					<input list="lstHandleClrs2" name="dlstSwingHandleColorID"  @bind="Swing_HandleColorDes"  class= "@doorConfig.borderColors["SWING_HANDLECOLORID"]"
+						<input list="lstHandleClrs2" name="dlstSwingHandleColorID"  @bind="Swing_HandleColorDes"  class= "@doorConfig.borderColors["SWING_HANDLECOLORID"]"
 					autocomplete="off"
 					disabled="@doorConfig.disabledFlds["SWING_HANDLECOLORID"]"	
-				  	@onfocus="@( () => UiLogic.HasFocus("SWING_HANDLECOLORID", doorConfig) )" 
-				  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+					  	@onfocus="@( () => UiLogic.HasFocus("SWING_HANDLECOLORID", doorConfig) )" 
+					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i614]]" 
-					/>
-					<datalist id="lstHandleClrs2">
-						@if (PrApiCalls.lstColors != null)
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i614]]" 
+						/>
+						<datalist id="lstHandleClrs2">
+							@if (PrApiCalls.lstColors != null)
 					{
-							@foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+								@foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
 						{
-								@* <option value="@c.TRSH_COLORID">@c.PARTDES</option> *@
-								 <option value="@c.PARTDES">@c.PARTDES</option>
+									@* <option value="@c.TRSH_COLORID">@c.PARTDES</option> *@
+								 	<option value="@c.PARTDES">@c.PARTDES</option>
 						}
 					}
-				</datalist>
+					</datalist>
 				}
 		</td>
 		@code
@@ -1577,19 +1596,19 @@
 		<td class="@doorConfig.thClasses["SWING_VENTS"]" >
 			@* Vent 4 static wing new *@
 			@{  int i610 = Array.IndexOf(UiLogic.propNames, "SWING_VENTS");
-				<select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["SWING_VENTS"]" 
+					<select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["SWING_VENTS"]" 
 			 disabled="@doorConfig.disabledFlds["SWING_VENTS"]"
-			 	@onfocus="@( () => UiLogic.HasFocus("SWING_VENTS", doorConfig) )" 
-			 	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+				 	@onfocus="@( () => UiLogic.HasFocus("SWING_VENTS", doorConfig) )" 
+				 	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i610]]" >
-					<option></option>
-                    <option>ללא</option>
-                    <option>סט 1 תחתון</option>
-                    <option>סט 1 עליון</option>
-                    <option>שני סטים, עליון ותחתון</option>
-                    <option>כל הדלת</option>
-				</select>
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i610]]" >
+						<option></option>
+						<option>ללא</option>
+						<option>סט 1 תחתון</option>
+						<option>סט 1 עליון</option>
+						<option>שני סטים, עליון ותחתון</option>
+						<option>כל הדלת</option>
+					</select>
             }
             @code
             {
@@ -1623,19 +1642,19 @@
 
 		<td id="tdRafafaOnStaticWing"  class="@doorConfig.thClasses["RAFAFAONSTATICWING"]">
                @{  int i611 = Array.IndexOf(UiLogic.propNames, "RAFAFAONSTATICWING");
-				<select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONSTATICWING"]" 
+					<select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONSTATICWING"]" 
 			    disabled="@doorConfig.disabledFlds["RAFAFAONSTATICWING"]"
-					@onfocus="@( () => UiLogic.HasFocus("RAFAFAONSTATICWING", doorConfig) )" 
-					@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+						@onfocus="@( () => UiLogic.HasFocus("RAFAFAONSTATICWING", doorConfig) )" 
+						@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i611]]" >
-					<option></option>
-                    <option>ללא</option>
-                    <option>סט 1 תחתון</option>
-                    <option>סט 1 עליון</option>
-                    <option>שני סטים, עליון ותחתון</option>
-                    <option>כל הדלת</option>
-				</select>
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i611]]" >
+						<option></option>
+						<option>ללא</option>
+						<option>סט 1 תחתון</option>
+						<option>סט 1 עליון</option>
+						<option>שני סטים, עליון ותחתון</option>
+						<option>כל הדלת</option>
+					</select>
             }
 			 @code
             {
@@ -1679,12 +1698,12 @@
 		<td id="tdCatDoor" class="@doorConfig.thClasses["SWING_CATDOOR"]">
 			@* Cat door 4 static wing - new *@
 			@{  int i612 = Array.IndexOf(UiLogic.propNames, "SWING_CATDOOR");
-					<input type="checkbox" name="chkbCatDoor" @bind="CatDoor"
+						<input type="checkbox" name="chkbCatDoor" @bind="CatDoor"
 				   disabled="@doorConfig.disabledFlds["SWING_CATDOOR"]"
-				   	@onfocus="@( () => UiLogic.HasFocus("SWING_CATDOOR", doorConfig) )"
-				   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
+					   	@onfocus="@( () => UiLogic.HasFocus("SWING_CATDOOR", doorConfig) )"
+					   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                      onkeypress="@doorConfig.KeyPressHandler" 
-					 	@ref="doorConfig.dicRefs[UiLogic.propNames[i612]]"  />
+						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i612]]"  />
             }
             @code
             {
@@ -1758,7 +1777,7 @@
             switch (YNissue)
             {
                 case "lockDril":
-                    @*  [TODO] 
+	@*  [TODO] 
 					if (newLockDrilHeight != doorConfig.LOCKDRILHEIGHT)  //(_LockDrilHeight != doorConfig.LOCKDRILHEIGHT )
                     {
                         doorConfig.LOCKDRILHEIGHT = newLockDrilHeight;   //(int)_LockDrilHeight;
