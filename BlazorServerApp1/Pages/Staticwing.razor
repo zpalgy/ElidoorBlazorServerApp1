@@ -71,6 +71,8 @@
 			UiLogic.disableTabFlds(doorConfig, "staticwing");
 			// restore the LOV for SWING_DRIL4HW !
 			lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+			if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+						config4.RefreshState();
 		}
 
 		else  //tabPage is not filled 

@@ -52,6 +52,8 @@
         //UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
 
         //Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
+		if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+							config4.RefreshState();
      }
     
     
@@ -130,6 +132,8 @@
 						{
 							int lastHingeH = getLastHingeH(oldHingesNum);
 							setHingesHeights(_HingesNum, lastHingeH);
+							if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+                                       config4.RefreshState();
 						}
 						doorConfig.borderColors["HINGESNUM"] = (value != 0 ? "blueBorder" : "redBorder");
 						//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
@@ -209,7 +213,9 @@
 																{
 																	doorConfig.HINGE1HEIGHT = _Hinge1Height;
 																	doorConfig.borderColors["HINGE1HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																	//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																	if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+																						config4.RefreshState();
 																}
 															}
 														}
@@ -238,7 +244,9 @@
 																{
 				                                                    doorConfig.HINGE2HEIGHT = _Hinge2Height;
 																	doorConfig.borderColors["HINGE2HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																	//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																	if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+																				config4.RefreshState();
 }
 		                                                    }
 	                                                    }
@@ -268,7 +276,9 @@
 																{
 																	doorConfig.HINGE3HEIGHT = _Hinge3Height;
 																	doorConfig.borderColors["HINGE3HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																	if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+																				config4.RefreshState();
+																	//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
 																}
 															}
 														}
@@ -297,7 +307,9 @@
 																{
 																	doorConfig.HINGE4HEIGHT = _Hinge4Height;
 																	doorConfig.borderColors["HINGE4HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																	if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+																				config4.RefreshState();
+																	//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
 																}
 															}
 														}
@@ -326,7 +338,9 @@
 																{
 																	doorConfig.HINGE5HEIGHT= _Hinge5Height;
 																	doorConfig.borderColors["HINGE5HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																	if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+																				config4.RefreshState();
+																	//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
 																}
 															}
 														}
@@ -356,7 +370,9 @@
 																{
 				                                                    doorConfig.BACKPINHEIGHT = _BackPinHeight;
 																	doorConfig.borderColors["BACKPINHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-																	UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+																	if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+																				config4.RefreshState();
+																	//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
 																}
 		                                                    }
 	                                                    }

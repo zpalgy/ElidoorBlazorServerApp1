@@ -245,6 +245,10 @@ a {
     border-color: black;
     outline: none;
 }
+.grayBorder {
+    border-color: gray;
+    outline: none;
+}
 .focusBorder {
     border-top: 5px solid blue;
     border-right: 5px solid blue;

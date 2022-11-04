@@ -39,7 +39,8 @@
             TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID); 
             lstColors1.Remove(megulvan);
         }
-
+        if (UiLogic.try2UpdateBtnClass(doorConfig, "accessories"))
+					config4.RefreshState();
     }
 
 

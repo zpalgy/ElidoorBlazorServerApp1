@@ -98,10 +98,18 @@
         {
             setHiddens(doorConfig);
             doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
-            doorConfig.disabledFlds["HWACCESSORYID"] = true;  //(hideHwAccessory || doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone); 
-            doorConfig.disabledFlds["HWCOLORID"] = true;   // new - Hardware may be with COLORED == "Y", at that point we'll ENABLE HWCOLORID .
-                                                           // we can't do that here because we may return to the page after all it's fields were disabled.
-                                                           // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
+                                                                                                                                           //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
+                                                                                                                                           //doorConfig.disabledFlds["HWACCESSORYID"] = (hideHwAccessory || doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone);
+                                                                                                                                           //doorConfig.disabledFlds["HWCOLORID"] = (hideHwColor | doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone);       
+                                                                                                                                           //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
+                                                                                                                                           // new - Hardware may be with COLORED == "Y", at that point we'll ENABLE HWCOLORID .
+                                                                                                                                           // we can't do that here because we may return to the page after all it's fields were disabled.
+                                                                                                                                           // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
+            if (!hideHw && (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone))
+            {
+                doorConfig.borderColors["HWACCESSORYID"] = "grayBorder";
+                doorConfig.borderColors["HWCOLORID"] = "grayBorder";
+            }
             doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
 
             //doorConfig.disabledFlds["LOGO"] = disableLogo;   // old stuff : disableLogo is a parameter a flag in CUSTOMER record in Priority
@@ -128,6 +136,8 @@
             {
                  doorConfig.HANDLENAME = UiLogic.NameOfNone;
             }
+            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+					config4.RefreshState();
         }
         //Js.InvokeVoidAsync("SayHelloJS");
         //NoColor = (doorConfig.TRSH_MODELNAME == "MLI" ? "ללא" : "מגולוון") ;
@@ -1035,16 +1045,17 @@
                             {
                                 doorConfig.disabledFlds["HWCOLORID"] = true;
                                 doorConfig.HWCOLORID = 0;
-                                
+
                                 doorConfig.disabledFlds["HWACCESSORYID"]  = true; //it's mandatory only if TRSH_HARDWARE is not empty 
                                 doorConfig.HWACCESSORYID = 0;
-                                
+
                                 // 18/06/2022 - when HARWARE is ללא DRIL4HW showuld be ENABLED !
                                 //  therefore commented the three lines below.
                                 // doorConfig.disabledFlds["DRIL4HW"] = true;
                                 // doorConfig.DRIL4HW = 0;
                                 // doorConfig.borderColors["DRIL4HW"] = doorConfig.borderColors["HWCOLORID"] = string.Empty;
                                 lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();  // the full list of Drills for Hardwares
+                                StateHasChanged();
                                 return;
                             }
                             else
@@ -1064,15 +1075,18 @@
 
                                 doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(_Hw); //value);
                                 doorConfig.borderColors["HWCOLORID"] = (doorConfig.disabledFlds["HWCOLORID"] || doorConfig.HWCOLORID != 0 ? "blueBorder" : "redBorder");
-                                doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
                                 doorConfig.disabledFlds["HWACCESSORYID"] = (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone); 
+                                doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.disabledFlds["HWACCESSORYID"] || doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
+
                                 if (doorConfig.disabledFlds["HWCOLORID"])
                                     doorConfig.HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
+                                if (doorConfig.disabledFlds["HWACCESSORYID"])
+                                    doorConfig.HWACCESSORYID = 0;
                                 StateHasChanged();
                             }
                             applyHardwareChanged();
                             doorConfig.borderColors["TRSH_HARDWARE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); //(value != 0 ? "blueBorder" : "redBorder");
-                            doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
+                            //doorConfig.borderColors["HWACCESSORYID"] = (doorConfig.HWACCESSORYID != 0 ? "blueBorder" : "redBorder");
                             if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                                 config4.RefreshState();
                         }
@@ -1091,7 +1105,7 @@
                   />
                   <datalist id="lstHwAcc">
                     
-                        @if (PrApiCalls.lstHwAccessories != null)
+                        @if (doorConfig.TRSH_HARDWARE > 0 &&  PrApiCalls.lstHwAccessories != null)
                         {
                             TRSH_HARDWARE_Class hw = PrApiCalls.getHardware1(doorConfig.TRSH_HARDWARE);
 
@@ -1143,7 +1157,7 @@
                             set
                             {
                                 _HwAccessoryId = PrApiCalls.getHwAccIdbyDes(value);  //value;
-                                if (doorConfig != null)
+                                if (doorConfig != null && doorConfig.TRSH_HARDWARE > 0)
                                 {
                                     doorConfig.HWACCESSORYID = _HwAccessoryId;
                                     doorConfig.borderColors["HWACCESSORYID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");  //(value != 0 ? "blueBorder" : "redBorder");
@@ -1172,7 +1186,7 @@
                       @ref="doorConfig.dicRefs[UiLogic.propNames[i311]]" 
                       />
                   <datalist id="lstHwClr">
-                      @if (PrApiCalls.lstColors != null)
+                      @if (doorConfig.TRSH_HARDWARE > 0 && PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in  tmpLstColors) //PrApiCalls.lstColors)
                         {
@@ -1201,7 +1215,7 @@
                 set
                 {
                     _HwColorId = UiLogic.getColorIdByClrDes(value); //value;
-                    if (doorConfig != null)
+                    if (doorConfig != null && doorConfig.TRSH_HARDWARE > 0)
                     {
                         doorConfig.HWCOLORID = _HwColorId;
                         //doorConfig.borderColors["HWCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");

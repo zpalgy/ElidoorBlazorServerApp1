@@ -30,7 +30,7 @@ namespace BlazorServerApp1.Data
         public static string[] propNames;
         public static int[] propIndex;
         
-        public static string borderColor = string.Empty;
+        //public static string borderColor = string.Empty;
         // obsolete stuff - now we get the list of Optional and Mandatory fields from TRSH_CONF_FIELDS table !
         //public static List<string> optionalFields = new List<string>(){ "REFERENCE", "FORMDATE", "CUSTORDNAME", "FAMILYNAME",
         //                     "HANDLENAME", "VENTS", "RAFAFAONMOVINGWING",
@@ -194,7 +194,7 @@ namespace BlazorServerApp1.Data
                 string controlName = tabFields[r]["CONFIG_FIELDNAME"].ToString();
                 string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
                 string fldDes = tabFields[r]["FIELDDES"].ToString();
-                borderColor = string.Empty;
+                //borderColor = string.Empty;
 
                 if (!hideFld(doorConfig, controlThName)
                     && !controlName.StartsWith("chkb")
@@ -205,7 +205,7 @@ namespace BlazorServerApp1.Data
             }
             return false;  // if we're here no field was non-empty 
         }
-        public static bool tabPageIsFilled (string tabName, DoorConfig doorConfig)
+        public static bool tabPageIsFilled(string tabName, DoorConfig doorConfig)
         {
             //if (tabName == "movingwing")
             //{
@@ -224,14 +224,14 @@ namespace BlazorServerApp1.Data
             string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
             int fieldsNum = tabFields.Length;
-            bool isFilled = true;  
+            bool isFilled = true;
 
             if (tabName == "movingwing")
             {
                 int x = 17; //debug
             }
 
-            for (int r = 0; r< fieldsNum; r++)
+            for (int r = 0; r < fieldsNum; r++)
             {
                 string fldName = tabFields[r]["FIELDNAME"].ToString();
                 string fldDataType = tabFields[r]["FIELDDATATYPE"].ToString();
@@ -239,8 +239,8 @@ namespace BlazorServerApp1.Data
                 string controlThName = tabFields[r]["CONFIG_THNAME"].ToString();
                 string fldDes = tabFields[r]["FIELDDES"].ToString();
                 bool fldIsMandatory = (tabFields[r]["MANDATORY"].ToString() == "M");
-                borderColor = string.Empty;
-                
+                //borderColor = string.Empty;
+
                 if (fldName == "ELECTRICAPPARATUS")
                 {
                     int dbg = 18;
@@ -250,13 +250,23 @@ namespace BlazorServerApp1.Data
                     && !controlName.StartsWith("chkb")
                     //&& fldIsMandatory
                     && !doorFldIsFilled(doorConfig, fldName, fldDataType))
-                    //&& thTdFIELDNAME.ToUpper() != "REFERENCE"
-                    //&& thTdFIELDNAME.ToUpper() != "FORMDATE"
-                    //&& thTdFIELDNAME.ToUpper() != "TMPSHIPADDRESS"
-                    //&& thTdFIELDNAME.ToUpper() != "FAMILYNAME")
+                //&& thTdFIELDNAME.ToUpper() != "REFERENCE"
+                //&& thTdFIELDNAME.ToUpper() != "FORMDATE"
+                //&& thTdFIELDNAME.ToUpper() != "TMPSHIPADDRESS"
+                //&& thTdFIELDNAME.ToUpper() != "FAMILYNAME")
                 {
-                    borderColor = "redBorder";
-                    doorConfig.borderColors[fldName] = "redBorder";
+                    if (fldName == "HWACCESSORYID")
+                    {
+                        if (doorConfig.TRSH_HARDWARE != 0)    // do not change the border color of HWACCESSORYID to red
+                                                              // if TRSH_HARDWARE is empty.
+                            doorConfig.borderColors[fldName] = "redBorder";
+                    }
+                    else
+                    {
+                        //borderColor = "redBorder";
+                        doorConfig.borderColors[fldName] = "redBorder";
+                    }
+
 
                     isFilled = false;
                     //return false;
@@ -272,7 +282,7 @@ namespace BlazorServerApp1.Data
                 string fldDataType = getFldDataType(fldName);
                 if (!doorFldIsFilled(doorConfig, fldName, fldDataType))
                 {
-                    borderColor = "redBorder";
+                    //borderColor = "redBorder";
                     doorConfig.borderColors[fldName] = "redBorder";
                     isFilled = false;
                 }
@@ -291,6 +301,10 @@ namespace BlazorServerApp1.Data
             {
                 doorConfig.btnClasses[tabBtnCssName] = "buttonFilled";
                 doorConfig.btnClasses[nextTabBtnCssName] = "buttonActive";
+                // 04/11/2022 hardcode the case of staticwing filled skips hinges and jumps to accesspries . 
+                // make also hinges button acive !
+                if (tabName == "staticwing" && nextTabBtnCssName == "accessories")   
+                     doorConfig.btnClasses[getTabBtnCssName(doorConfig, "hinges")] = "buttonActive";
                 return true;
             }
             else
@@ -323,7 +337,9 @@ namespace BlazorServerApp1.Data
             string nextTab = string.Empty;
 
             if (tabName == "staticwing")
+            {
                 return "accessories";      //24/10/2022
+            }
 
             int t = Array.IndexOf(tabNames, tabName);
             if (t > -1 && t < tabNames.Length - 1)
