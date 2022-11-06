@@ -518,6 +518,8 @@ namespace BlazorServerApp1.Data
         public int HINGE4HEIGHT { get; set; }   //D-630
         [DataMember(Order = 296), Order]
         public int HINGE5HEIGHT { get; set; }   //D-640
+        [NonSerialized]
+        public int optionalHingeHeight;
         #endregion hinges
         #region handle
         [DataMember(Order = 300), Order]

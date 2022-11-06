@@ -17,6 +17,11 @@ namespace BlazorServerApp1.Pages
 			errMsg = string.Empty;
 			string prevTab = string.Empty;
 
+			if (tabName == "accessories")
+            {
+				int dbg = 17;
+            }
+
 			if (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES) && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
 			{
 				if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף")
@@ -71,6 +76,15 @@ namespace BlazorServerApp1.Pages
 					}
 				}
 				//
+				//debug 05/11/2022 after movingwing enable hinges for debugging the new hinges logic
+				 // if (tabName == "hinges")
+				 // {
+					//doorConfig.prevTabName = doorConfig.currTabName;
+					//doorConfig.currTabName = tabName;
+					//return true; //ActivePage = page;
+				 // }
+				//end debug
+
 				if (UiLogic.tabPageIsFilled(prevTab, doorConfig))
 				{
 					doorConfig.prevTabName = prevTab;

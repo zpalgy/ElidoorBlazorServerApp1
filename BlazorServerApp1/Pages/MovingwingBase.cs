@@ -119,7 +119,8 @@ namespace BlazorServerApp1.Pages
                 return 0;
             }
         }
-        protected void setHingesAndWindowsData(DoorConfig doorConfig, ref string errMsg)
+        // The following method was moved to UiLogic.cs 
+        protected void setHingesAndWindowsData_old(DoorConfig doorConfig, ref string errMsg)
         {
             try
             {
@@ -143,29 +144,50 @@ namespace BlazorServerApp1.Pages
                 doorConfig.BACKPINHEIGHT = int.Parse(rowsArray[0]["BACKPINHEIGHT"].ToString());
                 doorConfig.HINGESNUM = int.Parse(rowsArray[0]["HINGESNUM"].ToString());
                 doorConfig.HINGE1HEIGHT = int.Parse(rowsArray[0]["HINGE1HEIGHT"].ToString());
-                doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
-                if (doorConfig.HINGESNUM > 2)
+
+                // doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
+                doorConfig.HINGE2HEIGHT = (UiLogic.showHinge2(doorConfig) ? int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString()) : 0); // new 05/11/2022
+
+                // new 05/11/2022
+                doorConfig.optionalHingeHeight = 0;   
+                if (doorConfig.HINGESNUM == 2 && int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString()) > 0)
+                    doorConfig.optionalHingeHeight = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
+                else if (doorConfig.HINGESNUM == 4 && int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString()) > 0)
+                    doorConfig.optionalHingeHeight = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
+                //
+                doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+
+                //doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
+                doorConfig.HINGE4HEIGHT = (UiLogic.showHinge4(doorConfig) ? int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString()) : 0); // new 05/11/2022
+
+                doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+                //
+                // old logic before 05/11/2022 
+                if (false)
                 {
-                    doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
-                    if (doorConfig.HINGESNUM > 3)
+                    if (doorConfig.HINGESNUM > 2)
                     {
-                        doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
-                        if (doorConfig.HINGESNUM == 5)
-                            doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+                        doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+                        if (doorConfig.HINGESNUM > 3)
+                        {
+                            doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
+                            if (doorConfig.HINGESNUM == 5)
+                                doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+                            else
+                                doorConfig.HINGE5HEIGHT = 0;
+                        }
                         else
+                        {
+                            doorConfig.HINGE4HEIGHT = 0;
                             doorConfig.HINGE5HEIGHT = 0;
+                        }
                     }
                     else
                     {
                         doorConfig.HINGE4HEIGHT = 0;
                         doorConfig.HINGE5HEIGHT = 0;
+                        doorConfig.HINGE5HEIGHT = 0;
                     }
-                }
-                else
-                {
-                    doorConfig.HINGE4HEIGHT = 0;
-                    doorConfig.HINGE5HEIGHT = 0;
-                    doorConfig.HINGE5HEIGHT = 0;
                 }
                 //check if txtWindowHeight is visible before calculating WindowHeight and windowWidth
                 // if one of them is visible and the other NOT - BUG in Meaged definition.

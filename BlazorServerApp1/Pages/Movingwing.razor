@@ -400,7 +400,7 @@
                             if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT)
                             {
                                 errMsg2 = string.Empty;
-                                setHingesAndWindowsData(doorConfig, ref errMsg2);
+                                UiLogic.setHingesAndWindowsData(doorConfig, ref errMsg2);
                                 if (doorConfig.WINDOWHEIGHT == 0 && !string.IsNullOrEmpty(errMsg2))
                                 {
                                     //Js.InvokeVoidAsync("alert", errMsg2);

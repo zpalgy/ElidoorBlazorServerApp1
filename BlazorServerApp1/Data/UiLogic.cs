@@ -228,7 +228,7 @@ namespace BlazorServerApp1.Data
 
             if (tabName == "movingwing")
             {
-                int x = 17; //debug
+                int dbg = 17; //debug
             }
 
             for (int r = 0; r < fieldsNum; r++)
@@ -271,6 +271,11 @@ namespace BlazorServerApp1.Data
                     isFilled = false;
                     //return false;
                 }
+                else
+                {
+                    doorConfig.borderColors[fldName] = "blueBorder";  //new 05/11/2022
+                }
+
             }
             return isFilled;
         }
@@ -523,10 +528,21 @@ namespace BlazorServerApp1.Data
                 // special logic for Hinges 
                 if (fldName == "HINGE5HEIGHT" && doorConfig.HINGESNUM < 5)
                     return true;
-                else if (fldName == "HINGE4HEIGHT" && doorConfig.HINGESNUM < 4)
-                    return true;
+
+                else if (fldName == "HINGE4HEIGHT")  //new UiLogic for the hidden hinge hight fields  HINGE4HEIGHT, HINGE2HEIGHT
+                {
+                    if (doorConfig.HINGESNUM < 4)
+                        return true;
+                    else if (doorConfig.HINGESNUM == 4 && doorConfig.HINGE4HEIGHT == 0 && HeightRange(doorConfig.DOORHEIGHT) == 4)
+                        return true;
+                }
                 else if (fldName == "HINGE3HEIGHT" && doorConfig.HINGESNUM < 3)
                     return true;
+
+                else if (fldName == "HINGE2HEIGHT"
+                                         && doorConfig.HINGESNUM == 2 && doorConfig.HINGE2HEIGHT == 0 && HeightRange(doorConfig.DOORHEIGHT) == 2)
+                    return true;
+
                 else if (fldName == "DOORCOLORID" && doorConfig.COLORSNUM != "1")
                     return true;
                 else if (fldName == "EXTCOLORID" && doorConfig.COLORSNUM != "2")
@@ -745,29 +761,51 @@ namespace BlazorServerApp1.Data
                 doorConfig.BACKPINHEIGHT = int.Parse(rowsArray[0]["BACKPINHEIGHT"].ToString());
                 doorConfig.HINGESNUM = int.Parse(rowsArray[0]["HINGESNUM"].ToString());
                 doorConfig.HINGE1HEIGHT = int.Parse(rowsArray[0]["HINGE1HEIGHT"].ToString());
-                doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
-                if (doorConfig.HINGESNUM > 2)
+
+                // doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
+                doorConfig.HINGE2HEIGHT = (UiLogic.showHinge2(doorConfig) ? int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString()) : 0); // new 05/11/2022
+
+                // new 05/11/2022
+                doorConfig.optionalHingeHeight = 0;
+                if (doorConfig.HINGESNUM == 2 && int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString()) > 0)
+                    doorConfig.optionalHingeHeight = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
+                else if (doorConfig.HINGESNUM == 4 && int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString()) > 0)
+                    doorConfig.optionalHingeHeight = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
+
+                // new 05/11/2022
+                doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+
+                //doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
+                doorConfig.HINGE4HEIGHT = (UiLogic.showHinge4(doorConfig) ? int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString()) : 0); // new 05/11/2022
+
+                doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+                //
+                // old logic before 05/11/2022 
+                if (false)
                 {
-                    doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
-                    if (doorConfig.HINGESNUM > 3)
+                    if (doorConfig.HINGESNUM > 2)
                     {
-                        doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
-                        if (doorConfig.HINGESNUM == 5)
-                            doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+                        doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+                        if (doorConfig.HINGESNUM > 3)
+                        {
+                            doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
+                            if (doorConfig.HINGESNUM == 5)
+                                doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+                            else
+                                doorConfig.HINGE5HEIGHT = 0;
+                        }
                         else
+                        {
+                            doorConfig.HINGE4HEIGHT = 0;
                             doorConfig.HINGE5HEIGHT = 0;
+                        }
                     }
                     else
                     {
                         doorConfig.HINGE4HEIGHT = 0;
                         doorConfig.HINGE5HEIGHT = 0;
+                        doorConfig.HINGE5HEIGHT = 0;
                     }
-                }
-                else
-                {
-                    doorConfig.HINGE4HEIGHT = 0;
-                    doorConfig.HINGE5HEIGHT = 0;
-                    doorConfig.HINGE5HEIGHT = 0;
                 }
                 //check if txtWindowHeight is visible before calculating WindowHeight and windowWidth
                 // if one of them is visible and the other NOT - BUG in Meaged definition.
@@ -786,6 +824,86 @@ namespace BlazorServerApp1.Data
                 return;
             }
         }
+        //
+        public static void setHingesHeights(DoorConfig doorConfig, ref string errMsg)
+        {
+            try
+            {
+                string query = string.Format("TRSH_DOOR_HWCATCODE = {0} AND DOORHEIGHTMIN <= {1} AND {1} <= DOORHEIGHTMAX", doorConfig.TRSH_DOOR_HWCATCODE, doorConfig.DOORHEIGHT);
+                DataRow[] rowsArray = PrApiCalls.dtLock_Hinge_Dril_Heights.Select(query);
+                if (rowsArray.Length == 0)
+                {
+                    errMsg = string.Format("לא נמצאה שורת 'מידות צירים וניקוב (תואם אלידור)' מתאימה לקטגורית הפרזול {0} ולגובה הדלת {1} - אנא בדוק את הטבלה הזו",
+                                    doorConfig.TRSH_DOOR_HWCATCODE, doorConfig.DOORHEIGHT);
+                    //UiLogic.displayErrMsg(lblMsgL1, errMsg);
+                    return;
+                }
+                doorConfig.HINGE1HEIGHT = int.Parse(rowsArray[0]["HINGE1HEIGHT"].ToString());
+
+                doorConfig.HINGE2HEIGHT = (showHinge2(doorConfig) ? int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString()) : 0);
+                
+                doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+
+                doorConfig.HINGE4HEIGHT = (showHinge4(doorConfig) ? int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString()) : 0);
+ 
+                doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+            }
+            catch (Exception ex)
+            {
+                string errMsg2 = string.Format("שגיאה : אנא פנה למנהל המערכת : {0} , {1}    י", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg2);
+                //UiLogic.displayErrMsg(lblMsgL1, errMsg2);
+                return;
+            }
+        }
+        public static int HeightRange(int DOORHEIGHT)
+        {
+            int[] hRanges = new int[] { 1050, 1450, 1890, 2431 };
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (DOORHEIGHT < hRanges[i])
+                {
+                    return i;
+                }
+            }
+            if (DOORHEIGHT > hRanges[3])
+                return 4;
+            return 0;  // error !
+        }
+        public static bool showHinge2(DoorConfig doorConfig)
+        {
+            switch (HeightRange(doorConfig.DOORHEIGHT))
+            {
+                case 2:
+                if (doorConfig.HINGESNUM == 2)
+                    return false;
+                else if (doorConfig.HINGESNUM == 3)
+                    return true;
+                    break;
+                default:
+                    return true;
+            }
+            return true;   // default !
+        }
+        public static bool showHinge4(DoorConfig doorConfig)
+        {
+            switch (HeightRange(doorConfig.DOORHEIGHT))
+            {
+                case 4:
+                    if (doorConfig.HINGESNUM == 4)
+                        return false;
+                    else if (doorConfig.HINGESNUM == 5)
+                        return true;
+                    break;
+                    
+                default:
+                    return true;
+            }
+            return true;   // default !
+        }
+
+        //
         public static int calcWindowHeight(DoorConfig doorConfig, ref string errMsg)
         {
             try
@@ -823,6 +941,7 @@ namespace BlazorServerApp1.Data
             doorConfig.PARTNAME = string.Empty;
             doorConfig.COMMENTS = string.Empty;
             doorConfig.handleName1 = string.Empty;
+            doorConfig.optionalHingeHeight = 0;
 
             for (int r=0;r<PrApiCalls.dtConfFields.Rows.Count; r++)
             {
