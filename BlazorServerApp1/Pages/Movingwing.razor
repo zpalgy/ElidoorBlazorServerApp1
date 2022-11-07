@@ -1103,38 +1103,19 @@
                         onkeypress="@KeyPressHandler" 
                         @ref="doorConfig.dicRefs[UiLogic.propNames[i333]]" 
                   />
-                  <datalist id="lstHwAcc">
-                    
-                        @if (doorConfig.TRSH_HARDWARE > 0 &&  PrApiCalls.lstHwAccessories != null)
-                        {
-                            TRSH_HARDWARE_Class hw = PrApiCalls.getHardware1(doorConfig.TRSH_HARDWARE);
+                <datalist id="lstHwAcc">
 
-                            @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
-                            {
-                                // show all HwAccessories with same COLORED value as the HW.
-                                //  UNION HwAccessory with ID == 0 || 99999 with any value of COLORED 
-                                if (hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == UiLogic.IdOfNone)
+                        @* @if (doorConfig.TRSH_HARDWARE > 0 &&  PrApiCalls.lstHwAccessories != null) *@
+                        @{ 
+                             string errMsg1 = string.Empty;
+                             if (doorConfig.TRSH_HARDWARE > 0)
+                             {                        
+                                 List<HW_ACC_REL_Class> lstHwAccRels1 = PrApiCalls.getHwAccRels1(doorConfig.TRSH_HARDWARE, ref errMsg1);
+
+                                @foreach (HW_ACC_REL_Class hwa in lstHwAccRels1)
                                 {
-                                    @* <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option> *@
-                                <option value="@hwa.PARTDES">@hwa.PARTDES</option>
+                                   <option value="@hwa.ACCPARTDES">@hwa.ACCPARTDES</option>
                                 }
-                                else if (hwa.COLORED == hw.COLORED && hwa.NIKEL == hw.NIKEL && hwa.BRONZE == hw.BRONZE)
-                                {
-                                    <option value="@hwa.PARTDES">@hwa.PARTDES</option>
-                                }
-                                //else if (hw.COLORED == "Y" && hwa.COLORED == hw.COLORED)
-                                //{
-                                //    <option value="@hwa.PARTDES">@hwa.PARTDES</option>
-                                //}
-                                //else if (hw.NIKEL == "Y" && hwa.NIKEL == hw.NIKEL)
-                                //{
-                                //    <option value="@hwa.PARTDES">@hwa.PARTDES</option>
-                                //}
-                                //else if (hw.BRONZE == "Y" && hwa.BRONZE == hw.BRONZE)
-                                //{
-                                //    <option value="@hwa.PARTDES">@hwa.PARTDES</option>
-                                //}
-                                
                             }
                         }
                     

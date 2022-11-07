@@ -269,6 +269,26 @@ namespace BlazorServerApp1.Data
         public List<HWACCESSORY_Class> value { get; set; }
     }
     [DataContract]
+    public class HW_ACC_REL_Class
+    {
+        [DataMember(Order = 1)]
+        public int TRSH_HW_ACC_ID { get; set; }
+        [DataMember(Order = 2)]
+        public int TRSH_HARDWARE { get; set; }
+        [DataMember(Order = 3)]
+        public string HWPARTDES { get; set; }
+        [DataMember(Order = 4)]
+        public int HWACCESSORYID { get; set; }
+        [DataMember(Order = 5)]
+        public string ACCPARTDES { get; set; }
+    }
+
+    public class ValuesHW_ACC_REL_Class
+    {
+        public List<HW_ACC_REL_Class> value { get; set; }
+    }
+
+    [DataContract]
     public class DRIL4HW_Class
     {
         [DataMember(Order = 1)]

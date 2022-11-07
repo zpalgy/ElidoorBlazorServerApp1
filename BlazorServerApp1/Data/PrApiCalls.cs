@@ -57,6 +57,7 @@ namespace BlazorServerApp1.Data
         public static List<TRSH_HARDWARE_Class> lstHardwares = new List<TRSH_HARDWARE_Class>();
         public static DataTable dtHardwares = new DataTable();
         public static List<HWACCESSORY_Class> lstHwAccessories = new List<HWACCESSORY_Class>();
+        public static List<HW_ACC_REL_Class> lstHwAccRels = new List<HW_ACC_REL_Class>();
         public static DataTable dtHwAccessories = new DataTable();
         public static List<DRIL4HW_Class> lstDril4Hw = new List<DRIL4HW_Class>();
         public static DataTable dtDril4Hws = new DataTable();
@@ -952,6 +953,7 @@ namespace BlazorServerApp1.Data
                 lstHardwares = getHardwares(ref errMsg);
                 dtHardwares = lstHardwares.ToDataTable<TRSH_HARDWARE_Class>();
                 lstHwAccessories = getHwAccessories(ref errMsg);
+                lstHwAccRels = getHwAccRels(ref errMsg);
                 lstDril4Hw = getDril4Hws(ref errMsg);
                 dtDril4Hws = lstDril4Hw.ToDataTable<DRIL4HW_Class>();
                 lstCylinders = getCylinders(ref errMsg);
@@ -1263,6 +1265,81 @@ namespace BlazorServerApp1.Data
                     errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
                     return null;
                 }
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+        public static List<HW_ACC_REL_Class> getHwAccRels( ref string errMsg)
+        {
+            try
+            {
+                RestClient restClient = new RestClient();
+                initRestClient(restClient);
+                RestRequest request = new RestRequest();
+                string fields = "TRSH_HW_ACC_ID,TRSH_HARDWARE,HWPARTDES,HWACCESSORYID,ACCPARTDES";
+                request.Resource = string.Format("TRSH_HW_ACC_REL?$select={0}", fields);
+                IRestResponse response = restClient.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Include,
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    };
+                    ValuesHW_ACC_REL_Class val = JsonConvert.DeserializeObject<ValuesHW_ACC_REL_Class>(response.Content);
+                    List<HW_ACC_REL_Class> val1 = new List<HW_ACC_REL_Class>();  //val.value;
+
+                    foreach (HW_ACC_REL_Class hwAcc in val.value)
+                    {
+                        val1.Add(hwAcc);
+                    }
+                    return val1;
+                }
+                else
+                {
+                    if (response.StatusDescription.ToLower() == "not found")
+                    {
+                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes or extra spaces somewhere !";
+                        myLogger.log.Error(errMsg);
+                        return null;
+                    }
+                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+                    return null;
+                }
+            
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+
+        public static List<HW_ACC_REL_Class> getHwAccRels1(int TRSH_HARDWARE, ref string errMsg)
+        {
+            try
+            {
+                if (TRSH_HARDWARE == 0)
+                    return null;
+                List<HW_ACC_REL_Class> res = new List<HW_ACC_REL_Class>();
+                HW_ACC_REL_Class emptyHwa = new HW_ACC_REL_Class();
+                emptyHwa.TRSH_HARDWARE = 0;
+                emptyHwa.TRSH_HW_ACC_ID = 0;
+                emptyHwa.HWPARTDES = String.Empty;
+                res.Add(emptyHwa);
+
+                if (lstHwAccRels != null)
+                {
+                    foreach (HW_ACC_REL_Class hwAcc in lstHwAccRels)
+                    {
+                        if (hwAcc.TRSH_HARDWARE == TRSH_HARDWARE)
+                            res.Add(hwAcc);
+                    }
+                }
+                return res;
             }
             catch (Exception ex)
             {
