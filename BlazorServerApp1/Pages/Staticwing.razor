@@ -894,8 +894,19 @@
 					_Cylinder4HalfWing = value;
 					if (doorConfig != null)
 					{
-						doorConfig.TRSH_SWING_CYLINDER = _Cylinder4HalfWing;
 						doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (value != 0  ? "blueBorder" : "redBorder");
+
+						if (doorConfig.TRSH_SWING_CYLINDER != 0 && _Cylinder4HalfWing != doorConfig.TRSH_SWING_CYLINDER)
+						{
+							doorConfig.HW4EXTRAWING = 0;
+							doorConfig.SWING_HWACCESSORYID = 0;
+							doorConfig.SWING_HWCOLORID = 0;
+							doorConfig.SWING_DRIL4HW = 0;
+							doorConfig.TRSH_SWING_CYLINDER = _Cylinder4HalfWing;
+							//return;
+						}
+						
+						doorConfig.TRSH_SWING_CYLINDER = _Cylinder4HalfWing;
 						if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
 						{
 
@@ -1166,7 +1177,21 @@
 							@ref="doorConfig.dicRefs[UiLogic.propNames[i617]]" 
 				/>
 				<datalist id="lstHwAcc2">
-						@{
+				        @{
+							 string errMsg1 = string.Empty;
+                             if (doorConfig.HW4EXTRAWING > 0)
+                             {                        
+                                 List<HW_ACC_REL_Class> lstHwAccRels1 = PrApiCalls.getHwAccRels1(doorConfig.HW4EXTRAWING, ref errMsg1);
+
+                                @foreach (HW_ACC_REL_Class hwa in lstHwAccRels1)
+                                {
+                                   <option value="@hwa.ACCPARTDES">@hwa.ACCPARTDES</option>
+                                }
+                            }
+						}
+
+						@*  --- to delete
+						 @{
                         if (PrApiCalls.lstHwAccessories != null)
                         {
                             string HwColored = PrApiCalls.getHardware1(doorConfig.HW4EXTRAWING).COLORED;
@@ -1175,12 +1200,13 @@
                                 //if (hwa.COLORED == HwColored || hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == UiLogic.IdOfNone)
 								if (hwa.HWACCESSORYID == doorConfig.HWACCESSORYID || hwa.HWACCESSORYID == UiLogic.IdOfNone || string.IsNullOrEmpty(hwa.PARTDES))
                                 {
-								   		@* <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option> *@
+								   		<option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option> 
 								   		<option value="@hwa.PARTDES">@hwa.PARTDES</option>
                                 }
                             }
                         }
 						}
+						    -- end of to delete  *@
 						</datalist>
                     }
 					 @code
