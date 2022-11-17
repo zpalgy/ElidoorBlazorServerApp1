@@ -1219,6 +1219,36 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        public static List<TRSH_HARDWARE_Class>getHwsByHwCatCodeOpenSide(DoorConfig doorConfig, ref string errMsg)
+        {
+            try
+            {
+                List<TRSH_HARDWARE_Class> lstRes = new List<TRSH_HARDWARE_Class>();
+                TRSH_HARDWARE_Class emptyHw = new TRSH_HARDWARE_Class();
+                emptyHw.PARTNAME = string.Empty;
+                emptyHw.PARTDES = string.Empty;
+                lstRes.Add(emptyHw);
+
+                foreach (TRSH_HARDWARE_Class hw in lstHardwares)
+                {
+                    if (!string.IsNullOrEmpty(doorConfig.OPENSIDE) &&  hw.OPENSIDE == doorConfig.OPENSIDE)
+                    {
+                        int dbg = 17;
+                    }
+                    if (hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE 
+                         && (hw.OPENSIDE == doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
+                        lstRes.Add(hw);
+                }
+                return lstRes;
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+
+        }
+
         public static List<HWACCESSORY_Class> getHwAccessories(ref string errMsg)
         {
             try
@@ -1891,8 +1921,52 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
-            //getLocks" 
-            public static List<TRSH_LOCK_Class> getLocks(ref string errMsg)
+
+        public static List<CYLINDER_Class> getHWCyls1(int TRSH_HARDWARE, string OPENSIDE, string OPENMODE, ref string errMsg)
+        {
+            try
+            {
+                if (TRSH_HARDWARE == 0)
+                    return null;
+
+                List<CYLINDER_Class> res = new List<CYLINDER_Class>();
+                CYLINDER_Class emptyCyl = new CYLINDER_Class();
+                emptyCyl.TRSH_CYLINDER = 0;
+                emptyCyl.PARTDES = String.Empty;
+                emptyCyl.PARTNAME = String.Empty;
+                res.Add(emptyCyl);
+
+                CYLINDER_Class noCyl = new CYLINDER_Class();
+                noCyl.TRSH_CYLINDER = UiLogic.IdOfNone;
+                noCyl.PARTDES = "ללא";
+                res.Add(noCyl);
+
+                if (lstCYLHWs != null)
+                {
+                    foreach (CYLHW_Class chw in lstCYLHWs)
+                    {
+
+                        if (chw.TRSH_HARDWARE == TRSH_HARDWARE && chw.OPENSIDE == OPENSIDE && chw.WING_OPENMODE == OPENMODE)
+                        {
+                            CYLINDER_Class Cyl = new CYLINDER_Class();
+                            Cyl.TRSH_CYLINDER = chw.TRSH_CYLINDER;
+                            Cyl.PARTDES = chw.PARTDESCYL;
+                            res.Add(Cyl);
+                        }
+                    }
+                }
+                return res;
+            }
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
+
+
+        //getLocks" 
+        public static List<TRSH_LOCK_Class> getLocks(ref string errMsg)
         {
             try
             {
