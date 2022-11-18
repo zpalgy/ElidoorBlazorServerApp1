@@ -942,6 +942,7 @@ namespace BlazorServerApp1.Data
             doorConfig.COMMENTS = string.Empty;
             doorConfig.handleName1 = string.Empty;
             doorConfig.optionalHingeHeight = 0;
+            doorConfig.showDecor = false;
 
             for (int r=0;r<PrApiCalls.dtConfFields.Rows.Count; r++)
             {

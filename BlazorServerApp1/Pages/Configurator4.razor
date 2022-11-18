@@ -326,11 +326,11 @@
             {
                 int dbg2 = 18;
             }
-    	    }
+        }
         }
         async Task showMoving_Static_Wing()
         {
-             UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
             if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
             {
                 UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
@@ -338,8 +338,8 @@
             }
             else
             {
-                    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-                    showStaticwing();
+                        UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                        showStaticwing();
             }
         }
 
@@ -1584,7 +1584,7 @@
 
                                     @code
                                     {
-        protected void applyDecorFormat2Btns()
+                                        protected void applyDecorFormat2Btns()
         {
                                         switch (doorConfig.DECORFORMAT)
                                         {
@@ -1594,14 +1594,17 @@
                                             case "חוץ":
                                                 hideBtnExtDecor = false;  //show
                                                 hideBtnIntDecor = true;
+                                                doorConfig.showDecor = true;
                                                 break;
                                             case "פנים":
                                                 hideBtnExtDecor = true;
                                                 hideBtnIntDecor = false;  //show
+                                                 doorConfig.showDecor = true;
                                                 break;
                                             case "דו צדדי":
                                                 hideBtnExtDecor = false;
                                                 hideBtnIntDecor = false;  //show
+                                                 doorConfig.showDecor = true;
                                                 break;
                                         }
         }

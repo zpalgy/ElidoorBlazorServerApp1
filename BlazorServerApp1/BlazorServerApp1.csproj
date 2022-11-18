@@ -16,6 +16,7 @@
   <ItemGroup>
     <Content Remove="Data\Web.config" />
     <Content Remove="Pages\Configurator3.razor" />
+    <Content Remove="Pages\Mwdecor2.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +35,10 @@
     <Reference Include="System.Web.Extensions">
       <HintPath>..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Web.Extensions.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Mwdecor2.razor" />
   </ItemGroup>
 
 </Project>

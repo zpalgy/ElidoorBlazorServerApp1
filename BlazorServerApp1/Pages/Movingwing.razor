@@ -71,7 +71,6 @@
     List<string> lstColorsNum1 = new List<string>();
     List<TRSH_COLOR_Class> lstColors1 = new List<TRSH_COLOR_Class>();
 
-
     async void IDisposable.Dispose()
     { }
 
@@ -250,6 +249,23 @@
     }
   }
 <br />
+
+  <table id="tblMovingwing1" >  
+    <tr id="trMovingwing1" >
+      <td id="tdMovingwing1">
+         @*  movingwing existing stuff  *@
+      </td>  @* end of tdMovingwing1 *@
+    </tr>   @* end of trMovingwing1 *@
+    <tr id="trmovingwingDecor1">
+      <td>
+          @* new movingWing decor stuff in a new razor file  *@
+      </td>
+      </tr>
+   </table>   @* end of tblMovingwing1 *@
+
+<table id="tblMovingwing" >  
+    <tr id="trMovingwing" >
+      <td id="tdMovingwing">
 <table>
     <tr>
         <td>
@@ -1828,6 +1844,26 @@
     </tr>
 </table>
 <!-- end table MovingWingL3 -->
+
+ </td>  @* end of tdMovingwing *@
+    </tr>   @* end of trMovingwing *@
+    @if (doorConfig.showDecor)
+    {
+        doorConfig.divClasses["dynCompStyle"] = "divActive";
+    <tr id="trmovingwingDecor">
+      <td>
+          @* new movingWing decor stuff in a new razor file  *@
+         @*  <MwDecor doorConfig="doorConfig" disableLogo="disableLogo" config4="config4">  *@
+
+         <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]" > 
+            <Mwdecor doorConfig="@doorConfig" config4="@config4" />
+          </div>
+        
+      </td>
+      </tr>  @* end of trmovingwingDecor *@
+    }
+   </table>   @* end of tblMovingwing *@
+   
 @if (openMsgBox)
 {
     <MsgBox Caption="@msgCaption"

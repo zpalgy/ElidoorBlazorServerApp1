@@ -592,6 +592,8 @@ namespace BlazorServerApp1.Data
         public Dictionary<string, bool> hideBtns; // { get; set; }  // not used yet 
         [NonSerialized]
         public bool staticwingChanged = false;
+        [NonSerialized]
+        public bool showDecor = false;
         public void initBorderColors()
         {
             Type objType = this.GetType();

@@ -1,0 +1,55 @@
+﻿@using System.Data;
+@using BlazorServerApp1.Data
+
+@code
+{
+    [Parameter]
+    public DoorConfig doorConfig { get; set; }
+
+    [Parameter]
+    public Configurator4 config4 { get; set; }
+
+    protected bool openMsgBox = false;
+    private bool openYesNo = false;
+    string errMsg2 = string.Empty;
+    string errMsg3 = "xxxxxxxxxxxxxxxxxx";
+    private string msgCaption = "שגיאה";
+    string msgClass = "modal-body centeredMsg";
+    private string MsgTitleCssClass = string.Empty;
+    string msgHeaderClass = "modal-header";
+    string msgBorder1Style = string.Empty;
+
+    private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg" 
+    string YNissue = string.Empty;
+    private bool ansYes = false;
+
+    DataTable dtTabFlds = new DataTable();
+    string NoColor = "מגולוון";
+
+    protected override async Task OnInitializedAsync()
+    {
+        string errMsg = string.Empty;
+        doorConfig.currTabName = "movingwing";
+        dtTabFlds = UiLogic.getTabFields("mwdecor", doorConfig, ref errMsg);
+        // config4.RefreshState();  //just for a test - works !
+    }
+
+}
+
+ <br/>
+    <table>
+    <tr>
+        <td>
+            <div class="tabPageTitle">
+                <h1 class="rightLeftMargin">עיצוב</h1>
+            </div>
+        </td>
+    </tr>
+</table>
+<table id="tblDecor1">
+    <tr>
+
+    </tr>
+</table>
+
+
