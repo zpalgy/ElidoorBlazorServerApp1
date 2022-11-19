@@ -276,6 +276,7 @@
         doorConfig.divClasses["divHeader"] =
         doorConfig.divClasses["divProducts"] =
         doorConfig.divClasses["divDoorTitle"] = "divNotActive";
+        @* doorConfig.divClasses["dynCompStyle"] = (doorConfig.showDecor ? "noBorder" : "divActive"); *@ 
         doorConfig.divClasses["dynCompStyle"] = "divActive";
         pageParams["disableLogo"] = disableLogo;
         UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
@@ -1810,6 +1811,12 @@
                         {
                             @*    was class="divNotActive" *@
                             dbgstr = doorConfig.divClasses["dynCompStyle"];
+                            if (dyncompType == typeof(Movingwing))
+                                doorConfig.divClasses["dynCompStyle"] = "noBorder";     // hide external border for movingwing 
+                                                                                        //   TODO apply that also to staticwing and Halfwing 
+                                //doorConfig.divClasses["dynCompStyle"] = (doorConfig.showDecor ? "noBorder" : "divActive");
+
+
                             <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]" >
                                     <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
                                          @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@

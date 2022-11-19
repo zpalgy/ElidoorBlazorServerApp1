@@ -98,6 +98,8 @@
 
         //lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg2);
 
+        //doorConfig.divClasses["dynCompStyle"] = "divActive";
+
         if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))  // i.e. we just came from a prev tab
         {
             setHiddens(doorConfig);
@@ -123,8 +125,6 @@
             doorConfig.TURBOAPPARATUS = (doorConfig.useTurbo ? "Y" : string.Empty);   // new 31/07/2022 
                                                                                       //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022 
             doorConfig.LOCKNAME = (doorConfig.useLOGO ? PrApiCalls.defLockwithLogo : PrApiCalls.defLockwithOutLogo);
-
-
         }
         else    // it is filled - we came back form a newer tab - all fields should be disabled !
         {
@@ -138,17 +138,17 @@
 
             // 17/11/2022 
             //lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
-            
+
             lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg);
             lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
-               
+
 
             if (string.IsNullOrEmpty(doorConfig.HANDLENAME) && doorConfig.handleName1 == UiLogic.NameOfNone)
             {
-                 doorConfig.HANDLENAME = UiLogic.NameOfNone;
+                doorConfig.HANDLENAME = UiLogic.NameOfNone;
             }
             if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
-					config4.RefreshState();
+                config4.RefreshState();
         }
         //Js.InvokeVoidAsync("SayHelloJS");
         //NoColor = (doorConfig.TRSH_MODELNAME == "MLI" ? "ללא" : "מגולוון") ;
@@ -166,6 +166,8 @@
         //setHiddens(doorConfig);
         doorConfig.borderColors["CATDOOR"] = (doorConfig.disabledFlds["CATDOOR"] ? "blackBorder" : "blueBorder");
 
+        // set the style of the outLine of Movingwing and Mwdecor divs
+        doorConfig.divClasses["movingwing"] = (doorConfig.disabledFlds["DOORWIDTH"] ? "divNotActive" : "divActive");
     }
     void setHiddens(DoorConfig doorConfig)
     {
@@ -250,7 +252,8 @@
   }
 <br />
 
-  <table id="tblMovingwing1" >  
+ @* scheme of the new Movingwing.razor component 18/11/2022  *@
+<table id="tblMovingwing1" style="display:none" >  
     <tr id="trMovingwing1" >
       <td id="tdMovingwing1">
          @*  movingwing existing stuff  *@
@@ -266,6 +269,8 @@
 <table id="tblMovingwing" >  
     <tr id="trMovingwing" >
       <td id="tdMovingwing">
+          @* main part of Movingwing.razor *@   
+        <div dir="rtl" class="@doorConfig.divClasses["movingwing"]" > 
 <table>
     <tr>
         <td>
@@ -1844,18 +1849,19 @@
     </tr>
 </table>
 <!-- end table MovingWingL3 -->
-
+  </div>  @* end of main part of Movingwing.razor *@
  </td>  @* end of tdMovingwing *@
     </tr>   @* end of trMovingwing *@
+
     @if (doorConfig.showDecor)
     {
-        doorConfig.divClasses["dynCompStyle"] = "divActive";
+        //doorConfig.divClasses["mwdecor"] = "divActive";
     <tr id="trmovingwingDecor">
       <td>
           @* new movingWing decor stuff in a new razor file  *@
          @*  <MwDecor doorConfig="doorConfig" disableLogo="disableLogo" config4="config4">  *@
 
-         <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]" > 
+         <div dir="rtl" class="@doorConfig.divClasses["movingwing"]" > 
             <Mwdecor doorConfig="@doorConfig" config4="@config4" />
           </div>
         
