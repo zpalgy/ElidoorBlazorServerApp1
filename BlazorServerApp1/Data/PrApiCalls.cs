@@ -1178,7 +1178,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,OPENSIDE,DRIL4HW,DRIL4HWDES,COLORED,NIKEL,BRONZE,PARTNAME2,OPPOSITESIDE_PART";
+                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,OPENSIDE,DRIL4HW,DRIL4HWDES,COLORED,NIKEL,BRONZE,FORHALFCYL,PARTNAME2,OPPOSITESIDE_PART";
                 request.Resource = string.Format("TRSH_HARDWARE?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1219,6 +1219,7 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+        // Note: we get only Hardwares with FORHALFCYL != "Y" , because in movingwing there is no Half Cylinder !
         public static List<TRSH_HARDWARE_Class>getHwsByHwCatCodeOpenSide(DoorConfig doorConfig, ref string errMsg)
         {
             try
@@ -1231,16 +1232,19 @@ namespace BlazorServerApp1.Data
 
                 foreach (TRSH_HARDWARE_Class hw in lstHardwares)
                 {
-                    if (!string.IsNullOrEmpty(doorConfig.OPENSIDE) &&  hw.OPENSIDE == doorConfig.OPENSIDE)
+                    if (hw.FORHALFCYL != "Y")
                     {
-                        int dbg = 17;
+                        if (!string.IsNullOrEmpty(doorConfig.OPENSIDE) && hw.OPENSIDE == doorConfig.OPENSIDE)
+                        {
+                            int dbg = 17;
+                        }
+                        if (doorConfig.OPENMODE == "פנימה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
+                             && (hw.OPENSIDE == doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
+                            lstRes.Add(hw);
+                        else if (doorConfig.OPENMODE == "החוצה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
+                            && (hw.OPENSIDE != doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
+                            lstRes.Add(hw);
                     }
-                    if (doorConfig.OPENMODE == "פנימה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE  
-                         && (hw.OPENSIDE == doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
-                        lstRes.Add(hw);
-                    else if (doorConfig.OPENMODE == "החוצה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
-                        && (hw.OPENSIDE != doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
-                        lstRes.Add(hw);
                 }
                 return lstRes;
             }
@@ -1362,7 +1366,16 @@ namespace BlazorServerApp1.Data
                 emptyHwa.TRSH_HARDWARE = 0;
                 emptyHwa.TRSH_HW_ACC_ID = 0;
                 emptyHwa.HWPARTDES = String.Empty;
+                emptyHwa.ACCPARTDES = String.Empty;
                 res.Add(emptyHwa);
+
+                HW_ACC_REL_Class noHwa = new HW_ACC_REL_Class();
+                noHwa.TRSH_HARDWARE = 0;
+                noHwa.TRSH_HW_ACC_ID = 0;
+                noHwa.HWPARTDES = String.Empty;
+                noHwa.HWACCESSORYID = UiLogic.IdOfNone;
+                noHwa.ACCPARTDES = "ללא";
+                res.Add(noHwa);
 
                 if (lstHwAccRels != null)
                 {

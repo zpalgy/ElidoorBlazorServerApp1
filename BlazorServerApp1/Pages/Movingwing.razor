@@ -1146,14 +1146,17 @@
         
         <td id="dlstHWACCESSORYID" >
              @{  int i333 = Array.IndexOf(UiLogic.propNames, "HWACCESSORYID");
-             <input list="lstHwAcc"  name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]" autocomplete="off"
+             @* <input list="lstHwAcc"  name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]" autocomplete="off" *@
+                <select name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]"
                         disabled="@doorConfig.disabledFlds["HWACCESSORYID"]"
                         @onfocus="@( () => UiLogic.HasFocus("HWACCESSORYID", doorConfig) )" 
                         @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                         onkeypress="@KeyPressHandler" 
                         @ref="doorConfig.dicRefs[UiLogic.propNames[i333]]" 
-                  />
+                        >
+               @*   /> 
                 <datalist id="lstHwAcc">
+               *@
 
                         @* @if (doorConfig.TRSH_HARDWARE > 0 &&  PrApiCalls.lstHwAccessories != null) *@
                         @{ 
@@ -1168,8 +1171,8 @@
                                 }
                             }
                         }
-                    
-                    </datalist>
+                    </select>
+                   @* </datalist>  *@
                     }
                     @code
                     {

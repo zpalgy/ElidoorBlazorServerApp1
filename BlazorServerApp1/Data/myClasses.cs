@@ -236,9 +236,11 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 10)]
         public string BRONZE { get; set; }   // boolean Y | '' 
         [DataMember(Order = 11)]
+        public string FORHALFCYL { get; set; }   // boolean Y | '' 
+        [DataMember(Order = 12)]
         public string PARTNAME2 { get; set; }   // dual part right -> left, or left -> right of point to itself.
 
-        [DataMember(Order = 12)]
+        [DataMember(Order = 13)]
         public int OPPOSITESIDE_PART { get; set; }    // PART.PART of the opposite Hardware
     }
     public class ValuesTRSH_HARDWARE_Class

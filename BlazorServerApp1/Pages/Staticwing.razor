@@ -291,6 +291,11 @@
 			if (!hideSwingCyl)
 			{
 				doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;
+				
+				//new 20/11/2022
+				if (doorConfig.TRSH_SWING_CYLINDER != 0  && doorConfig.SWING_HWACCESSORYID == 0)
+				   doorConfig.SWING_HWACCESSORYID = doorConfig.HWACCESSORYID;
+
 				doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0 ? "blueBorder" : "redBorder");  // special for this field
 			}
 			// that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
@@ -958,6 +963,10 @@
 							setSWING_DRIL4HW();
 
 						}
+						//new 20/11/2022
+						if (doorConfig.TRSH_SWING_CYLINDER != 0 && doorConfig.SWING_HWACCESSORYID == 0)
+								doorConfig.SWING_HWACCESSORYID = doorConfig.HWACCESSORYID;
+
 						//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
 						doorConfig.staticwingChanged = true;
 						if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
@@ -1127,7 +1136,7 @@
 					return;
 				}
 				else if (!PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))  //HW4EXTRAWING is not ללא , it's mandatory so it's not EMPTY !
-				                                                                      // and TRSH_SWING_CYLINDER is not HALF
+																							// and TRSH_SWING_CYLINDER is not HALF
 				{
 					// doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
 					//doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
@@ -1147,11 +1156,11 @@
 				}
 				else  // Cylinder is Half !
 				{
-					//03/10/2022 : the following two lines were executed in the setter of TRSH_SWING_CYLINDER
+				//03/10/2022 : the following two lines were executed in the setter of TRSH_SWING_CYLINDER
 					//DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
 					//doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
-									
-                    // As doorConfig.SWING_DRIL4HW is a <select> field - the value we assign to it must be in the LOV
+
+					// As doorConfig.SWING_DRIL4HW is a <select> field - the value we assign to it must be in the LOV
 					//  thus we create a new LOV and put in it just the single value dril4HalfCyl.DRIL4HW
 					//   which we then assign to doorConfig.SWING_DRIL4HW .
 
@@ -1163,13 +1172,19 @@
 					//doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
 				}
 
-                    //doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
-                    //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+					//doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
+				//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
 
-                    doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(_Hw4ExtraWing);
-                    doorConfig.borderColors["SWING_HWCOLORID"] = (doorConfig.disabledFlds["SWING_HWCOLORID"] || doorConfig.SWING_HWCOLORID != 0 ? "blueBorder" : "redBorder");
-                    if (doorConfig.disabledFlds["SWING_HWCOLORID"])
-                        doorConfig.SWING_HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
+				doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(_Hw4ExtraWing);
+				doorConfig.borderColors["SWING_HWCOLORID"] = (doorConfig.disabledFlds["SWING_HWCOLORID"] || doorConfig.SWING_HWCOLORID != 0 ? "blueBorder" : "redBorder");
+				if (doorConfig.disabledFlds["SWING_HWCOLORID"])
+					doorConfig.SWING_HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
+
+				// new 20/11/2022 
+				if (doorConfig.TRSH_SWING_CYLINDER != 0 && doorConfig.SWING_HWACCESSORYID == 0)
+				{
+					doorConfig.SWING_HWACCESSORYID = doorConfig.HWACCESSORYID;
+				}
             }
 	    }
 		   
