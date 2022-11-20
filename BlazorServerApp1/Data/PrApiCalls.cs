@@ -1235,8 +1235,11 @@ namespace BlazorServerApp1.Data
                     {
                         int dbg = 17;
                     }
-                    if (hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE 
+                    if (doorConfig.OPENMODE == "פנימה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE  
                          && (hw.OPENSIDE == doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
+                        lstRes.Add(hw);
+                    else if (doorConfig.OPENMODE == "החוצה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
+                        && (hw.OPENSIDE != doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
                         lstRes.Add(hw);
                 }
                 return lstRes;

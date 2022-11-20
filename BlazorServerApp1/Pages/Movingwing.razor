@@ -1098,6 +1098,13 @@
                 @{ lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
                     if (lstCylinders1 != null)
                     {
+                           if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
+                            {
+                                CYLINDER_Class cyl1 = lstCylinders1.Find(x => x.PARTDES == "ללא");
+                                lstCylinders1.Remove(cyl1);
+                            }    
+
+
                             @foreach (CYLINDER_Class c in lstCylinders1)
                             {
                                <option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
