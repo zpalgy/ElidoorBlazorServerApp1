@@ -70,7 +70,10 @@
 			string errMsg2 = string.Empty;
 			UiLogic.disableTabFlds(doorConfig, "staticwing");
 			// restore the LOV for SWING_DRIL4HW !
-			lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+			//lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+			if (doorConfig.HW4EXTRAWING != 0 )
+				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
+
 			if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
 						config4.RefreshState();
 		}
@@ -92,7 +95,7 @@
 			// if we come here after going back to movingwing and then back here the LOV of SWING_DRIL4HW, which is a local
 			// variable, may be empty and then SWING_DRIL4HW will not displayed , because it's not in the LOV (which is empty).
 			//  so we repopulate it here !
-			if (lstD4HW1.Count == 0 && doorConfig.HW4EXTRAWING != 0 )
+			if (doorConfig.HW4EXTRAWING != 0 )
 				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 
 			if (hideHW4ExtraWing  && lstD4HW1.Count == 0)
@@ -292,7 +295,12 @@
 			}
 			// that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
 			if (!hideHW4ExtraWing)
+			{
 				doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);
+				if (doorConfig.HW4EXTRAWING != 0 )
+				     lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg2);
+			}
+
 
 			if (lstD4HW1 == null || lstD4HW1.Count == 0)
 				setSWING_DRIL4HW();    // populate lstD4Hw1 - so that doorConfig.SWING_DRIL4HW can get a value from this LOV. Otherwise it'll not get
@@ -1110,7 +1118,7 @@
 					doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
 					doorConfig.SWING_HWCOLORID = 0;
 
-					// 18/06/2022 - when HARWARE is ללא DRIL4HW should be ENABLED !
+					// 18/06/2022 - when HARDWARE is ללא DRIL4HW should be ENABLED !
 					//  therefore commented the three lines below.
 					// doorConfig.disabledFlds["DRIL4HW"] = true;
 					// doorConfig.DRIL4HW = 0;
