@@ -270,7 +270,8 @@
     <tr id="trMovingwing" >
       <td id="tdMovingwing">
           @* main part of Movingwing.razor *@   
-        <div dir="rtl" class="@doorConfig.divClasses["movingwing"]" > 
+          @* <div dir="rtl" class="@doorConfig.divClasses["movingwing"]" >  - old stuff - when Mwdecor was inside Movingwing 22/11/2022 *@
+            <div  dir="rtl">
 <table>
     <tr>
         <td>
@@ -1863,7 +1864,7 @@
  </td>  @* end of tdMovingwing *@
     </tr>   @* end of trMovingwing *@
 
-    @if (doorConfig.showDecor)
+    @if (false)   //(doorConfig.showDecor) old stuff - Mwdecor was shown inside of Movingwing - now it's launched from Configurator4 22/11/2022
     {
         //doorConfig.divClasses["mwdecor"] = "divActive";
     <tr id="trmovingwingDecor">

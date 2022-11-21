@@ -44,8 +44,13 @@
         CultureInfo english;
 
         Type dyncompType = typeof(Movingwing);   //typeof(Index);
+
+        Type dyncompType2 = typeof(Decor); 
+        
         Dictionary<string, object> pageParams = new Dictionary<string, object>();
+        Dictionary<string, object> pageParams2 = new Dictionary<string, object>();
         bool showDynComp = false;
+        bool showDyn2 = false;
         bool showProducts = false;
 
         string YNissue = string.Empty;
@@ -88,11 +93,11 @@
         //await ProtectedSessionStore.SetAsync("doorConfig", doorConfig);
         pageParams.Add("doorConfig", doorConfig);  //common to all tab pages !
                                                    //                                           // dyncompType = typeof(Extdecor);
-
+        pageParams2.Add("doorConfig", doorConfig);
         //// ref : https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
         //// the 2nd answer : Update Parent State by calling it's StateHasChanged method
         pageParams.Add("config4", this);
-
+        pageParams2.Add("config4", this);
         hebrew = new CultureInfo("he-IL", false);
         english = new CultureInfo("en-US", false);
 
@@ -221,6 +226,8 @@
             if (pageParams.ContainsKey("disableLogo") && tabName != "movingwing")
                 pageParams.Remove("disableLogo");
             showDynComp = true;
+            pageParams2["doorConfig"] = doorConfig;
+            showDyn2 = true;
             dyncompType = pageType;
             //doorConfig.btnClasses[tabName] = "buttonActive";
             doorConfig.markButton(tabName);
@@ -1751,12 +1758,12 @@
                                     </td>
                                     @code
                                     {
-        protected bool _MeasuresDoc = false;
+                                        protected bool _MeasuresDoc = false;
         protected bool MeasuresDoc
         {
                                         get
                                         {
-                                            //currPropName = "MEASURESDOC";
+                                        //currPropName = "MEASURESDOC";
                                             if (doorConfig != null)
                                             {
                                                 _MeasuresDoc = (doorConfig.MEASURESDOC == "Y");
@@ -1780,7 +1787,7 @@
                                     *@
                                     @code
                                     {
-        protected string _FAMILYDES;
+                                        protected string _FAMILYDES;
         protected string FAMILYDES
         {
                                         get
@@ -1815,15 +1822,24 @@
                             if (dyncompType == typeof(Movingwing))
                                 doorConfig.divClasses["dynCompStyle"] = "noBorder";     // hide external border for movingwing 
                                                                                         //   TODO apply that also to staticwing and Halfwing 
-                                //doorConfig.divClasses["dynCompStyle"] = (doorConfig.showDecor ? "noBorder" : "divActive");
+                                                                                        //doorConfig.divClasses["dynCompStyle"] = (doorConfig.showDecor ? "noBorder" : "divActive");
                             else
-                                doorConfig.divClasses["dynCompStyle"] = "divActive"; 
-                                
+                                doorConfig.divClasses["dynCompStyle"] = "divActive";
+
+                            doorConfig.divClasses["dynCompStyle"] = "divActive";
 
                             <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]" >
-                                    <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
-                                         @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
+                                <DynamicComponent Type="@dyncompType" Parameters="@pageParams"  />
+                                @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
                             </div>
+                            //}
+                            @if (doorConfig.showDecor)
+                            {
+                                <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]" >
+                                    <DynamicComponent Type="@dyncompType2" Parameters="@pageParams2"  />
+                                    @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
+                                </div>
+                            }
                         }
                         @code {
         protected void DoRefresh()
@@ -1936,19 +1952,8 @@
                                     if (doorConfig.TRSH_CYLINDER == UiLogic.IdOfNone)
                                         doorConfig.TRSH_CYLINDER = 0;
         }
-                                }
-                                <td>
-                                    @* <button name="btnClear" @onclick="btnClear_Click">ניקוי טופס</button> *@
-                                </td>
-                                @code {
-        //private void btnClear_Click()
-        //{
-        //                            showProducts = false;
-        //                            UiLogic.clearDoorConfig(doorConfig);
-        //                            this.StateHasChanged();
-        //}
-                                }
-                            </tr>
+     }
+                     </tr>
                         </table>
                         <!-- end tblSaveClear -->
 
