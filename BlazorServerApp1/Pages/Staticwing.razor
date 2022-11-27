@@ -282,7 +282,9 @@
 			doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
 			doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
 			doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
-			doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
+
+			//doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
+			doorConfig.thClasses["SWING_HWCOLORID"] = (doorConfig.disabledFlds["SWING_HWCOLORID"] ? "thGray" : "thBlue");
 			doorConfig.thClasses["SWING_DRIL4HW"] = "thBlue";
 			doorConfig.thClasses["SWING_TURBO"] = "thGray";    //[TODO]: check this because doorConfig.SWING_TURBO  can be set if Cust.TRSH_TURBO is Y 
 																		//I.e. doorConfig.useTurbo is true !
@@ -294,6 +296,8 @@
 
 			// 16/08/2022 : Eli asked to copy the cylinder and hardware from the movingwing here when setting SWINGHASLOCK to Y ! 
 			//  copy also : Hardware Color, Dril4Hw , Hanlde, Handle Color from movingwing !
+
+			//if (!doorConfig.disabledFlds["TRSH_SWING_CYLINDER"])   
 			if (!hideSwingCyl)
 			{
 				doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;
@@ -304,7 +308,9 @@
 
 				doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0 ? "blueBorder" : "redBorder");  // special for this field
 			}
+
 			// that was changed from disabled to enabled+mandatory when SWINGHASLOCK was changed !
+			//if (!doorConfig.disabledFlds["HW4EXTRAWING"])
 			if (!hideHW4ExtraWing)
 			{
 				doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);
@@ -320,8 +326,10 @@
 			if (doorConfig.SWING_DRIL4HW == PrApiCalls.IDS_TWOSIDES)  //16/08/2022 in staticwing if DRIL4HW is IDS it's always IDS_ONESIDE !
 				doorConfig.SWING_DRIL4HW = PrApiCalls.IDS_ONESIDE;  
 			
-			if (!hideSwingHwClr)
-			    doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;
+			//if (!hideSwingHwClr)
+			//   doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;
+				if  (!doorConfig.disabledFlds["SWING_HWCOLORID"]  && doorConfig.SWING_HWCOLORID == 0)     //(!hideSwingHwClr)
+			         doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;         // default is the HW Color of Movingwing !
 
 			//Eli 21/09/2022 : HANDLE NAME and Color get the value that is in movingwing. It does not depend on WithLock value !
 			// thereFore we set their value in on OnInitializedAsync() and disable these two fields if the number of wings in the door is greater than ONE !
@@ -957,10 +965,10 @@
 							lstD4HW1.Add(dril4HalfCyl);
 							doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
 						}
-						else
+						else   //Cylinder is not HALF
 						{
 							//doorConfig.disabledFlds["HW4EXTRAWING"] =    // 06/07/2022 HW4EXTRAWING is disabled by default  !
-							doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
+							doorConfig.disabledFlds["SWING_HWCOLORID"] = true;  //it'll be enabled only after a Colored HW4EXTRAWING is selected.
 							doorConfig.disabledFlds["SWING_DRIL4HW"] = false;
 							doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? 
 											PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE) : doorConfig.HW4EXTRAWING );
@@ -1178,14 +1186,26 @@
 					//doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
 				}
 
-					//doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
+				//doorConfig.borderColors["SWING_DRIL4HW"] = (doorConfig.DRIL4HW != 0 ? "blueBorder" : "redBorder");
 				//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+				if (_Hw4ExtraWing > 0 )
+				{
+					int dbg = 17;
+				}
 
 				doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(_Hw4ExtraWing);
-				doorConfig.borderColors["SWING_HWCOLORID"] = (doorConfig.disabledFlds["SWING_HWCOLORID"] || doorConfig.SWING_HWCOLORID != 0 ? "blueBorder" : "redBorder");
-				if (doorConfig.disabledFlds["SWING_HWCOLORID"])
-					doorConfig.SWING_HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
 
+				if (doorConfig.disabledFlds["SWING_HWCOLORID"])
+				{
+					doorConfig.SWING_HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
+				}
+				else
+				{
+					if (doorConfig.SWING_HWCOLORID == 0)
+					      doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;  // set default .
+
+					doorConfig.borderColors["SWING_HWCOLORID"] = (doorConfig.SWING_HWCOLORID != 0 ? "blueBorder" : "redBorder");
+				}
 				// new 20/11/2022 
 				if (doorConfig.TRSH_SWING_CYLINDER != 0 && doorConfig.SWING_HWACCESSORYID == 0)
 				{
