@@ -45,16 +45,16 @@
     private bool disableExtColor = true;
     private bool disableIntColor = true;
 
-    bool hideColorsNum = false;
-    bool hideDoorColor = false;
-    bool hideExtColr = false;
-    bool hideIntColor = false;
-    bool hideCylinder = false;
-    bool hideHw = false;
-    bool hideHwColor = false;
-    bool hideHwAccessory = false;
-    bool hideHandle = false;
-    bool hideHandleColor = false;
+    //bool hideColorsNum = false;
+    //bool hideDoorColor = false;
+    //bool hideExtColr = false;
+    //bool hideIntColor = false;
+    //bool hideCylinder = false;
+    //bool hideHw = false;
+    //bool hideHwColor = false;
+    //bool hideHwAccessory = false;
+    //bool hideHandle = false;
+    //bool hideHandleColor = false;
 
 
     //protected string currPropName = string.Empty;
@@ -102,7 +102,7 @@
 
         if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))  // i.e. we just came from a prev tab
         {
-            setHiddens(doorConfig);
+            UiLogic.setHiddens(doorConfig, "movingwing");
             doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
                                                                                                                                            //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
                                                                                                                                            //doorConfig.disabledFlds["HWACCESSORYID"] = (hideHwAccessory || doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone);
@@ -110,8 +110,7 @@
                                                                                                                                            //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
                                                                                                                                            // new - Hardware may be with COLORED == "Y", at that point we'll ENABLE HWCOLORID .
                                                                                                                                            // we can't do that here because we may return to the page after all it's fields were disabled.
-                                                                                                                                           // hardcoded ELECTRICAPPARATUS style ! 28/05/2022 
-            if (!hideHw && (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone))
+            if (!UiLogic.hideFld(doorConfig, "Hw") && (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone))
             {
                 doorConfig.borderColors["HWACCESSORYID"] = "grayBorder";
                 doorConfig.borderColors["HWCOLORID"] = "grayBorder";
@@ -128,7 +127,7 @@
         }
         else    // it is filled - we came back form a newer tab - all fields should be disabled !
         {
-            setHiddens(doorConfig);
+            UiLogic.setHiddens(doorConfig, "movingwing"); 
             // we're returning here from a newer tab - and our tab is actually filled .
             UiLogic.disableTabFlds(doorConfig, "movingwing");
             // in order to restore  DRIL4HW and CYLINDER that depend on lists created dynamically  in this tab page
@@ -169,41 +168,41 @@
         // set the style of the outLine of Movingwing and Mwdecor divs
         doorConfig.divClasses["movingwing"] = (doorConfig.disabledFlds["DOORWIDTH"] ? "divNotActive" : "divActive");
     }
-    void setHiddens(DoorConfig doorConfig)
-    {
-        hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
-        hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
-        hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
-        hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
-        hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
-        hideHw = UiLogic.hideFld(doorConfig, "Hw");
-        hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
-        hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
-        hideHandle = UiLogic.hideFld(doorConfig, "Handle");
-        hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
+    //void setHiddens(DoorConfig doorConfig)
+    //{
+    //    hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
+    //    hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
+    //    hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
+    //    hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
+    //    hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
+    //    hideHw = UiLogic.hideFld(doorConfig, "Hw");
+    //    hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
+    //    hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
+    //    hideHandle = UiLogic.hideFld(doorConfig, "Handle");
+    //    hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
 
-        doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
-        doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
-        doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
-        doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
-        doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
-        doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
-        doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
-        doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
-        doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
-        doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
                         
-        doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
-        doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
-        doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
-        doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
-        doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
-        doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
-        doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
-        doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
-        doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
-        doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
-    }
+    //    doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
+    //    doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
+    //    doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
+    //    doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
+    //    doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
+    //    doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
+    //    doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
+    //    doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
+    //    doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
+    //    doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
+    //}
 
     // We must have this event handler in every tabPage because it uses doorConfig , and we can't pass it as a parameter to
     //   this type of method. Teh only parameter that can be passwed to this method is KeyboardEventArgs !
@@ -716,7 +715,8 @@
         @* <th id="thTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">מנגנון תגבור</th> *@
         <th id="thExtColor"  class= "@doorConfig.thClasses["EXTCOLORID"]" >גוון חוץ</th>  @* was in Extdecor.razor *@
         <th id="thIntColor" class= "@doorConfig.thClasses["INTCOLORID"]">גוון פנים</th>  @* was in Intdecor.razor L1  *@
-        <th id="thLockDrilHeight" hidden="@UiLogic.hideFld(doorConfig, "LockDrilHeight")">גובה ניקוב</th>
+        
+        <th id="thLockDrilHeight" class= "@doorConfig.thClasses["LOCKDRILHEIGHT"]" >גובה ניקוב</th>
 
         @* <th id="thLogo" hidden="@UiLogic.hideFld(doorConfig, "Logo")">לוגו</th> *@
         <th id="thHw" class= "@doorConfig.thClasses["TRSH_HARDWARE"]">פירזול</th>

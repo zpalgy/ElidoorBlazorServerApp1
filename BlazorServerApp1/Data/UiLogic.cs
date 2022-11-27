@@ -88,7 +88,7 @@ namespace BlazorServerApp1.Data
             //debug
             if (fldName == "ELECTRICAPPARATUS")
             {
-                int x = 17;
+                int dbg = 17;
             }
             // end debug
             if (doorConfig != null)
@@ -1215,6 +1215,27 @@ namespace BlazorServerApp1.Data
             }
         }
 
+        public static void setHiddens(DoorConfig doorConfig, string tabName)
+        {
+            try
+            {
+                string query = string.Format("CONFIG_SUBFORM = '{0}'", tabName.ToLower());
+                DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
+                for (int r = 0; r < tabFields.Length; r++)
+                {
+                    string fldName = tabFields[r]["FIELDNAME"].ToString();
+                    bool hideFldName = hideFld(doorConfig, fldName);
+                    doorConfig.thClasses[fldName] = (hideFldName ? "thGray" : "thBlue");
+                    doorConfig.disabledFlds[fldName] = hideFldName;
+                }
+            }
+            catch (Exception ex)
+            {
+                string errMsg = string.Format("Unexpected error: {0} . tabName ='{1}'  Stacktrace : {2}", ex.Message, tabName, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+                return;
+            }
+        }
         public static void applyModelDefaults(DoorConfig doorConfig)
         {
             try

@@ -62,7 +62,7 @@
 		doorConfig.currTabName = "staticwing";
 		doorConfig.dtTabFlds = UiLogic.getTabFields("staticwing", doorConfig, ref errMsg);
 		lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg, true); // get also HALF Cylinders 
-		//setHiddens(doorConfig);
+																									//setHiddens(doorConfig);
 
 		if (UiLogic.tabPageIsFilled("staticwing", doorConfig))  // we came here back from a prev tab and actually the current tabPage is filled
 																// so we should disable all it's fields !
@@ -75,7 +75,7 @@
 				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 
 			if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
-						config4.RefreshState();
+				config4.RefreshState();
 		}
 
 		else  //tabPage is not filled 
@@ -101,14 +101,15 @@
 			if (hideHW4ExtraWing  && lstD4HW1.Count == 0)
 				lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 			else if (doorConfig.SWINGHASLOCK != "Y"  && lstD4HW1.Count == 0)
-			    lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
-			   
+				lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+
 
 			if (!doorConfig.staticwingChanged)// page not filled , it's not empty because even if we come here for the 1st time some fields are 
 													// copied from movingwing .
 													// The following code should be executed only once, when we come here for the 1st time in the session.
 			{
-				setHiddens(doorConfig);
+				UiLogic.setHiddens(doorConfig, "staticwing");  //setHiddens(doorConfig);
+				setHiddens(doorConfig);  //local method 
 				applySwingHasLock();
 				//doorConfig.CENTRALCOLWIDTH = (doorConfig.CENTRALCOLWIDTH == 0 ? 40 : doorConfig.CENTRALCOLWIDTH) ;  //06/07/2022 
 				// doorConfig.disabledFlds["SWING_HANDLENAME"] = (doorConfig.TRSH_WINGSNUMDES == "כנף וחצי"); // 06/07/2022 
@@ -153,8 +154,8 @@
 		doorConfig.thClasses["SWING_TURBO"] = "thGray";
 		// in any case : if doorConfig.HW4EXTRAWING is empty then SWING_HWACCESSORYID is disabled - 02/11/2022
 		if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
-		     doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
-		     
+			doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
+
 	}
 	void setHiddens(DoorConfig doorConfig)
 	{
@@ -170,34 +171,39 @@
 		hideSwingHandle = UiLogic.hideFld(doorConfig,"SWING_HANDLENAME");
 		hideSwingHandleClr = UiLogic.hideFld(doorConfig,"SWING_HANDLECOLORID");
 
-		doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["EXTCOLORID"] = (hideSwingExtClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["INTCOLORID"] = (hideSwingIntClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
-		doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
-		doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
-		doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["SWING_HANDLENAME"] = (hideSwingHandle ? "thGray" : "thBlue");
-		doorConfig.thClasses["SWING_HANDLECOLORID"] = (hideSwingHandleClr ? "thGray" : "thBlue");
 
-		doorConfig.disabledFlds["CENTRALCOLCLRID"] = hideCentralColClr;
-		doorConfig.disabledFlds["SHALVANIACLRID"] = hideShalvaniaClr;
-		//doorConfig.disabledFlds["DOORCOLORID"] = hideSwingClr;
-		//doorConfig.disabledFlds["EXTCOLORID"] = hideSwingExtClr;
-		//doorConfig.disabledFlds["INTCOLORID"] = hideSwingIntClr;
-		doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl;
-		doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing;
-		
-		doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc;
 		// in any case : if doorConfig.HW4EXTRAWING is empty then SWING_HWACCESSORYID is disabled - 02/11/2022
 		if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
 		     doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 
-		doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr;
-		doorConfig.disabledFlds["SWING_HANDLENAME"] = hideSwingHandle;
-		doorConfig.disabledFlds["SWING_HANDLECOLORID"] = hideSwingHandleClr;
+
+		//doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
+		//doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
+		//doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
+		//doorConfig.thClasses["EXTCOLORID"] = (hideSwingExtClr ? "thGray" : "thBlue");
+		//doorConfig.thClasses["INTCOLORID"] = (hideSwingIntClr ? "thGray" : "thBlue");
+		//doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
+		//doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
+		//doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
+		//doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
+		//doorConfig.thClasses["SWING_HANDLENAME"] = (hideSwingHandle ? "thGray" : "thBlue");
+		//doorConfig.thClasses["SWING_HANDLECOLORID"] = (hideSwingHandleClr ? "thGray" : "thBlue");
+
+		//doorConfig.disabledFlds["CENTRALCOLCLRID"] = hideCentralColClr;
+		//doorConfig.disabledFlds["SHALVANIACLRID"] = hideShalvaniaClr;
+
+		////doorConfig.disabledFlds["DOORCOLORID"] = hideSwingClr;
+		////doorConfig.disabledFlds["EXTCOLORID"] = hideSwingExtClr;
+		////doorConfig.disabledFlds["INTCOLORID"] = hideSwingIntClr;
+		///
+		//doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl;
+		//doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing;
+		
+		//doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc;
+		
+		//doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr;
+		//doorConfig.disabledFlds["SWING_HANDLENAME"] = hideSwingHandle;
+		//doorConfig.disabledFlds["SWING_HANDLECOLORID"] = hideSwingHandleClr;
 
 	}
 	void calcCentralColClrID(DoorConfig doorConfig)
