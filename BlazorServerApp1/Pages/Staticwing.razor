@@ -42,6 +42,7 @@
 	string YNissue = string.Empty;
 	private bool ansYes = false;
 
+	bool hideLockDrilHeight = false;
 	bool hideCentralColClr = false;
 	bool hideShalvaniaClr = false;
 	bool hideSwingClr = false;
@@ -98,18 +99,19 @@
 			if (doorConfig.HW4EXTRAWING != 0 )
 				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 
+			// populate the LOV of Dril for Hardware  ניקוב לפירזול
+			hideHW4ExtraWing = UiLogic.hideFld(doorConfig,"thHW4ExtraWing");
 			if (hideHW4ExtraWing  && lstD4HW1.Count == 0)
 				lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 			else if (doorConfig.SWINGHASLOCK != "Y"  && lstD4HW1.Count == 0)
 				lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 
-
 			if (!doorConfig.staticwingChanged)// page not filled , it's not empty because even if we come here for the 1st time some fields are 
 													// copied from movingwing .
 													// The following code should be executed only once, when we come here for the 1st time in the session.
 			{
-				UiLogic.setHiddens(doorConfig, "staticwing");  //setHiddens(doorConfig);
-				setHiddens(doorConfig);  //local method 
+				//UiLogic.setHiddens(doorConfig, "staticwing"); 
+				setHiddens(doorConfig);  //local method that calls UiLogic.setHiddens(doorConfig, "staticwing")
 				applySwingHasLock();
 				//doorConfig.CENTRALCOLWIDTH = (doorConfig.CENTRALCOLWIDTH == 0 ? 40 : doorConfig.CENTRALCOLWIDTH) ;  //06/07/2022 
 				// doorConfig.disabledFlds["SWING_HANDLENAME"] = (doorConfig.TRSH_WINGSNUMDES == "כנף וחצי"); // 06/07/2022 
@@ -133,7 +135,7 @@
 					//doorConfig.SWING_HANDLECOLORID = doorConfig.HANDLECOLORID;
 					//doorConfig.disabledFlds["SWING_HANDLENAME"] = doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true; 
 
-				}
+				}  // end WINGSNUM is NOT HALF WING חצי כנף
 
 				doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 , in case we didn't open movingwing (WINGSNUMDES == Half Wing ) we set LOGO here.
 																					//  in case both WINGSNUMDES has more than one wing LOGO is always the same on both wings - see doc from 22/06/2022 !
@@ -143,8 +145,9 @@
 
 				doorConfig.SWING_TURBO = ((doorConfig.SWINGHASLOCK == "Y" && doorConfig.useLOGO) ? "Y" : string.Empty);   // new 11/07/2022 , updated 28/07/2022 
 				doorConfig.disabledFlds["LOGO"] = true;
-			}
-		}
+
+			} // end of if (!doorConfig.staticWingChanged), teh user did not SET any value in any field on teh tabPage
+		}  // end of tabPage is not filled
 
 		if (doorConfig.SWINGHASLOCK == "Y" && doorConfig.HW4EXTRAWING == 0 && doorConfig.TRSH_HARDWARE != 0)
 		{
@@ -159,6 +162,7 @@
 	}
 	void setHiddens(DoorConfig doorConfig)
 	{
+		hideLockDrilHeight = UiLogic.hideFld(doorConfig,"LOCKDRILHEIGHT"); 
 		hideCentralColClr = UiLogic.hideFld(doorConfig,"CentralColClrID");
 		hideShalvaniaClr = UiLogic.hideFld(doorConfig, "ShalvaniaClrID");
 		hideSwingClr = UiLogic.hideFld(doorConfig,"SwingColorID");
@@ -170,7 +174,7 @@
 		hideSwingHwClr = UiLogic.hideFld(doorConfig,"SWING_HWCOLORID");
 		hideSwingHandle = UiLogic.hideFld(doorConfig,"SWING_HANDLENAME");
 		hideSwingHandleClr = UiLogic.hideFld(doorConfig,"SWING_HANDLECOLORID");
-
+		UiLogic.setHiddens(doorConfig, "staticwing");
 
 		// in any case : if doorConfig.HW4EXTRAWING is empty then SWING_HWACCESSORYID is disabled - 02/11/2022
 		if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
@@ -255,7 +259,7 @@
 			//doorConfig.SWING_HANDLECOLORID , doorConfig.HANDLECOLORID;
 
 			doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = true;
-			// Eli's request on 11/09/2022 - this was changed on 21/09/2022 ! and teh following lines were commented out !
+			// Eli's request on 11/09/2022 - this was changed on 21/09/2022 ! and the following lines were commented out !
 			//doorConfig.SWING_HANDLENAME = string.Empty;
 			//doorConfig.SWING_HANDLECOLORID = 0;
 
@@ -278,7 +282,9 @@
 		}
 		else  // withLOCK 
 		{
-			doorConfig.thClasses["LOCKDRILHEIGHT"] =  "thBlue";
+			doorConfig.thClasses["LOCKDRILHEIGHT"] =  (hideLockDrilHeight ? "thGray" : "thBlue"); //actually D-650 LOCKDRILHEIGHT is always visible , I still use hideLockDrilHeight
+			                       // here just to use the same logic for all controls.  LOCKDRILHEIGHT appears in movingwing, staticwing and halfwing 
+
 			doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
 			doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
 			doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
@@ -318,19 +324,17 @@
 				     lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg2);
 			}
 
-
 			if (lstD4HW1 == null || lstD4HW1.Count == 0)
 				setSWING_DRIL4HW();    // populate lstD4Hw1 - so that doorConfig.SWING_DRIL4HW can get a value from this LOV. Otherwise it'll not get
 												//   a value, because this LOV acts also as a validator for the value of teh field. Thta value must exist in teh LOV of the field.
 			doorConfig.SWING_DRIL4HW = doorConfig.DRIL4HW;
 			if (doorConfig.SWING_DRIL4HW == PrApiCalls.IDS_TWOSIDES)  //16/08/2022 in staticwing if DRIL4HW is IDS it's always IDS_ONESIDE !
 				doorConfig.SWING_DRIL4HW = PrApiCalls.IDS_ONESIDE;  
-			
-			//if (!hideSwingHwClr)
-			//   doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;
-				if  (!doorConfig.disabledFlds["SWING_HWCOLORID"]  && doorConfig.SWING_HWCOLORID == 0)     //(!hideSwingHwClr)
-			         doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;         // default is the HW Color of Movingwing !
 
+     		if (!doorConfig.disabledFlds["SWING_HWCOLORID"]  && doorConfig.SWING_HWCOLORID == 0)     //(!hideSwingHwClr)
+			    doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;                   // the default is the HW Color of Movingwing !
+
+			//  ** SWING_HANDLE* issue .
 			//Eli 21/09/2022 : HANDLE NAME and Color get the value that is in movingwing. It does not depend on WithLock value !
 			// thereFore we set their value in on OnInitializedAsync() and disable these two fields if the number of wings in the door is greater than ONE !
 			//if (doorConfig.TRSH_MODELNAME != "חצי כנף")
