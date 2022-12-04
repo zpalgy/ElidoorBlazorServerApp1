@@ -75,7 +75,8 @@ namespace BlazorServerApp1.Pages
                 {
                     //errMsg = string.Format("שגיאה: לא נמצא רוחב חלון לדלת {0} ברוחב {1}  בטבלת מידות רוחב חלון", doorConfig.PARTNAME, doorConfig.DOORWIDTH);
                     errMsg = "רוחב כנף חורג מהטולרנס שהוגדר נא למלא רוחב כנף מתאים";
-                    myLogger.log.Error(errMsg);
+                    string errMsg1 = String.Format("{0} : query = {1}", errMsg, query);
+                    myLogger.log.Error(errMsg1);
                     //UiLogic.displayErrMsg(lblMsg3, errMsg2);
                     return -1;
                 }

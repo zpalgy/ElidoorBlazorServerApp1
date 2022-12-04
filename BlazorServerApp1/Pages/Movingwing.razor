@@ -355,7 +355,7 @@
                                 {
                                     string errMsg = string.Empty;
                                     doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
-                                    if (doorConfig.WINDOWWIDTH == 0 && !string.IsNullOrEmpty(errMsg))
+                                    if (doorConfig.WINDOWWIDTH <= 0 && !string.IsNullOrEmpty(errMsg))
                                     {
                                         //Js.InvokeVoidAsync("alert", errMsg);
                                         errMsg2 = errMsg;

@@ -1898,12 +1898,29 @@ namespace BlazorServerApp1.Data
                                 }
                                 return;
                             case "INT":
-                                if (val == null || string.IsNullOrEmpty(val.ToString()))
-                                    ival = 0;
-                                else
-                                    ival = int.Parse(val.ToString());
-
+                            if (val == null || string.IsNullOrEmpty(val.ToString()))
+                                ival = 0;
+                            // 04/12/2022 - replcaed the following two lines by a try-catch block .
+                            //else
+                            // ival = int.Parse(val.ToString());
+                            else
+                            {
                                 try
+                                {
+                                    if (!int.TryParse(val.ToString(), out ival))  //happens at apply defaults where  defval in priority is
+                                                       //a string (e.g. color name) and the field is INT (e.g CLRID of COLORID ). 
+                                             ival = 0;
+                                }
+                                catch (Exception ex)
+                                {
+                                    errMsg = string.Format("ival = int.Parse(val.ToString()); val = {0}); FAILED ! \n error: {1} ",
+                                                           val, ex.Message);
+                                    myLogger.log.Error(errMsg);
+                                    ival = 0;
+                                }
+                            }
+                            //
+                            try
                                 {
                                     props[p].SetValue(doorConfig, ival);
                                 }
