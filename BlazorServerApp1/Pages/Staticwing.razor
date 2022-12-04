@@ -180,6 +180,9 @@
 		if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
 		     doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 
+	    // Eli 31/10/2022 : special for SHALVANIACLRID  see also calcCentralColClrID
+		if ( doorConfig.COLORSNUM == "1")
+		            doorConfig.disabledFlds["SHALVANIACLRID"] = true;
 
 		//doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
 		//doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
