@@ -939,7 +939,7 @@
 							doorConfig.TRSH_SWING_CYLINDER = _Cylinder4HalfWing;
 							//return;
 						}
-						
+
 						doorConfig.TRSH_SWING_CYLINDER = _Cylinder4HalfWing;
 						if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
 						{
@@ -959,9 +959,9 @@
 																	// in ApplyHasLock() : doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);
 																	//   so we have to clear the field here, as the cylinder is not that of the movingwing.
 
-																	// as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
-							//  IDS_ONESIDE !
-							//  This logic is problematic as there is no need for DRIL4HW if there is no HW !
+									    // as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
+										//  IDS_ONESIDE !
+										//  This logic is problematic as there is no need for DRIL4HW if there is no HW !
 
 							//03/10/2022 : Eli says: if Cylinder is HALF Cylinder , SWING_DRIL4HW MUST be Dril 4 Half Cylinder !
 							// As doorConfig.SWING_DRIL4HW is a <select> field - the value we assign to it must be in the LOV
@@ -971,6 +971,8 @@
 							DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
 							lstD4HW1.Add(dril4HalfCyl);
 							doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+
+							doorConfig.SWING_HWACCESSORYID = UiLogic.IdOfNone; //04/12/2022 Eli asked to put "ללא" here !
 						}
 						else   //Cylinder is not HALF
 						{
