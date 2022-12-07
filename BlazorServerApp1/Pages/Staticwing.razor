@@ -1227,14 +1227,17 @@
 		   @* SWING_HWACCESSORYID   new 12/07/2022 *@
 		   <td>
 		   @{  int i617 = Array.IndexOf(UiLogic.propNames, "SWING_HWACCESSORYID");
-			 	<input list="lstHwAcc2" name="dlstHw2" @bind="HwAccDes2" class="@doorConfig.borderColors["SWING_HWACCESSORYID"]" autocomplete="off"
+			 	@* <input list="lstHwAcc2" name="dlstHw2" @bind="HwAccDes2" class="@doorConfig.borderColors["SWING_HWACCESSORYID"]" autocomplete="off" *@
+				      <select name="dlstSwingHwAccessory" @bind="HwAccDes2" class="@doorConfig.borderColors["SWING_HWACCESSORYID"]" 
                         disabled="@doorConfig.disabledFlds["SWING_HWACCESSORYID"]"
 							@onfocus="@( () => UiLogic.HasFocus("SWING_HWACCESSORYID", doorConfig) )" 
 							@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                         onkeypress="@doorConfig.KeyPressHandler" 
 							@ref="doorConfig.dicRefs[UiLogic.propNames[i617]]" 
-				/>
+				>
+				@* />
 				<datalist id="lstHwAcc2">
+				*@
 				        @{
 							 string errMsg1 = string.Empty;
                              if (doorConfig.HW4EXTRAWING > 0)
@@ -1265,7 +1268,8 @@
                         }
 						}
 						    -- end of to delete  *@
-						</datalist>
+						</select>
+						@* </datalist> *@
                     }
 					 @code
                     {
