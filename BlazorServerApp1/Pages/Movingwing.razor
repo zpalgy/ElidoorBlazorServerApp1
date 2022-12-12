@@ -331,7 +331,6 @@
                     set
                     {
                         _DoorWidth = value;
-
                         if (value == null || value == 0 || !wingWidthIsOk(doorConfig, (int)value, ref errMsg2))
                         {
                             errMsg2 = (value == null || value == 0 ? "חובה לציין רוחב דלת" : errMsg2);
@@ -339,7 +338,7 @@
                             msgClass = "modal-body centeredMsg";
                             // the error text is in errMsg2 which was populated in wingWidthIsOk(...) 
                             openMsgBox = true;
-                            value = _DoorWidth = 0;
+                            value = _DoorWidth = doorConfig.DOORWIDTH = 0;
                             StateHasChanged();
                             doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
                             doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
@@ -360,7 +359,7 @@
                                         //Js.InvokeVoidAsync("alert", errMsg);
                                         errMsg2 = errMsg;
                                         openMsgBox = true;
-                                        value = _DoorWidth = 0;
+                                        value = _DoorWidth = doorConfig.DOORWIDTH = 0;
                                         doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
                                         doorConfig.borderColors["DOORWIDTH"] = "redBorder";
                                         this.StateHasChanged();

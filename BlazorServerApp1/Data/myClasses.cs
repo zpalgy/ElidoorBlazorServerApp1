@@ -318,6 +318,8 @@ namespace BlazorServerApp1.Data
         public string OPENMODE { get; set; }
         [DataMember(Order = 6)]
         public string ISHALFCYLINDER { get; set; }
+        [DataMember(Order = 7)]
+        public int SORT { get; set; }
     }
     public class ValuesCYLINDER_Class
     {

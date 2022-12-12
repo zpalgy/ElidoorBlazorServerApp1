@@ -1747,7 +1747,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_CYLINDER,PARTNAME,PARTDES,TRSH_MODELNAME,OPENMODE,ISHALFCYLINDER";
+                string fields = "TRSH_CYLINDER,PARTNAME,PARTDES,TRSH_MODELNAME,OPENMODE,ISHALFCYLINDER,SORT";
                 request.Resource = string.Format("TRSH_CYLINDERS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1762,19 +1762,26 @@ namespace BlazorServerApp1.Data
                     CYLINDER_Class emptyCylinder = new CYLINDER_Class();
                     emptyCylinder.PARTNAME = " ";
                     emptyCylinder.PARTDES = " ";
+                    emptyCylinder.SORT = 0;    // new 12/12/2022
                     val1.Add(emptyCylinder);
 
                     CYLINDER_Class noCylinder = new CYLINDER_Class();
                     noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
                     noCylinder.PARTDES = "ללא";
+                    noCylinder.SORT = 1;
                     val1.Add(noCylinder);
                     foreach (CYLINDER_Class cyl in val.value)
                     {
                         if (cyl.OPENMODE == null || string.IsNullOrEmpty(cyl.OPENMODE))
                             cyl.OPENMODE = "2";   // IN and OUT 
+                        
+                        cyl.SORT += 2;
                         val1.Add(cyl);
+                        
                     }
-                    return val1;
+
+                    List<CYLINDER_Class> val2 = val1.OrderBy(c => c.SORT).ToList();
+                    return val2;
                 }
                 else
                 {
@@ -1813,12 +1820,15 @@ namespace BlazorServerApp1.Data
                 CYLINDER_Class emptyCyl = new CYLINDER_Class();
                 emptyCyl.PARTNAME = string.Empty;
                 emptyCyl.PARTDES = string.Empty;
+                emptyCyl.SORT = 0;
+
                 lstRes.Add(emptyCyl);
                 if (doorConfig.TRSH_MODELNAME != "MLI")  // added on 27/07/2022 per Eli's request 
                 {
                     CYLINDER_Class noCylinder = new CYLINDER_Class();
                     noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
                     noCylinder.PARTDES = "ללא";
+                    noCylinder.SORT = 1;
                     lstRes.Add(noCylinder);
                 }
                 foreach (CYLINDER_Class cyl in lstCylinders)
@@ -1828,12 +1838,16 @@ namespace BlazorServerApp1.Data
                     {
                         if (incHalfCyl)
                         {
+                           // cyl.SORT += 2;
                             lstRes.Add(cyl);
                         }
                         else
                         {
                             if (cyl.ISHALFCYLINDER != "Y")
+                            {
+                              //  cyl.SORT += 2;
                                 lstRes.Add(cyl);
+                            }
                         }
                     }
                 }
@@ -1950,11 +1964,13 @@ namespace BlazorServerApp1.Data
                 emptyCyl.TRSH_CYLINDER = 0;
                 emptyCyl.PARTDES = String.Empty;
                 emptyCyl.PARTNAME = String.Empty;
+                emptyCyl.SORT = 0;
                 res.Add(emptyCyl);
 
                 CYLINDER_Class noCyl = new CYLINDER_Class();
                 noCyl.TRSH_CYLINDER = UiLogic.IdOfNone;
                 noCyl.PARTDES = "ללא";
+                noCyl.SORT = 1;
                 res.Add(noCyl);
 
                 if (lstCYLHWs != null)
@@ -1967,11 +1983,13 @@ namespace BlazorServerApp1.Data
                             CYLINDER_Class Cyl = new CYLINDER_Class();
                             Cyl.TRSH_CYLINDER = chw.TRSH_CYLINDER;
                             Cyl.PARTDES = chw.PARTDESCYL;
+                            Cyl.SORT = lstCylinders.Find(x => x.TRSH_CYLINDER == Cyl.TRSH_CYLINDER).SORT;  // new 12/12/2022
                             res.Add(Cyl);
                         }
                     }
                 }
-                return res;
+                List<CYLINDER_Class> res2 = res.OrderBy(c => c.SORT).ToList();
+                return res2;
             }
             catch (Exception ex)
             {
