@@ -122,7 +122,7 @@
 					_HingesNum = value;
 					if (doorConfig != null)
 					{
-						doorConfig.HINGESNUM = _HingesNum;
+						//doorConfig.HINGESNUM = _HingesNum;
 						@*
 							if (_HingesNum < 5)
 								doorConfig.HINGE5HEIGHT = 0;
@@ -141,12 +141,17 @@
 							//int lastHingeH = getLastHingeH(oldHingesNum);
 							//setHingesHeights(_HingesNum, lastHingeH);
 							errMsg3 = string.Empty;
-							if (!setHingesHeights2(doorConfig.HINGESNUM,  oldHingesNum, ref errMsg3))
+							//if (!setHingesHeights2(doorConfig.HINGESNUM,  oldHingesNum, ref errMsg3))
+							if (!setHingesHeights2(value,  oldHingesNum, ref errMsg3))
 							{
 								openMsgBox = true;
 							}
-							else if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
-								config4.RefreshState();
+							else 
+							{
+								doorConfig.HINGESNUM = _HingesNum;
+								if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+								        config4.RefreshState();
+							}
 						}
 						doorConfig.borderColors["HINGESNUM"] = (value != 0 ? "blueBorder" : "redBorder");
 						//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
