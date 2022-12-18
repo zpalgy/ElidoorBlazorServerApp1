@@ -150,7 +150,7 @@
 							{
 								doorConfig.HINGESNUM = _HingesNum;
 								if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
-								        config4.RefreshState();
+									config4.RefreshState();
 							}
 						}
 						doorConfig.borderColors["HINGESNUM"] = (value != 0 ? "blueBorder" : "redBorder");
@@ -175,6 +175,7 @@
 				return 0;
 			}
 
+			//old stuff - to del 
 			void setHingesHeights (int newHingesNum, int lastHingeH)
 			{
 				doorConfig.HINGE3HEIGHT = doorConfig.HINGE4HEIGHT = doorConfig.HINGE5HEIGHT = 0; // init
@@ -205,6 +206,7 @@
 						return;
 				}
 			}
+			// end old stuff - to del
 			bool setHingesHeights2 (int newHingesNum, int oldHingesNum, ref string errMsg)
 			{
 				int hRange = UiLogic.HeightRange(doorConfig.DOORHEIGHT);
@@ -212,6 +214,16 @@
 				bool err = false;
 				switch (hRange)
 				{
+					case 1:
+						if (newHingesNum > 3 )
+						{
+							errMsg = string.Format("לדלת בגובה {0} מותרים לכל היותר 3 צירים", doorConfig.DOORHEIGHT);
+							err = true;
+							return false;
+						}
+						else
+							return true;
+						break;
 					case 2:
 						if (newHingesNum == 3)  //(oldHingesNum == 2 && newHingesNum == 3)
 						{
@@ -220,7 +232,11 @@
 							doorConfig.HINGE2HEIGHT = doorConfig.optionalHingeHeight;
 						}
 						else if (newHingesNum == 2)  // restore original values
+						{
+							doorConfig.HINGESNUM = newHingesNum;
 							UiLogic.setHingesHeights(doorConfig, ref errMsg);
+							StateHasChanged();
+						}
 						else
 							err = true;
 						break;
@@ -242,7 +258,11 @@
 							doorConfig.HINGE4HEIGHT = doorConfig.optionalHingeHeight;
 						}
 						else if (newHingesNum == 4)  // restore original values
+						{
+							doorConfig.HINGESNUM = newHingesNum;
 							UiLogic.setHingesHeights(doorConfig, ref errMsg);
+							StateHasChanged();
+						}
 						else
 							err = true;
 						break;
@@ -271,31 +291,39 @@
         </td>
         @code
         {
-														protected int _Hinge1Height = 0;
-														protected int Hinge1Height
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_Hinge1Height = doorConfig.HINGE1HEIGHT;
-																}
-																return _Hinge1Height;
-															}
-															set
-															{
-																_Hinge1Height = value;
-																if (doorConfig != null)
-																{
-																	doorConfig.HINGE1HEIGHT = _Hinge1Height;
-																	doorConfig.borderColors["HINGE1HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-																	//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
-																	if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
-																						config4.RefreshState();
-																}
-															}
-														}
-													}
+			protected int _Hinge1Height = 0;
+			protected int Hinge1Height
+			{
+				get
+				{
+					if (doorConfig != null)
+					{
+						_Hinge1Height = doorConfig.HINGE1HEIGHT;
+					}
+					return _Hinge1Height;
+				}
+				set
+				{
+					if (value >= doorConfig.DOORHEIGHT)
+					{
+						errMsg3 = "ציינת גובה ציר גדול או שווה לגובה הדלת";
+						openMsgBox = true;
+					}
+					else
+					{
+						_Hinge1Height = value;
+						if (doorConfig != null)
+						{
+							doorConfig.HINGE1HEIGHT = _Hinge1Height;
+							doorConfig.borderColors["HINGE1HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
+							//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
+							if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
+												config4.RefreshState();
+						}
+					}
+				}
+			}
+		}
                 <td id="tdHinge2Height" >
                     <input type="number" name="txtHinge2Height"  @bind="Hinge2Height" 
 							class= "@doorConfig.borderColors["HINGE2HEIGHT"]"  
@@ -341,6 +369,11 @@
 							errMsg3 = "ציר 2 חייב להיות גבוה מציר 1";
 							openMsgBox = true;
 						}
+						else if (value >= doorConfig.DOORHEIGHT)
+						{
+							errMsg3 = "ציינת גובה ציר גדול או שווה לגובה הדלת";
+							openMsgBox = true;
+						}
 						else 
 						{
 						    //UiLogic.clearFollowingTabFields(doorConfig, "hinges");
@@ -384,6 +417,11 @@
 						if (value > 0 && value <= doorConfig.HINGE2HEIGHT)
 						{
 							errMsg3 = "ציר 3 חייב להיות גבוה מציר 2";
+							openMsgBox = true;
+						}
+						else if (value >= doorConfig.DOORHEIGHT)
+						{
+							errMsg3 = "ציינת גובה ציר גדול או שווה לגובה הדלת";
 							openMsgBox = true;
 						}
 						else
@@ -441,6 +479,11 @@
 							errMsg3 = "ציר 4 חייב להיות גבוה מציר 3";
 							openMsgBox = true;
 						}
+						else if (value >= doorConfig.DOORHEIGHT)
+						{
+							errMsg3 = "ציינת גובה ציר גדול או שווה לגובה הדלת";
+							openMsgBox = true;
+						}
 						else
 						{
 							doorConfig.HINGE4HEIGHT = _Hinge4Height;
@@ -463,30 +506,35 @@
                                                     </td>
 													@code
 													{
-														protected int _Hinge5Height = 0;
-														protected int Hinge5Height
-														{
-															get
-															{
-																if (doorConfig != null)
-																{
-																	_Hinge5Height = doorConfig.HINGE5HEIGHT;
-																}
-																return _Hinge5Height;
-															}
-															set
-															{
-																_Hinge5Height = value;
-																doorConfig.borderColors["HINGE5HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
+			protected int _Hinge5Height = 0;
+			protected int Hinge5Height
+			{
+				get
+				{
+					if (doorConfig != null)
+					{
+						_Hinge5Height = doorConfig.HINGE5HEIGHT;
+					}
+					return _Hinge5Height;
+				}
+				set
+				{
+					_Hinge5Height = value;
+					doorConfig.borderColors["HINGE5HEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
 
-																if (doorConfig != null)
-																{
-																	if (value > 0 && value <= doorConfig.HINGE4HEIGHT)
-																	{
-																		errMsg3 = "ציר 5 חייב להיות גבוה מציר 4";
-																		openMsgBox = true;
-																	}
-																	else 
+					if (doorConfig != null)
+					{
+						if (value > 0 && value <= doorConfig.HINGE4HEIGHT)
+						{
+							errMsg3 = "ציר 5 חייב להיות גבוה מציר 4";
+							openMsgBox = true;
+						}
+						else if (value >= doorConfig.DOORHEIGHT)
+						{
+							errMsg3 = "ציינת גובה ציר גדול או שווה לגובה הדלת";
+							openMsgBox = true;
+						}
+						else 
 																	{
 																		doorConfig.HINGE5HEIGHT= _Hinge5Height;
 																         if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))

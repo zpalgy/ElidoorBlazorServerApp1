@@ -867,7 +867,7 @@ namespace BlazorServerApp1.Data
                     return i;
                 }
             }
-            if (DOORHEIGHT > hRanges[3])
+            if (DOORHEIGHT >= hRanges[3])
                 return 4;
             return 0;  // error !
         }
