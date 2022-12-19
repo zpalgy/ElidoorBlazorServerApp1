@@ -209,7 +209,7 @@
 			// end old stuff - to del
 			bool setHingesHeights2 (int newHingesNum, int oldHingesNum, ref string errMsg)
 			{
-				int hRange = UiLogic.HeightRange(doorConfig.DOORHEIGHT);
+				int hRange = UiLogic.HeightRange(doorConfig.DOORHEIGHT, doorConfig);
 
 				bool err = false;
 				switch (hRange)
