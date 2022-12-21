@@ -738,7 +738,8 @@ namespace BlazorServerApp1.Data
                 }
             }
         }
-        public static void setHingesAndWindowsData(DoorConfig doorConfig, ref string errMsg)
+		//setHingesAndWindowsData(...) is called ONLY after DOORHEIGHT is set in Movingwing.razor !
+		public static void setHingesAndWindowsData(DoorConfig doorConfig, ref string errMsg)
         {
             try
             {
@@ -763,11 +764,13 @@ namespace BlazorServerApp1.Data
                 doorConfig.HINGESNUM = int.Parse(rowsArray[0]["HINGESNUM"].ToString());
                 doorConfig.HINGE1HEIGHT = int.Parse(rowsArray[0]["HINGE1HEIGHT"].ToString());
 
-                // doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
-                doorConfig.HINGE2HEIGHT = (UiLogic.showHinge2(doorConfig) ? int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString()) : 0); // new 05/11/2022
+				// doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
 
-                // new 05/11/2022
-                doorConfig.optionalHingeHeight = 0;
+				doorConfig.HINGE2HEIGHT = (UiLogic.showHinge2(doorConfig) ? int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString()) : 0); // created on 05/11/2022 
+
+
+				// new 05/11/2022 - set doorConfig.optionalHingeHeight
+				doorConfig.optionalHingeHeight = 0;
                 if (doorConfig.HINGESNUM == 2 && int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString()) > 0)
                     doorConfig.optionalHingeHeight = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
                 else if (doorConfig.HINGESNUM == 4 && int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString()) > 0)
@@ -777,12 +780,24 @@ namespace BlazorServerApp1.Data
                 doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
 
                 //doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
-                doorConfig.HINGE4HEIGHT = (UiLogic.showHinge4(doorConfig) ? int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString()) : 0); // new 05/11/2022
+                doorConfig.HINGE4HEIGHT = (UiLogic.showHinge4(doorConfig) ? int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString()) : 0); // created on 05/11/2022
 
-                doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
-                //
-                // old logic before 05/11/2022 
-                if (false)
+				doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+
+				//21/12/2022
+				if (HeightRange(doorConfig.DOORHEIGHT, doorConfig) == 2 && !UiLogic.showHinge2(doorConfig))
+                {
+					doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+                    doorConfig.HINGE3HEIGHT = 0;
+				}
+				if (HeightRange(doorConfig.DOORHEIGHT, doorConfig) == 4 && !UiLogic.showHinge4(doorConfig))
+				{
+					doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+					doorConfig.HINGE5HEIGHT = 0;
+				}
+				//  end of new logic 21/12/2022
+				// old logic before 05/11/2022 
+				if (false)
                 {
                     if (doorConfig.HINGESNUM > 2)
                     {
@@ -842,14 +857,33 @@ namespace BlazorServerApp1.Data
 
                 doorConfig.HINGE1HEIGHT = int.Parse(rowsArray[0]["HINGE1HEIGHT"].ToString());
 
-                doorConfig.HINGE2HEIGHT = (showHinge2(doorConfig) ? int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString()) : 0);
-                
-                doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+				// 21/12/2022 : per Eli's request commented the following two  lines and replaced it by the other lines.
+				//doorConfig.HINGE2HEIGHT = (showHinge2(doorConfig) ? int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString()) : 0);
+				//doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+				if (showHinge2(doorConfig))
+                {
+                    doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE2HEIGHT"].ToString());
+					doorConfig.HINGE3HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+				}
+				else
+                {
+					doorConfig.HINGE2HEIGHT = int.Parse(rowsArray[0]["HINGE3HEIGHT"].ToString());
+                    doorConfig.HINGE3HEIGHT = 0;
+				}
 
-                doorConfig.HINGE4HEIGHT = (showHinge4(doorConfig) ? int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString()) : 0);
- 
-                doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
-            }
+               // doorConfig.HINGE4HEIGHT = (showHinge4(doorConfig) ? int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString()) : 0);
+               // doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+               if (showHinge4(doorConfig))
+               {
+                    doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE4HEIGHT"].ToString());
+					doorConfig.HINGE5HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+			   }
+               else
+               {
+					doorConfig.HINGE4HEIGHT = int.Parse(rowsArray[0]["HINGE5HEIGHT"].ToString());
+                    doorConfig.HINGE5HEIGHT = 0;
+		       }
+			}
             catch (Exception ex)
             {
                 string errMsg2 = string.Format("שגיאה : אנא פנה למנהל המערכת : {0} , {1}    י", ex.Message, ex.StackTrace);

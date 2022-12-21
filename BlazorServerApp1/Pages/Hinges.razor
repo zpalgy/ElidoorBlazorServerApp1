@@ -228,6 +228,7 @@
 						if (newHingesNum == 3)  //(oldHingesNum == 2 && newHingesNum == 3)
 						{
 							//doorConfig.HINGE3HEIGHT = doorConfig.HINGE2HEIGHT;
+							doorConfig.HINGESNUM = newHingesNum;
 							UiLogic.setHingesHeights(doorConfig, ref errMsg);
 							doorConfig.HINGE2HEIGHT = doorConfig.optionalHingeHeight;
 						}
@@ -254,6 +255,7 @@
 					case 4:
 						if (newHingesNum == 5) //(oldHingesNum == 4 && newHingesNum == 5)
 						{
+							doorConfig.HINGESNUM = newHingesNum;
 							UiLogic.setHingesHeights(doorConfig, ref errMsg);
 							doorConfig.HINGE4HEIGHT = doorConfig.optionalHingeHeight;
 						}
