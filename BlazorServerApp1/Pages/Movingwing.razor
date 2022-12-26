@@ -912,6 +912,7 @@
                     set
                     {
                         _LockDrilHeight = value;
+                         newLockDrilHeight = (int)value;
                         @* if (!int.TryParse(value,out _LockDrilHeight))
                             {
                                 msgCaption = string.Empty;
@@ -926,9 +927,13 @@
                                             if (doorConfig.TRSH_COMPLIENT != PrApiCalls.ELIDOOR_COMPLIENT) //07/07/2022 we clear the Hinges data only if 
                                                                                                            //   the Door is not ELIDOOR_COMPLIENT
                                             {
-                                                if (doorConfig.LOCKDRILHEIGHT > 0 )  // show error message only if LOCKDRILHEIGHT was populated
+                                                if (newLockDrilHeight >= doorConfig.DOORHEIGHT)
                                                 {
-                                                    newLockDrilHeight = (int)value;
+                                                    errMsg2 = "גובה הניקוב לא יכול להיות גבוה מהדלת";
+                                                    openMsgBox = true;
+                                                }
+                                                else if (doorConfig.LOCKDRILHEIGHT > 0 )  // show error message only if LOCKDRILHEIGHT was populated
+                                                {
                                                     msgBorder1Style = "border:solid;border-color:red;";
                                                     //msgHeaderClass = "modal-header redBorder";
                                                     msgCaption = "שים לב:";
@@ -941,31 +946,46 @@
 
                                                     @*if (!ansYes) - the code that handles the YES answer to the YesNo dialogue is
                                                          at the end of this file - in the MsgBox YesNO section !
-                                            return;
+                                                        return;
 
-                                            if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
-                                            { 
-                                                doorConfig.LOCKDRILHEIGHT = (int)_LockDrilHeight;
-                                                UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                                                clearHingesMeasures(doorConfig);
-                                            }
-                                            doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-                                       *@
-                                                }
-                                                else  // door is Not complient but lockDtilHeight is Zero :
+                                                        if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
+                                                        { 
+                                                            doorConfig.LOCKDRILHEIGHT = (int)_LockDrilHeight;
+                                                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                                                            clearHingesMeasures(doorConfig);
+                                                        }
+                                                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
+                                                   *@
+
+
+
+
+                                                }   // end of if (doorConfig.LOCKDRILHEIGHT > 0 )
+
+                                                else  // door is Not complient but lockDrilHeight is Zero , i.e. not set yet !
                                                 //  so we do not jump to the yesNo section to assign value to doorConfig.LOCKDRILHEIGHT 
                                                       //  we should do it here !
                                                 {
                                                     setLockDrilHeight();
                                                 }
-
                                             }
-
-
-
                                             else    //the door is  Elidoor complient 
                                             {
-                                                  setLockDrilHeight();  
+                                                if (newLockDrilHeight != doorConfig.LOCKDRILHEIGHT)
+                                                {
+                                                    if (newLockDrilHeight >= doorConfig.DOORHEIGHT)
+                                                    {
+                                                        errMsg2 = "גובה הניקוב לא יכול להיות גבוה מהדלת";
+                                                        openMsgBox = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        doorConfig.LockDrilHChanged = true;
+                                                        clearHingesMeasures(doorConfig);
+                                                    }
+
+                                                    setLockDrilHeight();
+                                                }
                                             }
                                         }
                     }

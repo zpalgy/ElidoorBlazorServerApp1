@@ -994,9 +994,20 @@ namespace BlazorServerApp1.Data
             string errMsg = string.Empty;
             doorConfig.PARTNAME = string.Empty;
             doorConfig.COMMENTS = string.Empty;
+
+            // clear NonSerialized scalar/non-dictionary/table/List fields
+            doorConfig.useLOGO = false;
+            doorConfig.useTurbo = false;
             doorConfig.handleName1 = string.Empty;
             doorConfig.optionalHingeHeight = 0;
+            doorConfig.staticwingChanged = false;
             doorConfig.showDecor = false;
+            doorConfig.LockDrilHChanged = false;
+            doorConfig.meaged = string.Empty;
+            doorConfig.currPropName = String.Empty;
+            doorConfig.currTabName = String.Empty;
+            doorConfig.prevTabName = string.Empty;
+
 
             for (int r=0;r<PrApiCalls.dtConfFields.Rows.Count; r++)
             {

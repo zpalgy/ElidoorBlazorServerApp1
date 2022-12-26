@@ -1161,7 +1161,7 @@ namespace BlazorServerApp1.Data
             List<TRSH_LOCKHINGE_DRILH_Class> lstLockDH1 = new List<TRSH_LOCKHINGE_DRILH_Class>();
             foreach (TRSH_LOCKHINGE_DRILH_Class LockDH in lstLock_Hinge_Dril_Heights)
             {
-                if (LockDH.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE)
+                if (LockDH.LOCKDRILHEIGHT < doorConfig.DOORHEIGHT && LockDH.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE)
                 {
                     lstLockDH1.Add(LockDH);
                 }

@@ -594,6 +594,8 @@ namespace BlazorServerApp1.Data
         public bool staticwingChanged = false;
         [NonSerialized]
         public bool showDecor = false;
+        [NonSerialized]
+        public bool LockDrilHChanged = false;
         public void initBorderColors()
         {
             Type objType = this.GetType();

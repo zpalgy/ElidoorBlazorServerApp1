@@ -136,19 +136,36 @@
 							errMsg3 = "מספר הצירים חייב להיות בין 2 ל-5";
 							openMsgBox = true;
 						}
+						else if (_HingesNum > 3 && UiLogic.HeightRange(doorConfig.DOORHEIGHT, doorConfig) == 1 )
+						{
+							errMsg3 = string.Format("לדלת בגובה {0} מותרים לכל היותר 3 צירים", doorConfig.DOORHEIGHT);
+							openMsgBox = true;
+						}
 						else
 						{
 							//int lastHingeH = getLastHingeH(oldHingesNum);
 							//setHingesHeights(_HingesNum, lastHingeH);
 							errMsg3 = string.Empty;
 							//if (!setHingesHeights2(doorConfig.HINGESNUM,  oldHingesNum, ref errMsg3))
-							if (doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT && (!setHingesHeights2(value,  oldHingesNum, ref errMsg3)))
+							if (doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT)
 							{
-								openMsgBox = true;
+								if (!doorConfig.LockDrilHChanged)
+								{
+									if (!setHingesHeights2(value, oldHingesNum, ref errMsg3))
+									{
+										openMsgBox = true;
+									}
+								}
+								else  //  doorConfig.LockDrilHChanged
+								{
+									doorConfig.HINGESNUM = _HingesNum;
+									clearExtraHinges(_HingesNum);
+								}
 							}
-							else 
+							else // door not complient 
 							{
 								doorConfig.HINGESNUM = _HingesNum;
+								clearExtraHinges(_HingesNum);
 								if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
 									config4.RefreshState();
 							}
@@ -159,6 +176,7 @@
 					}
 				}
 			}
+
 			int getLastHingeH(int hingesNum)
 			{
 				switch (hingesNum)
@@ -276,11 +294,31 @@
 				if (err)
 				{
 					errMsg = string.Format("שינוי מספר צירים מ- {2} ל- {1}  אסור לדלת בגובה  {0} י ", doorConfig.DOORHEIGHT, newHingesNum, oldHingesNum);
-						return false;
+					return false;
 				}
 				return true;
 			}
-	 }
+			void clearExtraHinges(int hingesNum)
+			{
+				switch (hingesNum)
+				{
+					case 2:
+						doorConfig.HINGE3HEIGHT = 
+						doorConfig.HINGE4HEIGHT = 
+						doorConfig.HINGE5HEIGHT = 0;
+						break;
+					case 3:
+						doorConfig.HINGE4HEIGHT = 
+						doorConfig.HINGE5HEIGHT = 0;
+						doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
+						break;
+					case 4:
+						doorConfig.HINGE5HEIGHT = 0;
+						doorConfig.disabledFlds["HINGE3HEIGHT"] = doorConfig.disabledFlds["HINGE4HEIGHT"] = false;
+						break;
+				}
+			}
+	   }  @* close the code block : get and set of HINGESNUM *@
                                                     
         <td id="tdHinge1Height" class= "@doorConfig.borderColors["HINGE1HEIGHT"]" >
             <input type="number" name="txtHinge1Height"  @bind="Hinge1Height" 
