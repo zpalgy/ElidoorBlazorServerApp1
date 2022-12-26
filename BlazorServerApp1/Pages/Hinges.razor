@@ -142,7 +142,7 @@
 							//setHingesHeights(_HingesNum, lastHingeH);
 							errMsg3 = string.Empty;
 							//if (!setHingesHeights2(doorConfig.HINGESNUM,  oldHingesNum, ref errMsg3))
-							if (!setHingesHeights2(value,  oldHingesNum, ref errMsg3))
+							if (doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT && (!setHingesHeights2(value,  oldHingesNum, ref errMsg3)))
 							{
 								openMsgBox = true;
 							}

@@ -132,7 +132,7 @@
 			 @{  int i402 = Array.IndexOf(UiLogic.propNames, "TILENAME");
             <select name="dlstTiletype"  @bind="TileName" class= "@doorConfig.borderColors["TILENAME"]" 
 					 @onfocus="@( () => UiLogic.HasFocus("TILENAME", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i402]]" >
 
                 @if (PrApiCalls.lstTileTypes != null)
@@ -212,7 +212,7 @@
 			  @{  int i403 = Array.IndexOf(UiLogic.propNames, "GRIDCOLORID");
 				<select name="dlstGridColor"  @bind="GridColor" class= "@doorConfig.borderColors["GRIDCOLORID"]" 
 				@onfocus="@( () => UiLogic.HasFocus("GRIDCOLORID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i403]]" >
 					@if (PrApiCalls.lstColors != null)
 					{
@@ -255,7 +255,7 @@
 			@{  int i404 = Array.IndexOf(UiLogic.propNames, "VITRAGECLRBYCTLG");
 				<input type="checkbox" name="chkbVitrageClrByCtlg" @bind="VitrageClrByCtlg" 
 					@onfocus="@( () => UiLogic.HasFocus("VITRAGECLRBYCTLG", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i404]]" />
 			}
         </td>
@@ -285,7 +285,7 @@
 			@{  int i405 = Array.IndexOf(UiLogic.propNames, "EXTSEPLINESCLRID");
             <select name="dlstExtSepLinesClr" @bind="ExtSepLinesClr" class= "@doorConfig.borderColors["EXTSEPLINESCLRID"]" 
 			     @onfocus="@( () => UiLogic.HasFocus("EXTSEPLINESCLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i405]]" >
                 @if (PrApiCalls.lstColors != null)
 {
@@ -326,7 +326,7 @@
 		  @{  int i406 = Array.IndexOf(UiLogic.propNames, "EXTCPLATEHTDMNDCLRID");
             <select name="dlstExtCPlateHTDmndClr"  @bind="ExtCPlateHTDmndClr" class= "@doorConfig.borderColors["EXTCPLATEHTDMNDCLRID"]" 
 			   @onfocus="@( () => UiLogic.HasFocus("EXTCPLATEHTDMNDCLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i406]]"
 			>
                 @if (PrApiCalls.lstColors != null)
@@ -368,7 +368,7 @@
 			@{  int i407 = Array.IndexOf(UiLogic.propNames, "EXTPERIFPROFILECLRID");
             <select name="dlstExtPerifProfileClr" @bind="ExtPerifProfileClr" class= "@doorConfig.borderColors["EXTPERIFPROFILECLRID"]" 
 			   @onfocus="@( () => UiLogic.HasFocus("EXTPERIFPROFILECLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i407]]"
 			>
                 @if (PrApiCalls.lstColors != null)
@@ -410,7 +410,7 @@
 			@{  int i408 = Array.IndexOf(UiLogic.propNames, "EXTMODERNCPLATECLRID");
             <select name="dlstExtModerCPlateClr"  @bind="ExtModerCPlateClr" class= "@doorConfig.borderColors["EXTMODERNCPLATECLRID"]" 
 			 @onfocus="@( () => UiLogic.HasFocus("EXTMODERNCPLATECLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i408]]"
 			>
                 @if (PrApiCalls.lstColors != null)
@@ -452,7 +452,7 @@
 			@{  int i409 = Array.IndexOf(UiLogic.propNames, "EXTCGTIDCLRID");
             <select name="dlstExtCGridClr"  @bind="ExtCGridClr" class= "@doorConfig.borderColors["EXTCGTIDCLRID"]" 
 				@onfocus="@( () => UiLogic.HasFocus("EXTCGTIDCLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i409]]"
 			>
                 @if (PrApiCalls.lstColors != null)
@@ -513,7 +513,7 @@
 				@{  int i410 = Array.IndexOf(UiLogic.propNames, "EXTHTPLATESCLRID");
                 <select name="dlstExtHTPlatesClr"  @bind="ExtHTPlatesClr" class= "@doorConfig.borderColors["EXTHTPLATESCLRID"]" 
 				      @onfocus="@( () => UiLogic.HasFocus("EXTHTPLATESCLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i410]]"
 				>
                     @if (PrApiCalls.lstColors != null)
@@ -555,7 +555,7 @@
 				@{  int i411 = Array.IndexOf(UiLogic.propNames, "ATTACHEDPLATECLRID");
                 <select name="dlstAttachedPlatesClr"  @bind="AttachedPlatesClr" class= "@doorConfig.borderColors["ATTACHEDPLATECLRID"]" 
 				   @onfocus="@( () => UiLogic.HasFocus("ATTACHEDPLATECLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i411]]"
 				>
                     @if (PrApiCalls.lstColors != null)
@@ -597,7 +597,7 @@
 				@{  int i412 = Array.IndexOf(UiLogic.propNames, "EXTGLASSPLATECLRID");
                 <select name="dlstExtGlassPlateClr" @bind="ExtGlassPlateClr" class= "@doorConfig.borderColors["EXTGLASSPLATECLRID"]" 
 				      @onfocus="@( () => UiLogic.HasFocus("EXTGLASSPLATECLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i412]]"
 				>
                     @if (PrApiCalls.lstGlassColors4Diamond != null)
@@ -640,7 +640,7 @@
 				@{  int i413 = Array.IndexOf(UiLogic.propNames, "EXTMODERNPLATECLRID");
                 <select name="dlstExtModerPlateClr"  @bind="ExtModerPlateClr" class= "@doorConfig.borderColors["EXTMODERNPLATECLRID"]" 
 				        @onfocus="@( () => UiLogic.HasFocus("EXTMODERNPLATECLRID", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i413]]"
 				>
                     @if (PrApiCalls.lstColors != null)
@@ -682,7 +682,7 @@
 						@{  int i414 = Array.IndexOf(UiLogic.propNames, "DECORPLATECLRID");
 						<select name="dlstDecorativePlateClr"  @bind="DecorativePlateClr" class= "@doorConfig.borderColors["DECORPLATECLRID"]"
 					          @onfocus="@( () => UiLogic.HasFocus("DECORPLATECLRID", doorConfig) )" 
-							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @onkeypress="doorConfig.KeyPressHandler" 
 							 @ref="doorConfig.dicRefs[UiLogic.propNames[i414]]"
 						>
 							@if (PrApiCalls.lstColors != null)
@@ -724,7 +724,7 @@
 					@{  int i415 = Array.IndexOf(UiLogic.propNames, "NIROSTALINESCLRID");
 						<select name="dlstNirostaLinesClr"  @bind="NirostaLinesClr" class= "@doorConfig.borderColors["NIROSTALINESCLRID"]" 
 						        @onfocus="@( () => UiLogic.HasFocus("NIROSTALINESCLRID", doorConfig) )" 
-							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @onkeypress="doorConfig.KeyPressHandler" 
 							 @ref="doorConfig.dicRefs[UiLogic.propNames[i415]]"
 						>
 							@if (PrApiCalls.lstColors != null)
@@ -766,7 +766,7 @@
 					@{  int i416 = Array.IndexOf(UiLogic.propNames, "EXTNIROSTALINESCLRID");
 						<select name="dlstExtNirostaLinesClr"  @bind="ExtNirostaLinesClr" class= "@doorConfig.borderColors["EXTNIROSTALINESCLRID"]"
 					               @onfocus="@( () => UiLogic.HasFocus("EXTNIROSTALINESCLRID", doorConfig) )" 
-							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @onkeypress="doorConfig.KeyPressHandler" 
 							 @ref="doorConfig.dicRefs[UiLogic.propNames[i416]]"
 						>
 							@if (PrApiCalls.lstColors != null)
@@ -808,7 +808,7 @@
 					@{  int i417 = Array.IndexOf(UiLogic.propNames, "EXTINSERTCLRID");
                     <select name="dlstExtInsertCoverClr"  @bind="ExtInsertCoverClr" class= "@doorConfig.borderColors["EXTINSERTCLRID"]" 
 					      @onfocus="@( () => UiLogic.HasFocus("EXTINSERTCLRID", doorConfig) )" 
-							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @onkeypress="doorConfig.KeyPressHandler" 
 							 @ref="doorConfig.dicRefs[UiLogic.propNames[i417]]"
 					>
                         @if (PrApiCalls.lstColors != null)
@@ -850,7 +850,7 @@
 					@{  int i418 = Array.IndexOf(UiLogic.propNames, "VITRAGEPATTERNONDOOR");
                     <input type="checkbox" name="chkbVitragePatternOnDoor"  @bind="VitragePatternOnDoor" 
 					    @onfocus="@( () => UiLogic.HasFocus("VITRAGEPATTERNONDOOR", doorConfig) )" 
-							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @onkeypress="doorConfig.KeyPressHandler" 
 							 @ref="doorConfig.dicRefs[UiLogic.propNames[i418]]"
 					/>
 					}
@@ -880,7 +880,7 @@
 					@{  int i419 = Array.IndexOf(UiLogic.propNames, "WINDOWWIDTH");
                     <input  name="txtWindowWidth" @bind="WindowWidth" class= "@doorConfig.borderColors["WINDOWWIDTH"]" 
 					       @onfocus="@( () => UiLogic.HasFocus("WINDOWWIDTH", doorConfig) )" 
-							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @onkeypress="doorConfig.KeyPressHandler" 
 							 @ref="doorConfig.dicRefs[UiLogic.propNames[i419]]"
 					/>
 					}
@@ -914,7 +914,7 @@
 					@{  int i420 = Array.IndexOf(UiLogic.propNames, "WINDOWHEIGHT");
                     <input  name="txtWindowHeight"  @bind="WindowHeight" class= "@doorConfig.borderColors["WINDOWHEIGHT"]" 
 					         @onfocus="@( () => UiLogic.HasFocus("WINDOWHEIGHT", doorConfig) )" 
-							 onkeypress="@doorConfig.KeyPressHandler" 
+							 @onkeypress="doorConfig.KeyPressHandler" 
 							 @ref="doorConfig.dicRefs[UiLogic.propNames[i420]]"
 					/>
 					}
@@ -965,7 +965,7 @@
 								@{  int i421 = Array.IndexOf(UiLogic.propNames, "PROFILE4WINDOWNAME");
 									<select name="dlstProfile4Window" @bind="Profile4Window" class= "@doorConfig.borderColors["PROFILE4WINDOWNAME"]" 
 									         @onfocus="@( () => UiLogic.HasFocus("PROFILE4WINDOWNAME", doorConfig) )" 
-											 onkeypress="@doorConfig.KeyPressHandler" 
+											 @onkeypress="doorConfig.KeyPressHandler" 
 											 @ref="doorConfig.dicRefs[UiLogic.propNames[i421]]"
 									>
 										@if (PrApiCalls.lstProfiles4Windows != null)
@@ -1007,7 +1007,7 @@
 								@{  int i422 = Array.IndexOf(UiLogic.propNames, "DECORFRAME");
 									<input type="checkbox" name="chkbDecorFrame" @bind="DecorFrame" 
 										    @onfocus="@( () => UiLogic.HasFocus("DECORFRAME", doorConfig) )" 
-											 onkeypress="@doorConfig.KeyPressHandler" 
+											 @onkeypress="doorConfig.KeyPressHandler" 
 											 @ref="doorConfig.dicRefs[UiLogic.propNames[i422]]"
 									/>
 								}

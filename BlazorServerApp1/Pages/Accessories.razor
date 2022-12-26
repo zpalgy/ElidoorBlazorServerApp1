@@ -119,7 +119,7 @@
                             disabled="@doorConfig.disabledFlds["WETCOLORBOXID"]"  
                             @onfocus="@( () => UiLogic.HasFocus("WETCOLORBOXID", doorConfig) )" 
                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                            onkeypress="@doorConfig.KeyPressHandler" 
+                            @onkeypress="doorConfig.KeyPressHandler" 
                             @ref="doorConfig.dicRefs[UiLogic.propNames[i801]]"  >
 
                         @if (lstColors1 != null)
@@ -162,11 +162,11 @@
         @* WETCOLORBOXQ *@
         <td>
               @{ int i802 = Array.IndexOf(UiLogic.propNames, "WETCOLORBOXQ");
-            <input type="number"  @bind="@WetColorBoxQ" class= "@doorConfig.borderColors["WETCOLORBOXQ"]" 
+            <input type="number"  @bind="WetColorBoxQ" class= "@doorConfig.borderColors["WETCOLORBOXQ"]" 
             disabled="@doorConfig.disabledFlds["WETCOLORBOXQ"]"  
                             @onfocus="@( () => UiLogic.HasFocus("WETCOLORBOXQ", doorConfig) )" 
                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                            onkeypress="@doorConfig.KeyPressHandler" 
+                            @onkeypress="doorConfig.KeyPressHandler" 
                             @ref="doorConfig.dicRefs[UiLogic.propNames[i802]]"  
                />
             }
@@ -207,7 +207,7 @@
                             disabled="@doorConfig.disabledFlds["COLORSPRAYID"]"  
                             @onfocus="@( () => UiLogic.HasFocus("COLORSPRAYID", doorConfig) )" 
                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                            onkeypress="@doorConfig.KeyPressHandler" 
+                            @onkeypress="doorConfig.KeyPressHandler" 
                             @ref="doorConfig.dicRefs[UiLogic.propNames[i803]]"  >
 
                             @if (lstColors1 != null)
@@ -251,11 +251,11 @@
         @* COLORSPRAYQ*@
         <td>
              @{ int i804 = Array.IndexOf(UiLogic.propNames, "COLORSPRAYQ");
-            <input type="number"  @bind="@ColorSprayQ" class= "@doorConfig.borderColors["COLORSPRAYQ"]" 
+            <input type="number"  @bind="ColorSprayQ" class= "@doorConfig.borderColors["COLORSPRAYQ"]" 
             disabled="@doorConfig.disabledFlds["COLORSPRAYQ"]"  
                             @onfocus="@( () => UiLogic.HasFocus("COLORSPRAYQ", doorConfig) )" 
                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                            onkeypress="@doorConfig.KeyPressHandler" 
+                            @onkeypress="doorConfig.KeyPressHandler" 
                             @ref="doorConfig.dicRefs[UiLogic.propNames[i804]]"  
             />
             }
@@ -297,7 +297,7 @@
                     disabled="@doorConfig.disabledFlds["CLEANINGSPRAY"]"
                        @onfocus="@( () => UiLogic.HasFocus("CLEANINGSPRAY", doorConfig) )" 
                        @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                   onkeypress="@doorConfig.KeyPressHandler" 
+                   @onkeypress="doorConfig.KeyPressHandler" 
                        @ref="doorConfig.dicRefs[UiLogic.propNames[i805]]" 
                     />
                 }
@@ -332,7 +332,7 @@
               disabled="@doorConfig.disabledFlds["LCDEYE"]"
                        @onfocus="@( () => UiLogic.HasFocus("LCDEYE", doorConfig) )" 
                        @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                   onkeypress="@doorConfig.KeyPressHandler" 
+                   @onkeypress="doorConfig.KeyPressHandler" 
                        @ref="doorConfig.dicRefs[UiLogic.propNames[i806]]" 
               />
               }
@@ -369,7 +369,7 @@
                  disabled="@doorConfig.disabledFlds["SAFELOCK"]"
                        @onfocus="@( () => UiLogic.HasFocus("SAFELOCK", doorConfig) )" 
                        @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                   onkeypress="@doorConfig.KeyPressHandler" 
+                   @onkeypress="doorConfig.KeyPressHandler" 
                        @ref="doorConfig.dicRefs[UiLogic.propNames[i807]]" 
                 />
                 }

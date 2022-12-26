@@ -464,7 +464,7 @@
 					 	<input type="checkbox" name="chkbSwingHasLock" @bind="SwingHasLock"  
 				      disabled="@doorConfig.disabledFlds["SWINGHASLOCK"]"
 						   	@onfocus="@( () => UiLogic.HasFocus("SWINGHASLOCK", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i601]]"  
 					/>
 			}
@@ -521,7 +521,7 @@
 				    disabled="@doorConfig.disabledFlds["EXTRAWINGWIDTH"]"
 					   	@onfocus="@( () => UiLogic.HasFocus("EXTRAWINGWIDTH", doorConfig) )" 
 					   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i602]]"  
 						/>
 				}
@@ -608,7 +608,7 @@
 					   disabled="@doorConfig.disabledFlds["CENTRALCOLWIDTH"]"   autocomplete = "off"
 						  	@onfocus="@( () => UiLogic.HasFocus("CENTRALCOLWIDTH", doorConfig) )" 
 						  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i603]]"  
 							>
 								<option>0</option>
@@ -896,7 +896,7 @@
 				 disabled="@doorConfig.disabledFlds["TRSH_SWING_CYLINDER"]"
 					  	@onfocus="@( () => UiLogic.HasFocus("TRSH_SWING_CYLINDER", doorConfig) )" 
 					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i604]]"  >
 							@if (lstCylinders1 != null)
 						{
@@ -1008,7 +1008,7 @@
 					        disabled="@doorConfig.disabledFlds["HW4EXTRAWING"]"
 								@onfocus="@( () => UiLogic.HasFocus("HW4EXTRAWING", doorConfig) )" 
 								@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-							onkeypress="@doorConfig.KeyPressHandler" 
+							@onkeypress="doorConfig.KeyPressHandler" 
 								@ref="doorConfig.dicRefs[UiLogic.propNames[i605]]" 
 								/>
 						<datalist id="lstHw">
@@ -1232,7 +1232,7 @@
                         disabled="@doorConfig.disabledFlds["SWING_HWACCESSORYID"]"
 							@onfocus="@( () => UiLogic.HasFocus("SWING_HWACCESSORYID", doorConfig) )" 
 							@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                        onkeypress="@doorConfig.KeyPressHandler" 
+                        @onkeypress="doorConfig.KeyPressHandler" 
 							@ref="doorConfig.dicRefs[UiLogic.propNames[i617]]" 
 				>
 				@* />
@@ -1315,7 +1315,7 @@
                  disabled="@doorConfig.disabledFlds["SWING_HWCOLORID"]"  
 					  	@onfocus="@( () => UiLogic.HasFocus("SWING_HWCOLORID", doorConfig) )" 
 					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i606]]" 
 					/>
 					<datalist id="lstHwColor2">
@@ -1392,7 +1392,7 @@
 					disabled="@doorConfig.disabledFlds["SWING_DRIL4HW"]" 
 					  	@onfocus="@( () => UiLogic.HasFocus("SWING_DRIL4HW", doorConfig) )" 
 					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                    onkeypress="@doorConfig.KeyPressHandler" 
+                    @onkeypress="doorConfig.KeyPressHandler" 
 						@ref="doorConfig.dicRefs[UiLogic.propNames[i607]]" >
 
 						@* @if (PrApiCalls.lstDril4Hw != null)  *@
@@ -1442,7 +1442,7 @@
 			   disabled="@doorConfig.disabledFlds["SWING_TURBO"]"
 				   	@onfocus="@( () => UiLogic.HasFocus("SWING_TURBO", doorConfig) )"
 					   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i613]]" 
 					/>
 			}
@@ -1512,7 +1512,7 @@
 			     disabled="@doorConfig.disabledFlds["SWING_LOCKNAME"]"
 					 	@onfocus="@( () => UiLogic.HasFocus("SWING_LOCKNAME", doorConfig) )"
 					 	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i608]]"  >
 						@{
 						string errMsg3 = string.Empty;
@@ -1564,7 +1564,7 @@
 				  disabled="@doorConfig.disabledFlds["SWING_HANDLENAME"]"	
 					  	@onfocus="@( () => UiLogic.HasFocus("SWING_HANDLENAME", doorConfig) )" 
 					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i609]]"  
 						/>
 						<datalist id="lstHandles2">
@@ -1638,7 +1638,7 @@
 					disabled="@doorConfig.disabledFlds["SWING_HANDLECOLORID"]"	
 					  	@onfocus="@( () => UiLogic.HasFocus("SWING_HANDLECOLORID", doorConfig) )" 
 					  	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i614]]" 
 						/>
 						<datalist id="lstHandleClrs2">
@@ -1690,7 +1690,7 @@
 			 disabled="@doorConfig.disabledFlds["SWING_VENTS"]"
 				 	@onfocus="@( () => UiLogic.HasFocus("SWING_VENTS", doorConfig) )" 
 				 	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i610]]" >
 						<option></option>
 						<option>ללא</option>
@@ -1736,7 +1736,7 @@
 			    disabled="@doorConfig.disabledFlds["RAFAFAONSTATICWING"]"
 						@onfocus="@( () => UiLogic.HasFocus("RAFAFAONSTATICWING", doorConfig) )" 
 						@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i611]]" >
 						<option></option>
 						<option>ללא</option>
@@ -1792,7 +1792,7 @@
 				   disabled="@doorConfig.disabledFlds["SWING_CATDOOR"]"
 					   	@onfocus="@( () => UiLogic.HasFocus("SWING_CATDOOR", doorConfig) )"
 					   	@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i612]]"  />
             }
             @code
