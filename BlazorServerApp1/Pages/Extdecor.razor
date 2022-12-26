@@ -95,7 +95,7 @@
 			        @{  int i401 = Array.IndexOf(UiLogic.propNames, "LINESFORMAT");
                     <select name="dlstPassimShkuimBoltim"  @bind="Passim" class= "@doorConfig.borderColors["LINESFORMAT"]" 
 					@onfocus="@( () => UiLogic.HasFocus("LINESFORMAT", doorConfig) )" 
-                     onkeypress="@doorConfig.KeyPressHandler" 
+                     @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i401]]" >
                         <option></option>
                         <option>בולטים</option>
