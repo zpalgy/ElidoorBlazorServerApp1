@@ -311,11 +311,19 @@
 						doorConfig.HINGE4HEIGHT = 
 						doorConfig.HINGE5HEIGHT = 0;
 						doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
 						break;
 					case 4:
 						doorConfig.HINGE5HEIGHT = 0;
 						doorConfig.disabledFlds["HINGE3HEIGHT"] = doorConfig.disabledFlds["HINGE4HEIGHT"] = false;
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
 						break;
+					case 5:
+					    doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE5HEIGHT"] = (doorConfig.HINGE5HEIGHT != 0 ? "blueBorder" : "redBorder");
+					    break;
 				}
 			}
 	   }  @* close the code block : get and set of HINGESNUM *@
