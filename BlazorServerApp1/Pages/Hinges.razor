@@ -159,13 +159,15 @@
 								else  //  doorConfig.LockDrilHChanged
 								{
 									doorConfig.HINGESNUM = _HingesNum;
-									clearExtraHinges(_HingesNum);
+									//clearExtraHinges(_HingesNum);    //29/12/2022 - Eli : if hingesNum is changef always clear allHinges 
+									clearAllHinges(_HingesNum);
 								}
 							}
 							else // door not complient 
 							{
 								doorConfig.HINGESNUM = _HingesNum;
-								clearExtraHinges(_HingesNum);
+								//clearExtraHinges(_HingesNum);
+								clearAllHinges(_HingesNum);       //29/12/2022 - Eli : if hingesNum is changef always clear allHinges 
 								if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
 									config4.RefreshState();
 							}
@@ -297,6 +299,51 @@
 					return false;
 				}
 				return true;
+			}
+			void clearAllHinges(int hingesNum)
+			{
+				doorConfig.HINGE1HEIGHT = 
+				doorConfig.HINGE2HEIGHT = 
+				doorConfig.HINGE3HEIGHT = 
+				doorConfig.HINGE4HEIGHT = 
+				doorConfig.HINGE5HEIGHT = 0;
+				// Minimum HingesNum is 2 so two Hinges are always enabled.
+				doorConfig.disabledFlds["HINGE1HEIGHT"] = false;
+				doorConfig.disabledFlds["HINGE2HEIGHT"] = false;
+				doorConfig.borderColors["HINGE1HEIGHT"] = (doorConfig.HINGE1HEIGHT != 0 ? "blueBorder" : "redBorder");
+				doorConfig.borderColors["HINGE2HEIGHT"] = (doorConfig.HINGE2HEIGHT != 0 ? "blueBorder" : "redBorder");
+
+				switch (hingesNum)
+				{
+					case 2:
+						doorConfig.disabledFlds["HINGE3HEIGHT"] = true;
+						doorConfig.disabledFlds["HINGE4HEIGHT"] = true;
+						doorConfig.disabledFlds["HINGE5HEIGHT"] = true;
+						break;
+					case 3:
+						doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+
+						doorConfig.disabledFlds["HINGE4HEIGHT"] = true;
+						doorConfig.disabledFlds["HINGE5HEIGHT"] = true;
+						break;
+					case 4:
+					    doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
+						doorConfig.disabledFlds["HINGE4HEIGHT"] = false;
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
+
+						doorConfig.disabledFlds["HINGE5HEIGHT"] = true;
+						break;
+					case 5:
+					    doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
+						doorConfig.disabledFlds["HINGE4HEIGHT"] = false;
+						doorConfig.disabledFlds["HINGE5HEIGHT"] = false;
+					    doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE5HEIGHT"] = (doorConfig.HINGE5HEIGHT != 0 ? "blueBorder" : "redBorder");
+					    break;
+				}
 			}
 			void clearExtraHinges(int hingesNum)
 			{
