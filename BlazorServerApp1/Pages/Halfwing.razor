@@ -312,6 +312,16 @@
     }
     async void IDisposable.Dispose()
     { }
+
+    void setLockDrilHeight()
+    {
+        doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
+        doorConfig.BACKPINHEIGHT = (doorConfig.LOCKDRILHEIGHT > 0 ? doorConfig.LOCKDRILHEIGHT + 55 : 0);  //Eli 26/12/2022
+        doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
+        if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+            config4.RefreshState();
+    }
+
     }
 <br />
 <table>
@@ -997,7 +1007,7 @@
                     
         @code
             {
-                protected int? _LockDrilHeight;
+                        protected int? _LockDrilHeight;
                 protected int? LockDrilHeight
                 {
                     get
@@ -1014,6 +1024,7 @@
                     set
                     {
                         _LockDrilHeight = value;
+                        newLockDrilHeight = (int)value;
                         @* if (!int.TryParse(value,out _LockDrilHeight))
                             {
                                 msgCaption = string.Empty;
@@ -1026,20 +1037,28 @@
                         if (doorConfig != null)
                         {
                             if (doorConfig.TRSH_COMPLIENT != PrApiCalls.ELIDOOR_COMPLIENT)  //07/07/2022 we clear the Hinges data only if 
-                                                                                                                      //   the Door is not ELIDOOR_COMPLIENT
+                                                                                            //   the Door is not ELIDOOR_COMPLIENT
+                            {
+                                //newLockDrilHeight = (int)value;
+                                if (newLockDrilHeight >= doorConfig.DOORHEIGHT)
                                 {
-                                newLockDrilHeight = (int)value;
-                                msgBorder1Style = "border:solid;border-color:red;";
-                                //msgHeaderClass = "modal-header redBorder";
-                                msgCaption = "שים לב:";
-                                errMsg2 = "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית ,  האם להמשיך ?";
-                                MsgTitleCssClass = string.Empty;  //"centeredMsg";
-                                ErrMsgCssClass = "centeredMsg";   //msgClass = "modal-body centeredMsg";
-                                YNissue = "lockDril";
-                                openYesNo = true;
-                                this.StateHasChanged();
+                                    errMsg2 = "גובה הניקוב לא יכול להיות גבוה מהדלת";
+                                    openMsgBox = true;
+                                }
+                                else if (doorConfig.LOCKDRILHEIGHT > 0)  // show error message only if LOCKDRILHEIGHT was populated
+                                {
+                                    msgBorder1Style = "border:solid;border-color:red;";
+                                    //msgHeaderClass = "modal-header redBorder";
+                                    msgCaption = "שים לב:";
+                                    errMsg2 = "שינוי ערך בשדה גובה ניקוב מחייב להקליד את שאר המידות ידנית ,  האם להמשיך ?";
+                                    MsgTitleCssClass = string.Empty;  //"centeredMsg";
+                                    ErrMsgCssClass = "centeredMsg";   //msgClass = "modal-body centeredMsg";
+                                    YNissue = "lockDril";
+                                    openYesNo = true;
+                                    this.StateHasChanged();
 
-                                @*if (!ansYes)
+                                    @*if (!ansYes)  - the code that handles the YES answer to the YesNo dialogue is
+                                                         at the end of this file - in the MsgBox YesNO section !
                                 return;
 
                                 if (_LockDrilHeight != doorConfig.LOCKDRILHEIGHT)
@@ -1050,19 +1069,49 @@
                                 }
                                 doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
                             *@
+
+
+
+
+                                }   // end of if (doorConfig.LOCKDRILHEIGHT > 0 )
+
+                                else  // door is Not complient but lockDrilHeight is Zero , i.e. not set yet !
+                                      //  so we do not jump to the yesNo section to assign value to doorConfig.LOCKDRILHEIGHT 
+                                      //  we should do it here !
+                                {
+                                    setLockDrilHeight();
+                                }
                             }
-                            else
+                            else    //the door is  Elidoor complient 
                             {
-                                doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
-                                doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
-                                doorConfig.BACKPINHEIGHT = (doorConfig.LOCKDRILHEIGHT > 0 ? doorConfig.LOCKDRILHEIGHT + 55 : 0);  //Eli 26/12/2022
+                                if (newLockDrilHeight != doorConfig.LOCKDRILHEIGHT)
+                                {
+                                    if (newLockDrilHeight >= doorConfig.DOORHEIGHT)
+                                    {
+                                        errMsg2 = "גובה הניקוב לא יכול להיות גבוה מהדלת";
+                                        openMsgBox = true;
+
+                                    }
+                                    else
+                                    {
+                                        //doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
+                                        //doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
+                                        //doorConfig.BACKPINHEIGHT = (doorConfig.LOCKDRILHEIGHT > 0 ? doorConfig.LOCKDRILHEIGHT + 55 : 0);  //Eli 26/12/2022
+                                        doorConfig.LockDrilHChanged = true;
+                                        clearHingesMeasures(doorConfig);
+
+                                    }
+                                    setLockDrilHeight();
+
+                                    //if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                    //    config4.RefreshState();
+                                }
                             }
-                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
-                                   config4.RefreshState();
                         }
                     }
-            }
-        }
+                }
+           }
+
         </td>
 
         <td id="tdCylinder4HalfWing">

@@ -34,27 +34,28 @@
 
     protected override async Task OnInitializedAsync()
     {
-		
-        //if (!ExtdecorIsFull)
-        //{
-        //    // navigate back to Movingwing 
-        //    //[TODO]  Navigator.NavigateTo("Movingwing");
-        //}
+
+		//if (!ExtdecorIsFull)
+		//{
+		//    // navigate back to Movingwing 
+		//    //[TODO]  Navigator.NavigateTo("Movingwing");
+		//}
 
 		//if (!UiLogic.tabPageIsFilled("extdecor", doorConfig))
-  //      {
-  //          Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה חוץ' י");
-  //      }
+		//      {
+		//          Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה חוץ' י");
+		//      }
 
-        //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
-        //if (doorConfigJsonV.Success)
-        //{
-        //    string doorConfigJson2 = doorConfigJsonV.Value;
-        //    if (!string.IsNullOrEmpty(doorConfigJson2))
-        //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
-        //UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
+		//var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
+		//if (doorConfigJsonV.Success)
+		//{
+		//    string doorConfigJson2 = doorConfigJsonV.Value;
+		//    if (!string.IsNullOrEmpty(doorConfigJson2))
+		//         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
+		//UiLogic.restoreDoorConfig(ProtectedSessionStore, doorConfig);          
 
-        //Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
+		//Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
+		setHingesBorderColors();
 		if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
 							config4.RefreshState();
      }
@@ -149,7 +150,7 @@
 							//if (!setHingesHeights2(doorConfig.HINGESNUM,  oldHingesNum, ref errMsg3))
 							if (doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT)
 							{
-								if (!doorConfig.LockDrilHChanged)
+								if (!doorConfig.LockDrilHChanged)  // for HALFWING + NO LOCK - LOCKDRILHEIGHT is disabled  i.e this condition is true. 
 								{
 									if (!setHingesHeights2(value, oldHingesNum, ref errMsg3))
 									{
@@ -173,6 +174,7 @@
 							}
 						}
 						doorConfig.borderColors["HINGESNUM"] = (value != 0 ? "blueBorder" : "redBorder");
+						setHingesBorderColors();
 						//UiLogic.clearFollowingTabFields(doorConfig, "hinges");
 
 					}
@@ -242,7 +244,12 @@
 							return false;
 						}
 						else
+						{
+							doorConfig.HINGESNUM = newHingesNum;
+							clearAllHinges(newHingesNum);  // with this height the default value of the Hinges Height is ZERO
+																	//  se we have to set the borderColor of those fields to red. clearAllHinges(...) does that .
 							return true;
+						}
 						break;
 					case 2:
 						if (newHingesNum == 3)  //(oldHingesNum == 2 && newHingesNum == 3)
@@ -264,13 +271,17 @@
 					case 3 :
 						if (oldHingesNum == 3 && newHingesNum == 2)
 						{
+							doorConfig.HINGESNUM = newHingesNum;
 							doorConfig.HINGE2HEIGHT = doorConfig.HINGE3HEIGHT;
 							doorConfig.HINGE3HEIGHT = 0;
 						}
 						else if (newHingesNum == 3)  // restore original values
+						{
+							doorConfig.HINGESNUM = newHingesNum;
 							UiLogic.setHingesHeights(doorConfig, ref errMsg);
+						}
 						else
-							err = true;
+							err = true;  // note : here we do not change doorConfig.HINGESNUM 
 						break;
 					case 4:
 						if (newHingesNum == 5) //(oldHingesNum == 4 && newHingesNum == 5)
@@ -328,7 +339,7 @@
 						doorConfig.disabledFlds["HINGE5HEIGHT"] = true;
 						break;
 					case 4:
-					    doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
+						doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
 						doorConfig.disabledFlds["HINGE4HEIGHT"] = false;
 						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
 						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
@@ -336,13 +347,13 @@
 						doorConfig.disabledFlds["HINGE5HEIGHT"] = true;
 						break;
 					case 5:
-					    doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
+						doorConfig.disabledFlds["HINGE3HEIGHT"] = false;
 						doorConfig.disabledFlds["HINGE4HEIGHT"] = false;
 						doorConfig.disabledFlds["HINGE5HEIGHT"] = false;
-					    doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
 						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
 						doorConfig.borderColors["HINGE5HEIGHT"] = (doorConfig.HINGE5HEIGHT != 0 ? "blueBorder" : "redBorder");
-					    break;
+						break;
 				}
 			}
 			void clearExtraHinges(int hingesNum)
@@ -367,12 +378,41 @@
 						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
 						break;
 					case 5:
-					    doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
 						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
 						doorConfig.borderColors["HINGE5HEIGHT"] = (doorConfig.HINGE5HEIGHT != 0 ? "blueBorder" : "redBorder");
-					    break;
+						break;
 				}
 			}
+			void setHingesBorderColors()
+			{
+				switch (doorConfig.HINGESNUM)
+				{
+					case 2:
+						doorConfig.borderColors["HINGE1HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE2HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						break;
+					case 3:
+						doorConfig.borderColors["HINGE1HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE2HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						break;
+					case 4:
+						doorConfig.borderColors["HINGE1HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE2HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
+						break;
+					case 5:
+						doorConfig.borderColors["HINGE1HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE2HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE3HEIGHT"] = (doorConfig.HINGE3HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE4HEIGHT"] = (doorConfig.HINGE4HEIGHT != 0 ? "blueBorder" : "redBorder");
+						doorConfig.borderColors["HINGE5HEIGHT"] = (doorConfig.HINGE5HEIGHT != 0 ? "blueBorder" : "redBorder");
+						break;
+				}
+			}
+
 	   }  @* close the code block : get and set of HINGESNUM *@
                                                     
         <td id="tdHinge1Height" class= "@doorConfig.borderColors["HINGE1HEIGHT"]" >
@@ -535,7 +575,7 @@
 								class= "@doorConfig.borderColors["HINGE4HEIGHT"]" 
 								disabled = "@(doorConfig.disabledFlds["HINGE4HEIGHT"] || doorConfig.HINGESNUM < 4)" 
 								autocomplete="off"
-								@onfocus="@( () => UiLogic.HasFocus("HINGE3HEIGHT", doorConfig) )" 
+								@onfocus="@( () => UiLogic.HasFocus("HINGE4HEIGHT", doorConfig) )" 
 								@onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
 						/>
                         </td>

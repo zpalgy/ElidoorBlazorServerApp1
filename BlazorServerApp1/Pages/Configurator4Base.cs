@@ -32,7 +32,7 @@ namespace BlazorServerApp1.Pages
 							prevTab = "divDoorTitle";
 							break;
 						case "accessories":
-					    	prevTab = "staticwing";
+							prevTab = doorConfig.prevTabName;   //"staticwing";  // changed on 30/12/2022
 							break;
 					}
 				}
@@ -87,7 +87,7 @@ namespace BlazorServerApp1.Pages
 
 				if (UiLogic.tabPageIsFilled(prevTab, doorConfig))
 				{
-					doorConfig.prevTabName = prevTab;
+					doorConfig.prevTabName = doorConfig.currTabName;   //prevTab;  // changed on 30/12/2022
 					doorConfig.currTabName = tabName;
 					return true; //ActivePage = page;
 				}
