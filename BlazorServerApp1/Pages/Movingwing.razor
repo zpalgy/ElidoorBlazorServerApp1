@@ -1368,28 +1368,39 @@
             }
         </td>
         @code
-        {
-            protected int _Dril4Hw;
-            protected int Dril4Hw
-            {
-                get
-                {
-                    if (doorConfig != null)
-                    {
-                        _Dril4Hw = doorConfig.DRIL4HW;
-                    }
-                    return _Dril4Hw;
-                }
-                set
-                {
-                    _Dril4Hw = value;
-                    if (doorConfig != null)
-                    {
-                        doorConfig.DRIL4HW = _Dril4Hw;
-                        doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
-                        doorConfig.disabledFlds["HANDLENAME"] = (doorConfig.DRIL4HW != PrApiCalls.IDS_ONESIDE);
-                        if (doorConfig.disabledFlds["HANDLENAME"])
-                                    doorConfig.disabledFlds["HANDLECOLORID"] = true; 
+                        {
+                            protected int _Dril4Hw;
+                            protected int Dril4Hw
+                            {
+                                get
+                                {
+                                    if (doorConfig != null)
+                                    {
+                                        _Dril4Hw = doorConfig.DRIL4HW;
+                                    }
+                                    return _Dril4Hw;
+                                }
+                                set
+                                {
+                                    _Dril4Hw = value;
+                                    if (doorConfig != null)
+                                    {
+                                        doorConfig.DRIL4HW = _Dril4Hw;
+                                        doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
+                                        if (doorConfig.DRIL4HW != PrApiCalls.IDS_ONESIDE)
+                                        {
+                                            doorConfig.HANDLENAME = string.Empty;
+                                            doorConfig.HANDLECOLORID = 0;
+                                            doorConfig.disabledFlds["HANDLENAME"] =  doorConfig.disabledFlds["HANDLECOLORID"] = true;  
+                                        }
+                                        else
+                                        {
+                                            doorConfig.disabledFlds["HANDLENAME"] = false;
+                                            //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                                        }
+                                        if (doorConfig.disabledFlds["HANDLENAME"])
+                                            doorConfig.disabledFlds["HANDLECOLORID"] = true; 
+
                         //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                             config4.RefreshState();
@@ -1458,7 +1469,7 @@
             }
             @code
             {
-                        protected bool _TurboApparatus;
+                protected bool _TurboApparatus;
                 protected bool TurboApparatus
                 {
                     get
@@ -1868,7 +1879,7 @@
                         {
                             doorConfig.CATDOOR = (_CatDoor ? "Y" : "N" );
                             //doorConfig.borderColors["CATDOOR"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                             UiLogic.try2UpdateBtnClass(doorConfig, "movingwing");
                             config4.RefreshState();
                         }
