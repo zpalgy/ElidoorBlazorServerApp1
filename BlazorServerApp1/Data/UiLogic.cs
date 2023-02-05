@@ -1319,6 +1319,11 @@ namespace BlazorServerApp1.Data
                     bool hideFldName = hideFld(doorConfig, fldName);
                     doorConfig.thClasses[fldName] = (hideFldName ? "thGray" : "thBlue");
                     doorConfig.disabledFlds[fldName] = hideFldName;
+                    if (fldName.StartsWith("SWING_HANDLE"))
+                    {
+                        int dbg = 17;
+                    }
+
                 }
             }
             catch (Exception ex)

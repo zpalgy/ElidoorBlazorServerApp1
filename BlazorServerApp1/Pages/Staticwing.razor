@@ -178,11 +178,11 @@
 
 		// in any case : if doorConfig.HW4EXTRAWING is empty then SWING_HWACCESSORYID is disabled - 02/11/2022
 		if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
-		     doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
+			doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 
-	    // Eli 31/10/2022 : special for SHALVANIACLRID  see also calcCentralColClrID
+		// Eli 31/10/2022 : special for SHALVANIACLRID  see also calcCentralColClrID
 		if ( doorConfig.COLORSNUM == "1")
-		            doorConfig.disabledFlds["SHALVANIACLRID"] = true;
+			doorConfig.disabledFlds["SHALVANIACLRID"] = true;
 
 		//doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
 		//doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
@@ -205,9 +205,9 @@
 		///
 		//doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl;
 		//doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing;
-		
+
 		//doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc;
-		
+
 		//doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr;
 		//doorConfig.disabledFlds["SWING_HANDLENAME"] = hideSwingHandle;
 		//doorConfig.disabledFlds["SWING_HANDLECOLORID"] = hideSwingHandleClr;
@@ -286,14 +286,23 @@
 		else  // withLOCK 
 		{
 			doorConfig.thClasses["LOCKDRILHEIGHT"] =  (hideLockDrilHeight ? "thGray" : "thBlue"); //actually D-650 LOCKDRILHEIGHT is always visible , I still use hideLockDrilHeight
-			                       // here just to use the same logic for all controls.  LOCKDRILHEIGHT appears in movingwing, staticwing and halfwing 
+																									// here just to use the same logic for all controls.  LOCKDRILHEIGHT appears in movingwing, staticwing and halfwing 
 
 			doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
 			doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
 			doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
 
 			//doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
+			//02/02/2023 Eli said : If Movingwing.HW is colored that color is copied to the Staticwing and SWING_HWCOLORID field is disabled !
+			// Tsvika : this means that if Movingwing.HW is not colored SWING_HWCOLORID will be empty and disabled.
+			//          i.e. if SWINGHASLOCK - SWING_HWCOLORID is always disabled and it's value is identical to Movingwing.HWCOLORID !
+			// see also //הערות לבדיקות סופיות דלת חלקה - חצי צילינדר.docx : 16/08/2022
+			doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
+			doorConfig.SWINGCOLORID = doorConfig.HWCOLORID;
+
 			doorConfig.thClasses["SWING_HWCOLORID"] = (doorConfig.disabledFlds["SWING_HWCOLORID"] ? "thGray" : "thBlue");
+
+
 			doorConfig.thClasses["SWING_DRIL4HW"] = "thBlue";
 			doorConfig.thClasses["SWING_TURBO"] = "thGray";    //[TODO]: check this because doorConfig.SWING_TURBO  can be set if Cust.TRSH_TURBO is Y 
 																		//I.e. doorConfig.useTurbo is true !
@@ -310,10 +319,10 @@
 			if (!hideSwingCyl)
 			{
 				doorConfig.TRSH_SWING_CYLINDER = doorConfig.TRSH_CYLINDER;
-				
+
 				//new 20/11/2022
 				if (doorConfig.TRSH_SWING_CYLINDER != 0  && doorConfig.SWING_HWACCESSORYID == 0)
-				   doorConfig.SWING_HWACCESSORYID = doorConfig.HWACCESSORYID;
+					doorConfig.SWING_HWACCESSORYID = doorConfig.HWACCESSORYID;
 
 				doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (doorConfig.TRSH_SWING_CYLINDER != 0 ? "blueBorder" : "redBorder");  // special for this field
 			}
@@ -324,18 +333,28 @@
 			{
 				doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);
 				if (doorConfig.HW4EXTRAWING != 0 )
-				     lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg2);
+					lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg2);
 			}
 
 			if (lstD4HW1 == null || lstD4HW1.Count == 0)
 				setSWING_DRIL4HW();    // populate lstD4Hw1 - so that doorConfig.SWING_DRIL4HW can get a value from this LOV. Otherwise it'll not get
 												//   a value, because this LOV acts also as a validator for the value of teh field. Thta value must exist in teh LOV of the field.
+			foreach (DRIL4HW_Class d4hw in lstD4HW1)
+			{
+				if (d4hw.DRIL4HW == PrApiCalls.IDS_TWOSIDES)
+				{
+					lstD4HW1.Remove(d4hw);
+					break;
+				}
+			}
 			doorConfig.SWING_DRIL4HW = doorConfig.DRIL4HW;
 			if (doorConfig.SWING_DRIL4HW == PrApiCalls.IDS_TWOSIDES)  //16/08/2022 in staticwing if DRIL4HW is IDS it's always IDS_ONESIDE !
+			{
 				doorConfig.SWING_DRIL4HW = PrApiCalls.IDS_ONESIDE;  
+			}
 
-     		if (!doorConfig.disabledFlds["SWING_HWCOLORID"]  && doorConfig.SWING_HWCOLORID == 0)     //(!hideSwingHwClr)
-			    doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;                   // the default is the HW Color of Movingwing !
+			if (!doorConfig.disabledFlds["SWING_HWCOLORID"]  && doorConfig.SWING_HWCOLORID == 0)     //(!hideSwingHwClr)
+				doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;                   // the default is the HW Color of Movingwing !
 
 			//  ** SWING_HANDLE* issue .
 			//Eli 21/09/2022 : HANDLE NAME and Color get the value that is in movingwing. It does not depend on WithLock value !
@@ -364,27 +383,31 @@
 			// 06/07/2022 HW4EXTRAWING is disabled by default !
 			doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing || (!_SwingHasLock);
 			doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc || (!_SwingHasLock);
+			
 			doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr || (!_SwingHasLock);
+			     //02/02/2023 : Eli :  if (_SwingHasLock) SWING_HWCOLORID is always disabled and it's value is that of Movingwing  HWCOLORID 
 
 			doorConfig.disabledFlds["SWING_DRIL4HW"] = !_SwingHasLock;
 			doorConfig.disabledFlds["SWING_TURBO"] = !_SwingHasLock;   //TODO - check this ?
 			doorConfig.disabledFlds["SWING_LOCKNAME"] = !_SwingHasLock;
 
-			// independent of doorConfig.SWINGHASLOCK 
-			if (doorConfig.HWCOLORID == 0)
+			// independent of doorConfig.SWINGHASLOCK :  if Movingwing HWCOLORID == 0 SWING_HWCOLORID is disabled here in Staticwing
+			if (doorConfig.HWCOLORID == 0)  
 			{
 				doorConfig.SWING_HWCOLORID = 0;
 				doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
 			}
-			else
+			else   
 			{
-				if (!doorConfig.disabledFlds["SWING_HWCOLORID"])
+				// But,  if Movingwing HWCOLORID != 0 and doorConfig.SWINGHASLOCK == false , the header HWCOLORID is gray and many other HW related fields are gray
+				//        so we can't show a color in SWING_HWCOLORID field at that moment !
+				if (!doorConfig.disabledFlds["SWING_HWCOLORID"]) //&& doorConfig.thClasses["SWING_HWCOLORID"] != "thGray")    // 05/02/2023: special case 
 					doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;   
 			}
 
 		}
 		//setHiddens(doorConfig);  //SWINGHASLOCK can't affect hidden fields ! So if one of those was changed here
-									//       we hide it again in setHiddens(...) 
+		//       we hide it again in setHiddens(...) 
 		//StateHasChanged();
 	}
 
@@ -395,8 +418,25 @@
 			if (dril.DRIL4HWDES.Contains("חצי צילינדר"))
 				return dril;
 		}
-        return null;
-    }
+		return null;
+	}
+
+	void setSWING_HANDLE_behavior()
+	{
+		if (doorConfig.SWING_DRIL4HW != PrApiCalls.IDS_ONESIDE && doorConfig.SWING_DRIL4HW != getDril4HalfCylinder().DRIL4HW)
+        {
+            doorConfig.SWING_HANDLENAME = string.Empty;
+            doorConfig.SWING_HANDLECOLORID = 0;
+            doorConfig.disabledFlds["SWING_HANDLENAME"] =  doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true;  
+        }
+        else
+        {
+            doorConfig.disabledFlds["SWING_HANDLENAME"] = false;
+            //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+        }
+        if (doorConfig.disabledFlds["SWING_HANDLENAME"])
+            doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true; 
+	}
 
     async void IDisposable.Dispose()
     {
@@ -952,16 +992,16 @@
 							//doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] = true;
 							//   16/08/2022 - HW4EXTRAWING and SWING_DRIL4HW are ACTIVE , their values can be only those that can be used with Half Cylinder !
 
-							doorConfig.disabledFlds["SWING_HWCOLORID"] = true;  //הערות לבדיקות סופיות דלת חלקה - חצי צילינדר.docx : 
+							doorConfig.disabledFlds["SWING_HWCOLORID"] = true;  //הערות לבדיקות סופיות דלת חלקה - חצי צילינדר.docx : 16/08/2022
 																				// on staticwing -half cylinder the HWCOLOR is copied from movingwing and is not changeable.
 																				// doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;  is executed in applySwingHasLock() when hasLock is set to true.
 							doorConfig.HW4EXTRAWING = 0;   // it got value from movingwing i.e. doorConfig.TRSH_HARDWARE
-																	// in ApplyHasLock() : doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);
+							// in ApplyHasLock() : doorConfig.HW4EXTRAWING = PrApiCalls.getOpposite_TRSH_HARDWARE(doorConfig.TRSH_HARDWARE);
 																	//   so we have to clear the field here, as the cylinder is not that of the movingwing.
 
-									    // as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
-										//  IDS_ONESIDE !
-										//  This logic is problematic as there is no need for DRIL4HW if there is no HW !
+																	// as HW4EXTRAWING is ZERO (empty) , make lstD4HW1 a list with a single element and this element is 
+							//  IDS_ONESIDE !
+							//  This logic is problematic as there is no need for DRIL4HW if there is no HW !
 
 							//03/10/2022 : Eli says: if Cylinder is HALF Cylinder , SWING_DRIL4HW MUST be Dril 4 Half Cylinder !
 							// As doorConfig.SWING_DRIL4HW is a <select> field - the value we assign to it must be in the LOV
@@ -971,6 +1011,7 @@
 							DRIL4HW_Class dril4HalfCyl = getDril4HalfCylinder();
 							lstD4HW1.Add(dril4HalfCyl);
 							doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+							setSWING_HANDLE_behavior();
 
 							doorConfig.SWING_HWACCESSORYID = UiLogic.IdOfNone; //04/12/2022 Eli asked to put "ללא" here !
 						}
@@ -1164,12 +1205,13 @@
 					// doorConfig.borderColors["HW4EXTRAWING"] = (value != 0 ? "blueBorder" : "redBorder");  // it's OPTIONAL 
 					//doorConfig.DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig);
 					doorConfig.SWING_DRIL4HW = PrApiCalls.getDril4HwOfHw(doorConfig.HW4EXTRAWING);
+					setSWING_HANDLE_behavior();
 					// populate the LOV for Dril4Hw based on Hardware selected .
 					string errMsg = string.Empty;
 					lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 					foreach (DRIL4HW_Class d4hw in lstD4HW1)
 					{
-						if (d4hw.DRIL4HWDES.Contains("IDS") && d4hw.DRIL4HW != doorConfig.SWING_DRIL4HW)
+						if (d4hw.DRIL4HW == PrApiCalls.IDS_TWOSIDES)  //doorConfig.SWING_DRIL4HW)
 						{
 							lstD4HW1.Remove(d4hw);  //07/07/2022 - Eli asked: on staticwing : if Dril4HW is IDS - the LOV should contain a single element ONE SIDE IDS Dril !
 							break;  // this can be done only once Otherwise we'll get an error on the foreach statement - the collection lstD4HW1 was changed and the foreach 
@@ -1202,11 +1244,13 @@
 					int dbg = 17;
 				}
 
-				doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(_Hw4ExtraWing);
+				doorConfig.disabledFlds["SWING_HWCOLORID"] = !PrApiCalls.isHWColored(_Hw4ExtraWing);  //04/02/2023 : TODO - waiting for Eli's answer 
 
 				if (doorConfig.disabledFlds["SWING_HWCOLORID"])
 				{
-					doorConfig.SWING_HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
+					//doorConfig.SWING_HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.  // 04/02/2023 : commented , because also 
+					                                                   // when the HW4EXTRAWING is changed  SWING_HWCOLORID should be copied from Movingwing            
+																	   //  see הערות לבדיקות סופיות דלת חלקה - חצי צילינדר 16/08/2022 
 				}
 				else
 				{
@@ -1408,26 +1452,42 @@
             }
 			</td>
 			@code
+		{
+			protected int _Swing_Dril4Hw = 0;
+			protected int Swing_Dril4Hw
 			{
-				protected int _Swing_Dril4Hw = 0;
-				protected int Swing_Dril4Hw
+				get
 				{
-					get
+					if (doorConfig != null)
 					{
-						if (doorConfig != null)
-						{
-							_Swing_Dril4Hw = doorConfig.SWING_DRIL4HW;
-						}
-						return _Swing_Dril4Hw;
+						_Swing_Dril4Hw = doorConfig.SWING_DRIL4HW;
 					}
-					set
+					return _Swing_Dril4Hw;
+				}
+				set
+				{
+					_Swing_Dril4Hw = value;
+					if (doorConfig != null)
 					{
-						_Swing_Dril4Hw = value;
-						if (doorConfig != null)
-						{
-							doorConfig.SWING_DRIL4HW = _Swing_Dril4Hw;
-							//doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
-							//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						doorConfig.SWING_DRIL4HW = _Swing_Dril4Hw;
+						//doorConfig.borderColors["DRIL4HW"] = (value != 0 ? "blueBorder" : "redBorder");
+						//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+						setSWING_HANDLE_behavior();
+
+						//if (doorConfig.SWING_DRIL4HW != PrApiCalls.IDS_ONESIDE && doorConfig.SWING_DRIL4HW != getDril4HalfCylinder().DRIL4HW)
+                        //     {
+                        //          doorConfig.SWING_HANDLENAME = string.Empty;
+                        //          doorConfig.SWING_HANDLECOLORID = 0;
+                        //          doorConfig.disabledFlds["SWING_HANDLENAME"] =  doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true;  
+                        //      }
+                        //      else
+                        //      {
+                        //          doorConfig.disabledFlds["SWING_HANDLENAME"] = false;
+                        //          //doorConfig.borderColors["HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        //      }
+                        //      if (doorConfig.disabledFlds["SWING_HANDLENAME"])
+                        //          doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true; 
+
 							doorConfig.staticwingChanged = true;
 							if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
                                    config4.RefreshState();
