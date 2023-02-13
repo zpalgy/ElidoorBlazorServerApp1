@@ -263,8 +263,13 @@
                                                                                                           //doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");  //[TODO : check this doorConfig.INTCOLORID != 0]
         doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");
 
-        if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME) && doorConfig.LOCKDRILHEIGHT == 0)
-            UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");   //disableFollowingTabFlds(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");
+        if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME))
+        {
+             if (doorConfig.LOCKDRILHEIGHT == 0)
+                        UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT", true);   //disableFollowingTabFlds(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");
+             else if (doorConfig.LOCKDRILHEIGHT > 0)
+                         UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT", false); 
+        }
 
         if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
             config4.RefreshState();
@@ -1022,9 +1027,12 @@
                                                 else  // special for doorConfig.LOCKDRILHEIGHT == 0 - measure is ללא for A-GLVN, D-CLR
                                                 {
                                                     doorConfig.LockDrilHMeasure = PrApiCalls.getLockDrilHMeasure(doorConfig.LOCKDRILHEIGHT);
-                                                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (string.IsNullOrEmpty(doorConfig.LockDrilHMeasure) ? "redBorder" : "blueBorder");
-                                                    UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");
-                                                    StateHasChanged();
+                                                    if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME))
+                                                    {
+                                                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (string.IsNullOrEmpty(doorConfig.LockDrilHMeasure) ? "redBorder" : "blueBorder");
+                                                        UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT", true);
+                                                        StateHasChanged();
+                                                    }
                                                 }
                                             }
                                         }

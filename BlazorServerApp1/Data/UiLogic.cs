@@ -1807,7 +1807,7 @@ namespace BlazorServerApp1.Data
         }
         #endregion clear tab and conf fields
         #region disable some tab fields
-        public static void disableFollowingTabFields (DoorConfig doorConfig, DataTable dtTabFields, string fldName)
+        public static void disableFollowingTabFields (DoorConfig doorConfig, DataTable dtTabFields, string fldName, bool disable)
         {
             int fldTabIndex = getTabIndexOfField(fldName);
             foreach (DataRow fldRow in dtTabFields.Rows)
@@ -1817,7 +1817,7 @@ namespace BlazorServerApp1.Data
                 string mandatory = fldRow["MANDATORY"].ToString();
 
                 if (int.Parse(fldRow["TABINDEX"].ToString()) > fldTabIndex && fldRow["MANDATORY"].ToString() == "M")
-                    doorConfig.disabledFlds[fldName2] = true;
+                    doorConfig.disabledFlds[fldName2] = disable;
 
             }
         }
