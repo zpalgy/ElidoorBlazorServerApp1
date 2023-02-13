@@ -162,6 +162,12 @@
             TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID); 
             lstColors1.Remove(megulvan);
         }
+
+        if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME))
+        {
+            doorConfig.borderColors["LOCKDRILHEIGHT"] = (string.IsNullOrEmpty(doorConfig.LockDrilHMeasure) ? "redBorder" : "blueBorder");
+        }
+
         //setHiddens(doorConfig);
         doorConfig.borderColors["CATDOOR"] = (doorConfig.disabledFlds["CATDOOR"] ? "blackBorder" : "blueBorder");
 
@@ -191,7 +197,7 @@
     //    doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
     //    doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
     //    doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
-                        
+
     //    doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
     //    doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
     //    doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
@@ -248,14 +254,21 @@
         doorConfig.HANDLENAME = string.Empty;
         doorConfig.HANDLECOLORID = 0;
     }
-    
+
     void setLockDrilHeight()
     {
         doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
+
         doorConfig.BACKPINHEIGHT = (doorConfig.LOCKDRILHEIGHT > 0 ? doorConfig.LOCKDRILHEIGHT + 55 : 0);  //Eli 26/12/2022
-        doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
+                                                                                                          //doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");  //[TODO : check this doorConfig.INTCOLORID != 0]
+        doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");
+
+        if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME) && doorConfig.LOCKDRILHEIGHT == 0)
+            UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");   //disableFollowingTabFlds(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");
+
         if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
             config4.RefreshState();
+    }
     }
   }
 <br />
@@ -457,12 +470,19 @@
                                 else
                                 {
                                     doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");  //update borderColor
-                                                                                                                                                // of dlstLOCKDRILHEIGHT if its value was changed after DoorHeight was processsed
+                                                                                        // of dlstLOCKDRILHEIGHT if its value was changed after DoorHeight was processsed
+                                    // 13/02/2023 : special for teh foolowing two Models 
+                                    if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME) && !string.IsNullOrEmpty(doorConfig.LockDrilHMeasure))
+                                    {
+                                        doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT >= 0 ? "blueBorder" : "redBorder");
+                                    }                                                                                                            
                                     this.StateHasChanged();
                                 }
                             }
                             doorConfig.borderColors["DOORHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
-                                                @*
+
+
+                            @*
                                The following code lines are actually inside setHingesAndWindowsData
 
                             errMsg2 = string.Empty;
@@ -880,7 +900,7 @@
                             List<TRSH_LOCKHINGE_DRILH_Class> lstLockDH1 = PrApiCalls.getLockHingeDrilHeights1(doorConfig);
                             @foreach (TRSH_LOCKHINGE_DRILH_Class lockDH in lstLockDH1)
                             {
-                            if (lockDH.LOCKDRILHEIGHT > 0)
+                            if (lockDH.LOCKDRILHEIGHT >= 0)
                             {
                                 string DrilDes = string.Format("{0} ( {1} )", lockDH.LOCKDRILHEIGHT, lockDH.MEASURENAME);
                                 <option value="@lockDH.LOCKDRILHEIGHT">@DrilDes</option> 
@@ -894,26 +914,42 @@
        *@
 
         @code
-            {
-                protected int? _LockDrilHeight;
-                protected int? LockDrilHeight
-                {
-                    get
-                    {
-                        if (doorConfig != null && doorConfig.LOCKDRILHEIGHT > 0)
-                        {
-                            _LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
-                        }
-                        else
-                            _LockDrilHeight = null;
+                            {
+                                protected int? _LockDrilHeight;
+                                protected string _lockDrilHMeasure;
+                                protected int? LockDrilHeight
+                                {
+                                    get
+                                    {
+                                        if (doorConfig != null && doorConfig.LOCKDRILHEIGHT > 0)
+                                        {
+                                            _LockDrilHeight = doorConfig.LOCKDRILHEIGHT;
+                                            _lockDrilHMeasure = PrApiCalls.getLockDrilHMeasure(doorConfig.LOCKDRILHEIGHT);
+                                        }
+                                        else
+                                        {
+                                            _LockDrilHeight = null;
+                                            if (("D-CLR A-GLVN").Contains(doorConfig.TRSH_MODELNAME))
+                                            {
+                                                _LockDrilHeight = 0;
+                                                _lockDrilHMeasure = doorConfig.LockDrilHMeasure = "ללא";
+                                                //doorConfig.borderColors["LOCKDRILHEIGHT"] = "blueBorder";
+                                            }
+                                         }
 
                         return _LockDrilHeight; //.ToString();
                     }
                     set
                     {
+
                         _LockDrilHeight = value;
-                         newLockDrilHeight = (int)value;
-                        @* if (!int.TryParse(value,out _LockDrilHeight))
+
+                        if (_LockDrilHeight != null)
+                        {
+                            newLockDrilHeight = (int)value;
+                        }
+                        
+                            @* if (!int.TryParse(value,out _LockDrilHeight))
                             {
                                 msgCaption = string.Empty;
                                 errMsg2 = "ספרות בלבד";
@@ -957,9 +993,6 @@
                                                         doorConfig.borderColors["LOCKDRILHEIGHT"] = (value != 0 ? "blueBorder" : "redBorder");
                                                    *@
 
-
-
-
                                                 }   // end of if (doorConfig.LOCKDRILHEIGHT > 0 )
 
                                                 else  // door is Not complient but lockDrilHeight is Zero , i.e. not set yet !
@@ -985,6 +1018,13 @@
                                                     }
 
                                                     setLockDrilHeight();
+                                                }
+                                                else  // special for doorConfig.LOCKDRILHEIGHT == 0 - measure is ללא for A-GLVN, D-CLR
+                                                {
+                                                    doorConfig.LockDrilHMeasure = PrApiCalls.getLockDrilHMeasure(doorConfig.LOCKDRILHEIGHT);
+                                                    doorConfig.borderColors["LOCKDRILHEIGHT"] = (string.IsNullOrEmpty(doorConfig.LockDrilHMeasure) ? "redBorder" : "blueBorder");
+                                                    UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");
+                                                    StateHasChanged();
                                                 }
                                             }
                                         }
@@ -1189,17 +1229,19 @@
         
         <td id="dlstHWACCESSORYID" >
              @{  int i333 = Array.IndexOf(UiLogic.propNames, "HWACCESSORYID");
-             @* <input list="lstHwAcc"  name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]" autocomplete="off" *@
-                <select name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]"
+
+             @*  02/02/2023 : Eli asked to make this control DataList again ! So I commenetd the <select> stuff  *@
+             @* <select name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]" *@
+             
+             <input list="lstHwAcc"  name="dlstHwAccessory" @bind="HwAccDes" class="@doorConfig.borderColors["HWACCESSORYID"]" autocomplete="off" 
                         disabled="@doorConfig.disabledFlds["HWACCESSORYID"]"
                         @onfocus="@( () => UiLogic.HasFocus("HWACCESSORYID", doorConfig) )" 
                         @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                         onkeypress="@KeyPressHandler" 
                         @ref="doorConfig.dicRefs[UiLogic.propNames[i333]]" 
-                        >
-               @*   /> 
+                  /> 
                 <datalist id="lstHwAcc">
-               *@
+               
 
                         @* @if (doorConfig.TRSH_HARDWARE > 0 &&  PrApiCalls.lstHwAccessories != null) *@
                         @{ 
@@ -1214,8 +1256,8 @@
                                 }
                             }
                         }
-                    </select>
-                   @* </datalist>  *@
+                   @* </select> *@
+                   </datalist>  
                     }
                     @code
                     {
@@ -1979,12 +2021,17 @@
                     if (newLockDrilHeight != doorConfig.LOCKDRILHEIGHT)  //(_LockDrilHeight != doorConfig.LOCKDRILHEIGHT )
                     {
                         doorConfig.LOCKDRILHEIGHT = newLockDrilHeight;   //(int)_LockDrilHeight;
+                        doorConfig.LockDrilHMeasure = PrApiCalls.getLockDrilHMeasure(doorConfig.LOCKDRILHEIGHT);
                         doorConfig.BACKPINHEIGHT = (doorConfig.LOCKDRILHEIGHT > 0 ? doorConfig.LOCKDRILHEIGHT + 55 : 0);  //Eli 26/12/2022
-                                                    // note : we compute BACKPINHEIGHT for any door, complient and not complient !
+                                                                                                                          // note : we compute BACKPINHEIGHT for any door, complient and not complient !
                         UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
                         clearHingesMeasures(doorConfig);
                     }
                     doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");
+                    if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME) && !string.IsNullOrEmpty(doorConfig.LockDrilHMeasure))
+                    {
+                         doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT >= 0 ? "blueBorder" : "redBorder");
+                    }
                     break;
             }
         }

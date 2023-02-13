@@ -269,7 +269,7 @@ namespace BlazorServerApp1.Data
                 bool fldIsMandatory = (tabFields[r]["MANDATORY"].ToString() == "M");
                 //borderColor = string.Empty;
 
-                if (fldName == "ELECTRICAPPARATUS")
+                if (fldName == "LOCKDRILHEIGHT")
                 {
                     int dbg = 18;
                 }
@@ -289,6 +289,10 @@ namespace BlazorServerApp1.Data
                                                               // if TRSH_HARDWARE is empty.
                             doorConfig.borderColors[fldName] = "redBorder";
                     }
+                    //else if (fldName == "LOCKDRILHEIGHT" && "D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME))
+                    //{
+                    //    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT >= 0 ? "blueBorder" : "redBorder");
+                    //}
                     else
                     {
                         //borderColor = "redBorder";
@@ -577,8 +581,12 @@ namespace BlazorServerApp1.Data
                     return true;
                 else if (fldName == "INTCOLORID" && doorConfig.COLORSNUM != "2")
                     return true;
+                else if (fldName == "LOCKDRILHEIGHT" && "D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME) && doorConfig.LOCKDRILHEIGHT >= 0)
+                     // 13/02/2023 : change requested by Eli 
+                    return true;
 
-				int p = Array.IndexOf(propNames, fldName);
+
+                    int p = Array.IndexOf(propNames, fldName);
                 if (p >= 0)
                 {
                     var val = props[p].GetValue(doorConfig);
@@ -1034,7 +1042,7 @@ namespace BlazorServerApp1.Data
             doorConfig.currPropName = String.Empty;
             doorConfig.currTabName = String.Empty;
             doorConfig.prevTabName = string.Empty;
-
+            doorConfig.LockDrilHMeasure = string.Empty;
 
             for (int r=0;r<PrApiCalls.dtConfFields.Rows.Count; r++)
             {
@@ -1715,7 +1723,7 @@ namespace BlazorServerApp1.Data
                     for (int r=0;r<rowsArray.Length;r++)
                     {
                         string fldName = rowsArray[r]["FIELDNAME"].ToString();
-                        if (fldName.StartsWith("RAFAFAONM"))
+                        if (fldName.StartsWith("DRIL4HW"))
                         {
                             int dbg = 17;
                         }
@@ -1726,6 +1734,7 @@ namespace BlazorServerApp1.Data
                             ConfField_Class confFld = new ConfField_Class();
                             confFld.FIELDNAME = fldName;
                             confFld.TABINDEX = int.Parse(rowsArray[r]["TABINDEX"].ToString());
+                            confFld.MANDATORY = rowsArray[r]["MANDATORY"].ToString();
                             lstTabFlds.Add(confFld);
                         }
                     }
@@ -1758,6 +1767,18 @@ namespace BlazorServerApp1.Data
                 return string.Empty;
         }
 
+        public static int getTabIndexOfField(string fldName)
+        {
+            string query = string.Format("FIELDNAME='{0}'", fldName);
+            DataRow[] rowsArray = PrApiCalls.dtConfFields.Select(query);
+            if (rowsArray.Length > 0)
+            {
+                return int.Parse(rowsArray[0]["TABINDEX"].ToString());
+            }
+            else
+                return 0;
+        }
+
         public static string getNextTabFld(DoorConfig doorConfig, DataTable dtTabFields, string fldName)
         {
             string query = string.Format("FIELDNAME='{0}'", fldName);
@@ -1785,6 +1806,23 @@ namespace BlazorServerApp1.Data
             return String.Empty;
         }
         #endregion clear tab and conf fields
+        #region disable some tab fields
+        public static void disableFollowingTabFields (DoorConfig doorConfig, DataTable dtTabFields, string fldName)
+        {
+            int fldTabIndex = getTabIndexOfField(fldName);
+            foreach (DataRow fldRow in dtTabFields.Rows)
+            {
+                string fldName2 = fldRow["FIELDNAME"].ToString();
+                int tabIndex = int.Parse(fldRow["TABINDEX"].ToString());
+                string mandatory = fldRow["MANDATORY"].ToString();
+
+                if (int.Parse(fldRow["TABINDEX"].ToString()) > fldTabIndex && fldRow["MANDATORY"].ToString() == "M")
+                    doorConfig.disabledFlds[fldName2] = true;
+
+            }
+        }
+
+        #endregion disable some tab fields
 
         #region conf fields
         public static ConfField_Class getConfFieldByFldName(string configFldName, ref string errMsg)

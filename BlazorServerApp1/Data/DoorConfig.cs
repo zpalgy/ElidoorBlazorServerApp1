@@ -119,6 +119,8 @@ namespace BlazorServerApp1.Data
         #region movingwing
         [DataMember(Order = 27), Order]
         public int LOCKDRILHEIGHT { get; set; }        //D-650
+        [NonSerialized]
+        public string LockDrilHMeasure;
 
         [DataMember(Order = 29), Order]
         public string OPENSIDE { get; set; }  //R, L    D-50
