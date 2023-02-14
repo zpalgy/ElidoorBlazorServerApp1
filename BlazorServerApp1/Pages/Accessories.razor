@@ -128,7 +128,7 @@
                             @foreach (TRSH_COLOR_Class c in lstColors1)
                             {
                                   @* <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option> *@
-                            <option value="@c.PARTDES">@c.PARTDES</option>
+                                  <option value="@c.PARTDES">@c.PARTDES</option>
                             }
                         }
                         </datalist>
@@ -209,29 +209,33 @@
         {
             <td id="tdColorSpray" >
                  @{ int i803 = Array.IndexOf(UiLogic.propNames, "COLORSPRAYID");
-                <select @bind="ColorSprayID" class="@doorConfig.borderColors["COLORSPRAYID"]" 
+                <input list="lstColorSprays" @bind="ColorSprayDes" class="@doorConfig.borderColors["COLORSPRAYID"]"  autocomplete="off"
                             disabled="@doorConfig.disabledFlds["COLORSPRAYID"]"  
                             @onfocus="@( () => UiLogic.HasFocus("COLORSPRAYID", doorConfig) )" 
                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                             @onkeypress="doorConfig.KeyPressHandler" 
-                            @ref="doorConfig.dicRefs[UiLogic.propNames[i803]]"  >
+                            @ref="doorConfig.dicRefs[UiLogic.propNames[i803]]"  
+                            />
 
+                    <datalist id="lstColorSprays" >
                             @if (lstColors1 != null)
                         {
                             @foreach (TRSH_COLOR_Class c in lstColors1)
                             {
-                                  <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
-                            }
+                                 @* <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option> *@
+                                <option value="@c.PARTDES">@c.PARTDES</option>
+                            } 
                         }
 
-                </select>
+                </datalist>
                 }
             </td>
         }
         @code
         {
             protected int _ColorSprayID = 0;
-            protected int ColorSprayID
+            //protected int ColorSprayID
+            protected string ColorSprayDes
             {
                 get
                 {
@@ -239,11 +243,11 @@
                     {
                         _ColorSprayID = doorConfig.COLORSPRAYID;
                     }
-                    return _ColorSprayID;
+                    return UiLogic.colorDes(_ColorSprayID);
                 }
                 set
                 {
-                    _ColorSprayID = value;
+                    _ColorSprayID = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
                         doorConfig.COLORSPRAYID = _ColorSprayID;
