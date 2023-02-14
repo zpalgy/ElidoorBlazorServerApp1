@@ -111,32 +111,35 @@
     </tr>
 
     <tr>
-        @if (!wcb)
-        {
+       
                 <td id="tdWetColorBox" >
                 @{ int i801 = Array.IndexOf(UiLogic.propNames, "WETCOLORBOXID");
-                    <select  @bind="WetColorBoxID"   class="@doorConfig.borderColors["WETCOLORBOXID"]" 
+                    <input list="lstWetColors" name="dlstWetColorBoxId"  @bind="wetClrDes"   class="@doorConfig.borderColors["WETCOLORBOXID"]" autocomplete="off"
                             disabled="@doorConfig.disabledFlds["WETCOLORBOXID"]"  
                             @onfocus="@( () => UiLogic.HasFocus("WETCOLORBOXID", doorConfig) )" 
                             @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                             @onkeypress="doorConfig.KeyPressHandler" 
-                            @ref="doorConfig.dicRefs[UiLogic.propNames[i801]]"  >
+                            @ref="doorConfig.dicRefs[UiLogic.propNames[i801]]"  
+                            />
 
+                        <datalist id="lstWetColors" >
                         @if (lstColors1 != null)
                         {
                             @foreach (TRSH_COLOR_Class c in lstColors1)
                             {
-                                  <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option>
+                                  @* <option value="@c.TRSH_COLORID">@UiLogic.colorTypeAndDes(c)</option> *@
+                            <option value="@c.PARTDES">@c.PARTDES</option>
                             }
                         }
-                            </select>
+                        </datalist>
                 }
                 </td>
-        }
+       
         @code
         {
             protected int _WetColorBoxID = 0;
-            protected int WetColorBoxID
+            //protected int WetColorBoxID
+            protected string wetClrDes
             {
                 get
                 {
@@ -144,16 +147,19 @@
                     {
                         _WetColorBoxID = doorConfig.WETCOLORBOXID;
                     }
-                    return _WetColorBoxID;
+                    return UiLogic.colorDes(_WetColorBoxID);
                 }
                 set
                 {
-                    _WetColorBoxID = value;
+                    _WetColorBoxID = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
                         doorConfig.WETCOLORBOXID = _WetColorBoxID;
                         doorConfig.disabledFlds["WETCOLORBOXQ"] = (doorConfig.WETCOLORBOXID == 0);
                         doorConfig.borderColors["WETCOLORBOXQ"] = (doorConfig.WETCOLORBOXQ != 0 ? "blueBorder" : "redBorder");
+
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "accessories"))
+                            config4.RefreshState();
                     }
                 }
             }
