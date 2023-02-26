@@ -45,8 +45,10 @@ namespace BlazorServerApp1.Data
 
         public static int IdOfNone = 99999;
         public static string NameOfNone = "9999999";
-        public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
+        public static string NameOfSmooth = "Smooth";
+        public static string NameOfFluted = "Fluted";
 
+        public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
         public static string NoColor = "מגולוון";
         public static List<string> lstColorsNum1 = new List<string>();
         
@@ -1815,9 +1817,15 @@ namespace BlazorServerApp1.Data
                 string fldName2 = fldRow["FIELDNAME"].ToString();
                 int tabIndex = int.Parse(fldRow["TABINDEX"].ToString());
                 string mandatory = fldRow["MANDATORY"].ToString();
+                string errMsg = string.Empty;
 
                 if (int.Parse(fldRow["TABINDEX"].ToString()) > fldTabIndex && fldRow["MANDATORY"].ToString() == "M")
+                {
                     doorConfig.disabledFlds[fldName2] = disable;
+                    //Eli's req 14/02/2023 - teh disabled fields should be emptied !
+                    if (disable)
+                        clearConfField(doorConfig, fldName2, ref errMsg);
+                }
 
             }
         }

@@ -230,7 +230,10 @@ namespace BlazorServerApp1.Data
                                                //public string GRIDCOLORDES { get; set; }
         [DataMember(Order = 87), Order]
         public string VITRAGECLRBYCTLG { get; set; }  // Y, N , ''  D-150
-        [DataMember(Order = 88), Order]
+        //[NonSerialized]
+        public string EXTSEPLINES { get; set; }
+
+        [DataMember(Order = 89), Order]
         public int EXTSEPLINESCLRID { get; set; }  //D-160
                                                    //[DataMember(Order = 89), Order]
                                                    //public string EXTSEPLINESCLRDES { get; set; }  
