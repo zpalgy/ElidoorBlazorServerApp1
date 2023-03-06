@@ -110,6 +110,9 @@
                                                                                                                                            //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
                                                                                                                                            // new - Hardware may be with COLORED == "Y", at that point we'll ENABLE HWCOLORID .
                                                                                                                                            // we can't do that here because we may return to the page after all it's fields were disabled.
+            doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = (doorConfig.COLORSNUM != "2");  // Modern Decor door default COLORSNUM is "2" 
+                                                                                                                            // and the field is locked !
+
             if (!UiLogic.hideFld(doorConfig, "Hw") && (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone))
             {
                 doorConfig.borderColors["HWACCESSORYID"] = "grayBorder";
