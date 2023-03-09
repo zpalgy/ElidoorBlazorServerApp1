@@ -9,8 +9,8 @@ namespace BlazorServerApp1.Pages
 	public class Configurator4Base : ComponentBase
 	{
 		protected bool hideDoorTitle = true;
-		protected bool hideBtnExtDecor = false;
-		protected bool hideBtnIntDecor = false;
+		protected bool hideBtnExtDecor = true;//false;
+		protected bool hideBtnIntDecor = true; //false;
 
 		public bool ActivatePage(string tabName, DoorConfig doorConfig, ref string errMsg)
 		{

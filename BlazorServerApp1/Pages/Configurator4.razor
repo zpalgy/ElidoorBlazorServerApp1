@@ -545,7 +545,8 @@
                                             }
 
                                                                 <td>
-                                                                    <button name="btnextdecor" class="@doorConfig.btnClasses["extdecor"]" @onclick="showExtdecor"
+                                                                    @*  class="@doorConfig.btnClasses["extdecor"]" *@
+                                                                    <button name="btnextdecor"  @onclick="showExtdecor"
                                                     disabled="@disableBtnExtDecor" hidden="@hideBtnExtDecor" >
                                                                         פרטי דקורציה חוץ
                                                                     </button>
@@ -560,7 +561,8 @@
                                                             </tr>
                                                             <tr hidden="@hideBtnIntDecor">
                                                                 <td>
-                                                                    <button name="btnintdecor" class="@doorConfig.btnClasses["intdecor"]"
+                                                                    @* class="@doorConfig.btnClasses["intdecor"]" *@
+                                                                    <button name="btnintdecor" 
                                                     @onclick="showIntdecor" hidden="@hideBtnIntDecor">
                                                                         פרטי דקורציה פנים
                                                                     </button>
@@ -1600,18 +1602,18 @@
                                                 hideBtnExtDecor = hideBtnIntDecor = true;
                                                 break;
                                             case "חוץ":
-                                                hideBtnExtDecor = false;  //show
-                                                hideBtnIntDecor = true;
+                                                //hideBtnExtDecor = false;  //show
+                                                //hideBtnIntDecor = true;
                                                 doorConfig.showDecor = true;
                                                 break;
                                             case "פנים":
-                                                hideBtnExtDecor = true;
-                                                hideBtnIntDecor = false;  //show
+                                                //hideBtnExtDecor = true;
+                                                //hideBtnIntDecor = false;  //show
                                                  doorConfig.showDecor = true;
                                                 break;
                                             case "דו צדדי":
-                                                hideBtnExtDecor = false;
-                                                hideBtnIntDecor = false;  //show
+                                                //hideBtnExtDecor = false;
+                                                //hideBtnIntDecor = false;  //show
                                                  doorConfig.showDecor = true;
                                                 break;
                                         }

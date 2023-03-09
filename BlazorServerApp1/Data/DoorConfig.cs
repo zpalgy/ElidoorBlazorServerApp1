@@ -230,7 +230,7 @@ namespace BlazorServerApp1.Data
                                                //public string GRIDCOLORDES { get; set; }
         [DataMember(Order = 87), Order]
         public string VITRAGECLRBYCTLG { get; set; }  // Y, N , ''  D-150
-        //[NonSerialized]
+        [DataMember(Order = 88), Order]
         public string EXTSEPLINES { get; set; }
 
         [DataMember(Order = 89), Order]
@@ -380,6 +380,10 @@ namespace BlazorServerApp1.Data
         public int INTSIDECNTRPLATECLID { get; set; }                  //D-220
                                                                        //[DataMember(Order = 205), Order]
                                                                        //public string INTSIDECNTRPLATECDES { get; set; }
+        [DataMember(Order = 205), Order]
+        public string INTSEPLINES { get; set; }
+
+
         [DataMember(Order = 206), Order]
         public int INTSEPLINESCLRID { get; set; }           //D-230
                                                             //[DataMember(Order = 207), Order]

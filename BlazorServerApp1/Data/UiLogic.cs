@@ -22,8 +22,8 @@ namespace BlazorServerApp1.Data
     {
         #region local arrays and tables
         // 07/07/2022 : removed "handle" ,  "ידית אומנותית"   tabPage . it's empty 
-        public static string[] tabNames = new string[] { "divHeader", "divDoorTitle", "movingwing", "extdecor", "intdecor", "staticwing", "hinges", "accessories" };
-        public static string[] tabTexts = new string[] { "כותרת שאלון", "כותרת דלת", "כנף נעה", "פרטי דקורציה חוץ", "פרטי דקורציה פנים", "כנף קבועה", "פרטי צירים", "נילווים" };
+        public static string[] tabNames = new string[] { "divHeader", "divDoorTitle", "movingwing", "decor", "staticwing", "hinges", "accessories" }; //"extdecor", "intdecor"
+        public static string[] tabTexts = new string[] { "כותרת שאלון", "כותרת דלת", "כנף נעה", "עיצוב", "כנף קבועה", "פרטי צירים", "נילווים" };  // "פרטי דקורציה חוץ", "פרטי דקורציה פנים",
         //public static string[] Fields2Keep = new string[] { "txtWindowWidth", "txtWindowHeight", "txtOpenDirection",  "txtLockDrilHeight",
         //                                                    "txtBackPinHeight", "txtHingesNum",
         //                                                    "txtHinge1Height","txtHinge2Height","txtHinge3Height","txtHinge4Height","txtHinge5Height"};
@@ -45,8 +45,16 @@ namespace BlazorServerApp1.Data
 
         public static int IdOfNone = 99999;
         public static string NameOfNone = "9999999";
+        public static string None = "ללא";
         public static string NameOfSmooth = "Smooth";
+        public static string Smooth = "חלק";
         public static string NameOfFluted = "Fluted";
+        public static string Fluted = "מחורץ";
+        public static string External = "חוץ";
+        public static string Internal = "פנים";
+        public static string BothSides = "דו צדדי";
+
+
 
         public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
         public static string NoColor = "מגולוון";
