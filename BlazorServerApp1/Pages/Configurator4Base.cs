@@ -46,7 +46,9 @@ namespace BlazorServerApp1.Pages
 						prevTab = UiLogic.tabNames[t - 2];   //intdecor
 						prevText = UiLogic.tabTexts[t - 2];
 					}
-					if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor)
+
+                    #region to del
+                    if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor)
 					{
 						if (!hideBtnExtDecor)
 						{
@@ -63,13 +65,15 @@ namespace BlazorServerApp1.Pages
                             }
 						}
 					}
-					//if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor && hideBtnExtDecor)
-					//{
-					//	prevTab = UiLogic.tabNames[t - 3];
-					//	prevText = UiLogic.tabTexts[t - 3];
-					//}
+                    #endregion to del 
 
-					if (t == 0)
+                    //if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor && hideBtnExtDecor)
+                    //{
+                    //	prevTab = UiLogic.tabNames[t - 3];
+                    //	prevText = UiLogic.tabTexts[t - 3];
+                    //}
+
+                    if (t == 0)
 					{
 						//ActivePage = page;
 						return true;
@@ -77,13 +81,17 @@ namespace BlazorServerApp1.Pages
 				}
 				//
 				//debug 05/11/2022 after movingwing enable hinges for debugging the new hinges logic
-				 // if (tabName == "hinges")
-				 // {
-					//doorConfig.prevTabName = doorConfig.currTabName;
-					//doorConfig.currTabName = tabName;
-					//return true; //ActivePage = page;
-				 // }
+				// if (tabName == "hinges")
+				// {
+				//doorConfig.prevTabName = doorConfig.currTabName;
+				//doorConfig.currTabName = tabName;
+				//return true; //ActivePage = page;
+				// }
 				//end debug
+
+				if (prevTab.ToLower() == "decor" && doorConfig.DECORFORMAT == UiLogic.None)
+					prevTab = "movingwing";
+
 
 				if (UiLogic.tabPageIsFilled(prevTab, doorConfig))
 				{

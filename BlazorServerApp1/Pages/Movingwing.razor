@@ -49,13 +49,15 @@
     //bool hideDoorColor = false;
     //bool hideExtColr = false;
     //bool hideIntColor = false;
-    //bool hideCylinder = false;
-    //bool hideHw = false;
-    //bool hideHwColor = false;
-    //bool hideHwAccessory = false;
-    //bool hideHandle = false;
-    //bool hideHandleColor = false;
-
+    bool hideCylinder = false;
+    bool hideHw = false;
+    bool hideHwColor = false;
+    bool hideHwAccessory = false;
+    bool hideHandle = false;
+    bool hideHandleColor = false;
+    bool hideVents = false;
+    bool hideRafafa = false;
+    bool hideCatDoor = false;
 
     //protected string currPropName = string.Empty;
     DataTable dtTabFlds = new DataTable();
@@ -112,6 +114,12 @@
                                                                                                                                            // we can't do that here because we may return to the page after all it's fields were disabled.
             doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = (doorConfig.COLORSNUM != "2");  // Modern Decor door default COLORSNUM is "2" 
                                                                                                                             // and the field is locked !
+            if (doorConfig.COLORSNUM == "2")
+            {
+               doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");   //hardcoded this, because for unknow reason EXCOLORID 
+               doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");   // does not have redBorder when COLORNUM is 2 while
+                                                                                                                    // INTCOLORID is !
+            }
 
             if (!UiLogic.hideFld(doorConfig, "Hw") && (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone))
             {
@@ -177,41 +185,55 @@
         // set the style of the outLine of Movingwing and Mwdecor divs
         doorConfig.divClasses["movingwing"] = (doorConfig.disabledFlds["DOORWIDTH"] ? "divNotActive" : "divActive");
     }
-    //void setHiddens(DoorConfig doorConfig)
-    //{
-    //    hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
-    //    hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
-    //    hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
-    //    hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
-    //    hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
-    //    hideHw = UiLogic.hideFld(doorConfig, "Hw");
-    //    hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
-    //    hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
-    //    hideHandle = UiLogic.hideFld(doorConfig, "Handle");
-    //    hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
+    void setHiddens(DoorConfig doorConfig)
+    {
+        //    hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
+        //    hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
+        //    hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
+        //    hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
 
-    //    doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
+        //hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
+        //hideHw = UiLogic.hideFld(doorConfig, "Hw");
+        //hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
+        //hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
+        //hideHandle = UiLogic.hideFld(doorConfig, "Handle");
+        //hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
+        //hideVents = UiLogic.hideFld(doorConfig, "thVents");
+        //hideRafafa = UiLogic.hideFld(doorConfig, "Rafafa");
+        //hideCatDoor = UiLogic.hideFld(doorConfig, "CatDoor");
 
-    //    doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
-    //    doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
-    //    doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
-    //    doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
-    //    doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
-    //    doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
-    //    doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
-    //    doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
-    //    doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
-    //    doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
-    //}
+        //    doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
+        //    doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
+        //    doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
+        //    doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
+
+        //doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
+        //doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
+        //doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
+        //doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
+        //doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
+        //doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
+
+        //doorConfig.thClasses["VENTS"] = (hideVents ? "thGray" : "thBlue");
+        //doorConfig.thClasses["RAFAFAONMOVINGWING"] = (hideRafafa ? "thGray" : "thBlue");
+        //doorConfig.thClasses["CATDOOR"] = (hideCatDoor ? "thGray" : "thBlue");
+
+
+        //    doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
+        //    doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
+        //    doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
+        //    doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
+        //    doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
+        //    doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
+        //    doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
+        //    doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
+        //    doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
+        //    doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
+
+        //doorConfig.disabledFlds["VENTS"] = hideVents;
+        //doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideRafafa;
+        //doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideCatDoor;
+    }
 
     // We must have this event handler in every tabPage because it uses doorConfig , and we can't pass it as a parameter to
     //   this type of method. Teh only parameter that can be passwed to this method is KeyboardEventArgs !
@@ -278,7 +300,7 @@
             config4.RefreshState();
     }
     }
-  }
+ 
 <br />
 
  @* scheme of the new Movingwing.razor component 18/11/2022  *@
@@ -672,8 +694,9 @@
                                     doorConfig.disabledFlds["DOORCOLORID"] = true;
                                     disableExtColor = disableIntColor = false;
                                     doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
-                                    doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "resBorder");
-                                    doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "resBorder");
+
+                                    doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");
+                                    doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");
                                     //doorConfig.hideBtns["EXTCOLORID"] = doorConfig.hideBtns["INTCOLORID"] = false;  not used yet
                                     doorConfig.DOORCOLORID = 0;
                                     break;
@@ -749,7 +772,8 @@
 <table id="MovingWingL2">
     <tr>
         @* <th id="thTurboApparatus" hidden="@UiLogic.hideFld(doorConfig, "TurboApparatus")">מנגנון תגבור</th> *@
-        <th id="thExtColor"  class= "@doorConfig.thClasses["EXTCOLORID"]" >גוון חוץ</th>  @* was in Extdecor.razor *@
+        @* class= "@doorConfig.thClasses["EXTCOLORID"]" *@
+        <th id="thExtColor"   >גוון חוץ</th>  @* was in Extdecor.razor *@
         <th id="thIntColor" class= "@doorConfig.thClasses["INTCOLORID"]">גוון פנים</th>  @* was in Intdecor.razor L1  *@
         
         <th id="thLockDrilHeight" class= "@doorConfig.thClasses["LOCKDRILHEIGHT"]" >גובה ניקוב</th>
@@ -1383,12 +1407,14 @@
      *@
         <th id="thHandle" class= "@doorConfig.thClasses["HANDLENAME"]">ידית אומנויות</th>
         <th id= "thHandleColorID" class= "@doorConfig.thClasses["HANDLECOLORID"]">צבע לידית אומנויות</th>
-        <th id="thVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">פתחי אוורור</th>
+        @* hidden="@UiLogic.hideFld(doorConfig, "thVents")" *@
+        <th id="thVents" class= "@doorConfig.thClasses["VENTS"]" >פתחי אוורור</th>
 
-         <th id="thRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")">רפפת עשן</th>
-         @* <th>רפפת עשן</th> *@
-
-        <th id="thCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">פתח לחתול</th>
+         @* RAFAFAONMOVINGWING  hidden="@UiLogic.hideFld(doorConfig, "Rafafa")" *@
+         <th id="thRafafa" class= "@doorConfig.thClasses["RAFAFAONMOVINGWING"]">רפפת עשן</th>
+         
+         @* hidden="@UiLogic.hideFld(doorConfig, "CatDoor")" *@
+        <th id="thCatDoor" class= "@doorConfig.thClasses["CATDOOR"]">פתח לחתול</th>
         
     </tr>
     <tr>
@@ -1807,10 +1833,12 @@
 	            }
             }   
         </td>
-        <td id="tdVents" hidden="@UiLogic.hideFld(doorConfig, "thVents")">
+
+        @* hidden="@UiLogic.hideFld(doorConfig, "thVents")" *@
+        <td id="tdVents" >
              @{  int i319 = Array.IndexOf(UiLogic.propNames, "VENTS");
                 <select name="dlstVents" @bind="Vents" class="@doorConfig.borderColors["VENTS"]" 
-             disabled="@doorConfig.disabledFlds["VENTS"]"
+                disabled="@doorConfig.disabledFlds["VENTS"]"
                 @onfocus="@( () => UiLogic.HasFocus("VENTS", doorConfig) )" 
                 @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
             onkeypress="@KeyPressHandler" 
@@ -1851,13 +1879,15 @@
                 }
             }
         </td>
-        <td id="tdRafafa" hidden="@UiLogic.hideFld(doorConfig, "Rafafa")"> 
+
+        @* hidden="@UiLogic.hideFld(doorConfig, "Rafafa")" *@
+        <td id="tdRafafa" > 
             @{  int i320 = Array.IndexOf(UiLogic.propNames, "RAFAFAONMOVINGWING");
                 <select name="dlstRafafa" @bind="Rafafa" class="@doorConfig.borderColors["RAFAFAONMOVINGWING"]" 
-                disabled="@doorConfig.disabledFlds["RAFAFAONMOVINGWING"]"
+                    disabled="@doorConfig.disabledFlds["RAFAFAONMOVINGWING"]"
                     @onfocus="@( () => UiLogic.HasFocus("RAFAFAONMOVINGWING", doorConfig) )" 
                     @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
-                onkeypress="@KeyPressHandler" 
+                    onkeypress="@KeyPressHandler" 
                     @ref="doorConfig.dicRefs[UiLogic.propNames[i320]]" >
                     <option></option>
                     <option>ללא</option>
@@ -1903,7 +1933,9 @@
                 }
             }
         </td>
-        <td id="tdCatDoor" hidden="@UiLogic.hideFld(doorConfig, "CatDoor")">
+
+        @* hidden="@UiLogic.hideFld(doorConfig, "CatDoor")" *@
+        <td id="tdCatDoor" >
             @{  int i321 = Array.IndexOf(UiLogic.propNames, "CATDOOR");
                     <input type="checkbox" name="chkbCatDoor" @bind="CatDoor" class="@doorConfig.borderColors["CATDOOR"]"
                    disabled="@doorConfig.disabledFlds["CATDOOR"]"

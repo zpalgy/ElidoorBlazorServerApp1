@@ -52,9 +52,35 @@
         doorConfig.INTFINMODERNCPLATE =  (doorConfig.DECORFORMAT == UiLogic.External ? string.Empty : doorConfig.INTFINMODERNCPLATE);
         doorConfig.INTFINMODERNPLATE =   (doorConfig.DECORFORMAT == UiLogic.External ? string.Empty : doorConfig.INTFINMODERNPLATE);
         doorConfig.INTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == UiLogic.External ? string.Empty : doorConfig.INTFINMODERNSEPLINE);
-    }
 
+        setDisabled();
+
+    }
+    void setDisabled()  // used in UiLogic.doorFldIsFilled(...)
+    {
+        doorConfig.disabledFlds["EXTFINMODERNCPLATE"] =
+        doorConfig.disabledFlds["EXTMODERNCPLATECLRID"] =
+        doorConfig.disabledFlds["EXTFINMODERNPLATE"] =
+        doorConfig.disabledFlds["EXTMODERNPLATECLRID"] =
+        doorConfig.disabledFlds["EXTSEPLINES"] =
+        doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] =
+        doorConfig.disabledFlds["EXTSEPLINESCLRID"] =
+        doorConfig.disabledFlds["EXTPERIFPROFILECLRID"] =
+        doorConfig.disabledFlds["EXTINSERTCLRID"] = (doorConfig.DECORFORMAT == UiLogic.Internal);
+
+       doorConfig.disabledFlds["INTFINMODERNCPLATE"] =
+       doorConfig.disabledFlds["INTMODERNCPLATECLRID"] =
+       doorConfig.disabledFlds["INTFINMODERNPLATE"] =
+       doorConfig.disabledFlds["INTMODERNPLATECLRID"] =
+       doorConfig.disabledFlds["INTSEPLINES"] =
+       doorConfig.disabledFlds["INTFINMODERNSEPLINE"] =
+       doorConfig.disabledFlds["INTSEPLINESCLRID"] =
+       doorConfig.disabledFlds["INTPERIFPROFILECLRID"] =
+       doorConfig.disabledFlds["INTINSERTCLRID"] = (doorConfig.DECORFORMAT == UiLogic.External);
+    }
 }
+
+
 
  <br/>
     <table>
@@ -68,7 +94,8 @@
 </table>
 <table id="tblDecor1">
     <tr id="tblDecorL1h">
-        <th>לוח מרכזי חוץ</th>      @* D-850 EXTFINMODERNCPLATE *@
+        <th>לוח מרכזי חוץ</th>      
+    @* D-850 EXTFINMODERNCPLATE *@
         <th>צבע לוח מרכזי חוץ</th>
         <th>לוחות חיפוי חוץ</th>    @* D-1000 EXTFINMODERNPLATE *@
         <th>צבע לוחות חיפוי חוץ</th>
@@ -110,7 +137,9 @@
                     {
                         doorConfig.EXTFINMODERNCPLATE = _ExtFinModernCPlate;
                         doorConfig.borderColors["EXTFINMODERNCPLATE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -155,7 +184,9 @@
                     {
                         doorConfig.EXTMODERNCPLATECLRID = _ExtModerCPlateClr;
                         doorConfig.borderColors["EXTMODERNCPLATECLRID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -190,7 +221,9 @@
                     {
                         doorConfig.EXTFINMODERNPLATE = _ExtFinModernPlate;
                         doorConfig.borderColors["EXTFINMODERNPLATE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -235,7 +268,9 @@
                     {
                         doorConfig.EXTMODERNPLATECLRID = _ExtModerPlateClr;
                         doorConfig.borderColors["EXTMODERNPLATECLRID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -269,7 +304,9 @@
                     {
                         doorConfig.EXTSEPLINES = _ExtSepLines;
                         doorConfig.borderColors["EXTSEPLINES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -304,7 +341,9 @@
                     {
                         doorConfig.EXTFINMODERNSEPLINE = _ExtFinModernSepLine;
                         doorConfig.borderColors["EXTFINMODERNSEPLINE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -349,7 +388,9 @@
                     {
                         doorConfig.EXTSEPLINESCLRID = _ExtSepLinesClr;
                         doorConfig.borderColors["EXTSEPLINESCLRID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
                     }
                 }
             }
@@ -394,7 +435,7 @@
                     {
                         doorConfig.EXTPERIFPROFILECLRID = _ExtPerifProfileClr;
                         doorConfig.borderColors["EXTPERIFPROFILECLRID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                     }
                 }
             }
@@ -438,7 +479,10 @@
                     {
                         doorConfig.EXTINSERTCLRID = _ExtInsertCoverClr;
                         doorConfig.borderColors["EXTINSERTCLRID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
+
                     }
                 }
             }
@@ -818,7 +862,9 @@
                     {
                         doorConfig.INTINSERTCLRID = _IntInsertCoverClr;
                         doorConfig.borderColors["INTINSERTCLRID"] = (value != 0 ? "blueBorder" : "redBorder");
-                        UiLogic.clearFollowingTabFields(doorConfig, "tdecor");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
                     }
                 }
             }

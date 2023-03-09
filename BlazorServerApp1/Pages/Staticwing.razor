@@ -467,7 +467,8 @@
 <table id="staticWingL1">
         <tr>
 			<th>נעילה</th>
-            <th id="thExtraWingWidth" @hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")">רוחב כנף</th>
+			@* hidden="@UiLogic.hideFld(doorConfig, "thExtraWingWidth")" *@
+            <th id="thExtraWingWidth" >רוחב כנף</th>
 			<th>גובה כנף</th>
     		<th id="thCentralColWidth" >רוחב עמוד מרכזי</th> 
 			<th id="thCentralColClrID" class= "@doorConfig.thClasses["CENTRALCOLCLRID"]" >גוון עמוד מרכזי</th>
@@ -477,7 +478,7 @@
 			           
      @*
 			@{	string thCyl = "thCylinder4HalfWing"; }
-            <th id="thCylinder4HalfWing" @hidden="@UiLogic.hideFld(doorConfig, thCyl)">צילינדר כנף קבועה</th>
+            <th id="thCylinder4HalfWing" hidden="@UiLogic.hideFld(doorConfig, thCyl)">צילינדר כנף קבועה</th>
 	 *@
 			@* ref : https://stackoverflow.com/questions/63693734/how-to-show-hide-an-element-in-real-time-blazor *@
 	  @*

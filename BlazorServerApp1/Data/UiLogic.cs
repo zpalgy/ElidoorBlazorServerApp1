@@ -263,8 +263,9 @@ namespace BlazorServerApp1.Data
             DataRow[] tabFields = PrApiCalls.dtConfFields.Select(query);
             int fieldsNum = tabFields.Length;
             bool isFilled = true;
+            bool isFilled2 = true;
 
-            if (tabName == "movingwing")
+            if (tabName == "decor")
             {
                 int dbg = 17; //debug
             }
@@ -319,7 +320,11 @@ namespace BlazorServerApp1.Data
                 }
 
             }
-            return isFilled;
+
+            if (tabName == "movingwing" && isFilled && doorConfig.DECORFORMAT != None)
+                isFilled2 = tabPageIsFilled("decor", doorConfig);
+
+            return isFilled && isFilled2;
         }
         public static bool halfWingIsFilled(DoorConfig doorConfig)
         {
@@ -400,10 +405,10 @@ namespace BlazorServerApp1.Data
                     int t1 = Array.IndexOf(tabNames, nextTab);
                     nextTab = tabNames[t1 + 1];   // staticwing TAB is diabled - skip it and skip hinges tab
                 }
-                if (nextTab == "extdecor" && doorConfig.DECORFORMAT == "ללא")
+                if (nextTab == "decor")  //&& doorConfig.DECORFORMAT == "ללא")  // == UiLogic.None 
                 {
                     int t2 = Array.IndexOf(tabNames, nextTab);
-                    nextTab = tabNames[t2 + 2];
+                    nextTab = tabNames[t2 + 1];  // new 
                 }
                 if (nextTab == "movingwing" && doorConfig.TRSH_WINGSNUMDES == "חצי כנף")
                 {
@@ -445,7 +450,7 @@ namespace BlazorServerApp1.Data
                     else
                         return "movingwing";
                 default:
-                    return getNextTabName(doorConfig, tabBtnCssName);  // movingwing, extdecor ....
+                    return getNextTabName(doorConfig, tabBtnCssName);  // movingwing, decor ....
             }
         }
         
@@ -548,6 +553,11 @@ namespace BlazorServerApp1.Data
             string errMsg = string.Empty;
             string sval;
             int ival;
+
+            if (fldName == "INTSEPLINES")
+            {
+                int dbg = 18;
+            }
 
             if (!fldIsMandatory(doorConfig, fldName))
             {
@@ -1437,8 +1447,9 @@ namespace BlazorServerApp1.Data
                     {
 
                         //string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
-                        if (fldName == "DECORFORMAT")
+                        if (fldName == "COLORSNUM")
                         {
+                            
                             int x = 17;
                         }
                         string query = string.Format("TRSH_MODELNAME = '{0}' AND FIELDNAME = '{1}'", doorConfig.TRSH_MODELNAME, fldName);
