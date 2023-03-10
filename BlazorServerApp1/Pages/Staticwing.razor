@@ -184,6 +184,8 @@
 		if ( doorConfig.COLORSNUM == "1")
 			doorConfig.disabledFlds["SHALVANIACLRID"] = true;
 
+		doorConfig.disabledFlds["SWINGHASLOCK"] = false; 
+
 		//doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
 		//doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
 		//doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
@@ -503,7 +505,7 @@
 			<td>
  			  @{  int i601 = Array.IndexOf(UiLogic.propNames, "SWINGHASLOCK");
 					 	<input type="checkbox" name="chkbSwingHasLock" @bind="SwingHasLock"  
-				      disabled="@doorConfig.disabledFlds["SWINGHASLOCK"]"
+				             disabled="@doorConfig.disabledFlds["SWINGHASLOCK"]"
 						   	@onfocus="@( () => UiLogic.HasFocus("SWINGHASLOCK", doorConfig) )" 
                      @onkeypress="doorConfig.KeyPressHandler" 
 						 	@ref="doorConfig.dicRefs[UiLogic.propNames[i601]]"  
