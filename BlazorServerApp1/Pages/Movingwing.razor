@@ -365,67 +365,67 @@
 
         @code
             {
-                //private ElementReference txtWingWidth;
-                protected int? _DoorWidth;
-                protected int? DoorWidth
+            //private ElementReference txtWingWidth;
+            protected int? _DoorWidth;
+            protected int? DoorWidth
+            {
+                get
                 {
-                    get
+                    if (doorConfig != null && doorConfig.DOORWIDTH > 0)
                     {
-                        if (doorConfig != null && doorConfig.DOORWIDTH > 0)
-                        {
-                            _DoorWidth = doorConfig.DOORWIDTH;
-                        }
-                        else
-                            _DoorWidth = null;
-                        // return _DoorWidth.ToString();
-                        return _DoorWidth;
+                        _DoorWidth = doorConfig.DOORWIDTH;
                     }
-                    set
+                    else
+                        _DoorWidth = null;
+                    // return _DoorWidth.ToString();
+                    return _DoorWidth;
+                }
+                set
+                {
+                    _DoorWidth = value;
+                    if (value == null || value == 0 || !wingWidthIsOk(doorConfig, (int)value, ref errMsg2))
                     {
-                        _DoorWidth = value;
-                        if (value == null || value == 0 || !wingWidthIsOk(doorConfig, (int)value, ref errMsg2))
+                        errMsg2 = (value == null || value == 0 ? "חובה לציין רוחב דלת" : errMsg2);
+                        msgCaption = string.Empty;
+                        msgClass = "modal-body centeredMsg";
+                        // the error text is in errMsg2 which was populated in wingWidthIsOk(...) 
+                        openMsgBox = true;
+                        value = _DoorWidth = doorConfig.DOORWIDTH = 0;
+                        StateHasChanged();
+                        doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : "blueBorder");
+                        doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+                        //this.StateHasChanged();
+                    }
+                    else
+                    {
+                        if (doorConfig != null)
                         {
-                            errMsg2 = (value == null || value == 0 ? "חובה לציין רוחב דלת" : errMsg2);
-                            msgCaption = string.Empty;
-                            msgClass = "modal-body centeredMsg";
-                            // the error text is in errMsg2 which was populated in wingWidthIsOk(...) 
-                            openMsgBox = true;
-                            value = _DoorWidth = doorConfig.DOORWIDTH = 0;
-                            StateHasChanged();
-                            doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
-                            doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
-                            //this.StateHasChanged();
-                        }
-                        else
-                        {
-                            if (doorConfig != null)
-                            {
-                                doorConfig.DOORWIDTH = (_DoorWidth != null ? (int)_DoorWidth : 0);
+                            doorConfig.DOORWIDTH = (_DoorWidth != null ? (int)_DoorWidth : 0);
 
-                                if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT)
+                            if (!string.IsNullOrEmpty(doorConfig.PARTNAME) && doorConfig.TRSH_COMPLIENT == PrApiCalls.ELIDOOR_COMPLIENT)
+                            {
+                                string errMsg = string.Empty;
+                                doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
+                                if (doorConfig.WINDOWWIDTH <= 0 && !string.IsNullOrEmpty(errMsg))
                                 {
-                                    string errMsg = string.Empty;
-                                    doorConfig.WINDOWWIDTH = calcWindowWidth(doorConfig, ref errMsg);
-                                    if (doorConfig.WINDOWWIDTH <= 0 && !string.IsNullOrEmpty(errMsg))
-                                    {
-                                        //Js.InvokeVoidAsync("alert", errMsg);
-                                        errMsg2 = errMsg;
-                                        openMsgBox = true;
-                                        value = _DoorWidth = doorConfig.DOORWIDTH = 0;
-                                        doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
-                                        doorConfig.borderColors["DOORWIDTH"] = "redBorder";
-                                        this.StateHasChanged();
-                                    }
+                                    //Js.InvokeVoidAsync("alert", errMsg);
+                                    errMsg2 = errMsg;
+                                    openMsgBox = true;
+                                    value = _DoorWidth = doorConfig.DOORWIDTH = 0;
+                                    doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+                                    doorConfig.borderColors["DOORWIDTH"] = "redBorder";
+                                    this.StateHasChanged();
                                 }
-                                doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : string.Empty );
-                                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-                               // UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                               if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
-                                config4.RefreshState();
                             }
+                            doorConfig.borderColors["DOORWIDTH"] = (value == 0 ? "redBorder" : "blueBorder");
+                            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                            // UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                config4.RefreshState();
                         }
                     }
                 }
+            }
 }
         </td>
         <td id="tdDoorHeight" hidden="@UiLogic.hideFld(doorConfig, "DoorHeight")">
@@ -2014,7 +2014,7 @@
          @*  <MwDecor doorConfig="doorConfig" disableLogo="disableLogo" config4="config4">  *@
 
          <div dir="rtl" class="@doorConfig.divClasses["movingwing"]" > 
-            <Mwdecor doorConfig="@doorConfig" config4="@config4" />
+           @* <Mwdecor doorConfig="@doorConfig" config4="@config4" />  *@
           </div>
         
       </td>

@@ -185,7 +185,7 @@
             doorConfig.disabledFlds["SHALVANIACLRID"] = true;
 
         doorConfig.disabledFlds["SWINGHASLOCK"] = false;
-
+        #region to del
         //doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
         //doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
         //doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
@@ -213,6 +213,7 @@
         //doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr;
         //doorConfig.disabledFlds["SWING_HANDLENAME"] = hideSwingHandle;
         //doorConfig.disabledFlds["SWING_HANDLECOLORID"] = hideSwingHandleClr;
+        #endregion to del
 
     }
     void calcCentralColClrID(DoorConfig doorConfig)
@@ -264,6 +265,7 @@
             //doorConfig.SWING_HANDLECOLORID , doorConfig.HANDLECOLORID;
 
             doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = true;
+            #region old stuff
             // Eli's request on 11/09/2022 - this was changed on 21/09/2022 ! and the following lines were commented out !
             //doorConfig.SWING_HANDLENAME = string.Empty;
             //doorConfig.SWING_HANDLECOLORID = 0;
@@ -284,6 +286,7 @@
             //{
             //	doorConfig.disabledFlds["SWING_HANDLENAME"] = doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true;  //string.IsNullOrEmpty(doorConfig.HANDLENAME);
             //}
+            #endregion old stuff
         }
         else  // withLOCK
         {
@@ -358,7 +361,7 @@
             if (!doorConfig.disabledFlds["SWING_HWCOLORID"] && doorConfig.SWING_HWCOLORID == 0)     //(!hideSwingHwClr)
                 doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;                   // the default is the HW Color of Movingwing !
 
-            //  ** SWING_HANDLE* issue .
+            #region ** SWING_HANDLE* issue 
             //Eli 21/09/2022 : HANDLE NAME and Color get the value that is in movingwing. It does not depend on WithLock value !
             // thereFore we set their value in on OnInitializedAsync() and disable these two fields if the number of wings in the door is greater than ONE !
             //if (doorConfig.TRSH_MODELNAME != "חצי כנף")
@@ -369,7 +372,7 @@
             //                                                  || doorConfig.HANDLENAME == UiLogic.NameOfNone);
 
             //doorConfig.SWING_HANDLECOLORID = doorConfig.HANDLECOLORID;
-            //-- end of SWING_HANDLE* issue on 21/09/2022
+            #endregion ** SWING_HANDLE* issue
 
             doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 , requested again on 16/08/2022
                                                                                   // LOGO is also copied, but there is no special field SWING_LOGO for staticwing as always we use teh LOGO of teh movinwing !
@@ -441,18 +444,7 @@
     }
 
     async void IDisposable.Dispose()
-    {
-        //if (!UiLogic.tabPageIsFilled("intdecor", doorConfig))
-        // {
-        //     Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה פנים' י");
-        // }
-        //int x = 17;
-        //if (x == 18)
-        //{
-        //    Js.InvokeVoidAsync("alert", "error !");
-        //    //NavigationManager.NavigateTo("Movingwing", true);
-        //}
-    }
+    { }
 }
 
 <br />

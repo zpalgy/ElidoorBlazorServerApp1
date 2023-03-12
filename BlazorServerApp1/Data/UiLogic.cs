@@ -304,6 +304,12 @@ namespace BlazorServerApp1.Data
                     //{
                     //    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT >= 0 ? "blueBorder" : "redBorder");
                     //}
+                    else  if (doorConfig.COLORSNUM == "2")
+                    {
+                       doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");   //hardcoded this, because for unknow reason EXCOLORID 
+                       doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");   // does not have redBorder when COLORNUM is 2 while
+                                                                                                                            // INTCOLORID is !
+                    }
                     else
                     {
                         //borderColor = "redBorder";
@@ -316,6 +322,10 @@ namespace BlazorServerApp1.Data
                 }
                 else
                 {
+                    if (fldName == "INTCOLORID")
+                    {
+                        int dbg = 17;
+                    }
                     doorConfig.borderColors[fldName] = "blueBorder";  //new 05/11/2022
                 }
 
@@ -1353,7 +1363,10 @@ namespace BlazorServerApp1.Data
                     }
 
                 }
-            }
+                //
+                doorConfig.thClasses["HANDLECOLORID"] = doorConfig.thClasses["HANDLENAME"];    //hardcode this
+				//
+			}
             catch (Exception ex)
             {
                 string errMsg = string.Format("Unexpected error: {0} . tabName ='{1}'  Stacktrace : {2}", ex.Message, tabName, ex.StackTrace);
@@ -2193,13 +2206,19 @@ namespace BlazorServerApp1.Data
         }
         public static bool fldIsMandatory(DoorConfig doorConfig, string fldName)
         {
-            string query = string.Format("FIELDNAME='{0}'", fldName);
-            DataRow[] fldRows = PrApiCalls.dtConfFields.Select(query);
             if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף")  //new 15/07/2022
             {
                 return (lstHalfwingMfields.Contains(fldName));
             }
-            if (fldRows.Length > 0)
+            if (doorConfig.COLORSNUM == "2")
+			{
+                if ("EXTCOLORID INTCOLORID".Contains(fldName))
+                    return true;
+			}
+
+			string query = string.Format("FIELDNAME='{0}'", fldName);
+			DataRow[] fldRows = PrApiCalls.dtConfFields.Select(query);
+			if (fldRows.Length > 0)
                 return (fldRows[0]["MANDATORY"].ToString() == "M");
             else
             {
