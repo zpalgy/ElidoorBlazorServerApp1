@@ -47,6 +47,7 @@ namespace BlazorServerApp1.Data
         public static List<PART_Class> lstParts = new List<PART_Class>();
         public static DataTable dtParts = new DataTable();
 
+        public static List<FAMILY_Class> lstFamilies = new List<FAMILY_Class>();
         //public static List<WingWidth_Class> lstWingWidth = new List<WingWidth_Class>();
         //public static DataTable dtWingWidth = new DataTable();
 
@@ -789,43 +790,56 @@ namespace BlazorServerApp1.Data
         }
         public static int getFAMILY(string FAMILYNAME, ref string errMsg)
         {
-            try
-            {
-                RestClient restClient = new RestClient();
-                initRestClient(restClient);
-                RestRequest request = new RestRequest();
-                string fields = "FAMILY,FAMILYNAME,FAMILYDESC";
-                request.Resource = string.Format("FAMILY_LOG?$filter=FAMILYNAME eq '{0}'&$select={1}", FAMILYNAME, fields);
-                IRestResponse response = restClient.Execute(request);
-                if (response.IsSuccessful)
-                {
-                    var settings = new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Include,
-                        MissingMemberHandling = MissingMemberHandling.Ignore
-                    };
-                    ValuesFAMILY_Class val = JsonConvert.DeserializeObject<ValuesFAMILY_Class>(response.Content);
-                    return val.value[0].FAMILY;
-                }
-                else
-                {
-                    if (response.StatusDescription.ToLower() == "not found")
-                    {
-                        errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes somewhere !";
-                        myLogger.log.Error(errMsg);
-                        return -1;
-                    }
-                    errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
-                    return -1;
-                }
-            }
-            catch (Exception ex)
-            {
-                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
-                throw ex;
-            }
-        }
+            FAMILY_Class fam = lstFamilies.Find(a => a.FAMILYNAME == FAMILYNAME);
+            if (fam != null)
+                return fam.FAMILY;
+            else
+                return 0;
 
+            //try
+            //{
+            //    RestClient restClient = new RestClient();
+            //    initRestClient(restClient);
+            //    RestRequest request = new RestRequest();
+            //    string fields = "FAMILY,FAMILYNAME,FAMILYDESC";
+            //    request.Resource = string.Format("FAMILY_LOG?$filter=FAMILYNAME eq '{0}'&$select={1}", FAMILYNAME, fields);
+            //    IRestResponse response = restClient.Execute(request);
+            //    if (response.IsSuccessful)
+            //    {
+            //        var settings = new JsonSerializerSettings
+            //        {
+            //            NullValueHandling = NullValueHandling.Include,
+            //            MissingMemberHandling = MissingMemberHandling.Ignore
+            //        };
+            //        ValuesFAMILY_Class val = JsonConvert.DeserializeObject<ValuesFAMILY_Class>(response.Content);
+            //        return val.value[0].FAMILY;
+            //    }
+            //    else
+            //    {
+            //        if (response.StatusDescription.ToLower() == "not found")
+            //        {
+            //            errMsg = "response.StatusDescription = 'Not Found' - check the restClient.BaseUrl - maybe it's wrong, e.g. double slashes somewhere !";
+            //            myLogger.log.Error(errMsg);
+            //            return -1;
+            //        }
+            //        errMsg = string.Format("Priority Web API error : {0} \n {1}", response.StatusDescription, response.Content);
+            //        return -1;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+            //    throw ex;
+            //}
+        }
+        public static string getFamilyNameByDes(string famDes)
+        {
+            FAMILY_Class fam = lstFamilies.Find(a => a.FAMILYDESC == famDes);
+            if (fam != null)
+                return fam.FAMILYNAME;
+            else
+                return string.Empty;
+        }
 
         public static List<PART_Class> getFamilyParts(int family, ref string errMsg)
         {
@@ -938,6 +952,7 @@ namespace BlazorServerApp1.Data
                 dtModels = lstModels.ToDataTable<Model_Class>();
                 lstModel_Parts = getModelParts(ref errMsg);
                 dtModel_Parts = lstModel_Parts.ToDataTable<Model_Part_Class>();
+                lstFamilies = getFamilies(ref errMsg);
                 lstDecorations = getAllDecorations(ref errMsg);
                 dtDecorations = lstDecorations.ToDataTable<Decoration_Class>();
                 dtComplients = getComplients(ref errMsg);
@@ -1507,6 +1522,9 @@ namespace BlazorServerApp1.Data
         }
         public static string getHwDes (int TRSH_HARDWARE)
         {
+            if (TRSH_HARDWARE == UiLogic.IdOfNone)
+                return "ללא";
+
             TRSH_HARDWARE_Class hw1 = getHardware1(TRSH_HARDWARE);  //lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);
             if (hw1 != null)
                 return hw1.PARTDES;
@@ -1515,6 +1533,9 @@ namespace BlazorServerApp1.Data
         }
         public static int getHwIdByDes(string HwDes)
         {
+            if (HwDes == "ללא")
+                return UiLogic.IdOfNone;
+
             TRSH_HARDWARE_Class hw1 = lstHardwares.Find(item => item.PARTDES == HwDes);
             if (hw1 != null)
                 return hw1.TRSH_HARDWARE;

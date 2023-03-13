@@ -51,8 +51,13 @@ namespace BlazorServerApp1.Data
         public static string NameOfFluted = "Fluted";
         public static string Fluted = "מחורץ";
         public static string External = "חוץ";
+        public static string Outside = "החוצה";
         public static string Internal = "פנים";
+        public static string Inside = "פנימה";
         public static string BothSides = "דו צדדי";
+        public static string Right = "ימין";
+        public static string Left = "שמאל";
+        public static string Megulvan = "מגולוון";
 
 
 
@@ -1356,12 +1361,11 @@ namespace BlazorServerApp1.Data
                     string fldName = tabFields[r]["FIELDNAME"].ToString();
                     bool hideFldName = hideFld(doorConfig, fldName);
                     doorConfig.thClasses[fldName] = (hideFldName ? "thGray" : "thBlue");
-                    doorConfig.disabledFlds[fldName] = hideFldName;
+                    doorConfig.disabledFlds[fldName] = (doorConfig.disabledFlds[fldName] || hideFldName);
                     if (fldName.StartsWith("SWING_HANDLE"))
                     {
                         int dbg = 17;
                     }
-
                 }
                 //
                 doorConfig.thClasses["HANDLECOLORID"] = doorConfig.thClasses["HANDLENAME"];    //hardcode this
