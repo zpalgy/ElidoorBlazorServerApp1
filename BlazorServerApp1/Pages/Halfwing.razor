@@ -1259,7 +1259,7 @@
                             if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
                                    config4.RefreshState();
 
-						    @*if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
+						    @*if (doorConfig.HW4EXTRAWING == HebNouns.IdOfNone) // ללא   
                             {
                                 doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
                                 doorConfig.SWING_HWCOLORID = 0;
@@ -1297,7 +1297,7 @@
      	  @code	{
 			protected void setSWING_DRIL4HW()
 			{
-				if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא   
+				if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == HebNouns.IdOfNone) // ללא   
 				{
 					doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 					doorConfig.SWING_HWACCESSORYID = 0;
@@ -1361,7 +1361,7 @@
                             string HwColored = PrApiCalls.getHardware1(doorConfig.HW4EXTRAWING).COLORED;
                             @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
                             {
-                                if (hwa.COLORED == HwColored || hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == UiLogic.IdOfNone)
+                                if (hwa.COLORED == HwColored || hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == HebNouns.IdOfNone)
                                 {
                                     <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option>
                                 }
@@ -1683,7 +1683,7 @@
                             doorConfig.SWING_HANDLENAME = _Swing_Handle;
                             // Handle is a Required field independent of the HASLOCK flag ! 07/07/2022
                             doorConfig.borderColors["SWING_HANDLENAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                            doorConfig.disabledFlds["SWING_HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone 
+                            doorConfig.disabledFlds["SWING_HANDLECOLORID"] = (   doorConfig.HANDLENAME == HebNouns.NameOfNone 
                                                                        || !PrApiCalls.isHandleColored(doorConfig.SWING_HANDLENAME));
                             if (doorConfig.disabledFlds["SWING_HANDLECOLORID"])
                                 doorConfig.SWING_HANDLECOLORID = 0;

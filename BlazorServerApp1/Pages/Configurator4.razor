@@ -190,7 +190,7 @@
         if (!UiLogic.tabPageIsFilled("divHeader", doorConfig))
         {
             msgCaption = string.Empty;
-            errMsg2 = UiLogic.requiredFieldsAreEmpty;  //"שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
+            errMsg2 = HebNouns.requiredFieldsAreEmpty;  //"שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
                                                        // Js.InvokeVoidAsync("alert", errMsg);
             ErrMsgCssClass = "modal-body centeredMsg";
             openMsgBox = true;
@@ -1903,7 +1903,7 @@
                                     string prevText = "נילווים";
                                     if (!UiLogic.tabPageIsFilled(prevTab, doorConfig))
                                     {
-                                        errMsg2 = UiLogic.requiredFieldsAreEmpty; //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
+                                        errMsg2 = HebNouns.requiredFieldsAreEmpty; //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
                                                                                   // Js.InvokeVoidAsync("alert", errMsg);
                                         openMsgBox = true;
                                         //return;
@@ -1947,11 +1947,11 @@
                                     {
                                         doorConfig.REFERENCE = string.Empty;
                                     }
-                                    if (doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone)
+                                    if (doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone)
                                         doorConfig.TRSH_HARDWARE = 0;
-                                    if (doorConfig.HWCOLORID == UiLogic.IdOfNone)
+                                    if (doorConfig.HWCOLORID == HebNouns.IdOfNone)
                                         doorConfig.HWCOLORID = 0;
-                                    if (doorConfig.TRSH_CYLINDER == UiLogic.IdOfNone)
+                                    if (doorConfig.TRSH_CYLINDER == HebNouns.IdOfNone)
                                         doorConfig.TRSH_CYLINDER = 0;
         }
      }

@@ -45,13 +45,13 @@
         // config4.RefreshState();  //just for a test - works !
 
         // clear disabled fields :
-        doorConfig.EXTFINMODERNCPLATE =  (doorConfig.DECORFORMAT == UiLogic.Internal ? string.Empty : doorConfig.EXTFINMODERNCPLATE);
-        doorConfig.EXTFINMODERNPLATE =   (doorConfig.DECORFORMAT == UiLogic.Internal ? string.Empty : doorConfig.EXTFINMODERNPLATE);
-        doorConfig.EXTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == UiLogic.Internal ? string.Empty : doorConfig.EXTFINMODERNSEPLINE);
+        doorConfig.EXTFINMODERNCPLATE =  (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNCPLATE);
+        doorConfig.EXTFINMODERNPLATE =   (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNPLATE);
+        doorConfig.EXTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNSEPLINE);
 
-        doorConfig.INTFINMODERNCPLATE =  (doorConfig.DECORFORMAT == UiLogic.External ? string.Empty : doorConfig.INTFINMODERNCPLATE);
-        doorConfig.INTFINMODERNPLATE =   (doorConfig.DECORFORMAT == UiLogic.External ? string.Empty : doorConfig.INTFINMODERNPLATE);
-        doorConfig.INTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == UiLogic.External ? string.Empty : doorConfig.INTFINMODERNSEPLINE);
+        doorConfig.INTFINMODERNCPLATE =  (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNCPLATE);
+        doorConfig.INTFINMODERNPLATE =   (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNPLATE);
+        doorConfig.INTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNSEPLINE);
 
         setDisabled();
 
@@ -66,7 +66,7 @@
         doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] =
         doorConfig.disabledFlds["EXTSEPLINESCLRID"] =
         doorConfig.disabledFlds["EXTPERIFPROFILECLRID"] =
-        doorConfig.disabledFlds["EXTINSERTCLRID"] = (doorConfig.DECORFORMAT == UiLogic.Internal);
+        doorConfig.disabledFlds["EXTINSERTCLRID"] = (doorConfig.DECORFORMAT == HebNouns.Internal);
 
        doorConfig.disabledFlds["INTFINMODERNCPLATE"] =
        doorConfig.disabledFlds["INTMODERNCPLATECLRID"] =
@@ -76,7 +76,7 @@
        doorConfig.disabledFlds["INTFINMODERNSEPLINE"] =
        doorConfig.disabledFlds["INTSEPLINESCLRID"] =
        doorConfig.disabledFlds["INTPERIFPROFILECLRID"] =
-       doorConfig.disabledFlds["INTINSERTCLRID"] = (doorConfig.DECORFORMAT == UiLogic.External);
+       doorConfig.disabledFlds["INTINSERTCLRID"] = (doorConfig.DECORFORMAT == HebNouns.External);
     }
 }
 

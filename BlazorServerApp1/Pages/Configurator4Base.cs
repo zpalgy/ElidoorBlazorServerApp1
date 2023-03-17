@@ -89,7 +89,7 @@ namespace BlazorServerApp1.Pages
 				// }
 				//end debug
 
-				if (prevTab.ToLower() == "decor" && doorConfig.DECORFORMAT == UiLogic.None)
+				if (prevTab.ToLower() == "decor" && doorConfig.DECORFORMAT == HebNouns.None)
 					prevTab = "movingwing";
 
 
@@ -102,7 +102,7 @@ namespace BlazorServerApp1.Pages
 				else
 				{
 					//string prevTabText = UiLogic.tabTexts[t - 1];
-					errMsg = UiLogic.requiredFieldsAreEmpty;   //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
+					errMsg = HebNouns.requiredFieldsAreEmpty;   //string.Format("יש למלא את כל השדות בלשונית '{0}'  י", prevText);
 																// Js.InvokeVoidAsync("alert", errMsg);
 																//openMsgBox = true;
 					return false;

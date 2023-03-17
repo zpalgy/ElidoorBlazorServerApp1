@@ -389,7 +389,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_MODEL,TRSH_MODELNAME,TRSH_MODELDES,TRSH_MEAGEDNAME,TRSH_MEAGEDDES,TRSH_DOOR_HWCATCODE,TRSH_DOOR_HWCAT";
+                string fields = "TRSH_MODEL,TRSH_MODELNAME,TRSH_MODELDES,TRSH_MEAGEDNAME,TRSH_MEAGEDDES,TRSH_DOOR_HWCATCODE,TRSH_DOOR_HWCAT,TRSH_CYLCATEGORY";
                 request.Resource = string.Format("TRSH_MODELS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -999,7 +999,7 @@ namespace BlazorServerApp1.Data
             }
             catch (Exception ex)
             {
-                string errMsg2 = string.Format("Unexpected error: {0} check Whether all Priority Forms atr Prepared/Ready", ex.Message);
+                string errMsg2 = string.Format("Unexpected error: {0} check Whether all Priority Forms are Prepared/Ready", ex.Message);
                 myLogger.log.Error(errMsg2);
                 throw new Exception(errMsg2);
             }
@@ -1207,7 +1207,8 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,OPENSIDE,DRIL4HW,DRIL4HWDES,COLORED,NIKEL,BRONZE,FORHALFCYL,PARTNAME2,OPPOSITESIDE_PART";
+                string fields =   "TRSH_HARDWARE,TRSH_DOOR_HWCATCODE,PARTNAME,PARTDES,OPENSIDE,OPENSIDE_RIGHT,OPENSIDE_LEFT,OPENSIDE_RIGHTLEFT," 
+                                + "DRIL4HW,DRIL4HWDES,COLORED,NIKEL,BRONZE,FORHALFCYL,IS4DECOR,PARTNAME2,OPPOSITESIDE_PART";
                 request.Resource = string.Format("TRSH_HARDWARE?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1310,7 +1311,7 @@ namespace BlazorServerApp1.Data
                     emptyHwa.PARTDES = " ";
                     val1.Add(emptyHwa);
                     HWACCESSORY_Class noHwa = new HWACCESSORY_Class();
-                    noHwa.HWACCESSORYID = UiLogic.IdOfNone;
+                    noHwa.HWACCESSORYID = HebNouns.IdOfNone;
                     noHwa.PARTDES = "ללא";
                     val1.Add(noHwa);
 
@@ -1402,7 +1403,7 @@ namespace BlazorServerApp1.Data
                 noHwa.TRSH_HARDWARE = 0;
                 noHwa.TRSH_HW_ACC_ID = 0;
                 noHwa.HWPARTDES = String.Empty;
-                noHwa.HWACCESSORYID = UiLogic.IdOfNone;
+                noHwa.HWACCESSORYID = HebNouns.IdOfNone;
                 noHwa.ACCPARTDES = "ללא";
                 res.Add(noHwa);
 
@@ -1522,7 +1523,7 @@ namespace BlazorServerApp1.Data
         }
         public static string getHwDes (int TRSH_HARDWARE)
         {
-            if (TRSH_HARDWARE == UiLogic.IdOfNone)
+            if (TRSH_HARDWARE == HebNouns.IdOfNone)
                 return "ללא";
 
             TRSH_HARDWARE_Class hw1 = getHardware1(TRSH_HARDWARE);  //lstHardwares.Find(item => item.TRSH_HARDWARE == TRSH_HARDWARE);
@@ -1534,7 +1535,7 @@ namespace BlazorServerApp1.Data
         public static int getHwIdByDes(string HwDes)
         {
             if (HwDes == "ללא")
-                return UiLogic.IdOfNone;
+                return HebNouns.IdOfNone;
 
             TRSH_HARDWARE_Class hw1 = lstHardwares.Find(item => item.PARTDES == HwDes);
             if (hw1 != null)
@@ -1574,7 +1575,7 @@ namespace BlazorServerApp1.Data
                     lstParHWs.Add(emptyHW);
 
                     TRSH_HARDWARE_Class noHw = new TRSH_HARDWARE_Class();
-                    noHw.TRSH_HARDWARE = UiLogic.IdOfNone;
+                    noHw.TRSH_HARDWARE = HebNouns.IdOfNone;
                     noHw.PARTDES = "ללא";
                     lstParHWs.Add(noHw);
 
@@ -1782,7 +1783,7 @@ namespace BlazorServerApp1.Data
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "TRSH_CYLINDER,PARTNAME,PARTDES,TRSH_MODELNAME,OPENMODE,ISHALFCYLINDER,SORT";
+                string fields = "TRSH_CYLINDER,PARTNAME,PARTDES,TRSH_MODELNAME,OPENMODE,OPENIN,OPENOUT,OPEN_INOUT,ISHALFCYLINDER,SORT,TRSH_CYLCATEGORY";
                 request.Resource = string.Format("TRSH_CYLINDERS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -1801,7 +1802,7 @@ namespace BlazorServerApp1.Data
                     val1.Add(emptyCylinder);
 
                     CYLINDER_Class noCylinder = new CYLINDER_Class();
-                    noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
+                    noCylinder.PARTNAME = HebNouns.NameOfNone;//"9999999";
                     noCylinder.PARTDES = "ללא";
                     noCylinder.SORT = 1;
                     val1.Add(noCylinder);
@@ -1861,8 +1862,8 @@ namespace BlazorServerApp1.Data
                 if (doorConfig.TRSH_MODELNAME != "MLI")  // added on 27/07/2022 per Eli's request 
                 {
                     CYLINDER_Class noCylinder = new CYLINDER_Class();
-                    noCylinder.PARTNAME = UiLogic.NameOfNone;//"9999999";
-                    noCylinder.PARTDES = "ללא";
+                    noCylinder.PARTNAME = HebNouns.NameOfNone;//"9999999";
+                    noCylinder.PARTDES = HebNouns.None;    //"ללא";
                     noCylinder.SORT = 1;
                     lstRes.Add(noCylinder);
                 }
@@ -1965,7 +1966,7 @@ namespace BlazorServerApp1.Data
 
                 CYLHW_Class noCHW = new CYLHW_Class();
                 noCHW.TRSH_CYLINDER = 0;
-                noCHW.TRSH_HARDWARE = UiLogic.IdOfNone;
+                noCHW.TRSH_HARDWARE = HebNouns.IdOfNone;
                 noCHW.PARTDESHW = "ללא";
                 res.Add(noCHW);
 
@@ -2003,7 +2004,7 @@ namespace BlazorServerApp1.Data
                 res.Add(emptyCyl);
 
                 CYLINDER_Class noCyl = new CYLINDER_Class();
-                noCyl.TRSH_CYLINDER = UiLogic.IdOfNone;
+                noCyl.TRSH_CYLINDER = HebNouns.IdOfNone;
                 noCyl.PARTDES = "ללא";
                 noCyl.SORT = 1;
                 res.Add(noCyl);
@@ -2739,7 +2740,7 @@ namespace BlazorServerApp1.Data
                     val1.Add(emptyHandle);
 
                     HANDLE_Class noHandle = new HANDLE_Class();
-                    noHandle.PARTNAME = UiLogic.NameOfNone;
+                    noHandle.PARTNAME = HebNouns.NameOfNone;
                     noHandle.PARTDES = "ללא";  // new per CU request 23/05/2022
                     val1.Add(noHandle);
 
@@ -2788,15 +2789,15 @@ namespace BlazorServerApp1.Data
         }
         public static string getHandleNameByDes (string handleDes)
         {
-            if (handleDes == "ללא")
-                return UiLogic.NameOfNone;
+            if (handleDes == HebNouns.None)    //"ללא")
+                return HebNouns.NameOfNone;
 
             HANDLE_Class h = lstHandles.Find(item => item.PARTDES == handleDes);
             return h.PARTNAME;
         }
         public static string getHandleDesByName(string handleName)
         {
-            if (handleName == UiLogic.NameOfNone)
+            if (handleName == HebNouns.NameOfNone)
                 return "ללא";
             HANDLE_Class h = lstHandles.Find(item => item.PARTNAME == handleName);
             return h.PARTDES;

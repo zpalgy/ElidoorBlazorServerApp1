@@ -224,23 +224,29 @@ namespace BlazorServerApp1.Data
         public string PARTDES { get; set; }  //HARDWAREDES
         [DataMember(Order = 5)]
         public string OPENSIDE { get; set; }
-
-        [DataMember(Order = 6)]
+		[DataMember(Order = 6)]
+		public string OPENSIDE_RIGHT { get; set; }
+		[DataMember(Order = 7)]
+		public string OPENSIDE_LEFT { get; set; }
+		[DataMember(Order = 8)]
+		public string OPENSIDE_RIGHTLEFT { get; set; }
+		[DataMember(Order = 9)]
         public int DRIL4HW { get; set; }
-        [DataMember(Order = 7)]
-        public string DRIL4HWDES { get; set; }
-        [DataMember(Order = 8)]
-        public string COLORED { get; set; }   // boolean Y | '' 
-        [DataMember(Order = 9)]
-        public string NIKEL { get; set; }   // boolean Y | '' 
         [DataMember(Order = 10)]
-        public string BRONZE { get; set; }   // boolean Y | '' 
+        public string DRIL4HWDES { get; set; }
         [DataMember(Order = 11)]
-        public string FORHALFCYL { get; set; }   // boolean Y | '' 
+        public string COLORED { get; set; }   // boolean Y | '' 
         [DataMember(Order = 12)]
-        public string PARTNAME2 { get; set; }   // dual part right -> left, or left -> right of point to itself.
-
+        public string NIKEL { get; set; }   // boolean Y | '' 
         [DataMember(Order = 13)]
+        public string BRONZE { get; set; }   // boolean Y | '' 
+        [DataMember(Order = 14)]
+        public string FORHALFCYL { get; set; }   // boolean Y | '' 
+		[DataMember(Order = 15)]
+        public string IS4DECOR { get; set; }    //boolean Y | '' 
+		[DataMember(Order = 16)]
+        public string PARTNAME2 { get; set; }   // dual part right -> left, or left -> right of point to itself.
+        [DataMember(Order = 17)]
         public int OPPOSITESIDE_PART { get; set; }    // PART.PART of the opposite Hardware
     }
     public class ValuesTRSH_HARDWARE_Class
@@ -316,11 +322,19 @@ namespace BlazorServerApp1.Data
         public string TRSH_MODELNAME { get; set; }
         [DataMember(Order = 5)]
         public string OPENMODE { get; set; }
-        [DataMember(Order = 6)]
+		[DataMember(Order = 6)]
+		public string OPENIN { get; set; }
+		[DataMember(Order = 7)]
+		public string OPENOUT { get; set; }
+		[DataMember(Order = 8)]
+		public string OPEN_INOUT { get; set; }
+		[DataMember(Order = 9)]
         public string ISHALFCYLINDER { get; set; }
         [DataMember(Order = 7)]
         public int SORT { get; set; }
-    }
+		[DataMember(Order = 8)]
+		public int TRSH_CYLCATEGORY { get; set; }
+	}
     public class ValuesCYLINDER_Class
     {
         public List<CYLINDER_Class> value { get; set; }
@@ -736,7 +750,9 @@ namespace BlazorServerApp1.Data
         public int TRSH_DOOR_HWCATCODE { get; set; }
         [DataMember(Order = 7)]
         public string TRSH_DOOR_HWCAT { get; set; }
-    }
+		[DataMember(Order = 8)]
+		public int TRSH_CYLCATEGORY { get; set; }
+	}
     public class ValuesModel_Class
     {
         public List<Model_Class> value { get; set; }
@@ -834,6 +850,27 @@ namespace BlazorServerApp1.Data
         public string SessionId { get; set; }
         public string compName { get; set; }
     }
+
+    public static class HebNouns
+    {
+		public static int IdOfNone = 99999;
+		public static string NameOfNone = "9999999";
+		public static string None = "ללא";
+		public static string NameOfSmooth = "Smooth";
+		public static string Smooth = "חלק";
+		public static string NameOfFluted = "Fluted";
+		public static string Fluted = "מחורץ";
+		public static string External = "חוץ";
+		public static string Outside = "החוצה";
+		public static string Internal = "פנים";
+		public static string Inside = "פנימה";
+		public static string BothSides = "דו צדדי";
+		public static string Right = "ימין";
+		public static string Left = "שמאל";
+		public static string Megulvan = "מגולוון";
+		public static string NoColor = "מגולוון";
+		public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
+	}
 
     // ref: https://stackoverflow.com/questions/60264657/get-current-user-in-a-blazor-component
     //public class CurrentCorporateUserService : CorporateUserService

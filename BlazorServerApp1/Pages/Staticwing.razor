@@ -123,7 +123,7 @@
                 if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
                 {
                     doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true;
-                    if (doorConfig.HANDLENAME == null || string.IsNullOrEmpty(doorConfig.HANDLENAME) || doorConfig.HANDLENAME == UiLogic.NameOfNone)
+                    if (doorConfig.HANDLENAME == null || string.IsNullOrEmpty(doorConfig.HANDLENAME) || doorConfig.HANDLENAME == HebNouns.NameOfNone)
                     {
                         doorConfig.HANDLENAME = string.Empty;
                         doorConfig.disabledFlds["SWING_HANDLENAME"] = true;
@@ -156,7 +156,7 @@
 
         doorConfig.thClasses["SWING_TURBO"] = "thGray";
         // in any case : if doorConfig.HW4EXTRAWING is empty then SWING_HWACCESSORYID is disabled - 02/11/2022
-        if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
+        if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == HebNouns.IdOfNone)
             doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 
     }
@@ -177,7 +177,7 @@
         UiLogic.setHiddens(doorConfig, "staticwing");
 
         // in any case : if doorConfig.HW4EXTRAWING is empty then SWING_HWACCESSORYID is disabled - 02/11/2022
-        if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone)
+        if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == HebNouns.IdOfNone)
             doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 
         // Eli 31/10/2022 : special for SHALVANIACLRID  see also calcCentralColClrID
@@ -314,7 +314,7 @@
             doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = false; // it was disabled when !_SwingHasLock  - staticwing without Lock
             doorConfig.thClasses["SWING_LOCKNAME"] = "thBlue";
 
-            CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == UiLogic.NameOfNone);
+            CYLINDER_Class noCyl = lstCylinders1.Find(x => x.PARTNAME == HebNouns.NameOfNone);
             lstCylinders1.Remove(noCyl);
 
             // 16/08/2022 : Eli asked to copy the cylinder and hardware from the movingwing here when setting SWINGHASLOCK to Y !
@@ -1000,7 +1000,7 @@
                             doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
                             setSWING_HANDLE_behavior();
 
-                            doorConfig.SWING_HWACCESSORYID = UiLogic.IdOfNone; //04/12/2022 Eli asked to put "ללא" here !
+                            doorConfig.SWING_HWACCESSORYID = HebNouns.IdOfNone; //04/12/2022 Eli asked to put "ללא" here !
                         }
                         else   //Cylinder is not HALF
                         {
@@ -1132,7 +1132,7 @@
                             if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
                                 config4.RefreshState();
 
-                            @*if (doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא
+                            @*if (doorConfig.HW4EXTRAWING == HebNouns.IdOfNone) // ללא
                                 {
                                     doorConfig.disabledFlds["SWING_HWCOLORID"] = true;
                                     doorConfig.SWING_HWCOLORID = 0;
@@ -1170,7 +1170,7 @@
         @code	{
             protected void setSWING_DRIL4HW()
             {
-                if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == UiLogic.IdOfNone) // ללא
+                if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == HebNouns.IdOfNone) // ללא
                 {
                     doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
                     doorConfig.SWING_HWACCESSORYID = 0;
@@ -1287,8 +1287,8 @@
                             string HwColored = PrApiCalls.getHardware1(doorConfig.HW4EXTRAWING).COLORED;
                                     @foreach (HWACCESSORY_Class hwa in PrApiCalls.lstHwAccessories)
                             {
-                                //if (hwa.COLORED == HwColored || hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == UiLogic.IdOfNone)
-                                if (hwa.HWACCESSORYID == doorConfig.HWACCESSORYID || hwa.HWACCESSORYID == UiLogic.IdOfNone || string.IsNullOrEmpty(hwa.PARTDES))
+                                //if (hwa.COLORED == HwColored || hwa.HWACCESSORYID == 0 || hwa.HWACCESSORYID == HebNouns.IdOfNone)
+                                if (hwa.HWACCESSORYID == doorConfig.HWACCESSORYID || hwa.HWACCESSORYID == HebNouns.IdOfNone || string.IsNullOrEmpty(hwa.PARTDES))
                                 {
                                         <option value="@hwa.HWACCESSORYID">@hwa.PARTDES</option>
                                         <option value="@hwa.PARTDES">@hwa.PARTDES</option>
@@ -1614,10 +1614,10 @@
                     {
                         @foreach (HANDLE_Class c in PrApiCalls.lstHandles)
                         {
-                            if (c.PARTNAME == doorConfig.HANDLENAME || c.PARTNAME == UiLogic.NameOfNone || string.IsNullOrEmpty(c.PARTNAME))
+                            if (c.PARTNAME == doorConfig.HANDLENAME || c.PARTNAME == HebNouns.NameOfNone || string.IsNullOrEmpty(c.PARTNAME))
                             {
                                 @* <option value="@c.PARTNAME">@c.PARTDES</option> *@
-                                string partName = (c.PARTNAME != UiLogic.NameOfNone ? c.PARTNAME : "ללא");
+                                string partName = (c.PARTNAME != HebNouns.NameOfNone ? c.PARTNAME : "ללא");
                                 <option value="@c.PARTDES">@c.PARTDES</option>
                             }
                         }
@@ -1650,7 +1650,7 @@
                             // 21-23/09/2022 - commented out the following statement
                             //doorConfig.disabledFlds["SWING_HANDLECOLORID"] = (   doorConfig.HANDLENAME == UiLogic.NameOfNone
                             //                                           || !PrApiCalls.isHandleColored(doorConfig.SWING_HANDLENAME));
-                            if (doorConfig.SWING_HANDLENAME == UiLogic.NameOfNone)
+                            if (doorConfig.SWING_HANDLENAME == HebNouns.NameOfNone)
                                 doorConfig.SWING_HANDLECOLORID = 0;
                             // 02/10/2022 teh following lines replce the following lines per Eli's request'
                             else if (doorConfig.SWING_HANDLENAME == doorConfig.HANDLENAME)

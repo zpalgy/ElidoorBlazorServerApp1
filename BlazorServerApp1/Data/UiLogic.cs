@@ -42,29 +42,27 @@ namespace BlazorServerApp1.Data
         //  so I keep the halfwing mandatory fields in a special in-memory table.
         public static List<string> lstHalfwingMfields = new List<string> { "EXTRAWINGWIDTH", "DOORHEIGHT", "CENTRALCOLWIDTH", "SWING_HANDLENAME",
                                           "OPENMODE", "OPENSIDE", "COLORSNUM"};
+		#region Hebrew constants
+		// public static int IdOfNone = 99999;
+		// public static string NameOfNone = "9999999";
+		// public static string None = "ללא";
+		// public static string NameOfSmooth = "Smooth";
+		// public static string Smooth = "חלק";
+		// public static string NameOfFluted = "Fluted";
+		// public static string Fluted = "מחורץ";
+		// public static string External = "חוץ";
+		// public static string Outside = "החוצה";
+		// public static string Internal = "פנים";
+		// public static string Inside = "פנימה";
+		// public static string BothSides = "דו צדדי";
+		// public static string Right = "ימין";
+		// public static string Left = "שמאל";
+		// public static string Megulvan = "מגולוון";
+		// public static string NoColor = "מגולוון";
+		// public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
+		#endregion Hebrew constants
 
-        public static int IdOfNone = 99999;
-        public static string NameOfNone = "9999999";
-        public static string None = "ללא";
-        public static string NameOfSmooth = "Smooth";
-        public static string Smooth = "חלק";
-        public static string NameOfFluted = "Fluted";
-        public static string Fluted = "מחורץ";
-        public static string External = "חוץ";
-        public static string Outside = "החוצה";
-        public static string Internal = "פנים";
-        public static string Inside = "פנימה";
-        public static string BothSides = "דו צדדי";
-        public static string Right = "ימין";
-        public static string Left = "שמאל";
-        public static string Megulvan = "מגולוון";
-
-
-
-        public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
-        public static string NoColor = "מגולוון";
-        public static List<string> lstColorsNum1 = new List<string>();
-        
+		public static List<string> lstColorsNum1 = new List<string>();
         public static int MAX_ANYWING_W = 1400;
         public static int MIN_MOVINWING_W = 300;
         //public static int MAX_MOVINWING = 1400;
@@ -336,7 +334,7 @@ namespace BlazorServerApp1.Data
 
             }
 
-            if (tabName == "movingwing" && isFilled && doorConfig.DECORFORMAT != None)
+            if (tabName == "movingwing" && isFilled && doorConfig.DECORFORMAT != HebNouns.None)
                 isFilled2 = tabPageIsFilled("decor", doorConfig);
 
             return isFilled && isFilled2;
@@ -680,7 +678,7 @@ namespace BlazorServerApp1.Data
         }
         public static bool isDRIL4HW_filled(DoorConfig doorConfig)
         {
-            doorConfig.disabledFlds["DRIL4HW"] = (doorConfig.TRSH_HARDWARE == UiLogic.IdOfNone);
+            doorConfig.disabledFlds["DRIL4HW"] = (doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
             bool isFilled = (doorConfig.disabledFlds["DRIL4HW"] ? true : (doorConfig.DRIL4HW != 0));
             return isFilled;
         }
@@ -2265,6 +2263,11 @@ namespace BlazorServerApp1.Data
             }
             return true;  //[TODO] this is just a placeHolder
         }
+
+        public static bool isDecorated(DoorConfig doorConfig)
+        {
+            return (doorConfig.DECORFORMAT != null && !string.IsNullOrEmpty(doorConfig.DECORFORMAT) && doorConfig.DECORFORMAT != HebNouns.None);
+		}
 
         //static List<string> lstThNames = new List<string>();
         //static List<string> lstTdNames = new List<string>();
