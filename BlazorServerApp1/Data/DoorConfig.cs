@@ -67,7 +67,13 @@ namespace BlazorServerApp1.Data
         public string TRSH_WINGSNUMDES { get; set; }  // כנף, כנף וחצי, דו כנפי
         [DataMember(Order = 14), Order]
         public string OPENMODE { get; set; }  // in,out  D-40   >> moved to Movingwing
-        [DataMember(Order = 15), Order]
+
+		[DataMember(Order = 15), Order]
+		public string OPENIN { get; set; }
+		[DataMember(Order = 16), Order]
+		public string OPENOUT { get; set; }
+
+		[DataMember(Order = 17), Order]
         //public string COMPLIENTDOOR { get; set; }  // Y | N | '' D-920
         public int TRSH_COMPLIENT { get; set; }   //D-920 
                                                   //[DataMember(Order = 23), Order]
@@ -80,10 +86,10 @@ namespace BlazorServerApp1.Data
         public bool useLOGO;
         [NonSerialized]
         public bool useTurbo;
-        [DataMember(Order = 16), Order]
+        [DataMember(Order = 18), Order]
         public string TRSH_MODELNAME { get; set; }    // MLI, 1029, 1040, ...
                                                       //***********************************************
-        [DataMember(Order = 17), Order]
+        [DataMember(Order = 19), Order]
         public string PARTNAME { get; set; }  //D-20
                                               //[NonSerialized]
                                               //public string PARTNAME;
@@ -102,13 +108,13 @@ namespace BlazorServerApp1.Data
         [NonSerialized]
         public string FAMILYNAME; // = string.Empty;   // TRSH_DOORCONFIG.FAMILYNAME does not exist in Priority 
 
-        [DataMember(Order = 19), Order]
+        [DataMember(Order = 21), Order]
         public int TRSH_DOOR_HWCATCODE { get; set; }
 
         //[NonSerialized]
         //public int TRSH_DOOR_HWCATCODE;
 
-        [DataMember(Order = 20), Order]
+        [DataMember(Order = 22), Order]
         public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
 
         //[NonSerialized]
@@ -124,7 +130,13 @@ namespace BlazorServerApp1.Data
 
         [DataMember(Order = 29), Order]
         public string OPENSIDE { get; set; }  //R, L    D-50
-        [DataMember(Order = 40), Order]
+
+		[DataMember(Order = 30), Order]
+		public string OPENSIDE_RIGHT { get; set; }
+		[DataMember(Order = 31), Order]
+		public string OPENSIDE_LEFT { get; set; }
+
+		[DataMember(Order = 40), Order]
         public string DECORFORMAT { get; set; }      // D-60
         [DataMember(Order = 41), Order]
         public string COLORSNUM { get; set; }  // was D-70  string TwoColors  (boolean)   Y | N | '' D-72,  now:  ללא ,1,2
