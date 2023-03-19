@@ -578,8 +578,8 @@ void setModernColors()
                                         onkeypress="@KeyPressHandler"
                                         @ref="doorConfig.dicRefs[UiLogic.propNames[i303]]">
                                     <option> </option>
-                                    <option>ימין</option>
-                                    <option>שמאל</option>
+                                    <option>@HebNouns.Right</option>
+                                    <option>@HebNouns.Left</option>
                                 </select>
                             }
                             @code
@@ -601,6 +601,8 @@ void setModernColors()
                                         if (doorConfig != null)
                                         {
                                             doorConfig.OPENSIDE = _openSide;
+                                            doorConfig.OPENSIDE_RIGHT = (_openSide == HebNouns.Right ? "Y" : "");
+                                            doorConfig.OPENSIDE_LEFT = (_openSide == HebNouns.Left ? "Y" : "");
                                             doorConfig.borderColors["OPENSIDE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                             applyOpenSideModeChanged();
                                             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
@@ -622,8 +624,8 @@ void setModernColors()
                                         onkeypress="@KeyPressHandler"
                                         @ref="doorConfig.dicRefs[UiLogic.propNames[i304]]">
                                     <option></option>
-                                    <option>פנימה</option>
-                                    <option>החוצה</option>
+                                    <option>@HebNouns.Inside</option>
+                                    <option>@HebNouns.Outside</option>
                                 </select>
                             }
                             @code
@@ -645,6 +647,8 @@ void setModernColors()
                                         if (doorConfig != null)
                                         {
                                             doorConfig.OPENMODE = _openMode;
+                                            doorConfig.OPENIN = (_openMode == HebNouns.Inside ? "Y" : "");
+                                            doorConfig.OPENOUT = (_openMode == HebNouns.Outside ? "Y" : "");
                                             doorConfig.borderColors["OPENMODE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                             //lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
                                             applyOpenSideModeChanged();

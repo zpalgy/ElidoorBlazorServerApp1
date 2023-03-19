@@ -1629,9 +1629,9 @@
                                               @onblur="@( () => UiLogic.LostFocus(doorConfig) )" 
                                                    @onkeypress="doorConfig.KeyPressHandler" >
                                                 <option></option>
-                                                <option>ללא</option>
-                                                <option>חוץ</option>
-                                                <option>פנים</option>
+                                                <option>@HebNouns.None</option>
+                                                <option>@HebNouns.External</option>
+                                                <option>@HebNouns.Internal</option>
                                                 <option disabled="@UiLogic.disableOption(doorConfig,"dlstDecorFormat","דו צדדי")">דו צדדי</option>
                                                 @* see Helper.DecorFormat2Code(...) method *@
                                             </select>

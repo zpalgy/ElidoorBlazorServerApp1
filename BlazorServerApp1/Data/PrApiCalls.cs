@@ -1255,12 +1255,14 @@ namespace BlazorServerApp1.Data
             try
             {
                 List<TRSH_HARDWARE_Class> lstRes = new List<TRSH_HARDWARE_Class>();
-                TRSH_HARDWARE_Class emptyHw = new TRSH_HARDWARE_Class();
+				List<TRSH_HARDWARE_Class> lstRes2 = new List<TRSH_HARDWARE_Class>();
+				TRSH_HARDWARE_Class emptyHw = new TRSH_HARDWARE_Class();
                 emptyHw.PARTNAME = string.Empty;
                 emptyHw.PARTDES = string.Empty;
-                lstRes.Add(emptyHw);
+                //lstRes.Add(emptyHw);
+				lstRes2.Add(emptyHw);
 
-                foreach (TRSH_HARDWARE_Class hw in lstHardwares)
+				foreach (TRSH_HARDWARE_Class hw in lstHardwares)
                 {
                     if (hw.FORHALFCYL != "Y")
                     {
@@ -1268,15 +1270,32 @@ namespace BlazorServerApp1.Data
                         {
                             int dbg = 17;
                         }
-                        if (doorConfig.OPENMODE == "פנימה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
-                             && (hw.OPENSIDE == doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
-                            lstRes.Add(hw);
-                        else if (doorConfig.OPENMODE == "החוצה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
-                            && (hw.OPENSIDE != doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
-                            lstRes.Add(hw);
-                    }
+                        //if (doorConfig.OPENMODE == "פנימה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
+                        //     && (hw.OPENSIDE == doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
+                        //    lstRes.Add(hw);
+                        //else if (doorConfig.OPENMODE == "החוצה" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
+                        //    && (hw.OPENSIDE != doorConfig.OPENSIDE || hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
+                        //    lstRes.Add(hw);
+
+                        if (doorConfig.OPENIN == "Y" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
+                             && (!UiLogic.isDecorated(doorConfig) || (UiLogic.isDecorated(doorConfig) && hw.IS4DECOR == "Y"))
+							 && (    (hw.OPENSIDE_RIGHT == "Y" && doorConfig.OPENSIDE_RIGHT == "Y") //|| hw.OPENSIDE == null || string.IsNullOrEmpty(hw.OPENSIDE)))
+                                  || (hw.OPENSIDE_LEFT == "Y" && doorConfig.OPENSIDE_LEFT == "Y")
+                                  || (hw.OPENSIDE_RIGHTLEFT == "Y")
+                                )
+                            )
+							lstRes2.Add(hw);
+						else if (doorConfig.OPENOUT == "Y" && hw.TRSH_DOOR_HWCATCODE == doorConfig.TRSH_DOOR_HWCATCODE
+							     && (!UiLogic.isDecorated(doorConfig) || (UiLogic.isDecorated(doorConfig) && hw.IS4DECOR == "Y"))
+							     && (    (hw.OPENSIDE_RIGHT == "Y" && doorConfig.OPENSIDE_LEFT == "Y")
+                                      || (hw.OPENSIDE_LEFT == "Y" && doorConfig.OPENSIDE_RIGHT == "Y")
+                                      || (hw.OPENSIDE_RIGHTLEFT == "Y")
+                                   )
+                                 )
+							lstRes2.Add(hw);
+					}
                 }
-                return lstRes;
+                    return lstRes2;
             }
             catch (Exception ex)
             {
