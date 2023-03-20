@@ -460,9 +460,11 @@ namespace BlazorServerApp1.Data
         public string SWINGHASLOCK { get; set; }  // "Y" | "" (string.empty) FIELDCODE = "SWINGHASLOCK"  - new 
         
         //[NonSerialized]                         //TODO - check this : in case of half wing only staticwing is filled so SWING_OPENSIDE should also be saved in Priority !
-        public string SWING_OPENSIDE { get; set; }  // at present - this field is not SERIALIZED !
-        
-        [DataMember(Order = 260), Order]
+        public string SWING_OPENSIDE { get; set; }  // at present - these three fields are not SERIALIZED !
+        public string SWING_OPENSIDE_RIGHT { get; set; }
+		public string SWING_OPENSIDE_LEFT { get; set; }
+
+		[DataMember(Order = 260), Order]
         
         public int CENTRALCOLCLRID { get; set; }         //D-390
         [DataMember(Order = 261), Order]

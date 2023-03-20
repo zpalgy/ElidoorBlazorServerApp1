@@ -24,7 +24,7 @@ namespace BlazorServerApp1.Pages
 
 			if (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES) && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
 			{
-				if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף")
+				if (doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing)
 				{
 					switch (tabName)
 					{
@@ -41,7 +41,7 @@ namespace BlazorServerApp1.Pages
 					int t = Array.IndexOf(UiLogic.tabNames, tabName);
 					prevTab = (t > 0 ? UiLogic.tabNames[t - 1] : string.Empty);
 					string prevText = (t > 0 ? UiLogic.tabTexts[t - 1] : string.Empty);
-					if (prevTab.ToLower() == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
+					if (prevTab.ToLower() == "staticwing" && doorConfig.TRSH_WINGSNUMDES == HebNouns.Wing)  //"כנף")
 					{
 						prevTab = UiLogic.tabNames[t - 2];   //intdecor
 						prevText = UiLogic.tabTexts[t - 2];

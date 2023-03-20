@@ -85,10 +85,14 @@
             if (doorConfig.CENTRALCOLCLRID == 0)
                 calcCentralColClrID(doorConfig);
 
-            if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" && !string.IsNullOrEmpty(doorConfig.OPENSIDE))
+            if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing && !string.IsNullOrEmpty(doorConfig.OPENSIDE))
             {
-                if (string.IsNullOrEmpty(doorConfig.SWING_OPENSIDE))
+                if (string.IsNullOrEmpty(doorConfig.SWING_OPENSIDE_RIGHT + doorConfig.SWING_OPENSIDE_LEFT))  //(string.IsNullOrEmpty(doorConfig.SWING_OPENSIDE))
+                {
                     doorConfig.SWING_OPENSIDE = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+                    doorConfig.SWING_OPENSIDE_RIGHT = doorConfig.OPENSIDE_LEFT;
+                    doorConfig.SWING_OPENSIDE_LEFT = doorConfig.OPENSIDE_RIGHT;
+                }
 
                 doorConfig.disabledFlds["SWING_OPENSIDE"] = true;
                 doorConfig.disabledFlds["OPENMODE"] = true;
@@ -120,7 +124,7 @@
 
 
                 //21-23/09/2022
-                if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing)      //"חצי כנף")
                 {
                     doorConfig.disabledFlds["SWING_HANDLECOLORID"] = true;
                     if (doorConfig.HANDLENAME == null || string.IsNullOrEmpty(doorConfig.HANDLENAME) || doorConfig.HANDLENAME == HebNouns.NameOfNone)
@@ -361,7 +365,7 @@
             if (!doorConfig.disabledFlds["SWING_HWCOLORID"] && doorConfig.SWING_HWCOLORID == 0)     //(!hideSwingHwClr)
                 doorConfig.SWING_HWCOLORID = doorConfig.HWCOLORID;                   // the default is the HW Color of Movingwing !
 
-            #region ** SWING_HANDLE* issue 
+            #region ** SWING_HANDLE* issue
             //Eli 21/09/2022 : HANDLE NAME and Color get the value that is in movingwing. It does not depend on WithLock value !
             // thereFore we set their value in on OnInitializedAsync() and disable these two fields if the number of wings in the door is greater than ONE !
             //if (doorConfig.TRSH_MODELNAME != "חצי כנף")
@@ -376,11 +380,11 @@
 
             doorConfig.SWING_TURBO = (doorConfig.useTurbo ? "Y" : string.Empty);  //new 31/07/2022 , requested again on 16/08/2022
                                                                                   // LOGO is also copied, but there is no special field SWING_LOGO for staticwing as always we use teh LOGO of teh movinwing !
-            if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+            if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing)  //"חצי כנף")
                 doorConfig.SWING_LOCKNAME = doorConfig.LOCKNAME;
         }
 
-        if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+        if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing)  //"חצי כנף")
         {
             doorConfig.disabledFlds["SWING_LOCKDRILHEIGHT"] = !_SwingHasLock;
             doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl || (!_SwingHasLock);
@@ -785,10 +789,14 @@
                 {
                     _OpenDirection = value;
                     if (doorConfig != null)
+                    {
                         doorConfig.SWING_OPENSIDE = _OpenDirection;
+                        doorConfig.SWING_OPENSIDE_RIGHT = (_OpenDirection == "ימין" ? "Y" : "");
+                        doorConfig.SWING_OPENSIDE_LEFT = (_OpenDirection == "שמאל" ? "Y" : "");
+                    }
                 }
             }
-        }
+            }
     </tr>
 
     @* end of StaticwingL1 *@
@@ -1046,58 +1054,91 @@
                         {
                             int dbg = 17;
                         }
-                        List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.SWING_OPENSIDE, doorConfig.OPENMODE, ref errMsg);
-                        if (doorConfig.TRSH_MODELNAME == "MLI" && lstCylHws1 != null)   //hardcode for MLI 06/07/2022
-                        {
-                            CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא");
-                            lstCylHws1.Remove(CHw1);
-                        }
-                        if (lstCylHws1 != null)
-                        {
-                            //bool isHwColored = false;
-                            //bool isHwNikel = false;
-                            //bool isHwBronze = false;
-                            TRSH_HARDWARE_Class MwHw = PrApiCalls.getHardware1(doorConfig.TRSH_HARDWARE);
-
-                            //if (doorConfig.TRSH_MODELNAME != "חצי כנף")
-                            //isHwColored = PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
-                            //isHwNikel = PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
-                            //isHwBronze = PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
-
-                            @foreach (CYLHW_Class c in lstCylHws1)
+                        #region old stuff to del
+                        @*
+                            List<CYLHW_Class> lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.SWING_OPENSIDE, doorConfig.OPENMODE, ref errMsg);
+                            if (doorConfig.TRSH_MODELNAME == "MLI" && lstCylHws1 != null)   //hardcode for MLI 06/07/2022
                             {
-                                @* <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option> *@
-                                if (doorConfig.TRSH_MODELNAME == "חצי כנף")
+                                CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא");
+                                lstCylHws1.Remove(CHw1);
+                            }
+
+                                if (lstCylHws1 != null)
                                 {
-                                    <option value="@c.PARTDESHW">@c.PARTDESHW</option>
+                                    //bool isHwColored = false;
+                                    //bool isHwNikel = false;
+                                    //bool isHwBronze = false;
+                                    TRSH_HARDWARE_Class MwHw = PrApiCalls.getHardware1(doorConfig.TRSH_HARDWARE);
+
+                                    //if (doorConfig.TRSH_MODELNAME != "חצי כנף")
+                                    //isHwColored = PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
+                                    //isHwNikel = PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
+                                    //isHwBronze = PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
+
+                                    @foreach (CYLHW_Class c in lstCylHws1)
+                                    {
+                                        if (doorConfig.TRSH_MODELNAME == "חצי כנף")
+                                        {
+                                            <option value="@c.PARTDESHW">@c.PARTDESHW</option>
+                                        }
+                                        else
+                                        {
+                                            TRSH_HARDWARE_Class hw = PrApiCalls.getHardware1(c.TRSH_HARDWARE);
+                                            if (hw != null && hw.COLORED == MwHw.COLORED && hw.NIKEL == MwHw.NIKEL && hw.BRONZE == MwHw.BRONZE)
+                                            {
+                                                <option value="@c.PARTDESHW">@c.PARTDESHW</option>
+                                            }
+                                        }
+                                    }
+                                }
+                                else // HW without Cylinder - e.g. TRSH_MODEL is E or similar,  select from all hardwares
+                                {
+                                    if (PrApiCalls.lstHardwares != null)
+                                    {
+                                        //OpenDirection is set in tdOpenDirection above it is actually SWING_OPENSIDE
+                                        //string OpenDirection = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+
+                                        @foreach (TRSH_HARDWARE_Class h in PrApiCalls.lstHardwares)
+                                        {
+                                            if (h.OPENSIDE == OpenDirection || string.IsNullOrEmpty(h.OPENSIDE))
+                                            {
+                                                <option value="@h.PARTDES">@h.PARTDES</option>
+                                            }
+                                        }
+                                    }
+
+                                }
+                        *@
+                        #endregion old stuff to del
+
+                        #region new stuff
+                        if (PrApiCalls.lstHardwares != null)
+                        {
+                            //OpenDirection is set in tdOpenDirection above it is actually SWING_OPENSIDE
+                            //string OpenDirection = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+
+                            @foreach (TRSH_HARDWARE_Class h in PrApiCalls.lstHardwares)
+                            {
+                                if (h.PARTDES == HebNouns.None)      //hardcoded for MLI 06/07/2022 - per Eli's request !
+                                {
+                                    if (doorConfig.TRSH_MODELNAME != "MLI")
+                                    {
+                                        <option value="@h.PARTDES">@h.PARTDES</option>
+                                    }
                                 }
                                 else
                                 {
-                                    TRSH_HARDWARE_Class hw = PrApiCalls.getHardware1(c.TRSH_HARDWARE);
-                                    if (hw != null && hw.COLORED == MwHw.COLORED && hw.NIKEL == MwHw.NIKEL && hw.BRONZE == MwHw.BRONZE)
-                                    {
-                                        <option value="@c.PARTDESHW">@c.PARTDESHW</option>
-                                    }
-                                }
-                            }
-                        }
-                        else // HW without Cylinder - e.g. TRSH_MODEL is E or similar,  select from all hardwares
-                        {
-                            if (PrApiCalls.lstHardwares != null)
-                            {
-                                //OpenDirection is set in tdOpenDirection above it is actually SWING_OPENSIDE
-                                //string OpenDirection = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
-
-                                @foreach (TRSH_HARDWARE_Class h in PrApiCalls.lstHardwares)
-                                {
-                                    if (h.OPENSIDE == OpenDirection || string.IsNullOrEmpty(h.OPENSIDE))
+                                    if (h.OPENSIDE_RIGHTLEFT == "Y"
+                                         || (h.OPENSIDE_RIGHT == "Y" && doorConfig.OPENSIDE_LEFT == "Y")  // --> here doorConfig.SWING_OPENSIDE_RIGHT == "Y"
+                                         || (h.OPENSIDE_LEFT == "Y" && doorConfig.OPENSIDE_RIGHT == "Y")  // --> here doorConfig.SWING_OPENSIDE_LEFT == "Y"
+                                       )
                                     {
                                         <option value="@h.PARTDES">@h.PARTDES</option>
                                     }
                                 }
                             }
-
                         }
+                        #endregion new stuff
                     }
                 </datalist>
             }

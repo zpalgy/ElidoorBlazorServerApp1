@@ -257,7 +257,7 @@ namespace BlazorServerApp1.Data
             //        && doorConfig.TRSH_WINGSNUMDES == "כנף וחצי" )
             //        return true;     //11/07/2022 - for MLI + 1.5 wings allow moving from movingwing to staticwing even if movingwing is not filled .
             //}
-            if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף" && tabName == "staticwing")
+            if (doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing && tabName == "staticwing")
             {
                 return halfWingIsFilled(doorConfig);
             }
@@ -423,11 +423,11 @@ namespace BlazorServerApp1.Data
                     int t2 = Array.IndexOf(tabNames, nextTab);
                     nextTab = tabNames[t2 + 1];  // new 
                 }
-                if (nextTab == "movingwing" && doorConfig.TRSH_WINGSNUMDES == "חצי כנף")
+                if (nextTab == "movingwing" && doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing) ;//"חצי כנף")
                 {
                     nextTab = "staticwing";   //13/07/2022 
                 }
-                if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == "כנף")
+                if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == HebNouns.Wing) ;//"כנף")
                 {
                     int t3 = Array.IndexOf(tabNames, nextTab);
                     nextTab = tabNames[t3 + 1];
@@ -458,7 +458,7 @@ namespace BlazorServerApp1.Data
                 case "selectprod":
                     return "proddes";
                 case "proddes":
-                    if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף")
+                    if (doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing)  //"חצי כנף")
                         return "staticwing";
                     else
                         return "movingwing";
@@ -2208,7 +2208,7 @@ namespace BlazorServerApp1.Data
         }
         public static bool fldIsMandatory(DoorConfig doorConfig, string fldName)
         {
-            if (doorConfig.TRSH_WINGSNUMDES == "חצי כנף")  //new 15/07/2022
+            if (doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing)  //"חצי כנף")  //new 15/07/2022
             {
                 return (lstHalfwingMfields.Contains(fldName));
             }

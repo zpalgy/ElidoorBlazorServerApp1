@@ -311,7 +311,7 @@
         {
         //showTabPage(typeof(Staticwing), "staticwing");
         UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-        Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != "חצי כנף" ? typeof(Staticwing) : typeof(Halfwing));
+        Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing ? typeof(Staticwing) : typeof(Halfwing));
 
         //if (showTabPage(typeof(Staticwing), "staticwing"))
         if (showTabPage(staticwingType, "staticwing"))
@@ -339,7 +339,7 @@
         async Task showMoving_Static_Wing()
         {
             UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-            if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+            if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing)  //"חצי כנף")
             {
                 UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
                 showMw();
@@ -514,7 +514,7 @@
                                         <tr>
                                             <td>
                                                 @{
-                                                    bool disableMW = (doorConfig.TRSH_WINGSNUMDES == "חצי כנף");
+                                                    bool disableMW = (doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing);   //"חצי כנף");
                                                 }
                                                     <button name="btnmovingwing" class="@doorConfig.btnClasses["movingwing"]"
                                                             disabled="@disableMW" @onclick=@( () => @showMw())>
@@ -577,7 +577,7 @@
                                                             <tr>
                                             @{
                                                 bool disableSw = false;
-                                                disableSw = (doorConfig.TRSH_WINGSNUMDES == "כנף");
+                                                disableSw = (doorConfig.TRSH_WINGSNUMDES == HebNouns.Wing);  //"כנף");
                                             }
                                                                 <td>
                                                                     <button name="btnstaticwing" class="@doorConfig.btnClasses["staticwing"]" disabled="@disableSw"

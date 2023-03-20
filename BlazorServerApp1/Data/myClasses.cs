@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
 using System.Xml.Serialization;
 using System.Web.Script.Serialization;
+using System.Reflection.Metadata;
 
 namespace BlazorServerApp1.Data
 {
@@ -856,6 +857,10 @@ namespace BlazorServerApp1.Data
 		public static int IdOfNone = 99999;
 		public static string NameOfNone = "9999999";
 		public static string None = "ללא";
+        public static string Wing = "כנף";
+		public static string HalfWing = "חצי כנף";
+        public static string TwoWings = "דו כנפי";
+        public static string Staticwing = "כנף קבועה";
 		public static string NameOfSmooth = "Smooth";
 		public static string Smooth = "חלק";
 		public static string NameOfFluted = "Fluted";
