@@ -111,10 +111,14 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 21), Order]
         public int TRSH_DOOR_HWCATCODE { get; set; }
 
-        //[NonSerialized]
-        //public int TRSH_DOOR_HWCATCODE;
+		//[DataMember(Order = 22), Order]
+		//[NonSerialized] - 23/03/2023 : TRSH_CYLCATEGORY is NonSerialized !
+		public int TRSH_CYLCATEGORY { get; set; }
 
-        [DataMember(Order = 22), Order]
+		//[NonSerialized]
+		//public int TRSH_DOOR_HWCATCODE;
+
+		[DataMember(Order = 23), Order]
         public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
 
         //[NonSerialized]

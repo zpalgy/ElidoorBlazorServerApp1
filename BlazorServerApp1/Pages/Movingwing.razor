@@ -120,9 +120,9 @@ protected override async Task OnInitializedAsync()
             doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");   // does not have redBorder when COLORNUM is 2 while
                                                                                                                  // INTCOLORID is !
                                                                                                                  //if (doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes("מודרני")
-            //if (doorConfig.DECORFORMAT != null && !string.IsNullOrEmpty(doorConfig.DECORFORMAT) && doorConfig.DECORFORMAT != HebNouns.None
+                                                                                                                 //if (doorConfig.DECORFORMAT != null && !string.IsNullOrEmpty(doorConfig.DECORFORMAT) && doorConfig.DECORFORMAT != HebNouns.None
             if (UiLogic.isDecorated(doorConfig) && doorConfig.OPENMODE != null)   // Eli Modern door - Decor tab spec 02/02/2023
-                    setModernColors();
+                setModernColors();
         }
 
         if (!UiLogic.hideFld(doorConfig, "Hw") && (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone))
@@ -154,7 +154,8 @@ protected override async Task OnInitializedAsync()
         //lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
 
         lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg);
-        lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
+        //lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
+        lstCylinders1 = PrApiCalls.getLstCyls1(doorConfig, false, ref errMsg2);
 
 
         if (string.IsNullOrEmpty(doorConfig.HANDLENAME) && doorConfig.handleName1 == HebNouns.NameOfNone)
@@ -192,55 +193,55 @@ protected override async Task OnInitializedAsync()
 
 
 #region to del
-void setHiddens(DoorConfig doorConfig)
-{
-    //    hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
-    //    hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
-    //    hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
-    //    hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
+//void setHiddens(DoorConfig doorConfig)
+//{
+//    hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
+//    hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
+//    hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
+//    hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
 
-    //hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
-    //hideHw = UiLogic.hideFld(doorConfig, "Hw");
-    //hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
-    //hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
-    //hideHandle = UiLogic.hideFld(doorConfig, "Handle");
-    //hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
-    //hideVents = UiLogic.hideFld(doorConfig, "thVents");
-    //hideRafafa = UiLogic.hideFld(doorConfig, "Rafafa");
-    //hideCatDoor = UiLogic.hideFld(doorConfig, "CatDoor");
+//hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
+//hideHw = UiLogic.hideFld(doorConfig, "Hw");
+//hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
+//hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
+//hideHandle = UiLogic.hideFld(doorConfig, "Handle");
+//hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
+//hideVents = UiLogic.hideFld(doorConfig, "thVents");
+//hideRafafa = UiLogic.hideFld(doorConfig, "Rafafa");
+//hideCatDoor = UiLogic.hideFld(doorConfig, "CatDoor");
 
-    //    doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
-    //    doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
+//    doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
+//    doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
+//    doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
+//    doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
 
-    //doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
-    //doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
-    //doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
-    //doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
-    //doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
-    //doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
+//doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
+//doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
+//doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
+//doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
+//doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
+//doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
 
-    //doorConfig.thClasses["VENTS"] = (hideVents ? "thGray" : "thBlue");
-    //doorConfig.thClasses["RAFAFAONMOVINGWING"] = (hideRafafa ? "thGray" : "thBlue");
-    //doorConfig.thClasses["CATDOOR"] = (hideCatDoor ? "thGray" : "thBlue");
+//doorConfig.thClasses["VENTS"] = (hideVents ? "thGray" : "thBlue");
+//doorConfig.thClasses["RAFAFAONMOVINGWING"] = (hideRafafa ? "thGray" : "thBlue");
+//doorConfig.thClasses["CATDOOR"] = (hideCatDoor ? "thGray" : "thBlue");
 
 
-    //    doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
-    //    doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
-    //    doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
-    //    doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
-    //    doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
-    //    doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
-    //    doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
-    //    doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
-    //    doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
-    //    doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
+//    doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
+//    doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
+//    doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
+//    doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
+//    doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
+//    doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
+//    doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
+//    doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
+//    doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
+//    doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
 
-    //doorConfig.disabledFlds["VENTS"] = hideVents;
-    //doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideRafafa;
-    //doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideCatDoor;
-}
+//doorConfig.disabledFlds["VENTS"] = hideVents;
+//doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideRafafa;
+//doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideCatDoor;
+//}
 #endregion to del
 
 // We must have this event handler in every tabPage because it uses doorConfig , and we can't pass it as a parameter to
@@ -1209,7 +1210,7 @@ void setModernColors()
                                                     doorConfig.TRSH_CYLINDER = 0;
                                                 }
 
-                                                // 18/06/2022 - when HARWARE is ללא DRIL4HW showuld be ENABLED !
+                                                // 18/06/2022 - when HARDWARE is ללא DRIL4HW showuld be ENABLED !
                                                 //  therefore commented the three lines below.
                                                 // doorConfig.disabledFlds["DRIL4HW"] = true;
                                                 // doorConfig.DRIL4HW = 0;
@@ -1266,52 +1267,53 @@ void setModernColors()
                                         @ref="doorConfig.dicRefs[UiLogic.propNames[i313]]">
 
 
-                                    @{ lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
-                                        if (lstCylinders1 != null)
-                                        {
-                                            if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
-                                            {
-                                                CYLINDER_Class cyl1 = lstCylinders1.Find(x => x.PARTDES == "ללא");
-                                                lstCylinders1.Remove(cyl1);
-                                            }
+                                    @{ //lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
+                                       lstCylinders1 = PrApiCalls.getLstCyls1(doorConfig, false, ref errMsg2);
+                                                if (lstCylinders1 != null)
+                                                {
+                                                    if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
+                                                    {
+                                                        CYLINDER_Class cyl1 = lstCylinders1.Find(x => x.PARTDES == "ללא");
+                                                        lstCylinders1.Remove(cyl1);
+                                                    }
 
 
-                                            @foreach (CYLINDER_Class c in lstCylinders1)
-                                            {
+                                                    @foreach (CYLINDER_Class c in lstCylinders1)
+                                                    {
                                                 <option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
                                             }
-                                        }
-                                    }
+                                                }
+                                            }
                                 </select>
                             }
                         </td>
                         @code
         {
                             protected int _TRSH_Cylinder;
-                            protected int TRSH_Cylinder
-                            {
-                                get
-                                {
-                                    if (doorConfig != null)
-                                    {
-                                        _TRSH_Cylinder = doorConfig.TRSH_CYLINDER;
+                                        protected int TRSH_Cylinder
+                                        {
+                                            get
+                                            {
+                                                if (doorConfig != null)
+                                                {
+                                                    _TRSH_Cylinder = doorConfig.TRSH_CYLINDER;
+                                                }
+                                                return _TRSH_Cylinder;
+                                            }
+                                            set
+                                            {
+                                                _TRSH_Cylinder = value;
+                                                if (doorConfig != null)
+                                                {
+                                                    doorConfig.TRSH_CYLINDER = _TRSH_Cylinder;
+                                                    doorConfig.borderColors["TRSH_CYLINDER"] = (value != 0 ? "blueBorder" : "redBorder");
+                                                    //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
+                                                    if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+                                                        config4.RefreshState();
+                                                }
+                                            }
+                                        }
                                     }
-                                    return _TRSH_Cylinder;
-                                }
-                                set
-                                {
-                                    _TRSH_Cylinder = value;
-                                    if (doorConfig != null)
-                                    {
-                                        doorConfig.TRSH_CYLINDER = _TRSH_Cylinder;
-                                        doorConfig.borderColors["TRSH_CYLINDER"] = (value != 0 ? "blueBorder" : "redBorder");
-                                        //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
-                                        if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
-                                            config4.RefreshState();
-                                    }
-                                }
-                            }
-                        }
 
                         @*   end Cylinder *@
 

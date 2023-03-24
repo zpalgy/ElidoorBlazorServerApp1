@@ -410,24 +410,25 @@ namespace BlazorServerApp1.Data
             if (t > -1 && t < tabNames.Length - 1)
             {
                 nextTab = tabNames[t + 1];
-                if (   (nextTab == "extdecor" && doorConfig.DECORFORMAT == "פנים")
-                    || (nextTab == "intdecor" && doorConfig.DECORFORMAT == "חוץ")
+                //if (   (nextTab == "extdecor" && doorConfig.DECORFORMAT == "פנים")
+                //    || (nextTab == "intdecor" && doorConfig.DECORFORMAT == "חוץ")
                     //|| (nextTab == "hinges") - commented on 14/09/2022
-                    )
-                {
-                    int t1 = Array.IndexOf(tabNames, nextTab);
-                    nextTab = tabNames[t1 + 1];   // staticwing TAB is diabled - skip it and skip hinges tab
-                }
+                //    )
+                //{
+                //    int t1 = Array.IndexOf(tabNames, nextTab);
+                //    nextTab = tabNames[t1 + 1];   // staticwing TAB is diabled - skip it and skip hinges tab
+                //}
+
                 if (nextTab == "decor")  //&& doorConfig.DECORFORMAT == "ללא")  // == UiLogic.None 
                 {
                     int t2 = Array.IndexOf(tabNames, nextTab);
                     nextTab = tabNames[t2 + 1];  // new 
                 }
-                if (nextTab == "movingwing" && doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing) ;//"חצי כנף")
+                if (nextTab == "movingwing" && doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing)  //"חצי כנף")
                 {
                     nextTab = "staticwing";   //13/07/2022 
                 }
-                if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == HebNouns.Wing) ;//"כנף")
+                if (nextTab == "staticwing" && doorConfig.TRSH_WINGSNUMDES == HebNouns.Wing)     //"כנף")
                 {
                     int t3 = Array.IndexOf(tabNames, nextTab);
                     nextTab = tabNames[t3 + 1];
@@ -1076,6 +1077,7 @@ namespace BlazorServerApp1.Data
             doorConfig.currTabName = String.Empty;
             doorConfig.prevTabName = string.Empty;
             doorConfig.LockDrilHMeasure = string.Empty;
+            doorConfig.TRSH_CYLCATEGORY = 0; 
 
             for (int r=0;r<PrApiCalls.dtConfFields.Rows.Count; r++)
             {

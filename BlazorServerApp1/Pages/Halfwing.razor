@@ -81,6 +81,7 @@
     List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
     List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
     List<CYLHW_Class> lstCylHws1 = new List<CYLHW_Class>();
+    List<TRSH_HARDWARE_Class> lstHws4Cyl = new List<TRSH_HARDWARE_Class>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -1134,61 +1135,68 @@
             </td>
             @code
         {
-            protected int _Cylinder4HalfWing = 0;
-            protected int Cylinder4HalfWing
-            {
-                get
+                protected int _Cylinder4HalfWing = 0;
+                protected int Cylinder4HalfWing
                 {
-                    if (doorConfig != null)
+                    get
                     {
-                        _Cylinder4HalfWing = doorConfig.TRSH_SWING_CYLINDER;
-                    }
-                    return _Cylinder4HalfWing;
-                }
-                set
-                {
-                    _Cylinder4HalfWing = value;
-                    if (doorConfig != null)
-                    {
-                        doorConfig.TRSH_SWING_CYLINDER = _Cylinder4HalfWing;
-                        doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (value != 0  ? "blueBorder" : "redBorder");
-                        if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
+                        if (doorConfig != null)
                         {
-                            // if the user selected 1/2 Cylinder the folowing two fields are emptied and disabled !
-                            doorConfig.HW4EXTRAWING = 0;
-                            doorConfig.SWING_HWCOLORID = 0;
-                            doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] = true;
+                            _Cylinder4HalfWing = doorConfig.TRSH_SWING_CYLINDER;
+                        }
+                        return _Cylinder4HalfWing;
+                    }
+                    set
+                    {
+                        _Cylinder4HalfWing = value;
+                        if (doorConfig != null)
+                        {
+                            doorConfig.TRSH_SWING_CYLINDER = _Cylinder4HalfWing;
+                            doorConfig.borderColors["TRSH_SWING_CYLINDER"] = (value != 0  ? "blueBorder" : "redBorder");
+                            if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
+                            {
+                                // if the user selected 1/2 Cylinder the folowing two fields are emptied and disabled !
+                                doorConfig.HW4EXTRAWING = 0;
+                                doorConfig.SWING_HWCOLORID = 0;
+                                doorConfig.disabledFlds["HW4EXTRAWING"] = doorConfig.disabledFlds["SWING_HWCOLORID"] = doorConfig.disabledFlds["SWING_DRIL4HW"] = true;
 
-							lstD4HW1 = new List<DRIL4HW_Class>();
-							DRIL4HW_Class dril4HalfCyl = PrApiCalls.getDril4HalfCylinder();
-							lstD4HW1.Add(dril4HalfCyl);
-							doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
-						}
-						else
-						{
-							//doorConfig.disabledFlds["HW4EXTRAWING"] =    // 06/07/2022 HW4EXTRAWING is disabled by default  !
-							doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
-							doorConfig.disabledFlds["SWING_DRIL4HW"] = false;
-							//doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? doorConfig.TRSH_HARDWARE : doorConfig.HW4EXTRAWING );
-							//doorConfig.SWING_HWCOLORID = (doorConfig.SWING_HWCOLORID == 0 ? doorConfig.HWCOLORID : doorConfig.SWING_HWCOLORID);
-							//find the SWING_DRIL4HW that is associated with HW4EXTRAWING
-                            string errMsg = string.Empty;
-                            lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg);
-							if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
-							{
-								CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא" );
-								lstCylHws1.Remove(CHw1);
-							}
+                                lstD4HW1 = new List<DRIL4HW_Class>();
+                                DRIL4HW_Class dril4HalfCyl = PrApiCalls.getDril4HalfCylinder();
+                                lstD4HW1.Add(dril4HalfCyl);
+                                doorConfig.SWING_DRIL4HW = dril4HalfCyl.DRIL4HW;
+                            }
+                            else
+                            {
+                                //doorConfig.disabledFlds["HW4EXTRAWING"] =    // 06/07/2022 HW4EXTRAWING is disabled by default  !
+                                doorConfig.disabledFlds["SWING_HWCOLORID"] = false;
+                                doorConfig.disabledFlds["SWING_DRIL4HW"] = false;
+                                //doorConfig.HW4EXTRAWING = (doorConfig.HW4EXTRAWING == 0 ? doorConfig.TRSH_HARDWARE : doorConfig.HW4EXTRAWING );
+                                //doorConfig.SWING_HWCOLORID = (doorConfig.SWING_HWCOLORID == 0 ? doorConfig.HWCOLORID : doorConfig.SWING_HWCOLORID);
+                                //find the SWING_DRIL4HW that is associated with HW4EXTRAWING
+                                string errMsg = string.Empty;
 
-							setSWING_DRIL4HW();
+                                //lstCylHws1 = PrApiCalls.getCYLHWs1(doorConfig.TRSH_SWING_CYLINDER, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg);
+                                lstHws4Cyl = PrApiCalls.getHws4Cyl(doorConfig.TRSH_SWING_CYLINDER, doorConfig, ref errMsg);
 
-							}
-							//UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
-							 if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
-                                  config4.RefreshState();
-						}
-					}
-				}
+                                if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
+                                {
+                                    //CYLHW_Class CHw1 = lstCylHws1.Find(x => x.PARTDESHW == "ללא" );
+                                    //lstCylHws1.Remove(CHw1);
+
+                                    TRSH_HARDWARE_Class hwNone = lstHws4Cyl.Find(x => x.PARTDES == HebNouns.None);
+                                    if (hwNone != null)
+                                        lstHws4Cyl.Remove(hwNone);
+                                }
+
+                                setSWING_DRIL4HW();
+
+                            }
+                            //UiLogic.clearFollowingTabFields(doorConfig, "staticwing");
+                            if (UiLogic.try2UpdateBtnClass(doorConfig, "staticwing"))
+                                config4.RefreshState();
+                        }
+                    }
+                }
 			}
 
             <td id="dlstHW4EXTRAWING" >  
@@ -1211,11 +1219,11 @@
                         //}
                         if (doorConfig.TRSH_SWING_CYLINDER > 0)
                         {
-                            if (lstCylHws1 != null)
+                            if (lstHws4Cyl != null)   //lstCylHws1 != null)
                             {
-                                @foreach (CYLHW_Class c in lstCylHws1)
+                                @foreach (TRSH_HARDWARE_Class c in lstHws4Cyl)  //  (CYLHW_Class c in lstCylHws1) 
                                 {
-                                    <option value="@c.TRSH_HARDWARE">@c.PARTDESHW</option>
+                                    <option value="@c.TRSH_HARDWARE">@c.PARTDES</option>
                                 }
                             }
                         }

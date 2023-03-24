@@ -1502,94 +1502,96 @@
                                     </td>
                                     @code {
                                         // private ElementReference dlstModelName;
-        protected string _TRSH_MODELNAME = string.Empty;
-        protected string TRSH_MODELNAME
-        {
-                                        get
+                                        protected string _TRSH_MODELNAME = string.Empty;
+                                        protected string TRSH_MODELNAME
                                         {
-                                        //currPropName = "TRSH_MODELNAME";
-                                            if (doorConfig != null)
+                                            get
                                             {
-                                                _TRSH_MODELNAME = doorConfig.TRSH_MODELNAME;
+                                                //currPropName = "TRSH_MODELNAME";
+                                                if (doorConfig != null)
+                                                {
+                                                    _TRSH_MODELNAME = doorConfig.TRSH_MODELNAME;
+                                                }
+                                                return _TRSH_MODELNAME;
                                             }
-                                            return _TRSH_MODELNAME;
-                                        }
-                                        set
-                                        {
-                                            int dbg = 0;
-                                            //currPropName = "TRSH_MODELNAME";
-                                            _TRSH_MODELNAME = value;
-                                            if (doorConfig != null)
+                                            set
                                             {
-                                                if (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME) && UiLogic.tabPageIsNotEmpty("movingwing", doorConfig))
+                                                int dbg = 0;
+                                                //currPropName = "TRSH_MODELNAME";
+                                                _TRSH_MODELNAME = value;
+                                                if (doorConfig != null)
                                                 {
-                                                    msgCaption = string.Empty;
-                                                    errMsg2 = "שינוי הנתונים ימחק את כל הנתונים שמולאו בלשוניות הבאות ?";
-                                                    MsgTitleCssClass = string.Empty;
-                                                    ErrMsgCssClass = "centeredMsg"; //string.Empty;
-                                                                                    // the actual restart is done in the YesNo section of MsgBox control
-                                                    YNissue = "clear";
-                                                    openYesNo = true;
-                                                    if (!ansYes)
+                                                    if (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME) && UiLogic.tabPageIsNotEmpty("movingwing", doorConfig))
                                                     {
-                                                        return;
+                                                        msgCaption = string.Empty;
+                                                        errMsg2 = "שינוי הנתונים ימחק את כל הנתונים שמולאו בלשוניות הבאות ?";
+                                                        MsgTitleCssClass = string.Empty;
+                                                        ErrMsgCssClass = "centeredMsg"; //string.Empty;
+                                                                                        // the actual restart is done in the YesNo section of MsgBox control
+                                                        YNissue = "clear";
+                                                        openYesNo = true;
+                                                        if (!ansYes)
+                                                        {
+                                                            return;
+                                                        }
+                                                        else
+                                                        {
+                                                            UiLogic.clearFollowingTabFields(doorConfig, "divDoorTitle");
+                                                        }
                                                     }
-                                                    else
+                                                    doorConfig.TRSH_MODELNAME = value;
+                                                    Model_Class model = PrApiCalls.getModel(doorConfig.TRSH_MODELNAME, ref errMsg);
+                                                    doorConfig.meaged = model.TRSH_MEAGEDNAME;
+                                                    doorConfig.TRSH_DOOR_HWCATCODE = model.TRSH_DOOR_HWCATCODE;
+                                                    doorConfig.TRSH_CYLCATEGORY = model.TRSH_CYLCATEGORY;
+                                                    doorConfig.borderColors["TRSH_MODELNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                                                    if (!string.IsNullOrEmpty(value) && (string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES)))
                                                     {
-                                                        UiLogic.clearFollowingTabFields(doorConfig, "divDoorTitle");
+                                                        if (!PrApiCalls.existsPartOfModel(doorConfig, ref errMsg))
+                                                        {
+                                                            errMsg2 = "לא קיים פריט  עם הדגם שציינת";
+                                                            openMsgBox = true;
+                                                            doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
+                                                            return;
+                                                        }
                                                     }
-                                                }
-                                                doorConfig.TRSH_MODELNAME = value;
-                                                Model_Class model = PrApiCalls.getModel(doorConfig.TRSH_MODELNAME, ref errMsg);
-                                                doorConfig.meaged = model.TRSH_MEAGEDNAME;
-                                                doorConfig.TRSH_DOOR_HWCATCODE = model.TRSH_DOOR_HWCATCODE;
-                                                doorConfig.borderColors["TRSH_MODELNAME"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                                                if (!string.IsNullOrEmpty(value) && (string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES)))
-                                                {
-                                                    if (!PrApiCalls.existsPartOfModel(doorConfig, ref errMsg))
+                                                    else if (!string.IsNullOrEmpty(value) && (!string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES)))
                                                     {
-                                                        errMsg2 = "לא קיים פריט  עם הדגם שציינת";
-                                                        openMsgBox = true;
-                                                        doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
-                                                        return;
-                                                    }
-                                                }
-                                                else if (!string.IsNullOrEmpty(value) && (!string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES)))
-                                                {
-                                                    doorConfig.PARTNAME = PrApiCalls.getPARTNAMEbyModelWings(doorConfig, ref errMsg);
-                                                    if (string.IsNullOrEmpty(doorConfig.PARTNAME))
-                                                    {
-                                                        errMsg2 = "לא קיים פריט  עם הדגם והמיפתח שציינת";
-                                                        openMsgBox = true;
-                                                        doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
-                                                        return;
-                                                    }
-                                                    // get PART FAMILY
-                                                    FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
-                                                    doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
-                                                }
-                                                UiLogic.applyModelDefaults(doorConfig);
-                                                applyDecorFormat2Btns();
-                                                dbg = doorConfig.TRSH_HARDWARE;
-                                                if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
-                                                {
-                                                    //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
-                                                    //{
-                                                    //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-                                                    //    showMw();
-                                                    //}
-                                                    //else
-                                                    //{
-                                                    //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-                                                    //    showStaticwing();
-                                                    //}
-                                                    //showMoving_Static_Wing();
-                                                    return;
-                                                }
+                                                        doorConfig.PARTNAME = PrApiCalls.getPARTNAMEbyModelWings(doorConfig, ref errMsg);
+                                                        if (string.IsNullOrEmpty(doorConfig.PARTNAME))
+                                                        {
+                                                            errMsg2 = "לא קיים פריט  עם הדגם והמיפתח שציינת";
+                                                            openMsgBox = true;
+                                                            doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
+                                                            return;
+                                                        }
+                                                        // get PART FAMILY
+                                                        FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
+                                                        doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
 
+                                                    }
+                                                    UiLogic.applyModelDefaults(doorConfig);
+                                                    applyDecorFormat2Btns();
+                                                    dbg = doorConfig.TRSH_HARDWARE;
+                                                    if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
+                                                    {
+                                                        //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                        //{
+                                                        //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                        //    showMw();
+                                                        //}
+                                                        //else
+                                                        //{
+                                                        //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                        //    showStaticwing();
+                                                        //}
+                                                        //showMoving_Static_Wing();
+                                                        return;
+                                                    }
+
+                                                }
                                             }
                                         }
-        }
 }
 
                                     @code

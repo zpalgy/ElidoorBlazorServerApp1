@@ -14,6 +14,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using log4net.Layout;
 
 namespace BlazorServerApp1.Data
 {
@@ -489,6 +490,7 @@ namespace BlazorServerApp1.Data
                 model.TRSH_MODELDES = rowsModels[0]["TRSH_MODELDES"].ToString();
                 model.TRSH_DOOR_HWCAT = rowsModels[0]["TRSH_DOOR_HWCAT"].ToString();
                 model.TRSH_DOOR_HWCATCODE = int.Parse(rowsModels[0]["TRSH_DOOR_HWCATCODE"].ToString());
+                model.TRSH_CYLCATEGORY = int.Parse(rowsModels[0]["TRSH_CYLCATEGORY"].ToString());
                 model.TRSH_MEAGEDNAME = rowsModels[0]["TRSH_MEAGEDNAME"].ToString();
             }
             return model;
@@ -1870,6 +1872,7 @@ namespace BlazorServerApp1.Data
                 //        res.ImportRow(cylRows[r]);
                 //    }
                 //    lstRes = Helper.ConvertDataTable<CYLINDER_Class>(res);
+
                 List<CYLINDER_Class> lstRes = new List<CYLINDER_Class>();
 
                 CYLINDER_Class emptyCyl = new CYLINDER_Class();
@@ -1888,8 +1891,15 @@ namespace BlazorServerApp1.Data
                 }
                 foreach (CYLINDER_Class cyl in lstCylinders)
                 {
-                    if (cyl.TRSH_MODELNAME == doorConfig.TRSH_MODELNAME
-                        && (cyl.OPENMODE == doorConfig.OPENMODE || cyl.OPENMODE == "2"))
+                    //if (cyl.TRSH_MODELNAME == doorConfig.TRSH_MODELNAME
+                    //    && (cyl.OPENMODE == doorConfig.OPENMODE || cyl.OPENMODE == "2"))
+
+                    if (cyl.TRSH_CYLCATEGORY == doorConfig.TRSH_CYLCATEGORY
+                        && ( cyl.OPEN_INOUT == "Y"
+                             || (cyl.OPENIN == "Y" && doorConfig.OPENIN == "Y")
+                             || (cyl.OPENOUT == "Y" && doorConfig.OPENOUT == "Y")
+                           )
+                       )
                     {
                         if (incHalfCyl)
                         {
@@ -1906,7 +1916,9 @@ namespace BlazorServerApp1.Data
                         }
                     }
                 }
-                return lstRes;
+
+				List<CYLINDER_Class> res2 = lstRes.OrderBy(c => c.SORT).ToList();
+				return res2;
             }
             catch (Exception ex)
             {
@@ -2007,7 +2019,60 @@ namespace BlazorServerApp1.Data
             }
         }
 
-        public static List<CYLINDER_Class> getHWCyls1(int TRSH_HARDWARE, string OPENSIDE, string OPENMODE, ref string errMsg)
+		// new
+		public static List<TRSH_HARDWARE_Class> getHws4Cyl(int TRSH_CYLINDER, DoorConfig doorConfig, ref string errMsg)
+		{
+			try
+			{
+				if (TRSH_CYLINDER == 0)
+					return null;
+
+				List<TRSH_HARDWARE_Class> res = new List<TRSH_HARDWARE_Class>();
+				TRSH_HARDWARE_Class emptyCHW = new TRSH_HARDWARE_Class();
+				emptyCHW.TRSH_HARDWARE = 0;
+				emptyCHW.PARTDES = String.Empty;
+				res.Add(emptyCHW);
+
+				TRSH_HARDWARE_Class noCHW = new TRSH_HARDWARE_Class();
+				noCHW.TRSH_HARDWARE = HebNouns.IdOfNone;
+				noCHW.PARTDES = "ללא";
+				res.Add(noCHW);
+
+				if (lstHardwares != null)
+				{
+					foreach (TRSH_HARDWARE_Class chw in lstHardwares)
+					{
+
+						if ( chw.OPENSIDE_RIGHTLEFT == "Y" 
+                            || (chw.OPENSIDE_RIGHT == "Y" && doorConfig.OPENSIDE_RIGHT == "Y") 
+                            || (chw.OPENSIDE_LEFT == "Y" && doorConfig.OPENSIDE_LEFT == "Y")
+                            )
+                        {
+                            if (cylinderIsHalf(TRSH_CYLINDER))
+                            {
+                                if (chw.FORHALFCYL == "Y")
+                                    res.Add(chw);
+                            }
+                            else  //cylinder is NOT half 
+                            {
+                                if (chw.FORHALFCYL != "Y")
+                                    res.Add(chw);
+                            }
+						}
+					}
+				}
+				return res;
+			}
+			catch (Exception ex)
+			{
+				myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+				throw ex;
+			}
+		}
+		//
+
+		#region old method to del
+		public static List<CYLINDER_Class> getHWCyls1(int TRSH_HARDWARE, string OPENSIDE, string OPENMODE, ref string errMsg)
         {
             try
             {
@@ -2032,7 +2097,6 @@ namespace BlazorServerApp1.Data
                 {
                     foreach (CYLHW_Class chw in lstCYLHWs)
                     {
-
                         if (chw.TRSH_HARDWARE == TRSH_HARDWARE && chw.OPENSIDE == OPENSIDE && chw.WING_OPENMODE == OPENMODE)
                         {
                             CYLINDER_Class Cyl = new CYLINDER_Class();
@@ -2043,6 +2107,7 @@ namespace BlazorServerApp1.Data
                         }
                     }
                 }
+
                 List<CYLINDER_Class> res2 = res.OrderBy(c => c.SORT).ToList();
                 return res2;
             }
@@ -2052,10 +2117,60 @@ namespace BlazorServerApp1.Data
                 throw ex;
             }
         }
+		#endregion old method to del
+
+		public static List<CYLINDER_Class> getLstCyls1(DoorConfig doorConfig, bool alsoHalfCyl, ref string errMsg)
+        {
+            try
+            {
+				List<CYLINDER_Class> res = new List<CYLINDER_Class>();
+				CYLINDER_Class emptyCyl = new CYLINDER_Class();
+				emptyCyl.TRSH_CYLINDER = 0;
+				emptyCyl.PARTDES = String.Empty;
+				emptyCyl.PARTNAME = String.Empty;
+				emptyCyl.SORT = 0;
+				res.Add(emptyCyl);
+
+				CYLINDER_Class noCyl = new CYLINDER_Class();
+				noCyl.TRSH_CYLINDER = HebNouns.IdOfNone;
+				noCyl.PARTDES = "ללא";
+				noCyl.SORT = 1;
+				res.Add(noCyl);
+
+                if (lstCylinders != null)
+                {
+                    foreach (CYLINDER_Class cyl in lstCylinders)
+                    {
+                        if (cyl.TRSH_CYLCATEGORY == doorConfig.TRSH_CYLCATEGORY
+                             && ((cyl.OPEN_INOUT == "Y")
+                                  || (cyl.OPENIN == "Y" && doorConfig.OPENIN == "Y")
+                                  || (cyl.OPENOUT == "Y" && doorConfig.OPENOUT == "Y")
+                                 )
+                           )
+                            if (cyl.ISHALFCYLINDER == "Y")
+                            {
+                                if (alsoHalfCyl)
+                                    res.Add(cyl);
+                            }
+                            else
+                            {
+                                res.Add(cyl);
+                            }
+                    }
+                }
+				List<CYLINDER_Class> res2 = res.OrderBy(c => c.SORT).ToList();
+				return res2;
+			}
+            catch (Exception ex)
+            {
+                myLogger.log.Error(string.Format("Unexpected error: {0}", ex.Message));
+                throw ex;
+            }
+        }
 
 
-        //getLocks" 
-        public static List<TRSH_LOCK_Class> getLocks(ref string errMsg)
+			//getLocks" 
+			public static List<TRSH_LOCK_Class> getLocks(ref string errMsg)
         {
             try
             {

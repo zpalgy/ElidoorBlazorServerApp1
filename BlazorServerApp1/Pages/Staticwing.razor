@@ -796,7 +796,7 @@
                     }
                 }
             }
-            }
+        }
     </tr>
 
     @* end of StaticwingL1 *@
@@ -1133,7 +1133,20 @@
                                          || (h.OPENSIDE_LEFT == "Y" && doorConfig.OPENSIDE_RIGHT == "Y")  // --> here doorConfig.SWING_OPENSIDE_LEFT == "Y"
                                        )
                                     {
-                                        <option value="@h.PARTDES">@h.PARTDES</option>
+                                        if (PrApiCalls.cylinderIsHalf(doorConfig.TRSH_SWING_CYLINDER))
+                                        {
+                                            if (h.FORHALFCYL == "Y")
+                                            {
+                                                <option value="@h.PARTDES">@h.PARTDES</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (h.FORHALFCYL != "Y")
+                                            {
+                                                <option value="@h.PARTDES">@h.PARTDES</option>
+                                            }
+                                        }
                                     }
                                 }
                             }
