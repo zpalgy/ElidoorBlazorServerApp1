@@ -55,6 +55,7 @@
         doorConfig.INTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNSEPLINE);
 
         setDisabled();
+        applySepLines();
 
     }
     void setDisabled()  // used in UiLogic.doorFldIsFilled(...)
@@ -82,6 +83,27 @@
         foreach (ConfField_Class fld in doorConfig.lstTabFlds)
         {
             doorConfig.thClasses[fld.FIELDNAME] = (doorConfig.disabledFlds[fld.FIELDNAME] ? "thGray" : "thBlue");
+        }
+    }
+    void applySepLines()
+    {
+        if (!doorConfig.disabledFlds["EXTSEPLINES"])
+        {
+            if (doorConfig.EXTSEPLINES == HebNouns.None)
+            {
+                doorConfig.EXTFINMODERNSEPLINE = string.Empty;
+                doorConfig.EXTSEPLINESCLRID = 0;
+            }
+            doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] = doorConfig.disabledFlds["EXTSEPLINESCLRID"] = (doorConfig.EXTSEPLINES == HebNouns.None);
+        }
+        else if (!doorConfig.disabledFlds["INTSEPLINES"])
+        {
+            if (doorConfig.INTSEPLINES == HebNouns.None)
+            {
+                doorConfig.INTFINMODERNSEPLINE = string.Empty;
+                doorConfig.INTSEPLINESCLRID = 0;
+            }
+            doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = doorConfig.disabledFlds["INTSEPLINESCLRID"] = (doorConfig.INTSEPLINES == HebNouns.None);
         }
     }
 }
@@ -297,8 +319,8 @@
                     disabled="@doorConfig.disabledFlds["EXTSEPLINES"]"
                     class="@doorConfig.borderColors["EXTSEPLINES"]">
                 <option></option>
-                <option>עם</option>
-                <option>ללא</option>
+                <option>@HebNouns.With</option>
+                <option>@HebNouns.None</option>
             </select>
         </td>
         @code
@@ -321,6 +343,7 @@
                     {
                         doorConfig.EXTSEPLINES = _ExtSepLines;
                         doorConfig.borderColors["EXTSEPLINES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        applySepLines();
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
                             config4.RefreshState();
@@ -740,6 +763,7 @@
                     {
                         doorConfig.INTSEPLINES = _IntSepLines;
                         doorConfig.borderColors["INTSEPLINES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        applySepLines();
                         //UiLogic.clearFollowingTabFields(doorConfig, "tdecor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
                             config4.RefreshState();

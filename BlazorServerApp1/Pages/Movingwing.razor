@@ -1204,7 +1204,8 @@ void setModernColors()
                                                 doorConfig.disabledFlds["HWACCESSORYID"] = true; //it's mandatory only if TRSH_HARDWARE is not empty
                                                 doorConfig.HWACCESSORYID = 0;
 
-                                                if (doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes("מודרני"))
+                                                if (   doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes(HebNouns.Modern)
+                                                    || UiLogic.isDecorated(doorConfig))
                                                 {
                                                     doorConfig.disabledFlds["TRSH_CYLINDER"] = true;
                                                     doorConfig.TRSH_CYLINDER = 0;

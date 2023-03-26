@@ -874,6 +874,8 @@ namespace BlazorServerApp1.Data
 		public static string Left = "שמאל";
 		public static string Megulvan = "מגולוון";
 		public static string NoColor = "מגולוון";
+        public static string Modern = "מודרני";
+        public static string With = "עם";
 		public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
 	}
 

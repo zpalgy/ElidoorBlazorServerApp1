@@ -679,7 +679,11 @@ namespace BlazorServerApp1.Data
         }
         public static bool isDRIL4HW_filled(DoorConfig doorConfig)
         {
-            doorConfig.disabledFlds["DRIL4HW"] = (doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
+			// 26/03/2023 I don't remember the reason for changing doorConfig.disabledFlds["DRIL4HW"] here, in a method that just checks
+            //   whether DRIL4HW field is filled , so in case of DECORATED door I do not modify this property.
+			if (!UiLogic.isDecorated(doorConfig))
+                   doorConfig.disabledFlds["DRIL4HW"] = (doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
+
             bool isFilled = (doorConfig.disabledFlds["DRIL4HW"] ? true : (doorConfig.DRIL4HW != 0));
             return isFilled;
         }
