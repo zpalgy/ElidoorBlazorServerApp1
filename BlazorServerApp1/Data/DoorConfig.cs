@@ -597,7 +597,9 @@ namespace BlazorServerApp1.Data
         public string currTabName = String.Empty;
         [NonSerialized]
         public string prevTabName = string.Empty;
-        [NonSerialized]
+		[NonSerialized]
+		public List<ConfField_Class> lstTabFlds = new List<ConfField_Class>();
+		[NonSerialized]
         public System.Data.DataTable dtTabFlds = new System.Data.DataTable();
         [NonSerialized]
         public BlazorServerApp1.Pages.Configurator4 config4;

@@ -1793,7 +1793,15 @@ namespace BlazorServerApp1.Data
                 return null;
             }
         }
-        public static string getTabOfField(string fldName)
+
+		public static List<ConfField_Class> getLstTabFields(string tabName, DoorConfig doorConfig, ref string errMsg)
+        {
+            List<ConfField_Class> res = PrApiCalls.lstConfFields.FindAll(x => x.CONFIG_SUBFORM == tabName);
+			res.Sort((f, q) => f.TABINDEX.CompareTo(q.TABINDEX));
+            return res;
+        }
+
+		public static string getTabOfField(string fldName)
         {
             string query = string.Format("FIELDNAME='{0}'", fldName);
             DataRow[] rowsArray = PrApiCalls.dtConfFields.Select(query);

@@ -31,6 +31,8 @@ namespace BlazorServerApp1.Data
 
         public static DataTable dtMeagedFields;
         public static DataTable dtDecorSideFlds;
+
+        public static List<ConfField_Class> lstConfFields = new List<ConfField_Class>();
         public static DataTable dtConfFields;
         public static DataTable dtDefaults;
 
@@ -940,10 +942,12 @@ namespace BlazorServerApp1.Data
                 dtMeagedFields = getAllMeagedFields(ref errMsg);
                 if (dtMeagedFields == null)
                     return;  // abort 
-                dtDecorSideFlds = getDecorSideFlds(ref errMsg);
+                dtDecorSideFlds = getDecorSideFlds( ref errMsg);
                 if (dtDecorSideFlds == null)
                     return;  //abort
-                dtConfFields = getConfFields(ref errMsg);
+                lstConfFields = getConfFields(ref errMsg);
+                dtConfFields = lstConfFields.ToDataTable<ConfField_Class>();
+
                 if (dtConfFields == null)
                     return;
                 dtDefaults = getDefaults(ref errMsg);
@@ -3084,8 +3088,9 @@ namespace BlazorServerApp1.Data
             }
         }
 
-        public static DataTable getConfFields(ref string errMsg)
-        {
+		//public static DataTable getConfFields(ref string errMsg)
+		public static List<ConfField_Class> getConfFields(ref string errMsg)
+		{
             try
             {
                 RestClient restClient = new RestClient();
@@ -3107,9 +3112,14 @@ namespace BlazorServerApp1.Data
                     {
                         val1.Add(fld);
                     }
-                    DataTable dt = new DataTable();
-                    dt = val1.ToDataTable<ConfField_Class>();  //return val1;
-                    return dt;
+
+                    return val1;
+
+					//lstConfFields = new List<ConfField_Class>(val1);
+
+					//DataTable dt = new DataTable();
+                    //dt = val1.ToDataTable<ConfField_Class>();  //return val1;
+                    //return dt;
                 }
                 else
                 {
