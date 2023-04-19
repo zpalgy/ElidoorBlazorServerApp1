@@ -335,7 +335,7 @@ void setModernColors()
 
 <br />
 
-@* scheme of the new Movingwing.razor component 18/11/2022  *@
+@* scheme of the new Movingwing.razor component 18/11/2022 - note: this element is NOT VISIBLE  *@
 <table id="tblMovingwing1" style="display:none">
     <tr id="trMovingwing1">
         <td id="tdMovingwing1">
@@ -347,7 +347,7 @@ void setModernColors()
             @* new movingWing decor stuff in a new razor file  *@
         </td>
     </tr>
-</table>   @* end of tblMovingwing1 *@
+</table>   @* end of tblMovingwing1 - NOT VISIBLE  *@
 
 <table id="tblMovingwing">
     <tr id="trMovingwing">
@@ -2057,6 +2057,7 @@ void setModernColors()
     </tr>   @* end of trMovingwing *@
 
     @if (false)   //(doorConfig.showDecor) old stuff - Mwdecor was shown inside of Movingwing - now it's launched from Configurator4 22/11/2022
+                 //   see doorConfig.showDecor and <DynamicComponent Type="@dyncompType2" in Configurator4.razor .
     {
         //doorConfig.divClasses["mwdecor"] = "divActive";
         <tr id="trmovingwingDecor">

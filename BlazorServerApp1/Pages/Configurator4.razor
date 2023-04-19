@@ -1837,7 +1837,7 @@
                                 @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
                             </div>
                             //}
-                            @if (doorConfig.showDecor && dyncompType == typeof(Movingwing))
+                            @if (doorConfig.showDecor && (dyncompType == typeof(Movingwing) || dyncompType == typeof(Staticwing)))
                             {
                                 <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]" >
                                     <DynamicComponent Type="@dyncompType2" Parameters="@pageParams2"  />
