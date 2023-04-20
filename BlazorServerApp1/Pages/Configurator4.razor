@@ -1396,65 +1396,66 @@
                                     {
                                         //protected bool disableStaticWing = false;
 
-        protected string _WingsNum = string.Empty;
-        protected string WingsNum
-        {
-                                        get
+                                        protected string _WingsNum = string.Empty;
+                                        protected string WingsNum
                                         {
-                                        //currPropName = "TRSH_WINGSNUMDES";
-                                            if (doorConfig != null)
+                                            get
                                             {
-                                                _WingsNum = doorConfig.TRSH_WINGSNUMDES;
-                                            }
-                                            return _WingsNum;
-                                        }
-                                        set
-                                        {
-                                            _WingsNum = value;
-                                            if (doorConfig != null)
-                                            {
-                                                doorConfig.TRSH_WINGSNUMDES = _WingsNum;
-                                                if (!string.IsNullOrEmpty(value) && (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME)))
+                                                //currPropName = "TRSH_WINGSNUMDES";
+                                                if (doorConfig != null)
                                                 {
-                                                    doorConfig.PARTNAME = PrApiCalls.getPARTNAMEbyModelWings(doorConfig, ref errMsg);
-                                                    if (string.IsNullOrEmpty(doorConfig.PARTNAME))
+                                                    _WingsNum = doorConfig.TRSH_WINGSNUMDES;
+                                                }
+                                                return _WingsNum;
+                                            }
+                                            set
+                                            {
+                                                _WingsNum = value;
+                                                if (doorConfig != null)
+                                                {
+                                                    doorConfig.TRSH_WINGSNUMDES = _WingsNum;
+                                                    if (!string.IsNullOrEmpty(value) && (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME)))
                                                     {
-                                                        errMsg2 = "לא קיים פריט  עם הדגם והמיפתח שציינת";
-                                                        openMsgBox = true;
-                                                        doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
-                                                        return;
-                                                    }
-                                                    else
-                                                    {
-                                                        // get PART FAMILY
-                                                        FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
-                                                        doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
-                                                        doorConfig.borderColors["TRSH_WINGSNUMDES"] = "blueBorder";
-                                                        if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
+                                                        doorConfig.PARTNAME = PrApiCalls.getPARTNAMEbyModelWings(doorConfig, ref errMsg);
+                                                        if (string.IsNullOrEmpty(doorConfig.PARTNAME))
                                                         {
-                                                            // doorConfig.disabledFlds["btnDoor"] = true;
-                                                            // StateHasChanged();
-                                                            //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
-                                                            //{
-                                                            //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-                                                            //    showMw();
-                                                            //}
-                                                            //else
-                                                            //{
-                                                            //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-                                                            //    showStaticwing();
-                                                            //}
-                                                            //showMoving_Static_Wing();
+                                                            errMsg2 = "לא קיים פריט  עם הדגם והמיפתח שציינת";
+                                                            openMsgBox = true;
+                                                            doorConfig.dicRefs["TRSH_MODELNAME"].FocusAsync();
                                                             return;
                                                         }
+                                                        else
+                                                        {
+                                                            // get PART FAMILY
+                                                            FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
+                                                            doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
+                                                            doorConfig.FAMILYDES = familyOfPart.FAMILYDES;
+                                                            doorConfig.borderColors["TRSH_WINGSNUMDES"] = "blueBorder";
+                                                            if (UiLogic.try2UpdateBtnClass(doorConfig, "divDoorTitle"))
+                                                            {
+                                                                // doorConfig.disabledFlds["btnDoor"] = true;
+                                                                // StateHasChanged();
+                                                                //if (doorConfig.TRSH_WINGSNUMDES != "חצי כנף")
+                                                                //{
+                                                                //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                                //    showMw();
+                                                                //}
+                                                                //else
+                                                                //{
+                                                                //    UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                                                                //    showStaticwing();
+                                                                //}
+                                                                //showMoving_Static_Wing();
+                                                                return;
+                                                            }
+                                                        }
                                                     }
+                                                    doorConfig.borderColors["TRSH_WINGSNUMDES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                                 }
-                                                doorConfig.borderColors["TRSH_WINGSNUMDES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                                            }
 
-                                            //disableStaticWing =  (_WingsNum == "כנף");
+                                                //disableStaticWing =  (_WingsNum == "כנף");
+                                            }
                                         }
-        }
 
                                     }
 
@@ -1568,7 +1569,7 @@
                                                         // get PART FAMILY
                                                         FamilyOfPart_Class familyOfPart = PrApiCalls.getFamilyOfPart(doorConfig.PARTNAME, ref errMsg);
                                                         doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
-
+                                                        doorConfig.FAMILYDES = familyOfPart.FAMILYDES;
                                                     }
                                                     UiLogic.applyModelDefaults(doorConfig);
                                                     applyDecorFormat2Btns();
@@ -1837,8 +1838,8 @@
                                 @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
                             </div>
                             //}
-                            @if (doorConfig.showDecor && (dyncompType == typeof(Movingwing) || dyncompType == typeof(Staticwing)))
-                            {
+                            @if (doorConfig.showDecor && (dyncompType == typeof(Movingwing) || dyncompType == typeof(Staticwing) || dyncompType == typeof(Halfwing)))
+                               {
                                 <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]" >
                                     <DynamicComponent Type="@dyncompType2" Parameters="@pageParams2"  />
                                     @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@

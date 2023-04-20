@@ -102,13 +102,12 @@ namespace BlazorServerApp1.Data
         public int FAMILY; // { get; set; }  // D-10
                            //[NonSerialized]
                            //public int FAMILY;
-
-        //[DataMember(Order = 22), Order]
-        //public string FAMILYDES { get; set; }
         [NonSerialized]
         public string FAMILYNAME; // = string.Empty;   // TRSH_DOORCONFIG.FAMILYNAME does not exist in Priority 
+		[NonSerialized]
+		public string FAMILYDES;
 
-        [DataMember(Order = 21), Order]
+		[DataMember(Order = 21), Order]
         public int TRSH_DOOR_HWCATCODE { get; set; }
 
 		//[DataMember(Order = 22), Order]

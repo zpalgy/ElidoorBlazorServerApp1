@@ -69,9 +69,11 @@ List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
 List<TRSH_HARDWARE_Class> lstHws1 = new List<TRSH_HARDWARE_Class>();
 
 
-string NoColor = "מגולוון";
+//string NoColor = "מגולוון";
 List<string> lstColorsNum1 = new List<string>();
 List<TRSH_COLOR_Class> lstColors1 = new List<TRSH_COLOR_Class>();
+
+string tabTtl = "כנף נעה";
 
 async void IDisposable.Dispose()
 { }
@@ -189,6 +191,7 @@ protected override async Task OnInitializedAsync()
 
     // set the style of the outLine of Movingwing and Mwdecor divs
     doorConfig.divClasses["movingwing"] = (doorConfig.disabledFlds["DOORWIDTH"] ? "divNotActive" : "divActive");
+    tabTtl = tabTtl + @"\" + doorConfig.FAMILYDES;
 }
 
 
@@ -359,7 +362,7 @@ void setModernColors()
                     <tr>
                         <td>
                             <div class="tabPageTitle">
-                                <h1 class="rightLeftMargin">כנף נעה</h1>
+                                  <h1 class="rightLeftMargin">@tabTtl</h1>
                             </div>
                         </td>
                     </tr>
