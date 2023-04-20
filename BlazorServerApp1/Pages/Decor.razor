@@ -28,7 +28,7 @@
     string msgHeaderClass = "modal-header";
     string msgBorder1Style = string.Empty;
 
-    private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg" 
+    private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg"
     string YNissue = string.Empty;
     private bool ansYes = false;
 
@@ -46,12 +46,12 @@
         // config4.RefreshState();  //just for a test - works !
 
         // clear disabled fields :
-        doorConfig.EXTFINMODERNCPLATE =  (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNCPLATE);
-        doorConfig.EXTFINMODERNPLATE =   (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNPLATE);
+        doorConfig.EXTFINMODERNCPLATE = (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNCPLATE);
+        doorConfig.EXTFINMODERNPLATE = (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNPLATE);
         doorConfig.EXTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNSEPLINE);
 
-        doorConfig.INTFINMODERNCPLATE =  (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNCPLATE);
-        doorConfig.INTFINMODERNPLATE =   (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNPLATE);
+        doorConfig.INTFINMODERNCPLATE = (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNCPLATE);
+        doorConfig.INTFINMODERNPLATE = (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNPLATE);
         doorConfig.INTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == HebNouns.External ? string.Empty : doorConfig.INTFINMODERNSEPLINE);
 
         setDisabled();
@@ -110,8 +110,8 @@
 
 
 
- <br/>
-    <table>
+<br />
+<table>
     <tr>
         <td>
             <div class="tabPageTitle">
@@ -122,8 +122,8 @@
 </table>
 <table id="tblDecor1">
     <tr id="tblDecorL1h">
-        <th class="@doorConfig.thClasses["EXTFINMODERNCPLATE"]" >לוח מרכזי חוץ</th>      
-    @* D-850 EXTFINMODERNCPLATE *@
+        <th class="@doorConfig.thClasses["EXTFINMODERNCPLATE"]">לוח מרכזי חוץ</th>
+        @* D-850 EXTFINMODERNCPLATE *@
         <th class="@doorConfig.thClasses["EXTMODERNCPLATECLRID"]">צבע לוח מרכזי חוץ</th>
         <th class="@doorConfig.thClasses["EXTFINMODERNPLATE"]">לוחות חיפוי חוץ</th>    @* D-1000 EXTFINMODERNPLATE *@
         <th class="@doorConfig.thClasses["EXTMODERNPLATECLRID"]">צבע לוחות חיפוי חוץ</th>
@@ -136,13 +136,25 @@
 
     <tr id="tblDecorL1d">
         @*  hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernCPlate") *@
-        <td id="tdExtFinModernCPlate" >
+        <td id="tdExtFinModernCPlate">
             <select name="dlstExtFinModernCPlate" @bind="ExtFinModernCPlate"
                     disabled="@doorConfig.disabledFlds["EXTFINMODERNCPLATE"]"
                     class="@doorConfig.borderColors["EXTFINMODERNCPLATE"]">
-                <option></option>
-                <option>חלק</option>
-                <option>מחורץ</option>
+                @if (PrApiCalls.lstRaw4CPlates != null)
+                {
+                    @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
+                    {
+                        if (!UiLogic.disableOption3(doorConfig, "EXTFINMODERNCPLATE", c.RAW4CPLATESNAME))
+                        {
+                            <option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
+                        }
+                    }
+                }
+                @*
+                    <option></option>
+                    <option>חלק</option>
+                    <option>מחורץ</option>
+                *@
             </select>
         </td>
         @code
@@ -174,19 +186,18 @@
         }
 
         @* hidden="@UiLogic.hideFld(doorConfig, "tdExtModerCPlateClr")" *@
-        <td id="tdExtModerCPlateClr" >
+        <td id="tdExtModerCPlateClr">
             @{
                 int i408 = Array.IndexOf(UiLogic.propNames, "EXTMODERNCPLATECLRID");
                 @* <select name="dlstExtModerCPlateClr" @bind="ExtModerCPlateClr" class="@doorConfig.borderColors["EXTMODERNCPLATECLRID"]" *@
 
-                    <input list="lstExtCPColors" name="dlstExtModerCPlateClr" @bind="ExtCPClrDes" class="@doorConfig.borderColors["EXTMODERNCPLATECLRID"]"
-                    autocomplete="off"
-                    disabled="@doorConfig.disabledFlds["EXTMODERNCPLATECLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("EXTMODERNCPLATECLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i408]]"
-                   />
-                   <datalist id="lstExtCPColors" >
+                <input list="lstExtCPColors" name="dlstExtModerCPlateClr" @bind="ExtCPClrDes" class="@doorConfig.borderColors["EXTMODERNCPLATECLRID"]"
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["EXTMODERNCPLATECLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("EXTMODERNCPLATECLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i408]]" />
+                <datalist id="lstExtCPColors">
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -226,7 +237,7 @@
             }
         }
         @* hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernPlate")" *@
-        <td id="tdExtFinModernPlate" >
+        <td id="tdExtFinModernPlate">
             <select name="dlstExtFinModernPlate" @bind="ExtFinModernPlate"
                     disabled="@doorConfig.disabledFlds["EXTFINMODERNPLATE"]"
                     class="@doorConfig.borderColors["EXTFINMODERNPLATE"]">
@@ -264,17 +275,16 @@
         }
 
         @* hidden="@UiLogic.hideFld(doorConfig, "thExtModerPlateClr")"  *@
-        <td id="tdExtModerPlateClr" >
+        <td id="tdExtModerPlateClr">
             @{
                 int i413 = Array.IndexOf(UiLogic.propNames, "EXTMODERNPLATECLRID");
                 @* <select name="dlstExtModerPlateClr" @bind="ExtModerPlateClr" class="@doorConfig.borderColors["EXTMODERNPLATECLRID"]" *@
                 <input list="lstExtPColors" name="dlstExtModerPlateClr" @bind="ExtPClrDes" class="@doorConfig.borderColors["EXTMODERNPLATECLRID"]"
-                        autocomplete="off"
-                        disabled="@doorConfig.disabledFlds["EXTMODERNPLATECLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("EXTMODERNPLATECLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i413]]"
-                       />
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["EXTMODERNPLATECLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("EXTMODERNPLATECLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i413]]" />
                 <datalist id="lstExtPColors">
                     @if (PrApiCalls.lstColors != null)
                     {
@@ -314,7 +324,7 @@
                 }
             }
         }
-        <td id="tdExtSepLines" >
+        <td id="tdExtSepLines">
             <select name="dlstExtSepLines" @bind="ExtSepLines"
                     disabled="@doorConfig.disabledFlds["EXTSEPLINES"]"
                     class="@doorConfig.borderColors["EXTSEPLINES"]">
@@ -352,7 +362,7 @@
             }
         }
         @* hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernSepLine")" *@
-        <td id="tdExtFinModernSepLine" >
+        <td id="tdExtFinModernSepLine">
             <select name="dlstExtFinModernSepLine" @bind="ExtFinModernSepLine"
                     disabled="@doorConfig.disabledFlds["EXTFINMODERNSEPLINE"]"
                     class="@doorConfig.borderColors["EXTFINMODERNSEPLINE"]">
@@ -390,26 +400,25 @@
         }
 
         @* hidden="@UiLogic.hideFld(doorConfig, "tdExtSepLinesClr")" *@
-        <td id="tdExtSepLinesClr" >
+        <td id="tdExtSepLinesClr">
             @{
                 int i405 = Array.IndexOf(UiLogic.propNames, "EXTSEPLINESCLRID");
                 @* <select name="dlstExtSepLinesClr" @bind="ExtSepLinesClr" class="@doorConfig.borderColors["EXTSEPLINESCLRID"]" *@
-                    <input list="lstExtSepLinesClrs" name="dlstExtSepLinesClr" @bind="ExtSepLinesClrDes" class="@doorConfig.borderColors["EXTSEPLINESCLRID"]"
-                           autocomplete="off"
-                        disabled="@doorConfig.disabledFlds["EXTSEPLINESCLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("EXTSEPLINESCLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i405]]"
-                   />
-                    <datalist id="lstExtSepLinesClrs">
-                        @if (PrApiCalls.lstColors != null)
+                <input list="lstExtSepLinesClrs" name="dlstExtSepLinesClr" @bind="ExtSepLinesClrDes" class="@doorConfig.borderColors["EXTSEPLINESCLRID"]"
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["EXTSEPLINESCLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("EXTSEPLINESCLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i405]]" />
+                <datalist id="lstExtSepLinesClrs">
+                    @if (PrApiCalls.lstColors != null)
+                    {
+                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
                         {
-                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                            {
-                                <option value="@c.PARTDES">@c.PARTDES</option>
-                            }
+                            <option value="@c.PARTDES">@c.PARTDES</option>
                         }
-                    </datalist>
+                    }
+                </datalist>
             }
         </td>
         @code
@@ -442,26 +451,25 @@
         }
 
         @* hidden="@UiLogic.hideFld(doorConfig, "tdExtPerifProfileClr")" *@
-        <td id="tdExtPerifProfileClr" >
+        <td id="tdExtPerifProfileClr">
             @{
                 int i407 = Array.IndexOf(UiLogic.propNames, "EXTPERIFPROFILECLRID");
                 @* <select name="dlstExtPerifProfileClr" @bind="ExtPerifProfileClr" class="@doorConfig.borderColors["EXTPERIFPROFILECLRID"]" *@
-                    <input list="lstExtProfileClrs" name="dlstExtPerifProfileClr" @bind="ExtPerifProfileClrDes" class="@doorConfig.borderColors["EXTPERIFPROFILECLRID"]"
-                        autocomplete="off"
-                        disabled="@doorConfig.disabledFlds["EXTPERIFPROFILECLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("EXTPERIFPROFILECLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i407]]"
-                    />
-                    <datalist id="lstExtProfileClrs">
-                        @if (PrApiCalls.lstColors != null)
+                <input list="lstExtProfileClrs" name="dlstExtPerifProfileClr" @bind="ExtPerifProfileClrDes" class="@doorConfig.borderColors["EXTPERIFPROFILECLRID"]"
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["EXTPERIFPROFILECLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("EXTPERIFPROFILECLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i407]]" />
+                <datalist id="lstExtProfileClrs">
+                    @if (PrApiCalls.lstColors != null)
+                    {
+                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
                         {
-                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                            {
-                                <option value="@c.PARTDES">@c.PARTDES</option>
-                            }
+                            <option value="@c.PARTDES">@c.PARTDES</option>
                         }
-                    </datalist>
+                    }
+                </datalist>
             }
         </td>
         @code
@@ -491,26 +499,25 @@
             }
         }
         @* hidden="@UiLogic.hideFld(doorConfig, "thExtInsertCoverClr")" *@
-        <td id="tdExtInsertCoverClr" >
+        <td id="tdExtInsertCoverClr">
             @{
                 int i417 = Array.IndexOf(UiLogic.propNames, "EXTINSERTCLRID");
                 @* <select name="dlstExtInsertCoverClr" @bind="ExtInsertCoverClr" class="@doorConfig.borderColors["EXTINSERTCLRID"]" *@
-                    <input list="lstExtInsertClrs" name="dlstExtInsertCoverClr" @bind="ExtInsertClrDes" class="@doorConfig.borderColors["EXTINSERTCLRID"]"
-                     autocomplete="off"
-                    disabled="@doorConfig.disabledFlds["EXTINSERTCLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("EXTINSERTCLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i417]]"
-                    />
-                    <datalist id="lstExtInsertClrs">
-                        @if (PrApiCalls.lstColors != null)
+                <input list="lstExtInsertClrs" name="dlstExtInsertCoverClr" @bind="ExtInsertClrDes" class="@doorConfig.borderColors["EXTINSERTCLRID"]"
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["EXTINSERTCLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("EXTINSERTCLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i417]]" />
+                <datalist id="lstExtInsertClrs">
+                    @if (PrApiCalls.lstColors != null)
+                    {
+                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
                         {
-                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                            {
-                                <option value="@c.PARTDES">@c.PARTDES</option>
-                            }
+                            <option value="@c.PARTDES">@c.PARTDES</option>
                         }
-                    </datalist>
+                    }
+                </datalist>
             }
         </td>
         @code
@@ -550,11 +557,11 @@
         <th class="@doorConfig.thClasses["INTMODERNPLATECLRID"]">צבע לוחות חיפוי פנים</th>
         <th class="@doorConfig.thClasses["INTSEPLINES"]">פסי הפרדה פנים</th>
         <th class="@doorConfig.thClasses["INTFINMODERNSEPLINE"]">סוגי פסים</th>
-        <th  class="@doorConfig.thClasses["INTSEPLINESCLRID"]">צבע פסי הפרדה פנים</th>
+        <th class="@doorConfig.thClasses["INTSEPLINESCLRID"]">צבע פסי הפרדה פנים</th>
         <th class="@doorConfig.thClasses["INTPERIFPROFILECLRID"]">צבע פרופיל היקפי פנים</th>
         <th class="@doorConfig.thClasses["INTINSERTCLRID"]">צבע פנים לאינסרט</th>
     </tr>
-   
+
     <tr id="tblDecorL2d">
         @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernCPlate")"  *@
         <td id="tdIntFinModernCPlate">
@@ -595,28 +602,27 @@
         }
 
         @* disabled="@UiLogic.hideFld(doorConfig, "tdIntModerCPlateClr")" *@
-    <td id="tdIntModerCPlateClr">
-        @{
-            int i1411 = Array.IndexOf(UiLogic.propNames, "INTMODERNCPLATECLRID");
-            @* <select name="dlstIntModerCPlateClr" @bind="IntModernCPlateClr" class="@doorConfig.borderColors["INTMODERNCPLATECLRID"]" *@
-            <input list="lstIntCPColors" name="dlstIntModerCPlateClr" @bind="IntCPClrDes" class="@doorConfig.borderColors["INTMODERNCPLATECLRID"]"
-                   autocomplete="off"
-                   disabled="@doorConfig.disabledFlds["INTMODERNCPLATECLRID"]"
-                   @onfocus="@( () => UiLogic.HasFocus("INTMODERNCPLATECLRID", doorConfig) )"
-                   @onkeypress="doorConfig.KeyPressHandler"
-                   @ref="doorConfig.dicRefs[UiLogic.propNames[i1411]]" 
-             />
-            <datalist id="lstIntCPColors">
-                @if (PrApiCalls.lstColors != null)
-                {
-                    @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+        <td id="tdIntModerCPlateClr">
+            @{
+                int i1411 = Array.IndexOf(UiLogic.propNames, "INTMODERNCPLATECLRID");
+                @* <select name="dlstIntModerCPlateClr" @bind="IntModernCPlateClr" class="@doorConfig.borderColors["INTMODERNCPLATECLRID"]" *@
+                <input list="lstIntCPColors" name="dlstIntModerCPlateClr" @bind="IntCPClrDes" class="@doorConfig.borderColors["INTMODERNCPLATECLRID"]"
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["INTMODERNCPLATECLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("INTMODERNCPLATECLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i1411]]" />
+                <datalist id="lstIntCPColors">
+                    @if (PrApiCalls.lstColors != null)
                     {
-                        <option value="@c.PARTDES">@c.PARTDES</option>
+                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+                        {
+                            <option value="@c.PARTDES">@c.PARTDES</option>
+                        }
                     }
-                }
                 </datalist>
-        }
-    </td>
+            }
+        </td>
         @code
         {
             protected int _IntModernCPlateClr = 0;
@@ -647,7 +653,7 @@
         }
 
         @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernPlate")" *@
-        <td id="tdIntFinModernPlate" >
+        <td id="tdIntFinModernPlate">
             <select name="dlstIntFinModernPlate" @bind="IntFinModernPlate"
                     disabled="@doorConfig.disabledFlds["INTFINMODERNPLATE"]"
                     class="@doorConfig.borderColors["INTFINMODERNPLATE"]">
@@ -684,26 +690,25 @@
             }
         }
         @* disabled="@UiLogic.hideFld(doorConfig, "thIntModerPlateClr")" *@
-        <td id="tdIntModerPlateClr" >
+        <td id="tdIntModerPlateClr">
             @{
                 int i1413 = Array.IndexOf(UiLogic.propNames, "INTMODERNPLATECLRID");
                 @* <select name="dlstIntModerPlateClr" @bind="IntModerPlateClr" class="@doorConfig.borderColors["INTMODERNPLATECLRID"]" *@
-                    <input list="lstIntPColors" name="dlstIntModerPlateClr" @bind="IntPClrDes" class="@doorConfig.borderColors["INTMODERNPLATECLRID"]"
-                        autocomplete="off"
-                        disabled="@doorConfig.disabledFlds["INTMODERNPLATECLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("INTMODERNPLATECLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i1413]]"
-                     />
-                    <datalist id="lstIntPColors">
-                        @if (PrApiCalls.lstColors != null)
+                <input list="lstIntPColors" name="dlstIntModerPlateClr" @bind="IntPClrDes" class="@doorConfig.borderColors["INTMODERNPLATECLRID"]"
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["INTMODERNPLATECLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("INTMODERNPLATECLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i1413]]" />
+                <datalist id="lstIntPColors">
+                    @if (PrApiCalls.lstColors != null)
+                    {
+                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
                         {
-                            @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
-                            {
-                                <option value="@c.PARTDES">@c.PARTDES</option>
-                            }
+                            <option value="@c.PARTDES">@c.PARTDES</option>
                         }
-                    </datalist>
+                    }
+                </datalist>
             }
         </td>
         @code
@@ -734,7 +739,7 @@
                 }
             }
         }
-        <td id="tdIntSepLines"  disabled ="true">
+        <td id="tdIntSepLines" disabled="true">
             <select name="dlstIntSepLines" @bind="IntSepLines"
                     disabled="@doorConfig.disabledFlds["INTSEPLINES"]"
                     class="@doorConfig.borderColors["INTSEPLINES"]">
@@ -773,7 +778,7 @@
         }
 
         @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernSepLine")" *@
-        <td id="tdIntFinModernSepLine" >
+        <td id="tdIntFinModernSepLine">
             <select name="dlstIntFinModernSepLine" @bind="IntFinModernSepLine"
                     disabled="@doorConfig.disabledFlds["INTFINMODERNSEPLINE"]"
                     class="@doorConfig.borderColors["INTFINMODERNSEPLINE"]">
@@ -815,12 +820,11 @@
                 int i1416 = Array.IndexOf(UiLogic.propNames, "INTSEPLINESCLRID");
                 @* <select name="dlstIntSepLinesClr" @bind="IntSepLinesClr" class="@doorConfig.borderColors["INTSEPLINESCLRID"]" *@
                 <input list="lstIntSepLinesClrs" name="dlstIntSepLinesClr" @bind="IntSepLinesClrDes" class="@doorConfig.borderColors["INTSEPLINESCLRID"]"
-                        autocomplete="off"
-                        disabled="@doorConfig.disabledFlds["INTSEPLINESCLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("INTSEPLINESCLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i1416]]"
-                    />
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["INTSEPLINESCLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("INTSEPLINESCLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i1416]]" />
                 <datalist id="lstIntSepLinesClrs">
                     @if (PrApiCalls.lstColors != null)
                     {
@@ -862,17 +866,16 @@
             }
         }
         @*  disabled="@UiLogic.hideFld(doorConfig, "tdIntPerifProfileClr")*@
-        <td id="tdIntPerifProfileClr" >
+        <td id="tdIntPerifProfileClr">
             @{
                 int i1417 = Array.IndexOf(UiLogic.propNames, "INTPERIFPROFILECLRID");
                 @* <select name="dlstIntPerifProfileClr" @bind="IntPerifProfileClr" class="@doorConfig.borderColors["INTPERIFPROFILECLRID"]" *@
                 <input list="lstIntProfileClrs" name="dlstIntPerifProfileClr" @bind="IntPerifProfileClrDes" class="@doorConfig.borderColors["INTPERIFPROFILECLRID"]"
                        autocomplete="off"
                        disabled="@doorConfig.disabledFlds["INTPERIFPROFILECLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("INTPERIFPROFILECLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i1417]]"
-                />
+                       @onfocus="@( () => UiLogic.HasFocus("INTPERIFPROFILECLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i1417]]" />
                 <datalist id="lstIntProfileClrs">
                     @if (PrApiCalls.lstColors != null)
                     {
@@ -911,17 +914,16 @@
             }
         }
         @* disabled="@UiLogic.hideFld(doorConfig, "thIntInsertCoverClr")" *@
-        <td id="tdIntInsertCoverClr" >
+        <td id="tdIntInsertCoverClr">
             @{
                 int i1418 = Array.IndexOf(UiLogic.propNames, "INTINSERTCLRID");
                 @* <select name="dlstIntInsertCoverClr" @bind="IntInsertCoverClr" class="@doorConfig.borderColors["INTINSERTCLRID"]" *@
                 <input list="lstIntInsertClrs" name="dlstIntInsertCoverClr" @bind="IntInsertClrDes" class="@doorConfig.borderColors["INTINSERTCLRID"]"
-                        autocomplete="off"
-                        disabled="@doorConfig.disabledFlds["INTINSERTCLRID"]"
-                        @onfocus="@( () => UiLogic.HasFocus("INTINSERTCLRID", doorConfig) )"
-                        @onkeypress="doorConfig.KeyPressHandler"
-                        @ref="doorConfig.dicRefs[UiLogic.propNames[i1418]]"
-                 />
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["INTINSERTCLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("INTINSERTCLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i1418]]" />
                 <datalist id="lstIntInsertClrs">
                     @if (PrApiCalls.lstColors != null)
                     {

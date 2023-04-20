@@ -34,7 +34,8 @@ namespace BlazorServerApp1.Data
 
         public static List<ConfField_Class> lstConfFields = new List<ConfField_Class>();
         public static DataTable dtConfFields;
-        public static DataTable dtDefaults;
+        public static List<Defaults_Class> lstDefaults = new List<Defaults_Class>();
+		public static DataTable dtDefaults;
 
         public static List<WingsNum_Class> lstWingsNum = new List<WingsNum_Class>();
         public static DataTable dtWingsNum = new DataTable();
@@ -949,8 +950,10 @@ namespace BlazorServerApp1.Data
                 dtConfFields = lstConfFields.ToDataTable<ConfField_Class>();
 
                 if (dtConfFields == null)
-                    return;
-                dtDefaults = getDefaults(ref errMsg);
+                    return; // abort
+
+                lstDefaults = getDefaults(ref errMsg);
+                dtDefaults = lstDefaults.ToDataTable<Defaults_Class>();  
 
                 lstWingsNum = getAllWingsNum(ref errMsg);
                 dtWingsNum = lstWingsNum.ToDataTable<WingsNum_Class>();
@@ -3158,14 +3161,16 @@ namespace BlazorServerApp1.Data
             DataRow[] resRows = dtConfFields.Select(query);
             return (resRows.Length > 0 ? resRows[0]["FIELDCODE"].ToString() : string.Empty);
         }
-        public static DataTable getDefaults(ref string errMsg)
-        {
+        
+        //public static DataTable getDefaults(ref string errMsg)
+        public static List<Defaults_Class> getDefaults(ref string errMsg)
+        { 
             try
             {
                 RestClient restClient = new RestClient();
                 initRestClient(restClient);
                 RestRequest request = new RestRequest();
-                string fields = "LINENUM,TRSH_NUM,TRSH_MODELNAME,TRSH_MEAGEDNAME,FIELDCODE,CONFIG_FIELDNAME,FIELDNAME,CONFIG_TDNAME,FIELDDATATYPE,DEFVAL,VAL_LOCKED,WRONGVAL";
+                string fields = "LINENUM,TRSH_NUM,TRSH_MODELNAME,TRSH_MEAGEDNAME,FAMILYNAME,FIELDCODE,CONFIG_FIELDNAME,FIELDNAME,CONFIG_TDNAME,FIELDDATATYPE,DEFVAL,VAL_LOCKED,WRONGVAL";
                 request.Resource = string.Format("TRSH_DEFAULTS?$select={0}", fields);
                 IRestResponse response = restClient.Execute(request);
                 if (response.IsSuccessful)
@@ -3181,9 +3186,10 @@ namespace BlazorServerApp1.Data
                     {
                         val1.Add(fld);
                     }
-                    DataTable dt = new DataTable();
-                    dt = val1.ToDataTable<Defaults_Class>();  //return val1;
-                    return dt;
+                    return val1;
+                    //DataTable dt = new DataTable();
+                    //dt = val1.ToDataTable<Defaults_Class>();  //return val1;
+                    //return dt;
                 }
                 else
                 {

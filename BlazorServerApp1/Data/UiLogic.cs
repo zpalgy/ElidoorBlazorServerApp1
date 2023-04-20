@@ -192,7 +192,34 @@ namespace BlazorServerApp1.Data
             else
                 return false;
         }
-        public static async void saveDoorConfig(DoorConfig doorConfig, ProtectedSessionStorage ProtectedSessionStore)
+		public static bool disableOption3(DoorConfig doorConfig, string fldName, string optionVal)
+		{
+			//configFldName = configFldName.ToUpper();
+			if (doorConfig != null)
+			{
+				if (string.IsNullOrEmpty(doorConfig.PARTNAME))
+					return false;
+
+				//
+                // string query = string.Format("TRSH_MODELNAME = '{0}' AND FIELDNAME = '{1}'", doorConfig.TRSH_MODELNAME, fldName);
+				//DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
+
+				//for (int r = 0; r < rowsDefVal.Length; r++)
+				//{
+				//	string wrongval = rowsDefVal[r]["WRONGVAL"].ToString();
+				//	if (optionVal == wrongval)
+				//		return true;  //disable option
+				//}
+				//return false;
+                //
+                Defaults_Class default_rec = PrApiCalls.lstDefaults.Find(x => x.FAMILYNAME == doorConfig.FAMILYNAME 
+                                                    && x.FIELDNAME == fldName && x.WRONGVAL == optionVal);
+                return (default_rec != null);
+			}
+			else
+				return false;
+		}
+		public static async void saveDoorConfig(DoorConfig doorConfig, ProtectedSessionStorage ProtectedSessionStore)
         {
             string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
             await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);

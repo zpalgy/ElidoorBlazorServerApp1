@@ -695,14 +695,15 @@ namespace BlazorServerApp1.Data
         public string TRSH_MODELNAME { get; set; }
         [DataMember(Order = 4)]
         public string TRSH_MEAGEDNAME { get; set; }
-
-        [DataMember(Order = 5)]
-        public string FIELDCODE { get; set; }
+        [DataMember (Order = 5)]
+        public string FAMILYNAME { get; set; }
         [DataMember(Order = 6)]
-        public string CONFIG_FIELDNAME { get; set; }  //e.g. dlstPARTNAME
+        public string FIELDCODE { get; set; }
         [DataMember(Order = 7)]
-        public string FIELDNAME { get; set; }  //e.g. TRSH_MODELNAME
+        public string CONFIG_FIELDNAME { get; set; }  //e.g. dlstPARTNAME
         [DataMember(Order = 8)]
+        public string FIELDNAME { get; set; }  //e.g. TRSH_MODELNAME
+        [DataMember(Order = 9)]
         public string CONFIG_TDNAME { get; set; }
         [DataMember(Order = 9)]
         public string FIELDDATATYPE { get; set; }

@@ -1139,10 +1139,10 @@ void setModernColors()
                                         //}
                                         if (doorConfig.OPENSIDE != null && !string.IsNullOrEmpty(doorConfig.OPENSIDE))
                                             lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg);
-                                        if (lstHws1 != null)     //(lstCylHws1 != null)
+                                        if (lstHws1 != null && lstHws1.Count > 0)     //(lstCylHws1 != null)
                                         {
-                                            if (   doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes("מודרני") 
-                                                && lstHws1.Count > 1
+                                            if (doorConfig.FAMILYDES == HebNouns.Modern   //doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes("מודרני") 
+                                                && lstHws1.Count > 0
                                                 && lstHws1.Find(a => a.PARTDES == HebNouns.None) == null )
                                             {
                                                 TRSH_HARDWARE_Class hw = new TRSH_HARDWARE_Class();
@@ -1207,7 +1207,7 @@ void setModernColors()
                                                 doorConfig.disabledFlds["HWACCESSORYID"] = true; //it's mandatory only if TRSH_HARDWARE is not empty
                                                 doorConfig.HWACCESSORYID = 0;
 
-                                                if (   doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes(HebNouns.Modern)
+                                                if (doorConfig.FAMILYDES == HebNouns.Modern   //doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes(HebNouns.Modern)
                                                     || UiLogic.isDecorated(doorConfig))
                                                 {
                                                     doorConfig.disabledFlds["TRSH_CYLINDER"] = true;
