@@ -55,6 +55,8 @@
     bool hideSwingHandle = false;
     bool hideSwingHandleClr = false;
 
+    string tabTtl = "כנף קבועה";
+
     protected override async Task OnInitializedAsync()
     {
 
@@ -163,6 +165,7 @@
         if (doorConfig.HW4EXTRAWING == 0 || doorConfig.HW4EXTRAWING == HebNouns.IdOfNone)
             doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 
+        tabTtl = tabTtl + @"\" + doorConfig.FAMILYDES;
     }
     void setHiddens(DoorConfig doorConfig)
     {
@@ -456,7 +459,7 @@
     <tr>
         <td>
             <div class="tabPageTitle">
-                <h1 class="rightLeftMargin">כנף קבועה</h1>
+                <h1 class="rightLeftMargin">@tabTtl</h1>
             </div>
         </td>
     </tr>

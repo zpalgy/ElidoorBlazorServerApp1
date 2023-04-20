@@ -26,7 +26,7 @@
     protected bool openMsgBox = false;
     private bool openYesNo = false;
     string errMsg2 = string.Empty;
-    private string ErrMsgCssClass = "modal-body centeredMsg"; 
+    private string ErrMsgCssClass = "modal-body centeredMsg";
     string YNissue = string.Empty;
     private bool ansYes = false;
     int newLockDrilHeight = 0;
@@ -61,19 +61,19 @@
     bool hideCentralColWidth = false;
     bool hideCentralColClr = false;
     bool hideShalvaniaClr = false;
-	bool hideSwingClr = false;
-	bool hideSwingExtClr = false;
-	bool hideSwingIntClr = false;
-	bool hideSwingCyl = false;
-	bool hideHW4ExtraWing = false;
-	bool hideSwingHwAcc = false;
-	bool hideSwingHwClr = false;
-	bool hideSwingHandle = false;
-	bool hideSwingHandleClr = false;
+    bool hideSwingClr = false;
+    bool hideSwingExtClr = false;
+    bool hideSwingIntClr = false;
+    bool hideSwingCyl = false;
+    bool hideHW4ExtraWing = false;
+    bool hideSwingHwAcc = false;
+    bool hideSwingHwClr = false;
+    bool hideSwingHandle = false;
+    bool hideSwingHandleClr = false;
 
     #endregion hide variables
 
-    string NoColor = "מגולוון";
+    //string NoColor = "מגולוון";
     List<string> lstColorsNum1 = new List<string>();
     List<TRSH_COLOR_Class> lstColors1 = new List<TRSH_COLOR_Class>();
 
@@ -82,6 +82,8 @@
     List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
     List<CYLHW_Class> lstCylHws1 = new List<CYLHW_Class>();
     List<TRSH_HARDWARE_Class> lstHws4Cyl = new List<TRSH_HARDWARE_Class>();
+
+    string tabTtl = "חצי כנף קבועה";
 
     protected override async Task OnInitializedAsync()
     {
@@ -104,7 +106,7 @@
             //  because movingwing was skipped .
             UiLogic.disableTabFlds(doorConfig, "movingwing");
 
-           // restore the LOV for SWING_DRIL4HW !
+            // restore the LOV for SWING_DRIL4HW !
             lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
         }
         else // like movingwing we can be here only if we came from divDoorTitle, i.e. the page is empty. 
@@ -112,16 +114,16 @@
             //calcCentralColClrID(doorConfig);   - can be called after INTCOLORID (and after OPENMODE )
             UiLogic.applySwingHasLock(doorConfig);
             doorConfig.CENTRALCOLWIDTH = (doorConfig.CENTRALCOLWIDTH == 0 ? 40 : doorConfig.CENTRALCOLWIDTH) ;  //06/07/2022 
-                                                                                                               // doorConfig.disabledFlds["SWING_HANDLENAME"] = (doorConfig.TRSH_WINGSNUMDES == "כנף וחצי"); // 06/07/2022 
-                                                                                                               //doorConfig.thClasses["HW4EXTRAWING"] = "thGray";   // 06/07/2022 
-                                                                                                               //   07/07/2022 - Eli asked to make this field Mandatory
-                                                                                                               //doorConfig.SWING_OPENSIDE = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
-           //populate the LOV of Dril4Hw in case it's empty 
-           if (lstD4HW1.Count == 0 && doorConfig.HW4EXTRAWING != 0 )
-				lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
+                                                                                                                // doorConfig.disabledFlds["SWING_HANDLENAME"] = (doorConfig.TRSH_WINGSNUMDES == "כנף וחצי"); // 06/07/2022 
+                                                                                                                //doorConfig.thClasses["HW4EXTRAWING"] = "thGray";   // 06/07/2022 
+                                                                                                                //   07/07/2022 - Eli asked to make this field Mandatory
+                                                                                                                //doorConfig.SWING_OPENSIDE = (doorConfig.OPENSIDE == "ימין" ? "שמאל" : "ימין");
+                                                                                                                //populate the LOV of Dril4Hw in case it's empty 
+            if (lstD4HW1.Count == 0 && doorConfig.HW4EXTRAWING != 0 )
+                lstD4HW1 = PrApiCalls.getDril4Hw1(doorConfig.HW4EXTRAWING, ref errMsg);
 
-			if (hideHW4ExtraWing && lstD4HW1.Count == 0)
-			    lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+            if (hideHW4ExtraWing && lstD4HW1.Count == 0)
+                lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
 
             doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022 , in case we didn't open movingwing (WINGSNUMDES == Half Wing ) we set LOGO here.
                                                                           //  in case both WINGSNUMDES has more than one wing LOGO is always the same on both wings - see doc from 22/06/2022 !
@@ -141,15 +143,17 @@
         if (doorConfig.TRSH_MODELNAME == "MLI")
         {
             lstColorsNum1.Remove("מגולוון");
-            TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID); 
+            TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID);
             lstColors1.Remove(megulvan);
         }
 
         doorConfig.borderColors["DOORHEIGHT"] = (doorConfig.DOORHEIGHT != 0 ? "blueBorder" : "redBorder");
+
+        tabTtl = tabTtl + @"\" + doorConfig.FAMILYDES;
     }
 
     void setHiddens(DoorConfig doorConfig)
-	{
+    {
         //Movingwing
         hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
         hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
@@ -172,7 +176,7 @@
         doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
         doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
         doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
-                        
+
         doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
         doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
         doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
@@ -187,44 +191,44 @@
         //Staticwing
 
         hideCentralColWidth = UiLogic.hideFld(doorConfig, "thCentralColWidth");
-		hideCentralColClr = UiLogic.hideFld(doorConfig,"CentralColClrID");
+        hideCentralColClr = UiLogic.hideFld(doorConfig,"CentralColClrID");
         hideShalvaniaClr = UiLogic.hideFld(doorConfig, "ShalvaniaClrID");
-		hideSwingClr = UiLogic.hideFld(doorConfig,"SwingColorID");
-		hideSwingExtClr = UiLogic.hideFld(doorConfig,"SwingExtColorID");
-		hideSwingIntClr = UiLogic.hideFld(doorConfig,"SwingIntColorID");
-		hideSwingCyl = UiLogic.hideFld(doorConfig,"Cylinder4HalfWing");
-		hideHW4ExtraWing = UiLogic.hideFld(doorConfig,"thHW4ExtraWing");
-		hideSwingHwAcc = UiLogic.hideFld(doorConfig,"SWING_HWACCESSORYID");
-		hideSwingHwClr = UiLogic.hideFld(doorConfig,"SWING_HWCOLORID");
-		hideSwingHandle = UiLogic.hideFld(doorConfig,"SWING_HANDLENAME");
-		hideSwingHandleClr = UiLogic.hideFld(doorConfig,"SWING_HANDLECOLORID");
-        
+        hideSwingClr = UiLogic.hideFld(doorConfig,"SwingColorID");
+        hideSwingExtClr = UiLogic.hideFld(doorConfig,"SwingExtColorID");
+        hideSwingIntClr = UiLogic.hideFld(doorConfig,"SwingIntColorID");
+        hideSwingCyl = UiLogic.hideFld(doorConfig,"Cylinder4HalfWing");
+        hideHW4ExtraWing = UiLogic.hideFld(doorConfig,"thHW4ExtraWing");
+        hideSwingHwAcc = UiLogic.hideFld(doorConfig,"SWING_HWACCESSORYID");
+        hideSwingHwClr = UiLogic.hideFld(doorConfig,"SWING_HWCOLORID");
+        hideSwingHandle = UiLogic.hideFld(doorConfig,"SWING_HANDLENAME");
+        hideSwingHandleClr = UiLogic.hideFld(doorConfig,"SWING_HANDLECOLORID");
+
         doorConfig.thClasses["CENTRALCOLWIDTH"] = (hideCentralColWidth ? "thGray" : "thBlue");
-		doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
+        doorConfig.thClasses["CENTRALCOLCLRID"] = (hideCentralColClr ? "thGray" : "thBlue");
         doorConfig.thClasses["SHALVANIACLRID"] = (hideShalvaniaClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["EXTCOLORID"] = (hideSwingExtClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["INTCOLORID"] = (hideSwingIntClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
-		doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
-		doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
-		doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
-		doorConfig.thClasses["SWING_HANDLENAME"] = (hideSwingHandle ? "thGray" : "thBlue");
-		doorConfig.thClasses["SWING_HANDLECOLORID"] = (hideSwingHandleClr ? "thGray" : "thBlue");
+        doorConfig.thClasses["DOORCOLORID"] = (hideSwingClr ? "thGray" : "thBlue");
+        doorConfig.thClasses["EXTCOLORID"] = (hideSwingExtClr ? "thGray" : "thBlue");
+        doorConfig.thClasses["INTCOLORID"] = (hideSwingIntClr ? "thGray" : "thBlue");
+        doorConfig.thClasses["TRSH_SWING_CYLINDER"] = (hideSwingCyl ? "thGray" : "thBlue");
+        doorConfig.thClasses["HW4EXTRAWING"] = (hideHW4ExtraWing ? "thGray" : "thBlue");
+        doorConfig.thClasses["SWING_HWACCESSORYID"] = (hideSwingHwAcc ? "thGray" : "thBlue");
+        doorConfig.thClasses["SWING_HWCOLORID"] = (hideSwingHwClr ? "thGray" : "thBlue");
+        doorConfig.thClasses["SWING_HANDLENAME"] = (hideSwingHandle ? "thGray" : "thBlue");
+        doorConfig.thClasses["SWING_HANDLECOLORID"] = (hideSwingHandleClr ? "thGray" : "thBlue");
 
-		doorConfig.disabledFlds["CENTRALCOLCLRID"] = hideCentralColClr;
+        doorConfig.disabledFlds["CENTRALCOLCLRID"] = hideCentralColClr;
         doorConfig.disabledFlds["SHALVANIACLRID"] = hideShalvaniaClr;
-		doorConfig.disabledFlds["DOORCOLORID"] = hideSwingClr;
-		doorConfig.disabledFlds["EXTCOLORID"] = hideSwingExtClr;
-		doorConfig.disabledFlds["INTCOLORID"] = hideSwingIntClr;
-		doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl;
-		doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing;
-		doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc;
-		doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr;
-		doorConfig.disabledFlds["SWING_HANDLENAME"] = hideSwingHandle;
-		doorConfig.disabledFlds["SWING_HANDLECOLORID"] = hideSwingHandleClr;
+        doorConfig.disabledFlds["DOORCOLORID"] = hideSwingClr;
+        doorConfig.disabledFlds["EXTCOLORID"] = hideSwingExtClr;
+        doorConfig.disabledFlds["INTCOLORID"] = hideSwingIntClr;
+        doorConfig.disabledFlds["TRSH_SWING_CYLINDER"] = hideSwingCyl;
+        doorConfig.disabledFlds["HW4EXTRAWING"] = hideHW4ExtraWing;
+        doorConfig.disabledFlds["SWING_HWACCESSORYID"] = hideSwingHwAcc;
+        doorConfig.disabledFlds["SWING_HWCOLORID"] = hideSwingHwClr;
+        doorConfig.disabledFlds["SWING_HANDLENAME"] = hideSwingHandle;
+        doorConfig.disabledFlds["SWING_HANDLECOLORID"] = hideSwingHandleClr;
 
-	}
+    }
 
 
     protected override async void OnAfterRender(bool firstRender)
@@ -236,7 +240,7 @@
         if (doorConfig != null)
         {
             if (doorConfig.COLORSNUM == null)
-                 doorConfig.COLORSNUM = "";
+                doorConfig.COLORSNUM = "";
 
             switch ( doorConfig.COLORSNUM.Trim())
             {
@@ -283,7 +287,7 @@
             //doorConfig.borderColors["COLORSNUM"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder"); // it's not mandatory !
             //UiLogic.clearFollowingTabFields(doorConfig, "movingwing");
         }
-     }
+    }
 
     void calcCentralColClrID(DoorConfig doorConfig)
     {
@@ -293,7 +297,7 @@
             case "1":
                 doorConfig.CENTRALCOLCLRID = doorConfig.DOORCOLORID;
                 doorConfig.SHALVANIACLRID = 0; //Eli 31/10/2022   //doorConfig.DOORCOLORID;
-				doorConfig.disabledFlds["SHALVANIACLRID"] = true;  //Eli 31/10/2022
+                doorConfig.disabledFlds["SHALVANIACLRID"] = true;  //Eli 31/10/2022
                 break;
             case "2":
                 doorConfig.CENTRALCOLCLRID = (doorConfig.OPENMODE == "פנימה" ? doorConfig.INTCOLORID : doorConfig.EXTCOLORID);
@@ -329,7 +333,7 @@
     <tr>
         <td>
             <div class="tabPageTitle">
-                <h1 class="rightLeftMargin">חצי כנף קבועה</h1>
+                <h1 class="rightLeftMargin">@tabTtl</h1>
             </div>
         </td>
     </tr>
