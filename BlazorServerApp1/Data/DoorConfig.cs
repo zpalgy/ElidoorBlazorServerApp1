@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components;
 using System.Xml.Serialization;
 using System.Web.Script.Serialization;
 using System.Text.Json.Serialization;
+using System.Xml.Linq;
 
 namespace BlazorServerApp1.Data
 {
@@ -240,7 +241,7 @@ namespace BlazorServerApp1.Data
         //[DataMember(Order = 84), Order]
         //public string EXTCOLORDES { get; set; }
         [DataMember(Order = 85), Order]
-        public int GRIDCOLORID { get; set; }   // D-140
+        public int GRIDCOLORID { get; set; }   // D-140  21/04/2023 extdecor old stuff
                                                //[DataMember(Order = 86), Order]
                                                //public string GRIDCOLORDES { get; set; }
         [DataMember(Order = 87), Order]
@@ -261,16 +262,20 @@ namespace BlazorServerApp1.Data
                                                        //[DataMember(Order = 102), Order]
                                                        //public string EXTPERIFPROFILECLDES { get; set; }
         [DataMember(Order = 103), Order]
-        public int EXTMODERNCPLATECLRID { get; set; }  //D-250  
-                                                       //[DataMember(Order = 104), Order]
-                                                       //public string EXTMODERNCPLATECLDES { get; set; }
-        [DataMember(Order = 105), Order]
-        public int EXTCGTIDCLRID { get; set; }    // D-260
-                                                  //[DataMember(Order = 106), Order]
-                                                  //public string EXTCGTIDCLRDES { get; set; }
-        #endregion extDecorL1
-        #region extDecorL2
-        [DataMember(Order = 107), Order]
+        public int EXTCGRIDPLATECLRID { get; set; }  //D-250  21/04/2023  צ. לוח\סורג מרכז חוץ  EXTCGRIDPLATECLRID 
+													   //[DataMember(Order = 104), Order]
+													   //public string EXTMODERNCPLATECLDES { get; set; }
+		[DataMember(Order = 105), Order]
+        public int EXTCGRIDBKGDCLRID { get; set; }    // D-260    21/04/2023 in decor  EXTCGRIDBKGDCLRID  צבע רקע לסורג מרכזי חוץ
+		                                          //  FOR TABLE TRSH_DOORCONFIG
+                                                  //  COLUMN EXTCGRIDCLRID
+                                                  //  CHANGE NAME TO EXTCGRIDBKGDCLRID ;
+
+												  //[DataMember(Order = 106), Order]
+												  //public string EXTCGTIDCLRDES { get; set; }
+		#endregion extDecorL1
+		#region extDecorL2
+		[DataMember(Order = 107), Order]
         public int EXTHTPLATESCLRID { get; set; }  // D-270
                                                    //[DataMember(Order = 108), Order]
                                                    //public string EXTHTPLATESCLRDES { get; set; }
@@ -323,7 +328,7 @@ namespace BlazorServerApp1.Data
                                                  //[DataMember(Order = 148), Order]
                                                  //public string GLASS4WINDOWDES { get; set; }
         [DataMember(Order = 149), Order]
-        public int GRID_ID { get; set; }  //D-490
+        public int GRID_ID { get; set; }  //D-490  21/04/2023 in extdecor - old stuff 
                                           //[DataMember(Order = 150), Order]
                                           //public string GRIDDES { get; set; }
         [DataMember(Order = 160), Order]
@@ -354,9 +359,15 @@ namespace BlazorServerApp1.Data
                                                     //public string GRID4HT1084DES { get; set; } // D-750 ?? displayed
         [DataMember(Order = 169), Order]
         public string EXTGRIDCPLATEDES { get; set; }  // D-760
-        [DataMember(Order = 170), Order]
-        public string EXTHTPLATENAME { get; set; }  // D-770
-        [DataMember(Order = 180), Order]
+        [DataMember(Order = 175), Order]
+		public string EXTSIDEGRID { get; set; }
+
+		[DataMember(Order = 176), Order]
+		public int EXTSIDEGRIDCLRID { get; set; }
+
+		[DataMember(Order = 180), Order]
+		public string EXTHTPLATENAME { get; set; }  // D-770
+        [DataMember(Order = 181), Order]
         public string VITRAGE4DIAMONDNAME { get; set; }  // D-800
                                                          //[DataMember(Order = 181), Order]
                                                          //public string VITRAGE4DIAMONDDES { get; set; }
@@ -404,13 +415,23 @@ namespace BlazorServerApp1.Data
                                                             //[DataMember(Order = 207), Order]
                                                             //public string INTSEPLINESCLRDES { get; set; }
         [DataMember(Order = 208), Order]
-        public int INTMODERNCPLATECLRID { get; set; }      //D-240
+        public int INTCGRIDPLATECLRID { get; set; }      //D-240  21/04/2023
+                                                            //FOR TABLE TRSH_DOORCONFIG
+                                                            //COLUMN INTMODERNCPLATECLRID
+                                                            //CHANGE NAME TO INTCGRIDPLATECLRID ;
                                                            //[DataMember(Order = 209), Order]
                                                            //public string INTMODERNCPLATECLDES { get; set; }
         [DataMember(Order = 210), Order]
         public int INTCGRIDCLRID { get; set; }  //D-290
-                                                //[DataMember(Order = 220), Order]
-                                                //public string INTCGRIDCLRDES { get; set; }
+												//[DataMember(Order = 220), Order]
+												//public string INTCGRIDCLRDES { get; set; }
+                                                //  21/04/2023
+                                                //		FOR TABLE TRSH_DOORCONFIG
+                                                //        COLUMN EXTCGRIDCLRID
+                                                //CHANGE NAME TO EXTCGRIDBKGDCLRID ;
+                                                //  צבע רקע לסורג מרכזי חוץ
+
+
         #endregion Internal decoration L1
 
         #region Internal decoration L2

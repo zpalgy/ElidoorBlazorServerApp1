@@ -407,9 +407,9 @@
 	        }
         }
         <td id="tdExtModerCPlateClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtModerCPlateClr")" >
-			@{  int i408 = Array.IndexOf(UiLogic.propNames, "EXTMODERNCPLATECLRID");
-            <select name="dlstExtModerCPlateClr"  @bind="ExtModerCPlateClr" class= "@doorConfig.borderColors["EXTMODERNCPLATECLRID"]" 
-			 @onfocus="@( () => UiLogic.HasFocus("EXTMODERNCPLATECLRID", doorConfig) )" 
+			@{  int i408 = Array.IndexOf(UiLogic.propNames, "EXTCGRIDPLATECLRID");
+            <select name="dlstExtModerCPlateClr"  @bind="ExtModerCPlateClr" class= "@doorConfig.borderColors["EXTCGRIDPLATECLRID"]" 
+			 @onfocus="@( () => UiLogic.HasFocus("EXTCGRIDPLATECLRID", doorConfig) )" 
                      @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i408]]"
 			>
@@ -432,7 +432,7 @@
 		        {
 			        if (doorConfig != null)
 			        {
-				        _ExtModerCPlateClr = doorConfig.EXTMODERNCPLATECLRID;
+				        _ExtModerCPlateClr = doorConfig.EXTCGRIDPLATECLRID;
 			        }
 			        return _ExtModerCPlateClr;
 		        }
@@ -441,17 +441,17 @@
 			        _ExtModerCPlateClr = value;
 			        if (doorConfig != null)
 					{
-				        doorConfig.EXTMODERNCPLATECLRID = _ExtModerCPlateClr;
-						doorConfig.borderColors["EXTMODERNCPLATECLRID"] = (value != 0 ? "blueBorder" : "redBorder");
+				        doorConfig.EXTCGRIDPLATECLRID = _ExtModerCPlateClr;
+						doorConfig.borderColors["EXTCGRIDPLATECLRID"] = (value != 0 ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
 					}
 		        }
 	        }
         }
         <td id="tdExtCGridClr" hidden="@UiLogic.hideFld(doorConfig, "tdExtCGridClr")" >
-			@{  int i409 = Array.IndexOf(UiLogic.propNames, "EXTCGTIDCLRID");
-            <select name="dlstExtCGridClr"  @bind="ExtCGridClr" class= "@doorConfig.borderColors["EXTCGTIDCLRID"]" 
-				@onfocus="@( () => UiLogic.HasFocus("EXTCGTIDCLRID", doorConfig) )" 
+			@{  int i409 = Array.IndexOf(UiLogic.propNames, "EXTCGRIDBKGDCLRID");
+            <select name="dlstExtCGridClr"  @bind="ExtCGridClr" class= "@doorConfig.borderColors["EXTCGRIDBKGDCLRID"]" 
+				@onfocus="@( () => UiLogic.HasFocus("EXTCGRIDBKGDCLRID", doorConfig) )" 
                      @onkeypress="doorConfig.KeyPressHandler" 
                      @ref="doorConfig.dicRefs[UiLogic.propNames[i409]]"
 			>
@@ -474,7 +474,7 @@
 		        {
 			        if (doorConfig != null)
 			        {
-				        _ExtCGridClr = doorConfig.EXTCGTIDCLRID;
+				        _ExtCGridClr = doorConfig.EXTCGRIDBKGDCLRID;
 			        }
 			        return _ExtCGridClr;
 		        }
@@ -483,8 +483,8 @@
 			        _ExtCGridClr = value;
 			        if (doorConfig != null)
 					{
-				        doorConfig.EXTCGTIDCLRID = _ExtCGridClr;
-						doorConfig.borderColors["EXTCGTIDCLRID"] = (value != 0 ? "blueBorder" : "redBorder");
+				        doorConfig.EXTCGRIDBKGDCLRID = _ExtCGridClr;
+						doorConfig.borderColors["EXTCGRIDBKGDCLRID"] = (value != 0 ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
 					}
 		        }

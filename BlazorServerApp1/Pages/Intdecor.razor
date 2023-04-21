@@ -268,7 +268,7 @@
         }
         <td id="tdIntModernCPlateClr" hidden="@UiLogic.hideFld(doorConfig, "thIntModernCPlateClr")">
             <select name="dlstIntModernCPlateClr" @bind="IntModernCPlateClr"
-                    class="@doorConfig.borderColors["INTMODERNCPLATECLRID"]">
+                    class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]">
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -287,7 +287,7 @@
                 {
                     if (doorConfig != null)
                     {
-                        _IntModernCPlateClr = doorConfig.INTMODERNCPLATECLRID;
+                        _IntModernCPlateClr = doorConfig.INTCGRIDPLATECLRID;
                     }
                     return _IntModernCPlateClr;
                 }
@@ -296,8 +296,8 @@
                     _IntModernCPlateClr = value;
                     if (doorConfig != null)
                     {
-                        doorConfig.INTMODERNCPLATECLRID = _IntModernCPlateClr;
-                        doorConfig.borderColors["INTMODERNCPLATECLRID"] = (value != 0 ? "blueBorder" : "redBorder");
+                        doorConfig.INTCGRIDPLATECLRID = _IntModernCPlateClr;
+                        doorConfig.borderColors["INTCGRIDPLATECLRID"] = (value != 0 ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "intdecor");
                     }
                 }
