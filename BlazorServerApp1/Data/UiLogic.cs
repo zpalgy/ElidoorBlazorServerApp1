@@ -143,6 +143,7 @@ namespace BlazorServerApp1.Data
             else
                 return false;
         }
+        
         public static bool disableOption(DoorConfig doorConfig, string configFldName, string optionVal)
         {
             //configFldName = configFldName.ToUpper();
@@ -215,6 +216,16 @@ namespace BlazorServerApp1.Data
                 Defaults_Class default_rec = PrApiCalls.lstDefaults.Find(x => x.FAMILYNAME == doorConfig.FAMILYNAME 
                                                     && x.FIELDNAME == fldName && x.WRONGVAL == optionVal);
                 return (default_rec != null);
+			}
+			else
+				return false;
+		}
+		public static bool disableOptionNoPart(DoorConfig doorConfig, string fldName, string optionVal)
+		{
+			if (doorConfig != null)
+			{
+				Defaults_Class default_rec = PrApiCalls.lstDefaults.Find(x => string.IsNullOrEmpty(x.FAMILYNAME) && x.FIELDNAME == fldName && x.WRONGVAL == optionVal);
+				return (default_rec != null);
 			}
 			else
 				return false;
@@ -1490,16 +1501,15 @@ namespace BlazorServerApp1.Data
                 //string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
                 if (doorConfig != null) 
                 {
-                    //if (!string.IsNullOrEmpty(doorConfig.PARTNAME))
-                    if (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
+					if (fldName == "TRSH_WINGSNUMDES")
+					{
+						int x = 17;
+					}
+					//if (!string.IsNullOrEmpty(doorConfig.PARTNAME))
+					if (!string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
                     {
 
                         //string query = string.Format("PARTNAME = '{0}'", doorConfig.PARTNAME);
-                        if (fldName == "COLORSNUM")
-                        {
-                            
-                            int x = 17;
-                        }
                         string query = string.Format("TRSH_MODELNAME = '{0}' AND FIELDNAME = '{1}'", doorConfig.TRSH_MODELNAME, fldName);
                         DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
                         string errMsg = string.Empty;
@@ -1507,10 +1517,11 @@ namespace BlazorServerApp1.Data
                         {
                             string defval = rowsDefVal[r]["DEFVAL"].ToString();
                             string fldDataType = rowsDefVal[r]["FIELDDATATYPE"].ToString();
-                            //ConfField_Class cFld = getConfFieldByFldName(thTdFIELDNAME, ref errMsg);
-                            // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
-                            //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
-                            UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
+							//ConfField_Class cFld = getConfFieldByFldName(thTdFIELDNAME, ref errMsg);
+							// configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
+							//UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
+							if (defval != "noDefVal")
+								UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
                             if (rowsDefVal[r]["VAL_LOCKED"].ToString() == "Y")
                                 doorConfig.disabledFlds[fldName] = true;
                         }
@@ -1532,7 +1543,9 @@ namespace BlazorServerApp1.Data
                             //ConfField_Class cFld = getConfFieldByFldName(thTdFIELDNAME, ref errMsg);
                             // configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
                             //UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
-                            UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
+                            if (defval != "noDefVal")
+                                UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
+
                         }
                     }
                 }
