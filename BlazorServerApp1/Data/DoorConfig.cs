@@ -255,9 +255,13 @@ namespace BlazorServerApp1.Data
                                                    //public string EXTSEPLINESCLRDES { get; set; }  
         [DataMember(Order = 90), Order]
         public int EXTCPLATEHTDMNDCLRID { get; set; }   //D-170
-                                                        //[DataMember(Order = 100), Order]
-                                                        //public string EXTCPLATEHTDMNDCLDES { get; set; }
-        [DataMember(Order = 101), Order]
+														//[DataMember(Order = 100), Order]
+														//public string EXTCPLATEHTDMNDCLDES { get; set; }
+
+		[DataMember(Order = 100), Order]
+		public string EXTPERIFPROFILETYPE { get; set; }  //26/04/2023 new field 4mm | 8mm
+
+		[DataMember(Order = 101), Order]
         public int EXTPERIFPROFILECLRID { get; set; }  // D-180
                                                        //[DataMember(Order = 102), Order]
                                                        //public string EXTPERIFPROFILECLDES { get; set; }
@@ -365,6 +369,10 @@ namespace BlazorServerApp1.Data
 		[DataMember(Order = 176), Order]
 		public int EXTSIDEGRIDCLRID { get; set; }
 
+		[DataMember(Order = 177), Order]
+		public int EXTSIDEGRIDBKGDCLRID { get; set; }
+
+
 		[DataMember(Order = 180), Order]
 		public string EXTHTPLATENAME { get; set; }  // D-770
         [DataMember(Order = 181), Order]
@@ -396,9 +404,13 @@ namespace BlazorServerApp1.Data
                                               //public string INTCOLORDES { get; set; }
         [DataMember(Order = 200), Order]
         public int INTCPLATEHTDMNDCLRID { get; set; }  //D-190
-                                                       //[DataMember(Order = 201), Order]
-                                                       //public string INTCPLATEHTDMNDCLDES { get; set; }
-        [DataMember(Order = 202), Order]
+													   //[DataMember(Order = 201), Order]
+													   //public string INTCPLATEHTDMNDCLDES { get; set; }
+
+		[DataMember(Order = 201), Order]
+		public string INTPERIFPROFILETYPE { get; set; }  //26/04/2023 new field 4mm | 8mm
+
+		[DataMember(Order = 202), Order]
         public int INTPERIFPROFILECLRID { get; set; }  //D-200
                                                        //[DataMember(Order = 203), Order]
                                                        //public string INTPERIFPROFILECLDES { get; set; }
