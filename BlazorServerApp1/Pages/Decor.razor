@@ -900,9 +900,9 @@
                 }
             }
             @*
-        <option></option>
-        <option>חלק</option>
-        <option>מחורץ</option>
+                <option></option>
+                <option>חלק</option>
+                <option>מחורץ</option>
             *@
         </select>
     </td>
@@ -933,6 +933,101 @@
             }
         }
     }
+
+    @* (דגם סורג מרכזי פנים (2 *@
+    <td id="tdIntGridCPlateDes">
+        <select name="dlstIntGridCPlateDes" @bind="IntGridCPlateDes"
+                disabled="@doorConfig.disabledFlds["INTGRIDCPLATEDES"]"
+                class="@doorConfig.borderColors["INTGRIDCPLATEDES"]">
+            @if (PrApiCalls.lstRaw4CPlates != null)
+            {
+                @foreach (GRID_Class c in PrApiCalls.lstGrids)
+                {
+                    <option value="@c.GRIDDES">@c.GRIDDES</option>
+                }
+            }
+        </select>
+    </td>
+    @code
+        {
+        protected string _IntGridCPlateDes = string.Empty;
+        protected string IntGridCPlateDes
+        {
+            get
+            {
+                if (doorConfig != null)
+                {
+                    _IntGridCPlateDes = doorConfig.INTGRIDCPLATEDES;
+                }
+                return _IntGridCPlateDes;
+            }
+            set
+            {
+                _IntGridCPlateDes = value;
+                if (doorConfig != null)
+                {
+                    doorConfig.EXTGRIDCPLATEDES = _IntGridCPlateDes;
+                    doorConfig.borderColors["INTGRIDCPLATEDES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                    //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                    if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                        config4.RefreshState();
+                }
+            }
+        }
+    }
+
+    @* צבע רקע לסורג מרכזי פנים (3) י *@
+    <td id="tdIntCGridBkgdClr">
+        @{
+            int i419 = Array.IndexOf(UiLogic.propNames, "INTCGRIDBKGDCLRID");
+            @* <select name="dlstExtModerCPlateClr" @bind="ExtModerCPlateClr" class="@doorConfig.borderColors["EXTCGRIDPLATECLRID"]" *@
+
+            <input list="lstIntCGBkColors" name="dlstIntCGridBkgdClr" @bind="IntCGridBkgdClrDes" class="@doorConfig.borderColors["INTCGRIDBKGDCLRID"]"
+                   autocomplete="off"
+                   disabled="@doorConfig.disabledFlds["INTCGRIDBKGDCLRID"]"
+                   @onfocus="@( () => UiLogic.HasFocus("INTCGRIDBKGDCLRID", doorConfig) )"
+                   @onkeypress="doorConfig.KeyPressHandler"
+                   @ref="doorConfig.dicRefs[UiLogic.propNames[i408]]" />
+            <datalist id="lstIntCGBkColors">
+                @if (PrApiCalls.lstColors != null)
+                {
+                    @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+                    {
+                        <option value="@c.PARTDES">@c.PARTDES</option>
+                    }
+                }
+            </datalist>
+        }
+    </td>
+    @code
+        {
+        protected int _IntCGridBkgdClr = 0;
+        //protected int ExtModerCPlateClr
+        protected string IntCGridBkgdClrDes
+        {
+            get
+            {
+                if (doorConfig != null)
+                {
+                    _IntCGridBkgdClr = doorConfig.INTCGRIDBKGDCLRID;
+                }
+                return UiLogic.colorDes(_IntCGridBkgdClr);
+            }
+            set
+            {
+                _IntCGridBkgdClr = UiLogic.getColorIdByClrDes(value);
+                if (doorConfig != null)
+                {
+                    doorConfig.INTCGRIDBKGDCLRID = _ExtCGridBkgdClr;
+                    doorConfig.borderColors["INTCGRIDBKGDCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                    //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                    if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                        config4.RefreshState();
+                }
+            }
+        }
+    }
+
 
     @* disabled="@UiLogic.hideFld(doorConfig, "tdIntModerCPlateClr")" *@
     <td id="tdIntModerCPlateClr">
