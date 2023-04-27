@@ -1033,7 +1033,7 @@
     @* (4)  צבע לוח/סורג מרכזי פנים *@
     <td id="tdIntCGridPlateClr">
         @{
-            doorConfig.disabledFlds["INTCGRIDPLATECLRID"] = false;  //debug 
+            doorConfig.disabledFlds["INTCGRIDPLATECLRID"] = false;  //debug
             int i1411 = Array.IndexOf(UiLogic.propNames, "INTCGRIDPLATECLRID");
             @* <select name="dlstIntModerCPlateClr" @bind="IntModernCPlateClr" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]" *@
             <input list="lstIntCGridPlateColors" name="dlstIntCGridPlateClr" @bind="IntCGridPlateClrDes" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]"
@@ -1082,14 +1082,27 @@
         }
     }
 
-    @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernPlate")" *@
+    @* חיפוי פנים (5) י *@
     <td id="tdIntFinModernPlate">
+        @{ doorConfig.disabledFlds["INTFINMODERNPLATE"] = false;  }  @* debug *@
         <select name="dlstIntFinModernPlate" @bind="IntFinModernPlate"
                 disabled="@doorConfig.disabledFlds["INTFINMODERNPLATE"]"
                 class="@doorConfig.borderColors["INTFINMODERNPLATE"]">
-            <option></option>
-            <option>חלק</option>
-            <option>מחורץ</option>
+            @if (PrApiCalls.lstRaw4CPlates != null)
+            {
+                @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
+                {
+                    if (!UiLogic.disableOption3(doorConfig, "INTFINMODERNPLATE", c.RAW4CPLATESNAME))
+                    {
+                        <option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
+                    }
+                }
+            }
+            @*
+                <option></option>
+                <option>חלק</option>
+                <option>מחורץ</option>
+            *@
         </select>
     </td>
     @code
