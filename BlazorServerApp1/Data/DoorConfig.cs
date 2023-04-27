@@ -475,7 +475,7 @@ namespace BlazorServerApp1.Data
 
         #region Internal decoration L3
         [DataMember(Order = 242), Order]
-        public string INTGRIDCPLATE { get; set; } //D-780
+        public string INTGRIDCPLATEDES { get; set; } //D-780
         [DataMember(Order = 243), Order]
         public string INTHTPLATE { get; set; } //D-790
         [DataMember(Order = 244), Order]
