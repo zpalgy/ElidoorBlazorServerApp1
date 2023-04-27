@@ -901,9 +901,9 @@
                     }
                 }
                 @*
-                    <option></option>
-                    <option>חלק</option>
-                    <option>מחורץ</option>
+                <option></option>
+                <option>חלק</option>
+                <option>מחורץ</option>
                 *@
             </select>
         </td>
@@ -1099,9 +1099,9 @@
                     }
                 }
                 @*
-                    <option></option>
-                    <option>חלק</option>
-                    <option>מחורץ</option>
+                <option></option>
+                <option>חלק</option>
+                <option>מחורץ</option>
                 *@
             </select>
         </td>
@@ -1185,6 +1185,49 @@
         }
 
         @* 7 INTSIDEGRIDTYPE  דגם סורג צד פנים *@
+        <td id="tdIntSideGrid">
+            <select name="dlstIntSideGrid" @bind="IntSideGrid"
+                    disabled="@doorConfig.disabledFlds["INTSIDEGRID"]"
+                    class="@doorConfig.borderColors["INTSIDEGRID"]">
+                @if (PrApiCalls.lstRaw4CPlates != null)
+                {
+                    @foreach (GRID_Class c in PrApiCalls.lstGrids)
+                    {
+                        if (!UiLogic.disableOption3(doorConfig, "INTSIDEGRID", c.GRIDNAME))
+                        {
+                            <option value="@c.GRIDNAME">@c.GRIDNAME</option>
+                        }
+                    }
+                }
+            </select>
+        </td>
+        @code
+        {
+            protected string _IntSideGrid = string.Empty;
+            protected string IntSideGrid
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _IntSideGrid = doorConfig.INTSIDEGRID;
+                    }
+                    return _IntSideGrid;
+                }
+                set
+                {
+                    _IntSideGrid = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.INTSIDEGRID = _IntSideGrid;
+                        doorConfig.borderColors["INTSIDEGRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
+                    }
+                }
+            }
+        }
 
 
 
