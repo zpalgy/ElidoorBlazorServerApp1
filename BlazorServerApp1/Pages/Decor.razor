@@ -1084,7 +1084,7 @@
 
     @* חיפוי פנים (5) י *@
     <td id="tdIntFinModernPlate">
-        @{ doorConfig.disabledFlds["INTFINMODERNPLATE"] = false;  }  @* debug *@
+        @{ doorConfig.disabledFlds["INTFINMODERNPLATE"] = false; }  @* debug *@
         <select name="dlstIntFinModernPlate" @bind="IntFinModernPlate"
                 disabled="@doorConfig.disabledFlds["INTFINMODERNPLATE"]"
                 class="@doorConfig.borderColors["INTFINMODERNPLATE"]">
@@ -1132,10 +1132,11 @@
             }
         }
     }
-    @* disabled="@UiLogic.hideFld(doorConfig, "thIntModerPlateClr")" *@
+    @* disabled="@UiLogic.hideFld(doorConfig, "thIntModerPlateClr")"   (6)  צבע חיפוי פנים  *@
     <td id="tdIntModerPlateClr">
         @{
             int i1413 = Array.IndexOf(UiLogic.propNames, "INTMODERNPLATECLRID");
+            doorConfig.disabledFlds["INTMODERNPLATECLRID"] = false;  //debug 
             @* <select name="dlstIntModerPlateClr" @bind="IntModerPlateClr" class="@doorConfig.borderColors["INTMODERNPLATECLRID"]" *@
             <input list="lstIntPColors" name="dlstIntModerPlateClr" @bind="IntPClrDes" class="@doorConfig.borderColors["INTMODERNPLATECLRID"]"
                    autocomplete="off"
@@ -1182,6 +1183,7 @@
             }
         }
     }
+
     <td id="tdIntSepLines" disabled="true">
         <select name="dlstIntSepLines" @bind="IntSepLines"
                 disabled="@doorConfig.disabledFlds["INTSEPLINES"]"
