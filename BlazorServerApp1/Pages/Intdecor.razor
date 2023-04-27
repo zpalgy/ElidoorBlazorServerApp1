@@ -623,7 +623,7 @@
     </tr>
     <tr>
         <td id="tdIntGridCPlate" hidden="@UiLogic.hideFld(doorConfig, "thIntGridCPlate")">
-            <select name="dlstIntGridCPlate" @bind="IntGridCPlate" class="@doorConfig.borderColors["INTGRIDCPLATE"]">
+            <select name="dlstIntGridCPlate" @bind="IntGridCPlate" class="@doorConfig.borderColors["INTGRIDCPLATEDES"]">
                 @if (PrApiCalls.lstGrids != null)
                 {
                     @foreach (GRID_Class c in PrApiCalls.lstGrids)
@@ -648,7 +648,7 @@
                 {
                     if (doorConfig != null)
                     {
-                        _IntGridCPlate = doorConfig.INTGRIDCPLATE;
+                        _IntGridCPlate = doorConfig.INTGRIDCPLATEDES;
                     }
                     return _IntGridCPlate;
                 }
@@ -657,8 +657,8 @@
                     _IntGridCPlate = value;
                     if (doorConfig != null)
                     {
-                        doorConfig.INTGRIDCPLATE = _IntGridCPlate;
-                        doorConfig.borderColors["INTGRIDCPLATE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        doorConfig.INTGRIDCPLATEDES = _IntGridCPlate;
+                        doorConfig.borderColors["INTGRIDCPLATEDES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "intdecor");
                     }
                 }

@@ -122,9 +122,9 @@
 </table>
 <table id="tblDecor1">
     <tr id="tblDecorExtL1h">
-        <th class="@doorConfig.thClasses["EXTFINMODERNCPLATE"]" style="white-space: pre;">לוח     מרכזי      חוץ</th>
+        @* <th class="@doorConfig.thClasses["EXTFINMODERNCPLATE"]" style="white-space: pre;">לוח     מרכזי      חוץ</th>  *@
         @*     צבע רקע לסורג צד חוץ   *@
-
+        <th class="@doorConfig.thClasses["EXTFINMODERNCPLATE"]">לוח מרכזי חוץ</th>
         @* D-850 EXTFINMODERNCPLATE *@
         <th class="@doorConfig.thClasses["EXTGRIDCPLATEDES"]">דגם סורג מרכזי חוץ</th>  @*  D-760 EXTGRIDCPLATEDES *@
         <th class="@doorConfig.thClasses["EXTCGRIDBKGDCLRID"]">צבע רקע לסורג מרכזי חוץ</th>    @* D-260 EXTCGRIDBKGDCLRID *@
@@ -505,7 +505,7 @@
         </td>
         @code
         {
-            protected int _ExtSideGridClrDes = 0;
+            protected int _ExtSideGridClrId = 0;
             //protected int ExtModerPlateClr
             protected string ExtSideGridClrDes
             {
@@ -513,16 +513,16 @@
                 {
                     if (doorConfig != null)
                     {
-                        _ExtSideGridClrDes = doorConfig.EXTSIDEGRIDCLRID;
+                        _ExtSideGridClrId = doorConfig.EXTSIDEGRIDCLRID;
                     }
-                    return UiLogic.colorDes(_ExtSideGridClrDes);
+                    return UiLogic.colorDes(_ExtSideGridClrId);
                 }
                 set
                 {
-                    _ExtSideGridClrDes = UiLogic.getColorIdByClrDes(value);
+                    _ExtSideGridClrId = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
-                        doorConfig.EXTSIDEGRIDCLRID = _ExtSideGridClrDes;
+                        doorConfig.EXTSIDEGRIDCLRID = _ExtSideGridClrId;
                         doorConfig.borderColors["EXTSIDEGRIDCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -537,30 +537,30 @@
     </tr>
     @* end of tblDecorExtL1d *@
 
-    <tr id="tblDecorExtL2h">
-        <th class="@doorConfig.thClasses["EXTSIDEGRIDBKGDCLRID"]">צבע רקע לסורג צד חוץ</th>  @*  new 26/04/2023 *@
-        <th class="@doorConfig.thClasses["EXTSEPLINES"]">פסי הפרדה חוץ</th>
-        <th class="@doorConfig.thClasses["EXTFINMODERNSEPLINE"]">סוג פסי הפרדה חוץ</th>
-        <th class="@doorConfig.thClasses["EXTSEPLINESCLRID"]">צבע פסי הפרדה חוץ</th>
-        <th class="@doorConfig.thClasses["EXTPERIFPROFILETYPE"]">סוג פרופיל היקפי חוץ</th>  @* new (13) 4mm | 8mm *@
-        <th class="@doorConfig.thClasses["EXTPERIFPROFILECLRID"]">צבע פרופיל היקפי חוץ</th>
-        <th class="@doorConfig.thClasses["EXTINSERTCLRID"]">צבע חוץ לאינסרט</th>
-    </tr>
+<tr id="tblDecorExtL2h">
+    <th class="@doorConfig.thClasses["EXTSIDEGRIDBKGDCLRID"]">צבע רקע לסורג צד חוץ</th>  @*  new 26/04/2023  (9) *@
+    <th class="@doorConfig.thClasses["EXTSEPLINES"]">פסי הפרדה חוץ</th>   @*(10)  *@
+    <th class="@doorConfig.thClasses["EXTFINMODERNSEPLINE"]">סוג פסי הפרדה חוץ</th>  @*  (11) *@
+    <th class="@doorConfig.thClasses["EXTSEPLINESCLRID"]">צבע פסי הפרדה חוץ</th>     @*  (12) *@
+    <th class="@doorConfig.thClasses["EXTPERIFPROFILETYPE"]">סוג פרופיל היקפי חוץ</th>  @* new (13) 4mm | 8mm *@
+    <th class="@doorConfig.thClasses["EXTPERIFPROFILECLRID"]">צבע פרופיל היקפי חוץ</th>  @*  (14) *@
+    <th class="@doorConfig.thClasses["EXTINSERTCLRID"]">צבע חוץ לאינסרט</th>             @*  (15) *@
+</tr>
 
     <tr id="tblDecorExtL2d">
         @*
             EXTSIDEGRIDBKGDCLRID   (9) צבע רקע לסורג צד חוץ   new 26/04/2023
         *@
-        <td id="tdExtSideGridClr">
+        <td id="tdExtSideGridBkgdClr">
             @{
                 int i417 = Array.IndexOf(UiLogic.propNames, "EXTSIDEGRIDBKGDCLRID");
-                <input list="lstExtSideGridClrs" name="dlstExtSideGrdidClr" @bind="ExtSideGridBkgdClrDes" class="@doorConfig.borderColors["EXTSIDEGRIDBKGDCLRID"]"
+                <input list="lstExtSideGridBkgdClrs" name="dlstExtSideGrdidBkgdClr" @bind="ExtSideGridBkgdClrDes" class="@doorConfig.borderColors["EXTSIDEGRIDBKGDCLRID"]"
                        autocomplete="off"
                        disabled="@doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"]"
                        @onfocus="@( () => UiLogic.HasFocus("EXTSIDEGRIDBKGDCLRID", doorConfig) )"
                        @onkeypress="doorConfig.KeyPressHandler"
                        @ref="doorConfig.dicRefs[UiLogic.propNames[i417]]" />
-                <datalist id="lstExtSideGridClrs">
+                <datalist id="lstExtSideGridBkgdClrs">
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -573,7 +573,7 @@
         </td>
         @code
         {
-            protected int _ExtSideGridBkgdClrDes = 0;
+            protected int _ExtSideGridBkgdClrId = 0;
             //protected int ExtModerPlateClr
             protected string ExtSideGridBkgdClrDes
             {
@@ -581,16 +581,16 @@
                 {
                     if (doorConfig != null)
                     {
-                        _ExtSideGridClrDes = doorConfig.EXTSIDEGRIDBKGDCLRID;
+                        _ExtSideGridBkgdClrId = doorConfig.EXTSIDEGRIDBKGDCLRID;
                     }
-                    return UiLogic.colorDes(_ExtSideGridBkgdClrDes);
+                    return UiLogic.colorDes(_ExtSideGridBkgdClrId);
                 }
                 set
                 {
-                    _ExtSideGridBkgdClrDes = UiLogic.getColorIdByClrDes(value);
+                    _ExtSideGridBkgdClrId = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
-                        doorConfig.EXTSIDEGRIDBKGDCLRID = _ExtSideGridBkgdClrDes;
+                        doorConfig.EXTSIDEGRIDBKGDCLRID = _ExtSideGridBkgdClrId;
                         doorConfig.borderColors["EXTSIDEGRIDBKGDCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -602,7 +602,7 @@
 
 
 
-        @*  *@
+        @* פסי הפרדה חוץ (10) י *@
         <td id="tdExtSepLines">
             <select name="dlstExtSepLines" @bind="ExtSepLines"
                     disabled="@doorConfig.disabledFlds["EXTSEPLINES"]"
@@ -640,7 +640,8 @@
                 }
             }
         }
-        @* hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernSepLine")" *@
+
+        @* hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernSepLine")"  סוג פסי הפרדה חוץ (11) י *@
         <td id="tdExtFinModernSepLine">
             <select name="dlstExtFinModernSepLine" @bind="ExtFinModernSepLine"
                     disabled="@doorConfig.disabledFlds["EXTFINMODERNSEPLINE"]"
@@ -678,7 +679,7 @@
             }
         }
 
-        @* hidden="@UiLogic.hideFld(doorConfig, "tdExtSepLinesClr")" *@
+        @* hidden="@UiLogic.hideFld(doorConfig, "tdExtSepLinesClr")"     (12)  צבע פסי הפרדה חוץ *@
         <td id="tdExtSepLinesClr">
             @{
                 int i405 = Array.IndexOf(UiLogic.propNames, "EXTSEPLINESCLRID");
@@ -702,7 +703,7 @@
         </td>
         @code
         {
-            protected int _ExtSepLinesClr = 0;
+            protected int _ExtSepLinesClrId = 0;
             //protected int ExtSepLinesClr
             protected string ExtSepLinesClrDes
             {
@@ -710,16 +711,16 @@
                 {
                     if (doorConfig != null)
                     {
-                        _ExtSepLinesClr = doorConfig.EXTSEPLINESCLRID;
+                        _ExtSepLinesClrId = doorConfig.EXTSEPLINESCLRID;
                     }
-                    return UiLogic.colorDes(_ExtSepLinesClr);
+                    return UiLogic.colorDes(_ExtSepLinesClrId);
                 }
                 set
                 {
-                    _ExtSepLinesClr = UiLogic.getColorIdByClrDes(value);
+                    _ExtSepLinesClrId = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
-                        doorConfig.EXTSEPLINESCLRID = _ExtSepLinesClr;
+                        doorConfig.EXTSEPLINESCLRID = _ExtSepLinesClrId;
                         doorConfig.borderColors["EXTSEPLINESCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -817,12 +818,12 @@
                 }
             }
         }
-        @* hidden="@UiLogic.hideFld(doorConfig, "thExtInsertCoverClr")" *@
-        <td id="tdExtInsertCoverClr">
+        @* hidden="@UiLogic.hideFld(doorConfig, "thExtInsertCoverClr")"  (15)  *@
+        <td id="tdExtInsertClr">
             @{
                 int i418 = Array.IndexOf(UiLogic.propNames, "EXTINSERTCLRID");
                 @* <select name="dlstExtInsertCoverClr" @bind="ExtInsertCoverClr" class="@doorConfig.borderColors["EXTINSERTCLRID"]" *@
-                <input list="lstExtInsertClrs" name="dlstExtInsertCoverClr" @bind="ExtInsertClrDes" class="@doorConfig.borderColors["EXTINSERTCLRID"]"
+                <input list="lstExtInsertClrs" name="dlstExtInsertClr" @bind="ExtInsertClrDes" class="@doorConfig.borderColors["EXTINSERTCLRID"]"
                        autocomplete="off"
                        disabled="@doorConfig.disabledFlds["EXTINSERTCLRID"]"
                        @onfocus="@( () => UiLogic.HasFocus("EXTINSERTCLRID", doorConfig) )"
@@ -841,7 +842,7 @@
         </td>
         @code
         {
-            protected int _ExtInsertCoverClr = 0;
+            protected int _ExtInsertClrId = 0;
             //protected int ExtInsertCoverClr
             protected string ExtInsertClrDes
             {
@@ -849,16 +850,16 @@
                 {
                     if (doorConfig != null)
                     {
-                        _ExtInsertCoverClr = doorConfig.EXTINSERTCLRID;
+                        _ExtInsertClrId = doorConfig.EXTINSERTCLRID;
                     }
-                    return UiLogic.colorDes(_ExtInsertCoverClr);
+                    return UiLogic.colorDes(_ExtInsertClrId);
                 }
                 set
                 {
-                    _ExtInsertCoverClr = UiLogic.getColorIdByClrDes(value);
+                    _ExtInsertClrId = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
-                        doorConfig.EXTINSERTCLRID = _ExtInsertCoverClr;
+                        doorConfig.EXTINSERTCLRID = _ExtInsertClrId;
                         doorConfig.borderColors["EXTINSERTCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -873,26 +874,38 @@
 
     <tr style="outline: dashed"></tr>   @*  inter-section line separator  *@
 
-    <tr id="tblDecorIntL1h">
+    <tr id="tblDecorIntL1h" style="outline:none">
         <th class="@doorConfig.thClasses["INTFINMODERNCPLATE"]">לוח מרכזי פנים</th>
-        <th class="@doorConfig.thClasses["INTCGRIDPLATECLRID"]">צבע לוח\סורג מרכזי פנים</th>
-        <th class="@doorConfig.thClasses["INTFINMODERNPLATE"]">לוחות חיפוי פנים</th>
-        <th class="@doorConfig.thClasses["INTMODERNPLATECLRID"]">צבע לוחות חיפוי פנים</th>
-        <th class="@doorConfig.thClasses["INTSEPLINES"]">פסי הפרדה פנים</th>
-        <th class="@doorConfig.thClasses["INTFINMODERNSEPLINE"]">סוגי פסים</th>
-        <th class="@doorConfig.thClasses["INTSEPLINESCLRID"]">צבע פסי הפרדה פנים</th>
-        <th class="@doorConfig.thClasses["INTPERIFPROFILECLRID"]">צבע פרופיל היקפי פנים</th>
-        <th class="@doorConfig.thClasses["INTINSERTCLRID"]">צבע פנים לאינסרט</th>
+        <th class="@doorConfig.thClasses["INTGRIDCPLATEDES"]">דגם סורג מרכזי פנים</th>
+        <th class="@doorConfig.thClasses["EXTCGRIDBKGDCLRID"]">צבע רקע לסורג מרכזי פנים</th>    @* INTCGRIDBKGDCLRID *@
+        <th class="@doorConfig.thClasses["INTCGRIDPLATECLRID"]">צבע לוח\סורג מרכזי פנים</th>  @*  D- *@
+        <th class="@doorConfig.thClasses["INTFINMODERNPLATE"]"> חיפוי פנים</th>
+        <th class="@doorConfig.thClasses["INTMODERNPLATECLRID"]">צבע חיפוי פנים</th>
+        <th class="@doorConfig.thClasses["INTSIDEGRID"]">דגם סורג צד פנים</th>       @*  new 21/04/2023 *@
+        <th class="@doorConfig.thClasses["INTSIDEGRIDCLRID"]">צבע סורג צד פנים</th>  @*  new 21/04/2023 *@
     </tr>
+
     <tr id="tblDecorIntL1d">
-        @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernCPlate")"  *@
+        @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernCPlate")"  (1)   לוח מרכזי פנים*@
         <td id="tdIntFinModernCPlate">
             <select name="dlstIntFinModernCPlate" @bind="IntFinModernCPlate"
                     disabled="@doorConfig.disabledFlds["INTFINMODERNCPLATE"]"
                     class="@doorConfig.borderColors["INTFINMODERNCPLATE"]">
-                <option></option>
-                <option>חלק</option>
-                <option>מחורץ</option>
+                @if (PrApiCalls.lstRaw4CPlates != null)
+                {
+                    @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
+                    {
+                        if (!UiLogic.disableOption3(doorConfig, "INTFINMODERNCPLATE", c.RAW4CPLATESNAME))
+                        {
+                            <option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
+                        }
+                    }
+                }
+                @*
+                    <option></option>
+                    <option>חלק</option>
+                    <option>מחורץ</option>
+                *@
             </select>
         </td>
         @code
@@ -923,18 +936,61 @@
             }
         }
 
-        @* disabled="@UiLogic.hideFld(doorConfig, "tdIntModerCPlateClr")" *@
-        <td id="tdIntModerCPlateClr">
+        @* (דגם סורג מרכזי פנים (2 *@
+        <td id="tdIntGridCPlateDes">
+            <select name="dlstIntGridCPlateDes" @bind="IntGridCPlateDes"
+                    disabled="@doorConfig.disabledFlds["INTGRIDCPLATEDES"]"
+                    class="@doorConfig.borderColors["INTGRIDCPLATEDES"]">
+                @if (PrApiCalls.lstRaw4CPlates != null)
+                {
+                    @foreach (GRID_Class c in PrApiCalls.lstGrids)
+                    {
+                        <option value="@c.GRIDDES">@c.GRIDDES</option>
+                    }
+                }
+            </select>
+        </td>
+        @code
+        {
+            protected string _IntGridCPlateDes = string.Empty;
+            protected string IntGridCPlateDes
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _IntGridCPlateDes = doorConfig.INTGRIDCPLATEDES;
+                    }
+                    return _IntGridCPlateDes;
+                }
+                set
+                {
+                    _IntGridCPlateDes = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.EXTGRIDCPLATEDES = _IntGridCPlateDes;
+                        doorConfig.borderColors["INTGRIDCPLATEDES"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
+                    }
+                }
+            }
+        }
+
+        @* צבע רקע לסורג מרכזי פנים (3) י *@
+        <td id="tdIntCGridBkgdClr">
             @{
-                int i1411 = Array.IndexOf(UiLogic.propNames, "INTCGRIDPLATECLRID");
-                @* <select name="dlstIntModerCPlateClr" @bind="IntModernCPlateClr" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]" *@
-                <input list="lstIntCPColors" name="dlstIntModerCPlateClr" @bind="IntCPClrDes" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]"
+                int i419 = Array.IndexOf(UiLogic.propNames, "INTCGRIDBKGDCLRID");
+                @* <select name="dlstExtModerCPlateClr" @bind="ExtModerCPlateClr" class="@doorConfig.borderColors["EXTCGRIDPLATECLRID"]" *@
+
+                <input list="lstIntCGBkColors" name="dlstIntCGridBkgdClr" @bind="IntCGridBkgdClrDes" class="@doorConfig.borderColors["INTCGRIDBKGDCLRID"]"
                        autocomplete="off"
-                       disabled="@doorConfig.disabledFlds["INTCGRIDPLATECLRID"]"
-                       @onfocus="@( () => UiLogic.HasFocus("INTCGRIDPLATECLRID", doorConfig) )"
+                       disabled="@doorConfig.disabledFlds["INTCGRIDBKGDCLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("INTCGRIDBKGDCLRID", doorConfig) )"
                        @onkeypress="doorConfig.KeyPressHandler"
-                       @ref="doorConfig.dicRefs[UiLogic.propNames[i1411]]" />
-                <datalist id="lstIntCPColors">
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i408]]" />
+                <datalist id="lstExtCGBkColors">
                     @if (PrApiCalls.lstColors != null)
                     {
                         @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -947,24 +1003,75 @@
         </td>
         @code
         {
-            protected int _IntModernCPlateClr = 0;
-            //protected int IntModernCPlateClr
-            protected string IntCPClrDes
+            protected int _IntCGridBkgdClr = 0;
+            //protected int ExtModerCPlateClr
+            protected string IntCGridBkgdClrDes
             {
                 get
                 {
                     if (doorConfig != null)
                     {
-                        _IntModernCPlateClr = doorConfig.INTCGRIDPLATECLRID;
+                        _IntCGridBkgdClr = doorConfig.INTCGRIDBKGDCLRID;
                     }
-                    return UiLogic.colorDes(_IntModernCPlateClr);
+                    return UiLogic.colorDes(_IntCGridBkgdClr);
                 }
                 set
                 {
-                    _IntModernCPlateClr = UiLogic.getColorIdByClrDes(value);
+                    _IntCGridBkgdClr = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
-                        doorConfig.INTCGRIDPLATECLRID = _IntModernCPlateClr;
+                        doorConfig.INTCGRIDBKGDCLRID = _ExtCGridBkgdClr;
+                        doorConfig.borderColors["INTCGRIDBKGDCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
+                    }
+                }
+            }
+        }
+
+        @* (4)  צבע לוח/סורג מרכזי פנים *@
+        <td id="tdIntCGridPlateClr">
+            @{
+                int i1411 = Array.IndexOf(UiLogic.propNames, "INTCGRIDPLATECLRID");
+                @* <select name="dlstIntModerCPlateClr" @bind="IntModernCPlateClr" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]" *@
+                <input list="lstIntCGridPlateColors" name="dlstIntCGridPlateClr" @bind="IntCGridPlateClrDes" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]"
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["INTCGRIDPLATECLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("INTCGRIDPLATECLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i1411]]" />
+                <datalist id="lstIntCGridPlateColors">
+                    @if (PrApiCalls.lstColors != null)
+                    {
+                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+                        {
+                            <option value="@c.PARTDES">@c.PARTDES</option>
+                        }
+                    }
+                </datalist>
+            }
+        </td>
+        @code
+        {
+            protected int _IntCGridPlateClr = 0;
+            //protected int IntModernCPlateClr
+            protected string IntCGridPlateClrDes
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _IntCGridPlateClr = doorConfig.INTCGRIDPLATECLRID;
+                    }
+                    return UiLogic.colorDes(_IntCGridPlateClr);
+                }
+                set
+                {
+                    _IntCGridPlateClr = UiLogic.getColorIdByClrDes(value);
+                    if (doorConfig != null)
+                    {
+                        doorConfig.INTCGRIDPLATECLRID = _IntCGridPlateClr;
                         doorConfig.borderColors["INTCGRIDPLATECLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "tdecor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -974,14 +1081,26 @@
             }
         }
 
-        @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernPlate")" *@
+        @* חיפוי פנים (5) י *@
         <td id="tdIntFinModernPlate">
             <select name="dlstIntFinModernPlate" @bind="IntFinModernPlate"
                     disabled="@doorConfig.disabledFlds["INTFINMODERNPLATE"]"
                     class="@doorConfig.borderColors["INTFINMODERNPLATE"]">
-                <option></option>
-                <option>חלק</option>
-                <option>מחורץ</option>
+                @if (PrApiCalls.lstRaw4CPlates != null)
+                {
+                    @foreach (RAW4CPLATES_Class c in PrApiCalls.lstRaw4CPlates)
+                    {
+                        if (!UiLogic.disableOption3(doorConfig, "INTFINMODERNPLATE", c.RAW4CPLATESNAME))
+                        {
+                            <option value="@c.RAW4CPLATESNAME">@c.RAW4CPLATESNAME</option>
+                        }
+                    }
+                }
+                @*
+                    <option></option>
+                    <option>חלק</option>
+                    <option>מחורץ</option>
+                *@
             </select>
         </td>
         @code
@@ -1011,7 +1130,7 @@
                 }
             }
         }
-        @* disabled="@UiLogic.hideFld(doorConfig, "thIntModerPlateClr")" *@
+        @* צבע חיפוי פנים (6) י *@
         <td id="tdIntModerPlateClr">
             @{
                 int i1413 = Array.IndexOf(UiLogic.propNames, "INTMODERNPLATECLRID");
@@ -1061,13 +1180,76 @@
                 }
             }
         }
+
+    <tr id="tblDecorIntL2h">
+        <th class="@doorConfig.thClasses["INTSIDEGRIDBKGDCLRID"]">צבע רקע לסורג צד פנים</th>  @*  new 26/04/2023 *@
+        <th class="@doorConfig.thClasses["INTSEPLINES"]">פסי הפרדה פנים</th>
+        <th class="@doorConfig.thClasses["INTFINMODERNSEPLINE"]">סוג פסי הפרדה פנים</th>
+        <th class="@doorConfig.thClasses["INTSEPLINESCLRID"]">צבע פסי הפרדה פנים</th>
+        <th class="@doorConfig.thClasses["INTPERIFPROFILETYPE"]">סוג פרופיל היקפי פנים</th>  @* new (13) 4mm | 8mm *@
+        <th class="@doorConfig.thClasses["INTPERIFPROFILECLRID"]">צבע פרופיל היקפי פנים</th>
+        <th class="@doorConfig.thClasses["INTINSERTCLRID"]">צבע פנים לאינסרט</th>
+    </tr>
+    <tr id="tblDecorIntL2d">
+
+        @*         INTSIDEGRIDBKGDCLRID   (9) צבע רקע לסורג צד פנים   new 26/04/2023     *@
+        <td id="tdIntSideGridBkgdClr">
+            @{
+                int i421 = Array.IndexOf(UiLogic.propNames, "INTSIDEGRIDBKGDCLRID");
+                <input list="lstIntSideGridBkgdClrs" name="dlstIntSideGrdidBkgdClr" @bind="IntSideGridBkgdClrDes" class="@doorConfig.borderColors["INTSIDEGRIDBKGDCLRID"]"
+                       autocomplete="off"
+                       disabled="@doorConfig.disabledFlds["INTSIDEGRIDBKGDCLRID"]"
+                       @onfocus="@( () => UiLogic.HasFocus("INTSIDEGRIDBKGDCLRID", doorConfig) )"
+                       @onkeypress="doorConfig.KeyPressHandler"
+                       @ref="doorConfig.dicRefs[UiLogic.propNames[i421]]" />
+                <datalist id="lstIntSideGridClrs">
+                    @if (PrApiCalls.lstColors != null)
+                    {
+                        @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
+                        {
+                            <option value="@c.PARTDES">@c.PARTDES</option>
+                        }
+                    }
+                </datalist>
+            }
+        </td>
+        @code
+        {
+            protected int _IntSideGridBkgdClrId = 0;
+            //protected int ExtModerPlateClr
+            protected string IntSideGridBkgdClrDes
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _IntSideGridBkgdClrId = doorConfig.INTSIDEGRIDBKGDCLRID;
+                    }
+                    return UiLogic.colorDes(_IntSideGridBkgdClrId);
+                }
+                set
+                {
+                    _IntSideGridBkgdClrId = UiLogic.getColorIdByClrDes(value);
+                    if (doorConfig != null)
+                    {
+                        doorConfig.INTSIDEGRIDBKGDCLRID = _IntSideGridBkgdClrId;
+                        doorConfig.borderColors["INTSIDEGRIDBKGDCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
+                    }
+                }
+            }
+        }
+
+        @*  (10)  פסי הפרדה פנים     עם | בלי*@
         <td id="tdIntSepLines" disabled="true">
             <select name="dlstIntSepLines" @bind="IntSepLines"
                     disabled="@doorConfig.disabledFlds["INTSEPLINES"]"
                     class="@doorConfig.borderColors["INTSEPLINES"]">
                 <option></option>
-                <option>עם</option>
-                <option>ללא</option>
+                <option>@HebNouns.With</option>
+                <option>@HebNouns.None</option>
             </select>
         </td>
         @code
@@ -1099,7 +1281,7 @@
             }
         }
 
-        @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernSepLine")" *@
+        @* (סוג פסי הפרדה פנים (11  *@
         <td id="tdIntFinModernSepLine">
             <select name="dlstIntFinModernSepLine" @bind="IntFinModernSepLine"
                     disabled="@doorConfig.disabledFlds["INTFINMODERNSEPLINE"]"
@@ -1136,7 +1318,7 @@
                 }
             }
         }
-        @* disabled="@UiLogic.hideFld(doorConfig, "tdIntSepLinesClr")" *@
+        @* disabled="@UiLogic.hideFld(doorConfig, "tdIntSepLinesClr")" (12)  צבע פסי הפרדה פנים*@
         <td id="tdIntSepLinesClr">
             @{
                 int i1416 = Array.IndexOf(UiLogic.propNames, "INTSEPLINESCLRID");
@@ -1160,7 +1342,7 @@
         </td>
         @code
         {
-            protected int _IntSepLinesClr = 0;
+            protected int _IntSepLinesClrId = 0;
             //protected int IntSepLinesClr
             protected string IntSepLinesClrDes
 
@@ -1169,16 +1351,16 @@
                 {
                     if (doorConfig != null)
                     {
-                        _IntSepLinesClr = doorConfig.INTSEPLINESCLRID;
+                        _IntSepLinesClrId = doorConfig.INTSEPLINESCLRID;
                     }
-                    return UiLogic.colorDes(_IntSepLinesClr);
+                    return UiLogic.colorDes(_IntSepLinesClrId);
                 }
                 set
                 {
-                    _IntSepLinesClr = UiLogic.getColorIdByClrDes(value);
+                    _IntSepLinesClrId = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
-                        doorConfig.INTSEPLINESCLRID = _IntSepLinesClr;
+                        doorConfig.INTSEPLINESCLRID = _IntSepLinesClrId;
                         doorConfig.borderColors["INTSEPLINESCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "tdecor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -1187,7 +1369,48 @@
                 }
             }
         }
-        @*  disabled="@UiLogic.hideFld(doorConfig, "tdIntPerifProfileClr")*@
+
+        @*  (13) סוג פרופל היקפי פנים *@
+        <td id="tdIntPerifProfileType">
+            <select name="dlstIntPerifProfileType" @bind="IntPerifProfileType"
+                    disabled="@doorConfig.disabledFlds["INTPERIFPROFILETYPE"]"
+                    class="@doorConfig.borderColors["INTPERIFPROFILETYPE"]">
+                <option></option>
+                <option>8mm</option>
+                <option>4mm</option>
+            </select>
+        </td>
+        @code
+        {
+            protected string _IntPerifProfileType = string.Empty;
+            protected string IntPerifProfileType
+            {
+                get
+                {
+                    if (doorConfig != null)
+                    {
+                        _IntPerifProfileType = doorConfig.INTPERIFPROFILETYPE;
+                    }
+                    return _IntPerifProfileType;
+                }
+                set
+                {
+                    _IntPerifProfileType = value;
+                    if (doorConfig != null)
+                    {
+                        doorConfig.INTFINMODERNSEPLINE = _IntFinModernSepLine;
+                        doorConfig.borderColors["INTPERIFPROFILETYPE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        //UiLogic.clearFollowingTabFields(doorConfig, "decor");
+                        if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
+                            config4.RefreshState();
+                    }
+                }
+            }
+        }
+
+
+
+        @*  disabled="@UiLogic.hideFld(doorConfig, "tdIntPerifProfileClr")  (14)  צבע פרופיל היקפי פנים *@
         <td id="tdIntPerifProfileClr">
             @{
                 int i1417 = Array.IndexOf(UiLogic.propNames, "INTPERIFPROFILECLRID");
@@ -1211,7 +1434,7 @@
         </td>
         @code
         {
-            protected int _IntPerifProfileClr = 0;
+            protected int _IntPerifProfileClrId = 0;
             //protected int IntPerifProfileClr
             protected string IntPerifProfileClrDes
             {
@@ -1219,28 +1442,28 @@
                 {
                     if (doorConfig != null)
                     {
-                        _IntPerifProfileClr = doorConfig.INTPERIFPROFILECLRID;
+                        _IntPerifProfileClrId = doorConfig.INTPERIFPROFILECLRID;
                     }
-                    return UiLogic.colorDes(_IntPerifProfileClr);
+                    return UiLogic.colorDes(_IntPerifProfileClrId);
                 }
                 set
                 {
-                    _IntPerifProfileClr = UiLogic.getColorIdByClrDes(value);
+                    _IntPerifProfileClrId = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
-                        doorConfig.INTPERIFPROFILECLRID = _IntPerifProfileClr;
+                        doorConfig.INTPERIFPROFILECLRID = _IntPerifProfileClrId;
                         doorConfig.borderColors["INTPERIFPROFILECLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         UiLogic.clearFollowingTabFields(doorConfig, "decor");
                     }
                 }
             }
         }
-        @* disabled="@UiLogic.hideFld(doorConfig, "thIntInsertCoverClr")" *@
-        <td id="tdIntInsertCoverClr">
+        @* disabled="@UiLogic.hideFld(doorConfig, "thIntInsertCoverClr")"    (15) *@
+        <td id="tdIntInsertClr">
             @{
                 int i1418 = Array.IndexOf(UiLogic.propNames, "INTINSERTCLRID");
                 @* <select name="dlstIntInsertCoverClr" @bind="IntInsertCoverClr" class="@doorConfig.borderColors["INTINSERTCLRID"]" *@
-                <input list="lstIntInsertClrs" name="dlstIntInsertCoverClr" @bind="IntInsertClrDes" class="@doorConfig.borderColors["INTINSERTCLRID"]"
+                <input list="lstIntInsertClrs" name="dlstIntInsertClr" @bind="IntInsertClrDes" class="@doorConfig.borderColors["INTINSERTCLRID"]"
                        autocomplete="off"
                        disabled="@doorConfig.disabledFlds["INTINSERTCLRID"]"
                        @onfocus="@( () => UiLogic.HasFocus("INTINSERTCLRID", doorConfig) )"
@@ -1259,7 +1482,7 @@
         </td>
         @code
         {
-            protected int _IntInsertCoverClr = 0;
+            protected int _IntInsertClrId = 0;
             //protected int IntInsertCoverClr
             protected string IntInsertClrDes
             {
@@ -1267,16 +1490,16 @@
                 {
                     if (doorConfig != null)
                     {
-                        _IntInsertCoverClr = doorConfig.INTINSERTCLRID;
+                        _IntInsertClrId = doorConfig.INTINSERTCLRID;
                     }
-                    return UiLogic.colorDes(_IntInsertCoverClr);
+                    return UiLogic.colorDes(_IntInsertClrId);
                 }
                 set
                 {
-                    _IntInsertCoverClr = UiLogic.getColorIdByClrDes(value);
+                    _IntInsertClrId = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
-                        doorConfig.INTINSERTCLRID = _IntInsertCoverClr;
+                        doorConfig.INTINSERTCLRID = _IntInsertClrId;
                         doorConfig.borderColors["INTINSERTCLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -1287,7 +1510,6 @@
         }
     </tr>
 
-    <tr id="tblDecorIntL2h"></tr>
-    <tr id="tblDecorIntL2d"></tr>
+    </tr>
 </table>
 

@@ -486,13 +486,22 @@ namespace BlazorServerApp1.Data
         public string INTFINMODERNSEPLINE { get; set; } //D-960
         [DataMember(Order = 247), Order]
         public string INTFINMODERNPLATE { get; set; } //D-990
+		[DataMember(Order = 248), Order]
+		public int INTCGRIDBKGDCLRID { get; set; }
 
-        #endregion Internal decoration L3
-        #endregion Internal decoration (intdecor)
+		[DataMember(Order = 249), Order]
+		public string INTSIDEGRID { get; set; } //new 27/04/2023
+		[DataMember(Order = 250), Order]
+		public int INTSIDEGRIDCLRID { get; set; } //new 27/04/2023
+		[DataMember(Order = 251), Order]
+		public int INTSIDEGRIDBKGDCLRID { get; set; }
 
-        #region staticwing
-        
-        [DataMember(Order = 255), Order]
+		#endregion Internal decoration L3
+		#endregion Internal decoration (intdecor)
+
+		#region staticwing
+
+		[DataMember(Order = 255), Order]
         public string SWINGHASLOCK { get; set; }  // "Y" | "" (string.empty) FIELDCODE = "SWINGHASLOCK"  - new 
         
         //[NonSerialized]                         //TODO - check this : in case of half wing only staticwing is filled so SWING_OPENSIDE should also be saved in Priority !
