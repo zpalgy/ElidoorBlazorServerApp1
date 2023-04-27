@@ -885,6 +885,7 @@
 </tr>
 <tr id="tblDecorIntL1d">
     @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernCPlate")"  (1)   לוח מרכזי פנים*@
+    @{ doorConfig.disabledFlds["INTFINMODERNCPLATE"] = false; }  @* debug  *@
     <td id="tdIntFinModernCPlate">
         <select name="dlstIntFinModernCPlate" @bind="IntFinModernCPlate"
                 disabled="@doorConfig.disabledFlds["INTFINMODERNCPLATE"]"
@@ -1029,18 +1030,19 @@
     }
 
 
-    @* disabled="@UiLogic.hideFld(doorConfig, "tdIntModerCPlateClr")" *@
-    <td id="tdIntModerCPlateClr">
+    @* (4)  צבע לוח/סורג מרכזי פנים *@
+    <td id="tdIntCGridPlateClr">
         @{
+            doorConfig.disabledFlds["INTCGRIDPLATECLRID"] = false;  //debug 
             int i1411 = Array.IndexOf(UiLogic.propNames, "INTCGRIDPLATECLRID");
             @* <select name="dlstIntModerCPlateClr" @bind="IntModernCPlateClr" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]" *@
-            <input list="lstIntCPColors" name="dlstIntModerCPlateClr" @bind="IntCPClrDes" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]"
+            <input list="lstIntCGridPlateColors" name="dlstIntCGridPlateClr" @bind="IntCGridPlateClrDes" class="@doorConfig.borderColors["INTCGRIDPLATECLRID"]"
                    autocomplete="off"
                    disabled="@doorConfig.disabledFlds["INTCGRIDPLATECLRID"]"
                    @onfocus="@( () => UiLogic.HasFocus("INTCGRIDPLATECLRID", doorConfig) )"
                    @onkeypress="doorConfig.KeyPressHandler"
                    @ref="doorConfig.dicRefs[UiLogic.propNames[i1411]]" />
-            <datalist id="lstIntCPColors">
+            <datalist id="lstIntCGridPlateColors">
                 @if (PrApiCalls.lstColors != null)
                 {
                     @foreach (TRSH_COLOR_Class c in PrApiCalls.lstColors)
@@ -1053,24 +1055,24 @@
     </td>
     @code
         {
-        protected int _IntModernCPlateClr = 0;
+        protected int _IntCGridPlateClr = 0;
         //protected int IntModernCPlateClr
-        protected string IntCPClrDes
+        protected string IntCGridPlateClrDes
         {
             get
             {
                 if (doorConfig != null)
                 {
-                    _IntModernCPlateClr = doorConfig.INTCGRIDPLATECLRID;
+                    _IntCGridPlateClr = doorConfig.INTCGRIDPLATECLRID;
                 }
-                return UiLogic.colorDes(_IntModernCPlateClr);
+                return UiLogic.colorDes(_IntCGridPlateClr);
             }
             set
             {
-                _IntModernCPlateClr = UiLogic.getColorIdByClrDes(value);
+                _IntCGridPlateClr = UiLogic.getColorIdByClrDes(value);
                 if (doorConfig != null)
                 {
-                    doorConfig.INTCGRIDPLATECLRID = _IntModernCPlateClr;
+                    doorConfig.INTCGRIDPLATECLRID = _IntCGridPlateClr;
                     doorConfig.borderColors["INTCGRIDPLATECLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                     //UiLogic.clearFollowingTabFields(doorConfig, "tdecor");
                     if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
