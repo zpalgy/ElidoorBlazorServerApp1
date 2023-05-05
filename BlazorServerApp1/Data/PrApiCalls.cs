@@ -2125,6 +2125,15 @@ namespace BlazorServerApp1.Data
             }
         }
 		#endregion old method to del
+		//[TODO]  create HwIs4Decor1 (710,822,823) , HwIs4Decor2(720,170,171,6000,7000) 
+		//        getLstCyls4Decor (DoorConfig doorConfig, bool alsoHalfCyl, ref string errMsg)
+		//         find Hw type : 1/2/3 HwIS4DECOR1(TRSH_HARDWARE_Class hw) or HwIs4Decor2(TRSH_HARDWARE_Class hw) or just Hw 4 Decor 
+		//         foreach Cylinder cyl :
+		//          if doorConfig.OPENIN /OUT == cyl.OPENIN/OUT and doorConfig.DECORFORMAT == cyl.IS4DECOR_IN/OUT
+		//             and cyl.IS4Hw1/2/3 == Hw.IS4DECOR1/2/3
+		//             lstRes.add (cyl)
+		//          
+		
 
 		public static List<CYLINDER_Class> getLstCyls1(DoorConfig doorConfig, bool alsoHalfCyl, ref string errMsg)
         {
