@@ -246,8 +246,11 @@ namespace BlazorServerApp1.Data
 		[DataMember(Order = 15)]
         public string IS4DECOR { get; set; }    //boolean Y | '' 
 		[DataMember(Order = 16)]
+		public int TRSH_HWGRP4CYLS { get; set; }
+
+		[DataMember(Order = 17)]
         public string PARTNAME2 { get; set; }   // dual part right -> left, or left -> right of point to itself.
-        [DataMember(Order = 17)]
+        [DataMember(Order = 18)]
         public int OPPOSITESIDE_PART { get; set; }    // PART.PART of the opposite Hardware
     }
     public class ValuesTRSH_HARDWARE_Class
@@ -369,8 +372,40 @@ namespace BlazorServerApp1.Data
         public List<CYLHW_Class> value { get; set; }
     }
 
-
     [DataContract]
+	public class CYLGRP4DECOR_Class
+    {
+        [DataMember(Order = 1)]
+        public int CYLGRP4DECOR_LINE { get; set; }
+		[DataMember(Order = 2)]
+		public int TRSH_CYLGRP4DECOR { get; set; }
+		[DataMember(Order = 3)]
+		public int TRSH_HWGRP4CYLS { get; set; }
+		[DataMember(Order = 4)]
+		public string HWGRP4CYLSDES { get; set; }
+		[DataMember(Order = 5)]
+		public int TRSH_CYLINDER { get; set; }
+		[DataMember(Order = 6)]
+		public string PARTNAME { get; set; }
+		[DataMember(Order = 7)]
+		public string PARTDES { get; set; }
+		[DataMember(Order = 8)]
+		public string DECOROUT { get; set; }     // "Y" | null | string.empty
+		[DataMember(Order = 9)]
+		public string DECORIN { get; set; }      // "Y" | null | string.empty
+		[DataMember(Order = 10)]
+		public string DECOR_OUTIN { get; set; }  // "Y" | null | string.empty
+		[DataMember(Order = 11)]
+		public string OPENOUT { get; set; }      // "Y" | null | string.empty
+		[DataMember(Order = 11)]
+		public string OPENIN { get; set; }       // "Y" | null | string.empty
+	}
+    public class ValuesCYLGRP4DECOR_Class
+    {
+		public List<CYLGRP4DECOR_Class> value { get; set; }
+	}
+
+	[DataContract]
     public class TRSH_LOCK_Class
     {
         [DataMember (Order = 1)]
