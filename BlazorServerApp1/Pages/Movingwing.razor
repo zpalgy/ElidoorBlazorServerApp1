@@ -1109,9 +1109,6 @@
                                     }
                                 }
                             }
-
-
-
                         </td>
 
 
@@ -1272,7 +1269,11 @@
 
 
                                     @{ //lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
-                                        lstCylinders1 = PrApiCalls.getLstCyls1(doorConfig, false, ref errMsg2);
+                                        if (UiLogic.isDecorated(doorConfig))
+                                            lstCylinders1 = PrApiCalls.getCyls4Decor(doorConfig, ref errMsg);
+                                        else
+                                            lstCylinders1 = PrApiCalls.getLstCyls1(doorConfig, false, ref errMsg2);
+
                                         if (lstCylinders1 != null)
                                         {
                                             if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
@@ -1284,7 +1285,7 @@
 
                                             @foreach (CYLINDER_Class c in lstCylinders1)
                                             {
-                                                <option value="@c.TRSH_CYLINDER">@c.PARTDES</option>
+                                                <option value="@c.TRSH_CYLINDER">@(c.PARTDES + "-"+ c.PARTNAME)</option>
                                             }
                                         }
                                     }

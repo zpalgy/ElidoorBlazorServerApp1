@@ -2076,35 +2076,99 @@ namespace BlazorServerApp1.Data
 		// [TODO] create getHwGrp4Cyls based on doorConfig.TRSH_HARDWARE
 		//     find TRSH_HARDWARE_Class record hw based on doorConfig.TRSH_HARDWARE
 		//     and then return hw.TRSH_HWGRP4CYLS .
-		public static List<CYLGRP4DECOR_Class> getCyls4Decor(DoorConfig doorConfig, ref string errMsg)
+
+		public static int getHwGrp4Cyls(int TRSH_HARDWARE)
+		{
+			TRSH_HARDWARE_Class hw = getHardware1(TRSH_HARDWARE);
+			return hw.TRSH_HWGRP4CYLS;
+		}
+		public static int getCYLGRP4DECOR(DoorConfig doorConfig)
+		{
+			int HWGRP4CYLS = getHardware1(doorConfig.TRSH_HARDWARE).TRSH_HWGRP4CYLS;
+			switch (HWGRP4CYLS)
+			{
+				case 1:
+					if (doorConfig.DECORFORMAT == HebNouns.External && doorConfig.OPENIN == "Y")
+						return 1;
+					else if (doorConfig.DECORFORMAT == HebNouns.External && doorConfig.OPENOUT == "Y")
+						return 4;
+					else if (doorConfig.DECORFORMAT == HebNouns.BothSides && doorConfig.OPENIN == "Y")
+						return 7;
+					else if (doorConfig.DECORFORMAT == HebNouns.BothSides && doorConfig.OPENOUT == "Y")
+						return 9;
+
+					// HWGRP4CYLS is actually 3 - all Hw except 618 619 640 = Hw3
+					else if (doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENIN == "Y")
+						return 3;
+					else if (doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENOUT == "Y")
+						return 6;
+					break;
+
+				case 2:
+					if (doorConfig.DECORFORMAT == HebNouns.External && doorConfig.OPENIN == "Y")
+						return 2;
+					else if (doorConfig.DECORFORMAT == HebNouns.External && doorConfig.OPENOUT == "Y")
+						return 5;
+					else if (doorConfig.DECORFORMAT == HebNouns.BothSides && doorConfig.OPENIN == "Y")
+						return 8;
+					else if (doorConfig.DECORFORMAT == HebNouns.BothSides && doorConfig.OPENOUT == "Y")
+						return 10;
+
+					// HWGRP4CYLS is actually 3 - all Hw except 618 619 640 = Hw3
+					else if (doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENIN == "Y")
+						return 3;
+					else if (doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENOUT == "Y")
+						return 6;
+					break;
+				case 3:
+					if (doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENIN == "Y")
+						return 3;
+					else if (doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENOUT == "Y")
+						return 6;
+					break;
+				default:
+					return 0;
+			}
+			return 0;
+		}
+		public static List<CYLINDER_Class> getCyls4Decor(DoorConfig doorConfig, ref string errMsg)
 		{
 			try
 			{
-				List<CYLGRP4DECOR_Class> res = new List<CYLGRP4DECOR_Class>();
-				CYLGRP4DECOR_Class emptyCyl = new CYLGRP4DECOR_Class();
+				List<CYLINDER_Class> res = new List<CYLINDER_Class>();
+				List<CYLGRP4DECOR_Class> res1 = new List<CYLGRP4DECOR_Class>();
+				//CYLGRP4DECOR_Class emptyCyl = new CYLGRP4DECOR_Class();
+				CYLINDER_Class emptyCyl = new CYLINDER_Class();
 				emptyCyl.TRSH_CYLINDER = 0;
 				emptyCyl.PARTNAME = emptyCyl.PARTDES = String.Empty;
 				res.Add(emptyCyl);
 
-				CYLGRP4DECOR_Class noCyl = new CYLGRP4DECOR_Class();
+				CYLINDER_Class noCyl = new CYLINDER_Class();
 				noCyl.TRSH_CYLINDER = 0;
 				//noCyl.PARTNAME = HebNouns.IdOfNone;
 				noCyl.PARTDES = HebNouns.None;  //"ללא";
 				res.Add(noCyl);
 
-				//int HWGRP4CYLS = getHwGrp4Cyls(doorConfig.TRSH_HARDWARE);   //[TODO] see [TODO] above !
+				int CYLGRP4DECOR = getCYLGRP4DECOR(doorConfig);
+				if (CYLGRP4DECOR != 0)
+				{
+					int x = CYLGRP4DECOR;
+				}
 				if (lstCylGrp4Decor != null)
 				{
-					//foreach (CYLGRP4DECOR_Class cyl in lstCylGrp4Decor)
-					//{
-					//	if (cyl.OPENIN == doorConfig.OPENIN && cyl.OPENOUT == doorConfig.OPENOUT
-					//		&& cyl.DECOROUT == "Y" && doorConfig.DECORFORMAT == HebNouns.External 
-					//		&& cyl.DECORIN != "Y" && doorConfig.DECORFORMAT != HebNouns.Internal
-					//		&& cyl.DECOR_OUTIN != "Y" && doorConfig.DECORFORMAT != HebNouns.BothSides
-					//		&& doorConfig.TRSH_HARDWARE
-					//		)
-					//		res.Add(cyl);
-					//}
+					foreach (CYLGRP4DECOR_Class cyl1 in lstCylGrp4Decor)
+					{
+						if (cyl1.TRSH_CYLGRP4DECOR == CYLGRP4DECOR)
+						{
+							CYLINDER_Class cyl = new CYLINDER_Class();
+							cyl.TRSH_CYLINDER = cyl1.TRSH_CYLINDER;
+							cyl.PARTNAME = cyl1.PARTNAME;
+							cyl.PARTDES = cyl1.PARTDES;
+							cyl.OPENOUT = cyl1.OPENOUT;
+							cyl.OPENIN = cyl1.OPENIN;
+							res.Add(cyl);
+						}
+					}
 				}
 				return res;
 			}
@@ -2114,9 +2178,9 @@ namespace BlazorServerApp1.Data
 				throw ex;
 			}
 		}
-	
-	// new
-	public static List<TRSH_HARDWARE_Class> getHws4Cyl(int TRSH_CYLINDER, DoorConfig doorConfig, ref string errMsg)
+
+		// new
+		public static List<TRSH_HARDWARE_Class> getHws4Cyl(int TRSH_CYLINDER, DoorConfig doorConfig, ref string errMsg)
 		{
 			try
 			{
