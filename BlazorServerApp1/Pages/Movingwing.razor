@@ -1285,7 +1285,9 @@
 
                                             @foreach (CYLINDER_Class c in lstCylinders1)
                                             {
-                                                <option value="@c.TRSH_CYLINDER">@(c.PARTDES + "-"+ c.PARTNAME)</option>
+                                                string cylDesName = (string.IsNullOrEmpty(c.PARTDES) ? string.Empty : c.PARTDES + "-" + c.PARTNAME);
+                                                cylDesName = (cylDesName.Contains(HebNouns.None) ? HebNouns.None : cylDesName);
+                                                <option value="@c.TRSH_CYLINDER">@cylDesName</option>
                                             }
                                         }
                                     }

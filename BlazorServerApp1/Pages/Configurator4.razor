@@ -283,139 +283,151 @@
             doorConfig.divClasses["divProducts"] =
             doorConfig.divClasses["divDoorTitle"] = "divNotActive";
             @* doorConfig.divClasses["dynCompStyle"] = (doorConfig.showDecor ? "noBorder" : "divActive"); *@
-            doorConfig.divClasses["dynCompStyle"] = "divActive";
-            pageParams["disableLogo"] = disableLogo;
-            UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
-            doorConfig.disabledFlds["btnDoor"] = true;  //
-            if (showTabPage(typeof(Movingwing), "movingwing"))
-            {
-                if (!UiLogic.tabPageIsNotEmpty("movingwing", doorConfig))
-                {
-                    StateHasChanged();
-                    await Task.Delay(1);
-                    await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
-                }
-                doorConfig.btnClasses["general"] =
-                doorConfig.btnClasses["selectprod"] =
-                doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
-                doorConfig.btnClasses["movingwing"] = "buttonActive";
-
-                // disable prev navigation buttons
-                doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
-                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-            }
-        }
-
-        async Task showStaticwing()
+        doorConfig.divClasses["dynCompStyle"] = "divActive";
+        pageParams["disableLogo"] = disableLogo;
+        UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
+        doorConfig.disabledFlds["btnDoor"] = true;  //
+        if (showTabPage(typeof(Movingwing), "movingwing"))
         {
-            //showTabPage(typeof(Staticwing), "staticwing");
-            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-            Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing ? typeof(Staticwing) : typeof(Halfwing));
-
-            //if (showTabPage(typeof(Staticwing), "staticwing"))
-            if (showTabPage(staticwingType, "staticwing"))
-            {
-                if (staticwingType == typeof(Staticwing))
-                    doorConfig.btnClasses["movingwing"] = "buttonFilled";
-
-                if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
-                {
-                    StateHasChanged();
-                    await Task.Delay(1);
-                    await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
-                }
-                // debug
-                if (doorConfig.staticwingChanged)
-                {
-                    int dbg = 17;
-                }
-                else
-                {
-                    int dbg2 = 18;
-                }
-            }
-        }
-        async Task showMoving_Static_Wing()
-        {
-            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-            if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing)  //"חצי כנף")
-            {
-                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-                showMw();
-            }
-            else
-            {
-                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-                showStaticwing();
-            }
-        }
-
-        //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
-        //  the 2nd answer
-        public void RefreshState()
-        {
-            this.StateHasChanged();
-        }
-        //private void doRestart()
-        async Task doRestart()
-        {
-            UiLogic.clearDoorConfig(doorConfig);
-
-            //does also in OnInitializedAsync() of the current page
-            formDate = DateTime.Now;
-            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
-
-            showProducts = false;
-            hideDoorTitle = true;
-            showDynComp = false;
-            hideDivDoor = true;
-
-
-            //doorConfig.btnClasses["restart"] = "buttonRed";
-            //doorConfig.btnClasses["general"] = "buttonActive";
-            //doorConfig.btnClasses["selectprod"] =
-            //doorConfig.btnClasses["btnDoor"] =
-            //doorConfig.btnClasses["proddes"] = "button";
-
-            //doorConfig.divClasses["divHeader"] = "divActive";
-            //doorConfig.divClasses["divProducts"] =
-            //doorConfig.divClasses["divDoorTitle"] = "divNotActive";
-
-            //doorConfig.currTabName = "divHeader";
-            //doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
-            initFormStuffInDoorConfig(doorConfig);
-            UiLogic.tabPageIsFilled("divHeader", doorConfig);
-
-            // done also in OnAfterRender firstRenter==true  of the current page
-            if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+            if (!UiLogic.tabPageIsNotEmpty("movingwing", doorConfig))
             {
                 StateHasChanged();
                 await Task.Delay(1);
-                await doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+                await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+            }
+            doorConfig.btnClasses["general"] =
+            doorConfig.btnClasses["selectprod"] =
+            doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
+            doorConfig.btnClasses["movingwing"] = "buttonActive";
+
+            // disable prev navigation buttons
+            doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
+            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+        }
+    }
+
+    async Task showStaticwing()
+    {
+        //showTabPage(typeof(Staticwing), "staticwing");
+        UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+        Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing ? typeof(Staticwing) : typeof(Halfwing));
+
+        //if (showTabPage(typeof(Staticwing), "staticwing"))
+        if (showTabPage(staticwingType, "staticwing"))
+        {
+            if (staticwingType == typeof(Staticwing))
+                doorConfig.btnClasses["movingwing"] = "buttonFilled";
+
+            if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
+            {
+                StateHasChanged();
+                await Task.Delay(1);
+                await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
+            }
+            // debug
+            if (doorConfig.staticwingChanged)
+            {
+                int dbg = 17;
+            }
+            else
+            {
+                int dbg2 = 18;
             }
         }
-        void submitForm()  //called when Enter is hit and not caught by onKeypressed event
+    }
+    async Task showMoving_Static_Wing()
+    {
+        UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+        if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing)  //"חצי כנף")
         {
-            int x = 17;
+            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+            showMw();
         }
+        else
+        {
+            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+            showStaticwing();
+        }
+    }
 
-        //private async Task GetClaimsPrincipalData()
-        //{
-        //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        //    var user = authState.User;
+    //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+    //  the 2nd answer
+    public void RefreshState()
+    {
+        this.StateHasChanged();
+    }
+    //private void doRestart()
+    async Task doRestart()
+    {
+        UiLogic.clearDoorConfig(doorConfig);
 
-        //    if (user.Identity.IsAuthenticated)
-        //    {
-        //        authMessage = $"{user.Identity.Name} is authenticated.";
-        //        claims = user.Claims;
-        //        surnameMessage =
-        //            $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
-        //    }
-        //    else
-        //    {
-        //        authMessage = "The user is NOT authenticated.";
-        //    }
-        //}
+        //does also in OnInitializedAsync() of the current page
+        formDate = DateTime.Now;
+        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+
+        showProducts = false;
+        hideDoorTitle = true;
+        showDynComp = false;
+        hideDivDoor = true;
+
+
+        //doorConfig.btnClasses["restart"] = "buttonRed";
+        //doorConfig.btnClasses["general"] = "buttonActive";
+        //doorConfig.btnClasses["selectprod"] =
+        //doorConfig.btnClasses["btnDoor"] =
+        //doorConfig.btnClasses["proddes"] = "button";
+
+        //doorConfig.divClasses["divHeader"] = "divActive";
+        //doorConfig.divClasses["divProducts"] =
+        //doorConfig.divClasses["divDoorTitle"] = "divNotActive";
+
+        //doorConfig.currTabName = "divHeader";
+        //doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
+        initFormStuffInDoorConfig(doorConfig);
+        UiLogic.tabPageIsFilled("divHeader", doorConfig);
+
+        // done also in OnAfterRender firstRenter==true  of the current page
+        if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+        {
+            StateHasChanged();
+            await Task.Delay(1);
+            await doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+        }
+    }
+
+    void lockDecorFields()
+    {
+        string errMsg = string.Empty;
+        List<ConfField_Class> lstDecorFlds = UiLogic.getLstTabFields("decor", doorConfig, ref errMsg); //new List<ConfField_Class>();
+        //lstDecorFlds = UiLogic.getLstTabFields("decor", doorConfig, ref errMsg);
+
+        foreach (ConfField_Class fld in lstDecorFlds)
+        {
+            doorConfig.disabledFlds[fld.FIELDNAME] = true;
+        }
+    }
+    void submitForm()  //called when Enter is hit and not caught by onKeypressed event
+    {
+        int x = 17;
+    }
+
+    //private async Task GetClaimsPrincipalData()
+    //{
+    //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    //    var user = authState.User;
+
+    //    if (user.Identity.IsAuthenticated)
+    //    {
+    //        authMessage = $"{user.Identity.Name} is authenticated.";
+    //        claims = user.Claims;
+    //        surnameMessage =
+    //            $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
+    //    }
+    //    else
+    //    {
+    //        authMessage = "The user is NOT authenticated.";
+    //    }
+    //}
     }
 
 
@@ -1841,7 +1853,10 @@
                             </div>
                             //}
                             @if (doorConfig.showDecor && (dyncompType == typeof(Movingwing) || dyncompType == typeof(Staticwing) || dyncompType == typeof(Halfwing)))
-                            {
+                                {
+                                    if (dyncompType == typeof(Staticwing))
+                                          lockDecorFields();   // lock just the <td> input textBoxes not the <th> titles
+
                                 <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]">
                                     <DynamicComponent Type="@dyncompType2" Parameters="@pageParams2" />
                                     @* <Movingwing onDoneButtonClicked="DoRefresh"></Movingwing> *@
