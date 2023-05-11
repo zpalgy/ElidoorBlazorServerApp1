@@ -1144,8 +1144,24 @@ namespace BlazorServerApp1.Data
             UiLogic.tabPageIsFilled("divHeader", doorConfig);  //set redborder on Required fields in divHeader
             doorConfig.staticwingChanged = false;
         }
-        //public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
-        public static void clearConfField(DoorConfig doorConfig, string fldName, ref string errMsg)
+        public static void clearDisabledFields(DoorConfig doorConfig)
+        {
+            string errMsg = string.Empty;
+			foreach (ConfField_Class fld in doorConfig.lstTabFlds)
+			{
+				if (doorConfig.disabledFlds[fld.FIELDNAME])
+					clearConfField(doorConfig, fld.FIELDNAME, ref errMsg);
+			}
+		}
+		public static void syncFldHeaderWithBody(DoorConfig doorConfig)
+		{
+			foreach (ConfField_Class fld in doorConfig.lstTabFlds)
+			{
+				doorConfig.thClasses[fld.FIELDNAME] = (doorConfig.disabledFlds[fld.FIELDNAME] ? "thGray" : "thBlue");
+			}
+		}
+		//public static void clearConfField(DoorConfig doorConfig, string fldName, string dataType, ref string errMsg)
+		public static void clearConfField(DoorConfig doorConfig, string fldName, ref string errMsg)
         {
             string sval;
             int ival;
