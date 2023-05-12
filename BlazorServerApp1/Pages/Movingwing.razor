@@ -873,6 +873,8 @@
                                             //doorConfig.borderColors["EXTCOLORID"] = (value != 0 ? "blueBorder" : "redBorder");
                                             doorConfig.borderColors["EXTCOLORID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                                             compareExtIntColors();
+                                            if (UiLogic.isDecorated(doorConfig))        // new 12/05/2023 
+                                                doorConfig.EXTINSERTCLRID = doorConfig.EXTCOLORID;
                                             //UiLogic.clearFollowingTabFields(doorConfig, "extdecor");
                                             if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                                                 config4.RefreshState();
@@ -950,6 +952,8 @@
                                             doorConfig.INTCOLORID = _IntColor;
                                             doorConfig.borderColors["INTCOLORID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");  //(value != 0 ? "blueBorder" : "redBorder");
                                             compareExtIntColors();
+                                            if (UiLogic.isDecorated(doorConfig))        // new 12/05/2023 
+                                                doorConfig.INTINSERTCLRID = doorConfig.INTCOLORID;
                                             //UiLogic.clearFollowingTabFields(doorConfig, "intdecor");
                                             if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                                                 config4.RefreshState();
