@@ -1138,7 +1138,8 @@
                                             lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg);
                                         if (lstHws1 != null && lstHws1.Count > 0)     //(lstCylHws1 != null)
                                         {
-                                            if (doorConfig.FAMILYDES == HebNouns.Modern   //doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes("מודרני")
+                                            //if (doorConfig.FAMILYDES == HebNouns.Modern   //doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes("מודרני")
+                                            if (UiLogic.isDecorated(doorConfig)
                                                 && lstHws1.Count > 0
                                                 && lstHws1.Find(a => a.PARTDES == HebNouns.None) == null)
                                             {
