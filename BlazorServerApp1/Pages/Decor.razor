@@ -63,7 +63,9 @@
 
         setDisabled();
         applySepLines();
+        applyCentralSideGrid();
         UiLogic.setHiddens(doorConfig, "decor");
+        doorConfig.decor = this;
 
         //doorConfig.EXTFINMODERNCPLATE = (doorConfig.disabledFlds["EXTFINMODERNCPLATE"] ? string.Empty : doorConfig.EXTFINMODERNCPLATE);
         //doorConfig.INTFINMODERNCPLATE = (doorConfig.disabledFlds["INTFINMODERNCPLATE"] ? string.Empty : doorConfig.INTFINMODERNCPLATE);
@@ -144,7 +146,86 @@
             doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = doorConfig.disabledFlds["INTSEPLINESCLRID"] = (doorConfig.INTSEPLINES == HebNouns.None);
         }
     }
+    void applyCentralSideGrid()
+    {
+        if (doorConfig.DECORFORMAT == HebNouns.External)
+        {
+            doorConfig.disabledFlds["EXTGRIDCPLATEDES"] =
+            doorConfig.disabledFlds["EXTCGRIDBKGDCLRID"] = (doorConfig.EXTFINMODERNCPLATE != HebNouns.Grid);
+
+            if (doorConfig.EXTFINMODERNCPLATE == HebNouns.Grid)
+            {
+                doorConfig.disabledFlds["EXTSIDEGRID"] =
+                doorConfig.disabledFlds["EXTSIDEGRIDCLRID"] =
+                doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"] = true;
+
+                doorConfig.EXTSIDEGRID = string.Empty;
+            }
+            else
+            {
+                //set *SIDEGRID default ללא
+                doorConfig.disabledFlds["EXTSIDEGRID"] = false;
+                //doorConfig.thClasses["EXTSIDEGRID"] = "thBlue";
+
+                if (doorConfig.EXTSIDEGRID != null && string.IsNullOrEmpty(doorConfig.EXTSIDEGRID))
+                    doorConfig.EXTSIDEGRID = HebNouns.None;
+            }
+            if (doorConfig.EXTSIDEGRID == HebNouns.None)
+            {
+                doorConfig.disabledFlds["EXTSIDEGRIDCLRID"] =
+                doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"] = true;
+            }
+            else if (!string.IsNullOrEmpty(doorConfig.EXTSIDEGRID))   //(doorConfig.EXTSIDEGRID == HebNouns.Grid)
+            {
+                doorConfig.disabledFlds["EXTSIDEGRIDCLRID"] =
+                doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"] = false;
+
+                //doorConfig.thClasses["EXTSIDEGRIDCLRID"] =
+                //doorConfig.thClasses["EXTSIDEGRIDBKGDCLRID"] = "thBlue";
+            }
+        }
+        if (doorConfig.DECORFORMAT == HebNouns.Internal)
+        {
+            doorConfig.disabledFlds["INTGRIDCPLATEDES"] =
+                        doorConfig.disabledFlds["INTCGRIDBKGDCLRID"] = (doorConfig.INTFINMODERNCPLATE != HebNouns.Grid);
+            if (doorConfig.INTFINMODERNCPLATE == HebNouns.Grid)
+            {
+                doorConfig.disabledFlds["INTSIDEGRID"] =
+                doorConfig.disabledFlds["INTSIDEGRIDCLRID"] =
+                doorConfig.disabledFlds["INTSIDEGRIDBKGDCLRID"] = true;
+
+                doorConfig.INTSIDEGRID = string.Empty;
+            }
+            else
+            {  //set *SIDEGRID default ללא
+                doorConfig.disabledFlds["INTSIDEGRID"] = false;
+                //doorConfig.thClasses["INTSIDEGRID"] = "thBlue";
+
+                if (doorConfig.INTSIDEGRID != null && string.IsNullOrEmpty(doorConfig.INTSIDEGRID))
+                    doorConfig.INTSIDEGRID = HebNouns.None;
+            }
+
+            if (doorConfig.INTSIDEGRID == HebNouns.None)
+            {
+                doorConfig.disabledFlds["INTSIDEGRIDCLRID"] =
+                doorConfig.disabledFlds["INTSIDEGRIDBKGDCLRID"] = true;
+            }
+            else if (!string.IsNullOrEmpty(doorConfig.INTSIDEGRID))   //(doorConfig.INTSIDEGRID == HebNouns.Grid)
+            {
+                doorConfig.disabledFlds["INTSIDEGRIDCLRID"] =
+                doorConfig.disabledFlds["INTSIDEGRIDBKGDCLRID"] = false;
+
+                //doorConfig.thClasses["INTSIDEGRIDCLRID"] =
+                //doorConfig.thClasses["INTSIDEGRIDBKGDCLRID"] = "thBlue";
+            }
+        }
+        UiLogic.syncFldHeaderWithBody(doorConfig);
     }
+    public void RefreshState()
+    {
+        this.StateHasChanged();
+    }
+}
 
 
 
@@ -189,11 +270,6 @@
                         }
                     }
                 }
-                @*
-                    <option></option>
-                    <option>חלק</option>
-                    <option>מחורץ</option>
-                *@
             </select>
         </td>
         @code
@@ -215,6 +291,9 @@
                     if (doorConfig != null)
                     {
                         doorConfig.EXTFINMODERNCPLATE = _ExtFinModernCPlate;
+
+                        applyCentralSideGrid();
+
                         doorConfig.borderColors["EXTFINMODERNCPLATE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -229,11 +308,11 @@
             <select name="dlstExtGridCPlateDes" @bind="ExtGridCPlateDes"
                     disabled="@doorConfig.disabledFlds["EXTGRIDCPLATEDES"]"
                     class="@doorConfig.borderColors["EXTGRIDCPLATEDES"]">
-                @if (PrApiCalls.lstRaw4CPlates != null)
+                @if (PrApiCalls.lstGrids != null)
                 {
                     @foreach (GRID_Class c in PrApiCalls.lstGrids)
                     {
-                        <option value="@c.GRIDDES">@c.GRIDDES</option>
+                        <option value="@c.GRIDNAME">@c.GRIDNAME</option>
                     }
                 }
             </select>
@@ -479,7 +558,7 @@
             <select name="dlstSideGrid" @bind="ExtSideGrid"
                     disabled="@doorConfig.disabledFlds["EXTSIDEGRID"]"
                     class="@doorConfig.borderColors["EXTSIDEGRID"]">
-                @if (PrApiCalls.lstRaw4CPlates != null)
+                @if (PrApiCalls.lstGrids != null)
                 {
                     @foreach (GRID_Class c in PrApiCalls.lstGrids)
                     {
@@ -510,6 +589,8 @@
                     if (doorConfig != null)
                     {
                         doorConfig.EXTSIDEGRID = _ExtSideGrid;
+                        applyCentralSideGrid();
+
                         doorConfig.borderColors["EXTSIDEGRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -941,11 +1022,6 @@
                         }
                     }
                 }
-                @*
-                <option></option>
-                <option>חלק</option>
-                <option>מחורץ</option>
-                *@
             </select>
         </td>
         @code
@@ -967,6 +1043,8 @@
                     if (doorConfig != null)
                     {
                         doorConfig.INTFINMODERNCPLATE = _IntFinModernCPlate;
+                        applyCentralSideGrid();
+
                         doorConfig.borderColors["INTFINMODERNCPLATE"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
@@ -981,11 +1059,11 @@
             <select name="dlstIntGridCPlateDes" @bind="IntGridCPlateDes"
                     disabled="@doorConfig.disabledFlds["INTGRIDCPLATEDES"]"
                     class="@doorConfig.borderColors["INTGRIDCPLATEDES"]">
-                @if (PrApiCalls.lstRaw4CPlates != null)
+                @if (PrApiCalls.lstGrids != null)
                 {
                     @foreach (GRID_Class c in PrApiCalls.lstGrids)
                     {
-                        <option value="@c.GRIDDES">@c.GRIDDES</option>
+                        <option value="@c.GRIDNAME">@c.GRIDNAME</option>
                     }
                 }
             </select>
@@ -1232,7 +1310,7 @@
             <select name="dlstIntSideGrid" @bind="IntSideGrid"
                     disabled="@doorConfig.disabledFlds["INTSIDEGRID"]"
                     class="@doorConfig.borderColors["INTSIDEGRID"]">
-                @if (PrApiCalls.lstRaw4CPlates != null)
+                @if (PrApiCalls.lstGrids != null)
                 {
                     @foreach (GRID_Class c in PrApiCalls.lstGrids)
                     {
@@ -1263,6 +1341,9 @@
                     if (doorConfig != null)
                     {
                         doorConfig.INTSIDEGRID = _IntSideGrid;
+
+                        applyCentralSideGrid();
+
                         doorConfig.borderColors["INTSIDEGRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))

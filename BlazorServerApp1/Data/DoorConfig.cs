@@ -666,7 +666,10 @@ namespace BlazorServerApp1.Data
         public bool showDecor = false;
         [NonSerialized]
         public bool LockDrilHChanged = false;
-        public void initBorderColors()
+		[NonSerialized]
+		public Pages.Decor decor;
+
+		public void initBorderColors()
         {
             Type objType = this.GetType();
             PropertyInfo[] props = objType.GetProperties();

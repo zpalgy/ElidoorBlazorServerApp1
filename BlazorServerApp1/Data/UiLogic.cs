@@ -1082,6 +1082,7 @@ namespace BlazorServerApp1.Data
 			doorConfig.prevTabName = string.Empty;
 			doorConfig.LockDrilHMeasure = string.Empty;
 			doorConfig.TRSH_CYLCATEGORY = 0;
+			doorConfig.decor = null;
 
 			for (int r = 0; r < PrApiCalls.dtConfFields.Rows.Count; r++)
 			{

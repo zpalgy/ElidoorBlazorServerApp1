@@ -2847,6 +2847,13 @@ namespace BlazorServerApp1.Data
 					emptyGrd.GRIDNAME = " ";
 					emptyGrd.GRIDDES = " ";
 					val1.Add(emptyGrd);
+
+					GRID_Class noGrd = new GRID_Class();
+					noGrd.GRID_ID = HebNouns.IdOfNone;
+					noGrd.GRIDNAME = HebNouns.None;   //HebNouns.NameOfNone;
+					noGrd.GRIDDES = HebNouns.None;  //ללא
+					val1.Add(noGrd);
+
 					foreach (GRID_Class grd in val.value)
 					{
 						val1.Add(grd);
