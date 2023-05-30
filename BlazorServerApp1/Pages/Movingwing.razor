@@ -26,314 +26,315 @@
     @*  @inject NavigationManager NavigationManager; *@
 
 
-protected bool openMsgBox = false;
-private bool openYesNo = false;
-string errMsg2 = string.Empty;
-string errMsg3 = "xxxxxxxxxxxxxxxxxx";
-private string msgCaption = "שגיאה";
-string msgClass = "modal-body centeredMsg";
-private string MsgTitleCssClass = string.Empty;
-string msgHeaderClass = "modal-header";
-string msgBorder1Style = string.Empty;
+    protected bool openMsgBox = false;
+    private bool openYesNo = false;
+    string errMsg2 = string.Empty;
+    string errMsg3 = "xxxxxxxxxxxxxxxxxx";
+    private string msgCaption = "שגיאה";
+    string msgClass = "modal-body centeredMsg";
+    private string MsgTitleCssClass = string.Empty;
+    string msgHeaderClass = "modal-header";
+    string msgBorder1Style = string.Empty;
 
-private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg"
-string YNissue = string.Empty;
-private bool ansYes = false;
-int newLockDrilHeight = 0;
+    private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg"
+    string YNissue = string.Empty;
+    private bool ansYes = false;
+    int newLockDrilHeight = 0;
 
-// private bool disableColor = true;
-private bool disableExtColor = true;
-private bool disableIntColor = true;
+    // private bool disableColor = true;
+    //private bool disableExtColor = true;
+    //private bool disableIntColor = true;
 
-//bool hideColorsNum = false;
-//bool hideDoorColor = false;
-//bool hideExtColr = false;
-//bool hideIntColor = false;
-bool hideCylinder = false;
-bool hideHw = false;
-bool hideHwColor = false;
-bool hideHwAccessory = false;
-bool hideHandle = false;
-bool hideHandleColor = false;
-bool hideVents = false;
-bool hideRafafa = false;
-bool hideCatDoor = false;
+    //bool hideColorsNum = false;
+    //bool hideDoorColor = false;
+    //bool hideExtColr = false;
+    //bool hideIntColor = false;
+    bool hideCylinder = false;
+    bool hideHw = false;
+    bool hideHwColor = false;
+    bool hideHwAccessory = false;
+    bool hideHandle = false;
+    bool hideHandleColor = false;
+    bool hideVents = false;
+    bool hideRafafa = false;
+    bool hideCatDoor = false;
 
-//protected string currPropName = string.Empty;
-DataTable dtTabFlds = new DataTable();
-List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
+    //protected string currPropName = string.Empty;
+    DataTable dtTabFlds = new DataTable();
+    List<DRIL4HW_Class> lstD4HW1 = new List<DRIL4HW_Class>();
 
-DataTable dtCylinders1 = new DataTable();
-List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
+    DataTable dtCylinders1 = new DataTable();
+    List<CYLINDER_Class> lstCylinders1 = new List<CYLINDER_Class>();
 
-List<TRSH_HARDWARE_Class> lstHws1 = new List<TRSH_HARDWARE_Class>();
+    List<TRSH_HARDWARE_Class> lstHws1 = new List<TRSH_HARDWARE_Class>();
 
 
-//string NoColor = "מגולוון";
-List<string> lstColorsNum1 = new List<string>();
-List<TRSH_COLOR_Class> lstColors1 = new List<TRSH_COLOR_Class>();
+    //string NoColor = "מגולוון";
+    List<string> lstColorsNum1 = new List<string>();
+    List<TRSH_COLOR_Class> lstColors1 = new List<TRSH_COLOR_Class>();
 
-string tabTtl = "כנף נעה";
+    string tabTtl = "כנף נעה";
 
-async void IDisposable.Dispose()
-{ }
+    async void IDisposable.Dispose()
+    { }
 
-protected override async Task OnInitializedAsync()
-{
-    //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
-
-    //Js.InvokeVoidAsync("alert", string.Format("in Movingwing OnInitializedAsync : doorConfig.EXTCOLORID= ", doorConfig.EXTCOLORID));  // debug
-
-    //await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
-    //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
-    //if (doorConfigJsonV.Success)
-    //{
-    //    string doorConfigJson2 = doorConfigJsonV.Value;
-    //    if (!string.IsNullOrEmpty(doorConfigJson2))
-    //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
-    //}
-
-    string dbg = doorConfig.TURBOAPPARATUS;
-    string errMsg = string.Empty;
-    doorConfig.currTabName = "movingwing";
-    dtTabFlds = UiLogic.getTabFields("movingwing", doorConfig, ref errMsg);
-    if (doorConfig.ELECTRICAPPARATUS == null)
-        doorConfig.ELECTRICAPPARATUS = string.Empty;
-
-    //lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg2);
-
-    //doorConfig.divClasses["dynCompStyle"] = "divActive";
-
-    if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))  // i.e. we just came from a prev tab
+    protected override async Task OnInitializedAsync()
     {
-        UiLogic.setHiddens(doorConfig, "movingwing");
-        doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
-                                                                                                                                       //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
-                                                                                                                                       //doorConfig.disabledFlds["HWACCESSORYID"] = (hideHwAccessory || doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
-                                                                                                                                       //doorConfig.disabledFlds["HWCOLORID"] = (hideHwColor | doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
-                                                                                                                                       //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
-                                                                                                                                       // new - Hardware may be with COLORED == "Y", at that point we'll ENABLE HWCOLORID .
-                                                                                                                                       // we can't do that here because we may return to the page after all it's fields were disabled.
-        doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = (doorConfig.COLORSNUM != "2");  // Modern Decor door default COLORSNUM is "2"
-                                                                                                                        // and the field is locked !
-        if (doorConfig.COLORSNUM == "2")
+        //string doorConfigJson = PrApiCalls.JsonSerializer<DoorConfig>(doorConfig);
+
+        //Js.InvokeVoidAsync("alert", string.Format("in Movingwing OnInitializedAsync : doorConfig.EXTCOLORID= ", doorConfig.EXTCOLORID));  // debug
+
+        //await ProtectedSessionStore.SetAsync("doorConfigJson", doorConfigJson);
+        //var doorConfigJsonV = await ProtectedSessionStore.GetAsync<string> ("doorConfigJson");
+        //if (doorConfigJsonV.Success)
+        //{
+        //    string doorConfigJson2 = doorConfigJsonV.Value;
+        //    if (!string.IsNullOrEmpty(doorConfigJson2))
+        //         doorConfig = Newtonsoft.Json.JsonConvert.DeserializeObject<DoorConfig>(doorConfigJson2);
+        //}
+
+        string dbg = doorConfig.TURBOAPPARATUS;
+        string errMsg = string.Empty;
+        doorConfig.currTabName = "movingwing";
+        dtTabFlds = UiLogic.getTabFields("movingwing", doorConfig, ref errMsg);
+        if (doorConfig.ELECTRICAPPARATUS == null)
+            doorConfig.ELECTRICAPPARATUS = string.Empty;
+
+        //lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg2);
+
+        //doorConfig.divClasses["dynCompStyle"] = "divActive";
+
+        if (!UiLogic.tabPageIsFilled("movingwing", doorConfig))  // i.e. we just came from a prev tab
         {
-            doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");   //hardcoded this, because for unknow reason EXCOLORID
-            doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");   // does not have redBorder when COLORNUM is 2 while
-                                                                                                                 // INTCOLORID is !
-                                                                                                                 //if (doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes("מודרני")
-                                                                                                                 //if (doorConfig.DECORFORMAT != null && !string.IsNullOrEmpty(doorConfig.DECORFORMAT) && doorConfig.DECORFORMAT != HebNouns.None
-            if (UiLogic.isDecorated(doorConfig) && doorConfig.OPENMODE != null)   // Eli Modern door - Decor tab spec 02/02/2023
-                setModernColors();
-        }
-
-        if (!UiLogic.hideFld(doorConfig, "Hw") && (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone))
-        {
-            doorConfig.borderColors["HWACCESSORYID"] = "grayBorder";
-            doorConfig.borderColors["HWCOLORID"] = "grayBorder";
-        }
-        doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
-
-        //doorConfig.disabledFlds["LOGO"] = disableLogo;   // old stuff : disableLogo is a parameter a flag in CUSTOMER record in Priority
-        // issue : if we come here BACK from a newer tabPage we should not
-        // enable this field.
-        doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022
-        doorConfig.TURBOAPPARATUS = (doorConfig.useTurbo ? "Y" : string.Empty);   // new 31/07/2022
-                                                                                  //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022
-        doorConfig.LOCKNAME = (doorConfig.useLOGO ? PrApiCalls.defLockwithLogo : PrApiCalls.defLockwithOutLogo);
-    }
-    else    // it is filled - we came back form a newer tab - all fields should be disabled !
-    {
-        UiLogic.setHiddens(doorConfig, "movingwing");
-        // we're returning here from a newer tab - and our tab is actually filled .
-        UiLogic.disableTabFlds(doorConfig, "movingwing");
-        // in order to restore  DRIL4HW and CYLINDER that depend on lists created dynamically  in this tab page
-        //  we must create the dynamic lists that are the LOVs of those fields.
-        //  all other select fields depend on static LOVs and are restored OK !
-        lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
-
-        // 17/11/2022
-        //lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
-
-        lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg);
-        //lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
-        lstCylinders1 = PrApiCalls.getLstCyls1(doorConfig, false, ref errMsg2);
-
-
-        if (string.IsNullOrEmpty(doorConfig.HANDLENAME) && doorConfig.handleName1 == HebNouns.NameOfNone)
-        {
-            doorConfig.HANDLENAME = HebNouns.NameOfNone;
-        }
-        if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
-            config4.RefreshState();
-    }
-    //Js.InvokeVoidAsync("SayHelloJS");
-    //NoColor = (doorConfig.TRSH_MODELNAME == "MLI" ? "ללא" : "מגולוון") ;
-    lstColorsNum1 = PrApiCalls.lstColorsNum.ToList<string>();
-    lstColors1 = PrApiCalls.lstColors.ToList<TRSH_COLOR_Class>();
-
-    if ("MLI E-CLR D-CLR".Contains(doorConfig.TRSH_MODELNAME))
-    {
-        lstColorsNum1.Remove("מגולוון");
-        //note : for now we can't implement the following logic in the TRSH_DEFAULTS table because the COLORS LOV is used by many Color fields
-        //       and we use a single
-        TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID);
-        lstColors1.Remove(megulvan);
-    }
-
-    if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME))
-    {
-        doorConfig.borderColors["LOCKDRILHEIGHT"] = (string.IsNullOrEmpty(doorConfig.LockDrilHMeasure) ? "redBorder" : "blueBorder");
-    }
-
-    //setHiddens(doorConfig);
-    doorConfig.borderColors["CATDOOR"] = (doorConfig.disabledFlds["CATDOOR"] ? "blackBorder" : "blueBorder");
-
-    // set the style of the outLine of Movingwing and Mwdecor divs
-    doorConfig.divClasses["movingwing"] = (doorConfig.disabledFlds["DOORWIDTH"] ? "divNotActive" : "divActive");
-    tabTtl = tabTtl + @"\" + doorConfig.FAMILYDES;
-}
-
-
-#region to del
-//void setHiddens(DoorConfig doorConfig)
-//{
-//    hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
-//    hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
-//    hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
-//    hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
-
-//hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
-//hideHw = UiLogic.hideFld(doorConfig, "Hw");
-//hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
-//hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
-//hideHandle = UiLogic.hideFld(doorConfig, "Handle");
-//hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
-//hideVents = UiLogic.hideFld(doorConfig, "thVents");
-//hideRafafa = UiLogic.hideFld(doorConfig, "Rafafa");
-//hideCatDoor = UiLogic.hideFld(doorConfig, "CatDoor");
-
-//    doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
-//    doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
-//    doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
-//    doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
-
-//doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
-//doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
-//doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
-//doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
-//doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
-//doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
-
-//doorConfig.thClasses["VENTS"] = (hideVents ? "thGray" : "thBlue");
-//doorConfig.thClasses["RAFAFAONMOVINGWING"] = (hideRafafa ? "thGray" : "thBlue");
-//doorConfig.thClasses["CATDOOR"] = (hideCatDoor ? "thGray" : "thBlue");
-
-
-//    doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
-//    doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
-//    doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
-//    doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
-//    doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
-//    doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
-//    doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
-//    doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
-//    doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
-//    doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
-
-//doorConfig.disabledFlds["VENTS"] = hideVents;
-//doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideRafafa;
-//doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideCatDoor;
-//}
-#endregion to del
-
-// We must have this event handler in every tabPage because it uses doorConfig , and we can't pass it as a parameter to
-//   this type of method. Teh only parameter that can be passwed to this method is KeyboardEventArgs !
-// Otherwise I would have create a single event handler in UiLogic class
-async Task KeyPressHandler(KeyboardEventArgs e)
-{
-    string currTabName = "movingwing";
-    doorConfig.RestartClicked = false;
-    if (e.Key.ToLowerInvariant() == "enter")
-    {
-        //RestartClicked = false;
-        int j = 0;
-        //DataTable dtTabFlds = new DataTable();
-        //string currTabName = UiLogic.getTabOfField(doorConfig.currPropName);
-        string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, doorConfig.currPropName);
-        if (!string.IsNullOrEmpty(nextfld))
-        {
-            j = Array.IndexOf(UiLogic.propNames, nextfld);
-            if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
-                doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-            return;
-        }
-        else
-        {
-            string nextTabName = UiLogic.getNextTabName(doorConfig, currTabName);
-            if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
+            UiLogic.setHiddens(doorConfig, "movingwing");
+            
+            doorConfig.disabledFlds["DOORCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = true; // initialize colors as disabled.
+                                                                                                                                           //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
+                                                                                                                                           //doorConfig.disabledFlds["HWACCESSORYID"] = (hideHwAccessory || doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
+                                                                                                                                           //doorConfig.disabledFlds["HWCOLORID"] = (hideHwColor | doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
+                                                                                                                                           //  we can't do this because we visit the above two lines many times, on any POSTBACK of the TabPage !
+                                                                                                                                           // new - Hardware may be with COLORED == "Y", at that point we'll ENABLE HWCOLORID .
+                                                                                                                                           // we can't do that here because we may return to the page after all it's fields were disabled.
+            doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = (doorConfig.COLORSNUM != "2");  // Modern Decor door default COLORSNUM is "2"
+                                                                                                                            // and the field is locked !
+            if (doorConfig.COLORSNUM == "2")
             {
+                doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");   //hardcoded this, because for unknow reason EXCOLORID
+                doorConfig.borderColors["INTCOLORID"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");   // does not have redBorder when COLORNUM is 2 while
+                                                                                                                     // INTCOLORID is !
+                                                                                                                     //if (doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes("מודרני")
+                                                                                                                     //if (doorConfig.DECORFORMAT != null && !string.IsNullOrEmpty(doorConfig.DECORFORMAT) && doorConfig.DECORFORMAT != HebNouns.None
+                if (UiLogic.isDecorated(doorConfig) && doorConfig.OPENMODE != null)   // Eli Modern door - Decor tab spec 02/02/2023
+                    setModernColors();
+            }
+
+            if (!UiLogic.hideFld(doorConfig, "Hw") && (doorConfig.TRSH_HARDWARE == 0 || doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone))
+            {
+                doorConfig.borderColors["HWACCESSORYID"] = "grayBorder";
+                doorConfig.borderColors["HWCOLORID"] = "grayBorder";
+            }
+            doorConfig.borderColors["ELECTRICAPPARATUS"] = (!string.IsNullOrEmpty(doorConfig.ELECTRICAPPARATUS) ? "blueBorder" : "redBorder");
+
+            //doorConfig.disabledFlds["LOGO"] = disableLogo;   // old stuff : disableLogo is a parameter a flag in CUSTOMER record in Priority
+            // issue : if we come here BACK from a newer tabPage we should not
+            // enable this field.
+            doorConfig.LOGO = (doorConfig.useLOGO ? "Y" : string.Empty);  // new 11/07/2022
+            doorConfig.TURBOAPPARATUS = (doorConfig.useTurbo ? "Y" : string.Empty);   // new 31/07/2022
+                                                                                      //doorConfig.SWING_TURBO = (doorConfig.useLOGO == 1 ? "Y" : string.Empty);  // new 11/07/2022
+            doorConfig.LOCKNAME = (doorConfig.useLOGO ? PrApiCalls.defLockwithLogo : PrApiCalls.defLockwithOutLogo);
+        }
+        else    // it is filled - we came back form a newer tab - all fields should be disabled !
+        {
+            UiLogic.setHiddens(doorConfig, "movingwing");
+            // we're returning here from a newer tab - and our tab is actually filled .
+            UiLogic.disableTabFlds(doorConfig, "movingwing");
+            // in order to restore  DRIL4HW and CYLINDER that depend on lists created dynamically  in this tab page
+            //  we must create the dynamic lists that are the LOVs of those fields.
+            //  all other select fields depend on static LOVs and are restored OK !
+            lstD4HW1 = PrApiCalls.lstDril4Hw.ToList();
+
+            // 17/11/2022
+            //lstCylinders1 = PrApiCalls.getCylindersByModelOpenMode(doorConfig, ref errMsg2);
+
+            lstHws1 = PrApiCalls.getHwsByHwCatCodeOpenSide(doorConfig, ref errMsg);
+            //lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
+            lstCylinders1 = PrApiCalls.getLstCyls1(doorConfig, false, ref errMsg2);
+
+
+            if (string.IsNullOrEmpty(doorConfig.HANDLENAME) && doorConfig.handleName1 == HebNouns.NameOfNone)
+            {
+                doorConfig.HANDLENAME = HebNouns.NameOfNone;
+            }
+            if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
                 config4.RefreshState();
+        }
+        //Js.InvokeVoidAsync("SayHelloJS");
+        //NoColor = (doorConfig.TRSH_MODELNAME == "MLI" ? "ללא" : "מגולוון") ;
+        lstColorsNum1 = PrApiCalls.lstColorsNum.ToList<string>();
+        lstColors1 = PrApiCalls.lstColors.ToList<TRSH_COLOR_Class>();
+
+        if ("MLI E-CLR D-CLR".Contains(doorConfig.TRSH_MODELNAME))
+        {
+            lstColorsNum1.Remove("מגולוון");
+            //note : for now we can't implement the following logic in the TRSH_DEFAULTS table because the COLORS LOV is used by many Color fields
+            //       and we use a single
+            TRSH_COLOR_Class megulvan = lstColors1.Find(x => x.TRSH_COLORID == PrApiCalls.MEGULVAN_ID);
+            lstColors1.Remove(megulvan);
+        }
+
+        if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME))
+        {
+            doorConfig.borderColors["LOCKDRILHEIGHT"] = (string.IsNullOrEmpty(doorConfig.LockDrilHMeasure) ? "redBorder" : "blueBorder");
+        }
+
+        //setHiddens(doorConfig);
+        doorConfig.borderColors["CATDOOR"] = (doorConfig.disabledFlds["CATDOOR"] ? "blackBorder" : "blueBorder");
+
+        // set the style of the outLine of Movingwing and Mwdecor divs
+        doorConfig.divClasses["movingwing"] = (doorConfig.disabledFlds["DOORWIDTH"] ? "divNotActive" : "divActive");
+        tabTtl = tabTtl + @"\" + doorConfig.FAMILYDES;
+    }
+
+
+    #region to del
+    //void setHiddens(DoorConfig doorConfig)
+    //{
+    //    hideColorsNum = UiLogic.hideFld(doorConfig, "ColorsNum");
+    //    hideDoorColor = UiLogic.hideFld(doorConfig, "DoorColor");
+    //    hideExtColr = UiLogic.hideFld(doorConfig, "ExtColor");
+    //    hideIntColor = UiLogic.hideFld(doorConfig, "IntColor");
+
+    //hideCylinder = UiLogic.hideFld(doorConfig, "Cylinder");
+    //hideHw = UiLogic.hideFld(doorConfig, "Hw");
+    //hideHwAccessory = UiLogic.hideFld(doorConfig, "HWACCESSORYID");
+    //hideHwColor = UiLogic.hideFld(doorConfig, "HwColor");
+    //hideHandle = UiLogic.hideFld(doorConfig, "Handle");
+    //hideHandleColor = UiLogic.hideFld(doorConfig, "HandleColorID");
+    //hideVents = UiLogic.hideFld(doorConfig, "thVents");
+    //hideRafafa = UiLogic.hideFld(doorConfig, "Rafafa");
+    //hideCatDoor = UiLogic.hideFld(doorConfig, "CatDoor");
+
+    //    doorConfig.thClasses["COLORSNUM"] = (hideColorsNum ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["DOORCOLORID"] = (hideDoorColor ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["EXTCOLORID"] = (hideExtColr ? "thGray" : "thBlue");
+    //    doorConfig.thClasses["INTCOLORID"] = (hideIntColor ? "thGray" : "thBlue");
+
+    //doorConfig.thClasses["TRSH_CYLINDER"] = (hideCylinder ? "thGray" : "thBlue");
+    //doorConfig.thClasses["TRSH_HARDWARE"] = (hideHw ? "thGray" : "thBlue");
+    //doorConfig.thClasses["HWACCESSORYID"] = (hideHwAccessory ? "thGray" : "thBlue");
+    //doorConfig.thClasses["HWCOLORID"] = (hideHwColor ? "thGray" : "thBlue");
+    //doorConfig.thClasses["HANDLENAME"] = (hideHandle ? "thGray" : "thBlue");
+    //doorConfig.thClasses["HANDLECOLORID"] = (hideHandleColor ? "thGray" : "thBlue");
+
+    //doorConfig.thClasses["VENTS"] = (hideVents ? "thGray" : "thBlue");
+    //doorConfig.thClasses["RAFAFAONMOVINGWING"] = (hideRafafa ? "thGray" : "thBlue");
+    //doorConfig.thClasses["CATDOOR"] = (hideCatDoor ? "thGray" : "thBlue");
+
+
+    //    doorConfig.disabledFlds["COLORSNUM"] = hideColorsNum;
+    //    doorConfig.disabledFlds["DOORCOLORID"] = hideDoorColor;
+    //    doorConfig.disabledFlds["EXTCOLORID"] = hideExtColr;
+    //    doorConfig.disabledFlds["INTCOLORID"] = hideIntColor;
+    //    doorConfig.disabledFlds["TRSH_CYLINDER"] = hideCylinder;
+    //    doorConfig.disabledFlds["TRSH_HARDWARE"] = hideHw;
+    //    doorConfig.disabledFlds["HWACCESSORYID"] = hideHwAccessory;
+    //    doorConfig.disabledFlds["HWCOLORID"] = hideHwColor;
+    //    doorConfig.disabledFlds["HANDLENAME"] = hideHandle;
+    //    doorConfig.disabledFlds["HANDLECOLORID"] = hideHandleColor;
+
+    //doorConfig.disabledFlds["VENTS"] = hideVents;
+    //doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideRafafa;
+    //doorConfig.disabledFlds["RAFAFAONMOVINGWING"] = hideCatDoor;
+    //}
+    #endregion to del
+
+    // We must have this event handler in every tabPage because it uses doorConfig , and we can't pass it as a parameter to
+    //   this type of method. Teh only parameter that can be passwed to this method is KeyboardEventArgs !
+    // Otherwise I would have create a single event handler in UiLogic class
+    async Task KeyPressHandler(KeyboardEventArgs e)
+    {
+        string currTabName = "movingwing";
+        doorConfig.RestartClicked = false;
+        if (e.Key.ToLowerInvariant() == "enter")
+        {
+            //RestartClicked = false;
+            int j = 0;
+            //DataTable dtTabFlds = new DataTable();
+            //string currTabName = UiLogic.getTabOfField(doorConfig.currPropName);
+            string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, doorConfig.currPropName);
+            if (!string.IsNullOrEmpty(nextfld))
+            {
+                j = Array.IndexOf(UiLogic.propNames, nextfld);
+                if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+                    doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                return;
+            }
+            else
+            {
+                string nextTabName = UiLogic.getNextTabName(doorConfig, currTabName);
+                if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
+                {
+                    config4.RefreshState();
+                }
             }
         }
     }
-}
-void applyOpenSideModeChanged()
-{
-    doorConfig.TRSH_CYLINDER = 0;
-    doorConfig.TRSH_HARDWARE = 0;
-    doorConfig.HWACCESSORYID = 0;
-    doorConfig.HWCOLORID = 0;
-    doorConfig.ELECTRICAPPARATUS = string.Empty;
-}
-void applyHardwareChanged()
-{
-    doorConfig.HANDLENAME = string.Empty;
-    doorConfig.HANDLECOLORID = 0;
-}
-
-void setLockDrilHeight()
-{
-    doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
-
-    doorConfig.BACKPINHEIGHT = (doorConfig.LOCKDRILHEIGHT > 0 ? doorConfig.LOCKDRILHEIGHT + 55 : 0);  //Eli 26/12/2022
-                                                                                                      //doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");  //[TODO : check this doorConfig.INTCOLORID != 0]
-    doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");
-
-    if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME))
+    void applyOpenSideModeChanged()
     {
-        if (doorConfig.LOCKDRILHEIGHT == 0)
-            UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT", true);   //disableFollowingTabFlds(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");
-        else if (doorConfig.LOCKDRILHEIGHT > 0)
-            UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT", false);
+        doorConfig.TRSH_CYLINDER = 0;
+        doorConfig.TRSH_HARDWARE = 0;
+        doorConfig.HWACCESSORYID = 0;
+        doorConfig.HWCOLORID = 0;
+        doorConfig.ELECTRICAPPARATUS = string.Empty;
+    }
+    void applyHardwareChanged()
+    {
+        doorConfig.HANDLENAME = string.Empty;
+        doorConfig.HANDLECOLORID = 0;
     }
 
-    if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
-        config4.RefreshState();
-}
-void setModernColors()
-{
-    if ((doorConfig.DECORFORMAT == HebNouns.External && doorConfig.OPENMODE == HebNouns.Inside)
-                        || (doorConfig.DECORFORMAT == HebNouns.External && doorConfig.OPENMODE == HebNouns.Outside)
-                           )
+    void setLockDrilHeight()
     {
-        doorConfig.EXTCOLORID = UiLogic.getColorIdByClrDes(HebNouns.Megulvan);
-        doorConfig.disabledFlds["EXTCOLORID"] = true;
-    }
-    else if ((doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENMODE == HebNouns.Inside)
-              || (doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENMODE == HebNouns.Outside)
-              )
-    {
-        doorConfig.INTCOLORID = UiLogic.getColorIdByClrDes(HebNouns.Megulvan);
-        doorConfig.disabledFlds["INTCOLORID"] = true;
-    }
-    else if (doorConfig.DECORFORMAT == HebNouns.BothSides)
-    {
-        doorConfig.INTCOLORID = doorConfig.EXTCOLORID = UiLogic.getColorIdByClrDes(HebNouns.Megulvan);
-        doorConfig.disabledFlds["INTCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = true;
-    }
+        doorConfig.LOCKDRILHEIGHT = (_LockDrilHeight != null ? (int)_LockDrilHeight : 0);
 
-}
+        doorConfig.BACKPINHEIGHT = (doorConfig.LOCKDRILHEIGHT > 0 ? doorConfig.LOCKDRILHEIGHT + 55 : 0);  //Eli 26/12/2022
+                                                                                                          //doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.INTCOLORID != 0 ? "blueBorder" : "redBorder");  //[TODO : check this doorConfig.INTCOLORID != 0]
+        doorConfig.borderColors["LOCKDRILHEIGHT"] = (doorConfig.LOCKDRILHEIGHT != 0 ? "blueBorder" : "redBorder");
+
+        if ("D-CLR A-GLVN".Contains(doorConfig.TRSH_MODELNAME))
+        {
+            if (doorConfig.LOCKDRILHEIGHT == 0)
+                UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT", true);   //disableFollowingTabFlds(doorConfig, dtTabFlds, "LOCKDRILHEIGHT");
+            else if (doorConfig.LOCKDRILHEIGHT > 0)
+                UiLogic.disableFollowingTabFields(doorConfig, dtTabFlds, "LOCKDRILHEIGHT", false);
+        }
+
+        if (UiLogic.try2UpdateBtnClass(doorConfig, "movingwing"))
+            config4.RefreshState();
+    }
+    void setModernColors()
+    {
+        if ((doorConfig.DECORFORMAT == HebNouns.External && doorConfig.OPENMODE == HebNouns.Inside)
+                            || (doorConfig.DECORFORMAT == HebNouns.External && doorConfig.OPENMODE == HebNouns.Outside)
+                               )
+        {
+            doorConfig.EXTCOLORID = UiLogic.getColorIdByClrDes(HebNouns.Megulvan);
+            doorConfig.disabledFlds["EXTCOLORID"] = true;
+        }
+        else if ((doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENMODE == HebNouns.Inside)
+                  || (doorConfig.DECORFORMAT == HebNouns.Internal && doorConfig.OPENMODE == HebNouns.Outside)
+                  )
+        {
+            doorConfig.INTCOLORID = UiLogic.getColorIdByClrDes(HebNouns.Megulvan);
+            doorConfig.disabledFlds["INTCOLORID"] = true;
+        }
+        else if (doorConfig.DECORFORMAT == HebNouns.BothSides)
+        {
+            doorConfig.INTCOLORID = doorConfig.EXTCOLORID = UiLogic.getColorIdByClrDes(HebNouns.Megulvan);
+            doorConfig.disabledFlds["INTCOLORID"] = doorConfig.disabledFlds["EXTCOLORID"] = true;
+        }
+
+    }
 }
 
 <br />
@@ -724,11 +725,11 @@ void setModernColors()
                                                     doorConfig.disabledFlds["DOORCOLORID"] = false;
                                                     doorConfig.borderColors["DOORCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");
 
-                                                    disableExtColor = true;
+                                                    //disableExtColor = true;
                                                     doorConfig.disabledFlds["EXTCOLORID"] = true;
                                                     //doorConfig.hideBtns["EXTCOLORID"] = true;  not used yet
 
-                                                    disableIntColor = true;
+                                                    //disableIntColor = true;
                                                     doorConfig.disabledFlds["INTCOLORID"] = true;
                                                     //doorConfig.hideBtns["INTCOLORID"] = true;  not used yet
 
@@ -738,7 +739,7 @@ void setModernColors()
                                                 case "2":
                                                     //disableColor = true;
                                                     doorConfig.disabledFlds["DOORCOLORID"] = true;
-                                                    disableExtColor = disableIntColor = false;
+                                                    //disableExtColor = disableIntColor = false;
                                                     doorConfig.disabledFlds["EXTCOLORID"] = doorConfig.disabledFlds["INTCOLORID"] = false;
 
                                                     doorConfig.borderColors["EXTCOLORID"] = (doorConfig.EXTCOLORID != 0 ? "blueBorder" : "redBorder");
@@ -1215,10 +1216,11 @@ void setModernColors()
                                                 doorConfig.disabledFlds["HWACCESSORYID"] = true; //it's mandatory only if TRSH_HARDWARE is not empty
                                                 doorConfig.HWACCESSORYID = 0;
 
-                                                if (doorConfig.FAMILYDES == HebNouns.Modern   //doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes(HebNouns.Modern)
-                                                    || UiLogic.isDecorated(doorConfig))
+                                                //if (doorConfig.FAMILYDES == HebNouns.Modern   //doorConfig.FAMILYNAME == PrApiCalls.getFamilyNameByDes(HebNouns.Modern)
+                                                if (UiLogic.isDecorated(doorConfig))
                                                 {
                                                     doorConfig.disabledFlds["TRSH_CYLINDER"] = true;
+                                                    doorConfig.TRSH_CYLINDER = 0;
                                                     doorConfig.TRSH_CYLINDER = 0;
                                                 }
 
@@ -1255,6 +1257,13 @@ void setModernColors()
                                                     doorConfig.HWCOLORID = 0;   //clear the HWCOLORID field if it's disabled.
                                                 if (doorConfig.disabledFlds["HWACCESSORYID"])
                                                     doorConfig.HWACCESSORYID = 0;
+                                                
+                                                if (UiLogic.isDecorated(doorConfig))  
+                                                    doorConfig.disabledFlds["TRSH_CYLINDER"] = false;  //here doorConfig.TRSH_HARDWARE is populated 
+                                                             // we solve here a problem that occurs when TRSH_HARDWARE is changed from IdOfNone to some real
+                                                             //  value; when it was set to IdOfNone TRSH_CYLINDER was disabled . So we must force it to be enabled 
+                                                             //  when TRSH_HARDWARE got a real value.
+                                                
                                                 StateHasChanged();
                                             }
                                             applyHardwareChanged();
@@ -1280,25 +1289,28 @@ void setModernColors()
 
 
                                     @{ //lstCylinders1 = PrApiCalls.getHWCyls1(doorConfig.TRSH_HARDWARE, doorConfig.OPENSIDE, doorConfig.OPENMODE, ref errMsg2);
-                                        if (UiLogic.isDecorated(doorConfig))
-                                            lstCylinders1 = PrApiCalls.getCyls4Decor(doorConfig, ref errMsg);
-                                        else
-                                            lstCylinders1 = PrApiCalls.getLstCyls1(doorConfig, false, ref errMsg2);
-
-                                        if (lstCylinders1 != null)
+                                        if (!doorConfig.disabledFlds["TRSH_CYLINDER"])
                                         {
-                                            if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
+                                            if (UiLogic.isDecorated(doorConfig))
+                                                lstCylinders1 = PrApiCalls.getCyls4Decor(doorConfig, ref errMsg);
+                                            else
+                                                lstCylinders1 = PrApiCalls.getLstCyls1(doorConfig, false, ref errMsg2);
+
+                                            if (lstCylinders1 != null)
                                             {
-                                                CYLINDER_Class cyl1 = lstCylinders1.Find(x => x.PARTDES == "ללא");
-                                                lstCylinders1.Remove(cyl1);
-                                            }
+                                                if (doorConfig.TRSH_MODELNAME == "MLI")   //hardcode for MLI 06/07/2022
+                                                {
+                                                    CYLINDER_Class cyl1 = lstCylinders1.Find(x => x.PARTDES == "ללא");
+                                                    lstCylinders1.Remove(cyl1);
+                                                }
 
 
-                                            @foreach (CYLINDER_Class c in lstCylinders1)
-                                            {
-                                                string cylDesName = (string.IsNullOrEmpty(c.PARTDES) ? string.Empty : c.PARTDES + "-" + c.PARTNAME);
-                                                cylDesName = (cylDesName.Contains(HebNouns.None) ? HebNouns.None : cylDesName);
-                                                <option value="@c.TRSH_CYLINDER">@cylDesName</option>
+                                                @foreach (CYLINDER_Class c in lstCylinders1)
+                                                {
+                                                    string cylDesName = (string.IsNullOrEmpty(c.PARTDES) ? string.Empty : c.PARTDES + "-" + c.PARTNAME);
+                                                    cylDesName = (cylDesName.Contains(HebNouns.None) ? HebNouns.None : cylDesName);
+                                                    <option value="@c.TRSH_CYLINDER">@cylDesName</option>
+                                                }
                                             }
                                         }
                                     }

@@ -1474,7 +1474,7 @@ namespace BlazorServerApp1.Data
 				//string query = string.Format("PARTNAME = '{0}' AND CONFIG_FIELDNAME = '{1}'", doorConfig.PARTNAME, configFldName);
 				if (doorConfig != null)
 				{
-					if (fldName == "TRSH_WINGSNUMDES")
+					if (fldName == "COLORSNUM")
 					{
 						int x = 17;
 					}
@@ -1516,7 +1516,9 @@ namespace BlazorServerApp1.Data
 						 // maybe it depends on FAMILY 
 						 // maybe it has a general default that does not depend on MODEL (TRSH_MODELNAME) or FAMILY
 					{
-						string query = string.Format("(TRSH_MODELNAME = '' OR TRSH_MODELNAME IS NULL) AND FIELDNAME = '{0}'", fldName);  //default that does not depend on MODEL
+						string query = string.Format("(TRSH_MODELNAME = '' OR TRSH_MODELNAME IS NULL) "
+							+ "AND (FAMILYNAME = '' OR FAMILYNAME IS NULL) "
+							+ "AND FIELDNAME = '{0}'", fldName);  //default that does not depend on MODEL
 						DataRow[] rowsDefVal = PrApiCalls.dtDefaults.Select(query);
 						string errMsg = string.Empty;
 						for (int r = 0; r < rowsDefVal.Length; r++)
