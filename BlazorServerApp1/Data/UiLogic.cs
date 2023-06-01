@@ -1529,7 +1529,16 @@ namespace BlazorServerApp1.Data
 							// configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
 							//UiLogic.setConfFieldVal(doorConfig, cFld.FIELDNAME, cFld.FIELDDATATYPE, defval, ref errMsg);
 							if (defval != "noDefVal")
+							{
+							   if (fldDataType.Contains("CHAR"))  //string 
 								UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, defval, ref errMsg);
+							   else if (fldDataType == "INT")
+								{
+									int iDefval;
+									if (int.TryParse(defval, out iDefval))
+										UiLogic.setConfFieldVal(doorConfig, fldName, fldDataType, iDefval, ref errMsg);
+								}
+							}
 
 						}
 					}
