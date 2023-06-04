@@ -37,7 +37,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //Note:  OnInitializedAsync() of "decor" tab is not called when navigating from "movingwing" tab to "staticwing" tab because 
+        //Note:  OnInitializedAsync() of "decor" tab is not called when navigating from "movingwing" tab to "staticwing" tab because
         //  ajax does not touch this tab and leaves it as it was under "movingwing".
         //string dbg = doorConfig.currTabName;
 
@@ -50,7 +50,7 @@
         doorConfig.lstTabFlds = UiLogic.getLstTabFields("decor", doorConfig, ref errMsg);
         // config4.RefreshState();  //just for a test - works !
 
-        // clear disabled fields in case they were populated earlier (in TRSH_MODELNAME field setter in Configurator4.razor) by UiLogic.applyModelDefaults(...) 
+        // clear disabled fields in case they were populated earlier (in TRSH_MODELNAME field setter in Configurator4.razor) by UiLogic.applyModelDefaults(...)
         //doorConfig.EXTFINMODERNCPLATE = (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNCPLATE);
         //doorConfig.EXTFINMODERNPLATE = (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNPLATE);
         //doorConfig.EXTFINMODERNSEPLINE = (doorConfig.DECORFORMAT == HebNouns.Internal ? string.Empty : doorConfig.EXTFINMODERNSEPLINE);
@@ -100,6 +100,7 @@
                 doorConfig.disabledFlds["INTPERIFPROFILECLRID"] = true;
 
             }
+
             doorConfig.disabledFlds["EXTSEPLINES"] = doorConfig.disabledFlds["INTSEPLINES"] = true;
 
 
@@ -131,7 +132,7 @@
         doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] =
         doorConfig.disabledFlds["EXTSEPLINESCLRID"] =
         doorConfig.disabledFlds["EXTPERIFPROFILETYPE"] =
-        doorConfig.disabledFlds["EXTPERIFPROFILECLRID"] =  (doorConfig.DECORFORMAT == HebNouns.Internal);
+        doorConfig.disabledFlds["EXTPERIFPROFILECLRID"] = (doorConfig.DECORFORMAT == HebNouns.Internal);
 
         doorConfig.disabledFlds["INTFINMODERNCPLATE"] =
         doorConfig.disabledFlds["INTGRIDCPLATEDES"] =
@@ -150,7 +151,7 @@
 
         doorConfig.disabledFlds["EXTINSERTCLRID"] = doorConfig.disabledFlds["INTINSERTCLRID"] = false;  //Insert colors fields are always enabled 19/04/2023
 
-        // The following lines were moved into syncFldHeaderWithBody() 
+        // The following lines were moved into syncFldHeaderWithBody()
         //foreach (ConfField_Class fld in doorConfig.lstTabFlds)
         //{
         //    doorConfig.thClasses[fld.FIELDNAME] = (doorConfig.disabledFlds[fld.FIELDNAME] ? "thGray" : "thBlue");
@@ -195,7 +196,7 @@
                 UiLogic.clearDisabledFields(doorConfig);
             }
             else
-            {        //EXT*  not grid 
+            {        //EXT*  not grid
                 doorConfig.disabledFlds["EXTGRIDCPLATEDES"] = doorConfig.disabledFlds["EXTCGRIDBKGDCLRID"] = true;
                 //set *SIDEGRID default ללא
                 doorConfig.disabledFlds["EXTSIDEGRID"] = false;
@@ -282,16 +283,16 @@
 <table id="tblDecor1">
     <tr id="tblDecorExtL1h">
         <th class="@doorConfig.thClasses["EXTFINMODERNCPLATE"]" style="white-space: pre;">לוח     מרכזי      חוץ</th> @* D-850 *@
-        @*     צבע רקע לסורג צד חוץ   *@
+        @*   1  צבע רקע לסורג צד חוץ   *@
 
         @* D-850 EXTFINMODERNCPLATE *@
-        <th class="@doorConfig.thClasses["EXTGRIDCPLATEDES"]">דגם סורג מרכזי חוץ</th>  @*  D-760 EXTGRIDCPLATEDES *@
-        <th class="@doorConfig.thClasses["EXTCGRIDBKGDCLRID"]">צבע רקע לסורג מרכזי חוץ</th>    @* D-260 EXTCGRIDBKGDCLRID *@
-        <th class="@doorConfig.thClasses["EXTCGRIDPLATECLRID"]">צבע לוח\סורג מרכזי חוץ</th>  @*  D-250 *@
-        <th class="@doorConfig.thClasses["EXTFINMODERNPLATE"]">חיפוי חוץ</th>    @* D-1000 EXTFINMODERNPLATE *@
-        <th class="@doorConfig.thClasses["EXTMODERNPLATECLRID"]">צבע חיפוי חוץ</th>
-        <th class="@doorConfig.thClasses["EXTSIDEGRID"]">דגם סורג צד חוץ</th>       @*  new 21/04/2023 *@
-        <th class="@doorConfig.thClasses["EXTSIDEGRIDCLRID"]">צבע סורג צד חוץ</th>  @*  new 21/04/2023 *@
+        <th class="@doorConfig.thClasses["EXTGRIDCPLATEDES"]">דגם סורג מרכזי חוץ</th>  @* 2 D-760 EXTGRIDCPLATEDES *@
+        <th class="@doorConfig.thClasses["EXTCGRIDBKGDCLRID"]">צבע רקע לסורג מרכזי חוץ</th>    @* 3 D-260 EXTCGRIDBKGDCLRID *@
+        <th class="@doorConfig.thClasses["EXTCGRIDPLATECLRID"]">צבע לוח\סורג מרכזי חוץ</th>  @* 4 D-250 *@
+        <th class="@doorConfig.thClasses["EXTFINMODERNPLATE"]">חיפוי חוץ</th>    @* 5 D-1000 EXTFINMODERNPLATE *@
+        <th class="@doorConfig.thClasses["EXTMODERNPLATECLRID"]">צבע חיפוי חוץ</th>   @* 6 *@
+        <th class="@doorConfig.thClasses["EXTSIDEGRID"]">דגם סורג צד חוץ</th>       @* 7 new 21/04/2023 *@
+        <th class="@doorConfig.thClasses["EXTSIDEGRIDCLRID"]">צבע סורג צד חוץ</th>  @*  8 new 21/04/2023 *@
     </tr>
     <tr id="tblDecorExtL1d">
         @*  hidden="@UiLogic.hideFld(doorConfig, "tdExtFinModernCPlate")   לוח מרכזי חוץ (1) *@
@@ -632,6 +633,13 @@
                         applyCentralSideGrid();
 
                         doorConfig.borderColors["EXTSIDEGRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+
+                        if (doorConfig.FAMILYDES == HebNouns.Designers && !string.IsNullOrEmpty(doorConfig.EXTSIDEGRID))
+                        {
+                            doorConfig.EXTSEPLINES = HebNouns.With;
+                            doorConfig.disabledFlds["EXTSEPLINES"] = true;
+                        }
+
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
                             config4.RefreshState();
@@ -1058,7 +1066,7 @@
     <tr id="tblDecorIntL1d">
         @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernCPlate")"  (1)   לוח מרכזי פנים*@
         @*  debug
-            @{ doorConfig.disabledFlds["INTFINMODERNCPLATE"] = false; }  
+            @{ doorConfig.disabledFlds["INTFINMODERNCPLATE"] = false; }
         *@
         <td id="tdIntFinModernCPlate">
             <select name="dlstIntFinModernCPlate" @bind="IntFinModernCPlate"
@@ -1256,7 +1264,7 @@
         @* חיפוי פנים (5) י *@
         <td id="tdIntFinModernPlate">
             @*
-                 @{ doorConfig.disabledFlds["INTFINMODERNPLATE"] = false; } 
+                @{ doorConfig.disabledFlds["INTFINMODERNPLATE"] = false; }
             *@
             <select name="dlstIntFinModernPlate" @bind="IntFinModernPlate"
                     disabled="@doorConfig.disabledFlds["INTFINMODERNPLATE"]"
@@ -1272,9 +1280,9 @@
                     }
                 }
                 @*
-                <option></option>
-                <option>חלק</option>
-                <option>מחורץ</option>
+                    <option></option>
+                    <option>חלק</option>
+                    <option>מחורץ</option>
                 *@
             </select>
         </td>
@@ -1397,6 +1405,13 @@
                         applyCentralSideGrid();
 
                         doorConfig.borderColors["INTSIDEGRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+
+                        if (doorConfig.FAMILYDES == HebNouns.Designers && !string.IsNullOrEmpty(doorConfig.INTSIDEGRID))
+                        {
+                            doorConfig.INTSEPLINES = HebNouns.With;
+                            doorConfig.disabledFlds["INTSEPLINES"] = true;
+                        }
+
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
                             config4.RefreshState();
@@ -1522,7 +1537,7 @@
 
         @*  10  פסי הפרדה פנים*@
         @*  debug
-           @{ doorConfig.disabledFlds["INTSEPLINES"] = false; } 
+            @{ doorConfig.disabledFlds["INTSEPLINES"] = false; }
         *@
         <td id="tdIntSepLines">
             <select name="dlstIntSepLines" @bind="IntSepLines"
@@ -1566,7 +1581,7 @@
         @* disabled="@UiLogic.hideFld(doorConfig, "tdIntFinModernSepLine")" *@
 
         @*  debug
-            @{ doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = false; } 
+            @{ doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = false; }
         *@
         <td id="tdIntFinModernSepLine">
             <select name="dlstIntFinModernSepLine" @bind="IntFinModernSepLine"
@@ -1614,7 +1629,7 @@
         @* disabled="@UiLogic.hideFld(doorConfig, "tdIntSepLinesClr")" *@
         @* 12 צבע פסי הפרדה פנים *@
         @*  debug
-           @{ doorConfig.disabledFlds["INTSEPLINESCLRID"] = false; } 
+            @{ doorConfig.disabledFlds["INTSEPLINESCLRID"] = false; }
         *@
         <td id="tdIntSepLinesClr">
             @{
@@ -1719,7 +1734,7 @@
         <td id="tdIntPerifProfileClr">
             @{
                 int i1417 = Array.IndexOf(UiLogic.propNames, "INTPERIFPROFILECLRID");
-                //doorConfig.disabledFlds["INTPERIFPROFILECLRID"] = false; // debug 
+                //doorConfig.disabledFlds["INTPERIFPROFILECLRID"] = false; // debug
                 @* <select name="dlstIntPerifProfileClr" @bind="IntPerifProfileClr" class="@doorConfig.borderColors["INTPERIFPROFILECLRID"]" *@
                 <input list="lstIntProfileClrs" name="dlstIntPerifProfileClr" @bind="IntPerifProfileClrDes" class="@doorConfig.borderColors["INTPERIFPROFILECLRID"]"
                        autocomplete="off"
