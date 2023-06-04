@@ -105,6 +105,14 @@
 
 
         }
+        if (doorConfig.FAMILYDES == HebNouns.Designers)
+        {
+            if (doorConfig.DECORFORMAT == HebNouns.External || doorConfig.DECORFORMAT == HebNouns.BothSides)
+                applyDesignersExtSideGrid();
+
+            if (doorConfig.DECORFORMAT == HebNouns.Internal || doorConfig.DECORFORMAT == HebNouns.BothSides)
+                applyDesignersIntSideGrid();
+        }
     }
 
     #region toDel
@@ -262,6 +270,49 @@
         }
         UiLogic.syncFldHeaderWithBody(doorConfig);
     }
+
+    void applyDesignersExtSideGrid()
+    {
+        doorConfig.disabledFlds["EXTSEPLINES"] = true;  // field 10 always disabled for this Family !
+        if (!string.IsNullOrEmpty(doorConfig.EXTSIDEGRID) && doorConfig.EXTSIDEGRID != HebNouns.None)
+        {
+            doorConfig.disabledFlds["EXTSIDEGRIDCLRID"] = doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"] =
+            doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] = doorConfig.disabledFlds["EXTSEPLINESCLRID"] = false;
+            UiLogic.syncFldHeaderWithBody(doorConfig);
+            doorConfig.EXTSEPLINES = HebNouns.With;
+        }
+        else if (doorConfig.EXTSIDEGRID == HebNouns.None) //ללא
+        {
+            doorConfig.disabledFlds["EXTSIDEGRIDCLRID"] = doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"] =
+            doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] = doorConfig.disabledFlds["EXTSEPLINESCLRID"] = true;
+            UiLogic.syncFldHeaderWithBody(doorConfig);
+            doorConfig.EXTSEPLINES = string.Empty;  //Field 10 !
+        }
+    }
+
+    void applyDesignersIntSideGrid()
+    {
+        doorConfig.disabledFlds["INTSEPLINES"] = true;  // field 10 always disabled for this Family !
+        if (!string.IsNullOrEmpty(doorConfig.INTSIDEGRID) && doorConfig.INTSIDEGRID != HebNouns.None)
+        {
+            doorConfig.disabledFlds["INTSIDEGRIDCLRID"] = doorConfig.disabledFlds["INTSIDEGRIDBKGDCLRID"] =
+            doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = doorConfig.disabledFlds["INTSEPLINESCLRID"] = false;
+            UiLogic.syncFldHeaderWithBody(doorConfig);
+            doorConfig.INTSEPLINES = HebNouns.With;
+        }
+        else if (doorConfig.INTSIDEGRID == HebNouns.None) //ללא
+        {
+            //                            8                                                9
+            doorConfig.disabledFlds["INTSIDEGRIDCLRID"] = doorConfig.disabledFlds["INTSIDEGRIDBKGDCLRID"] =
+            doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = doorConfig.disabledFlds["INTSEPLINESCLRID"] = true;
+            //                              11                                             12
+            UiLogic.syncFldHeaderWithBody(doorConfig);
+            doorConfig.INTSEPLINES = string.Empty;  //Field 10 !
+        }
+    }
+
+
+
     public void RefreshState()
     {
         this.StateHasChanged();
@@ -634,12 +685,24 @@
 
                         doorConfig.borderColors["EXTSIDEGRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
 
-                        if (doorConfig.FAMILYDES == HebNouns.Designers && !string.IsNullOrEmpty(doorConfig.EXTSIDEGRID))
+                        if (doorConfig.FAMILYDES == HebNouns.Designers)
                         {
-                            doorConfig.EXTSEPLINES = HebNouns.With;
-                            doorConfig.disabledFlds["EXTSEPLINES"] = true;
+                            //if (!string.IsNullOrEmpty(doorConfig.EXTSIDEGRID) && doorConfig.EXTSIDEGRID != HebNouns.None)
+                            //{
+                            //    doorConfig.disabledFlds["EXTSEPLINES"] = true;
+                            //    doorConfig.disabledFlds["EXTSIDEGRIDCLRID"] = doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"] =
+                            //    doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] = doorConfig.disabledFlds["EXTSEPLINESCLRID"] = false;
+                            //    UiLogic.syncFldHeaderWithBody(doorConfig);
+                            //    doorConfig.EXTSEPLINES = HebNouns.With;
+                            //}
+                            //else if (doorConfig.EXTSIDEGRID == HebNouns.None) //ללא
+                            //{
+                            //    doorConfig.disabledFlds["EXTSIDEGRIDCLRID"] = doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"] =
+                            //    doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] = doorConfig.disabledFlds["EXTSEPLINESCLRID"] = true;
+                            //    UiLogic.syncFldHeaderWithBody(doorConfig);
+                            //}
+                            applyDesignersExtSideGrid();
                         }
-
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
                             config4.RefreshState();
@@ -706,13 +769,13 @@
     @* end of tblDecorExtL1d *@
 
     <tr id="tblDecorExtL2h">
-        <th class="@doorConfig.thClasses["EXTSIDEGRIDBKGDCLRID"]">צבע רקע לסורג צד חוץ</th>  @*  new 26/04/2023 *@
-        <th class="@doorConfig.thClasses["EXTSEPLINES"]">פסי הפרדה חוץ</th>
-        <th class="@doorConfig.thClasses["EXTFINMODERNSEPLINE"]">סוג פסי הפרדה חוץ</th>
-        <th class="@doorConfig.thClasses["EXTSEPLINESCLRID"]">צבע פסי הפרדה חוץ</th>
+        <th class="@doorConfig.thClasses["EXTSIDEGRIDBKGDCLRID"]">צבע רקע לסורג צד חוץ</th>  @* 9 new 26/04/2023 *@
+        <th class="@doorConfig.thClasses["EXTSEPLINES"]">פסי הפרדה חוץ</th>  @* 10 *@
+        <th class="@doorConfig.thClasses["EXTFINMODERNSEPLINE"]">סוג פסי הפרדה חוץ</th> @* 11 *@
+        <th class="@doorConfig.thClasses["EXTSEPLINESCLRID"]">צבע פסי הפרדה חוץ</th>    @*  12 *@
         <th class="@doorConfig.thClasses["EXTPERIFPROFILETYPE"]">סוג פרופיל היקפי חוץ</th>  @* new (13) 4mm | 8mm *@
-        <th class="@doorConfig.thClasses["EXTPERIFPROFILECLRID"]">צבע פרופיל היקפי חוץ</th>
-        <th class="@doorConfig.thClasses["EXTINSERTCLRID"]">צבע חוץ לאינסרט</th>
+        <th class="@doorConfig.thClasses["EXTPERIFPROFILECLRID"]">צבע פרופיל היקפי חוץ</th>  @*  14 *@
+        <th class="@doorConfig.thClasses["EXTINSERTCLRID"]">צבע חוץ לאינסרט</th>   @* 15 *@
     </tr>
 
     <tr id="tblDecorExtL2d">
@@ -1406,10 +1469,25 @@
 
                         doorConfig.borderColors["INTSIDEGRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
 
-                        if (doorConfig.FAMILYDES == HebNouns.Designers && !string.IsNullOrEmpty(doorConfig.INTSIDEGRID))
+                        if (doorConfig.FAMILYDES == HebNouns.Designers)
                         {
-                            doorConfig.INTSEPLINES = HebNouns.With;
-                            doorConfig.disabledFlds["INTSEPLINES"] = true;
+                            applyDesignersIntSideGrid();
+                            #region toDel
+                            //if (!string.IsNullOrEmpty(doorConfig.INTSIDEGRID) && doorConfig.INTSIDEGRID != HebNouns.NameOfNone)
+                            //{
+                            //    doorConfig.disabledFlds["INTSEPLINES"] = true;
+                            //    doorConfig.disabledFlds["INTSIDEGRIDCLRID"] = doorConfig.disabledFlds["INTSIDEGRIDBKGDCLRID"] =
+                            //    doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = doorConfig.disabledFlds["INTSEPLINESCLRID"] = false;
+                            //    UiLogic.syncFldHeaderWithBody(doorConfig);
+                            //    doorConfig.INTSEPLINES = HebNouns.With;
+                            //}
+                            //else if (doorConfig.INTSIDEGRID == HebNouns.NameOfNone) //ללא
+                            //{
+                            //    doorConfig.disabledFlds["INTSIDEGRIDCLRID"] = doorConfig.disabledFlds["INTSIDEGRIDBKGDCLRID"] =
+                            //    doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = doorConfig.disabledFlds["INTSEPLINESCLRID"] = true;
+                            //    UiLogic.syncFldHeaderWithBody(doorConfig);
+                            //}
+                            #endregion toDel
                         }
 
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
