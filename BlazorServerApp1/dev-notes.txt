@@ -1,3 +1,18 @@
+05/06/2023 
+     I debug the application as a web site it IIS on my W7. I do not use IISExpress that is deployed with VS2022, becuase when it hangs IISExpress.exe process cannot be "killed"
+     by windows task manager.
+     When it runs inside IIS, iisreset command solves the problem.
+
+     In ISS it runs as a web site named configurator4 .
+     It's URL is https://localhost:505/
+
+     It's configured in the file   launchsettings.json in the Properties folder (on my W7 : C:\Samples\Vue3\BlazorServerApp1\BlazorServerApp1\Properties)
+
+04/06/2023
+  VS2022 version 17.4.2 is stable .
+     Tried upgrading to 17.6.2 and found that Mouse Hover does not work in razor files. I.e. when Mouse Hovers a variable, it does not show it's type and other info.
+     So I rolled back to 17.4.2 !
+
 09/05/2023 
   OOne more test . 15:37
   Just testing GITHUB push from loacl repository to the public repository.  15:30
