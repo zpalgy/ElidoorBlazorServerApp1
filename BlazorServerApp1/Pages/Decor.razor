@@ -280,13 +280,19 @@
             doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] = doorConfig.disabledFlds["EXTSEPLINESCLRID"] = false;
             UiLogic.syncFldHeaderWithBody(doorConfig);
             doorConfig.EXTSEPLINES = HebNouns.With;
+            UiLogic.applyFldDefault(doorConfig, "EXTFINMODERNSEPLINE");
+            UiLogic.applyFldDefault(doorConfig, "EXTSEPLINESCLRID");
         }
         else if (doorConfig.EXTSIDEGRID == HebNouns.None) //ללא
         {
             doorConfig.disabledFlds["EXTSIDEGRIDCLRID"] = doorConfig.disabledFlds["EXTSIDEGRIDBKGDCLRID"] =
             doorConfig.disabledFlds["EXTFINMODERNSEPLINE"] = doorConfig.disabledFlds["EXTSEPLINESCLRID"] = true;
             UiLogic.syncFldHeaderWithBody(doorConfig);
-            doorConfig.EXTSEPLINES = string.Empty;  //Field 10 !
+            doorConfig.EXTSIDEGRIDCLRID = 0;                // Field 8
+            doorConfig.EXTSIDEGRIDBKGDCLRID = 0;            // 9
+            doorConfig.EXTSEPLINES = string.Empty;          //10 
+            doorConfig.EXTFINMODERNSEPLINE = string.Empty;  //11
+            doorConfig.EXTSEPLINESCLRID = 0;                //12
         }
     }
 
@@ -299,6 +305,8 @@
             doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = doorConfig.disabledFlds["INTSEPLINESCLRID"] = false;
             UiLogic.syncFldHeaderWithBody(doorConfig);
             doorConfig.INTSEPLINES = HebNouns.With;
+            UiLogic.applyFldDefault(doorConfig, "INTFINMODERNSEPLINE");
+            UiLogic.applyFldDefault(doorConfig, "INTSEPLINESCLRID");
         }
         else if (doorConfig.INTSIDEGRID == HebNouns.None) //ללא
         {
@@ -307,7 +315,11 @@
             doorConfig.disabledFlds["INTFINMODERNSEPLINE"] = doorConfig.disabledFlds["INTSEPLINESCLRID"] = true;
             //                              11                                             12
             UiLogic.syncFldHeaderWithBody(doorConfig);
-            doorConfig.INTSEPLINES = string.Empty;  //Field 10 !
+            doorConfig.INTSIDEGRIDCLRID = 0;                // Field 8
+            doorConfig.INTSIDEGRIDBKGDCLRID = 0;            // 9
+            doorConfig.INTSEPLINES = string.Empty;          // 10 
+            doorConfig.INTFINMODERNSEPLINE = string.Empty;  // 11
+            doorConfig.INTSEPLINESCLRID = 0;                //12
         }
     }
 
@@ -633,6 +645,9 @@
                     {
                         doorConfig.EXTMODERNPLATECLRID = _ExtModerPlateClr;
                         doorConfig.borderColors["EXTMODERNPLATECLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                        if (doorConfig.FAMILYDES == HebNouns.Designers && doorConfig.DECORFORMAT == HebNouns.External || doorConfig.DECORFORMAT == HebNouns.BothSides)
+                            doorConfig.EXTINSERTCLRID = doorConfig.EXTMODERNPLATECLRID;
+
                         //UiLogic.clearFollowingTabFields(doorConfig, "decor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
                             config4.RefreshState();
@@ -1420,6 +1435,10 @@
                     {
                         doorConfig.INTMODERNPLATECLRID = _IntModerPlateClr;
                         doorConfig.borderColors["INTMODERNPLATECLRID"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+
+                        if (doorConfig.FAMILYDES == HebNouns.Designers && doorConfig.DECORFORMAT == HebNouns.Internal || doorConfig.DECORFORMAT == HebNouns.BothSides)
+                            doorConfig.INTINSERTCLRID = doorConfig.INTMODERNPLATECLRID;
+
                         //UiLogic.clearFollowingTabFields(doorConfig, "tdecor");
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "decor"))
                             config4.RefreshState();
@@ -1537,7 +1556,7 @@
                 }
                 set
                 {
-                    _ExtSideGridClrId = UiLogic.getColorIdByClrDes(value);
+                    _IntSideGridClrId = UiLogic.getColorIdByClrDes(value);
                     if (doorConfig != null)
                     {
                         doorConfig.INTSIDEGRIDCLRID = _IntSideGridClrId;

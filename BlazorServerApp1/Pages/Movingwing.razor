@@ -173,7 +173,7 @@
         lstColorsNum1 = PrApiCalls.lstColorsNum.ToList<string>();
         lstColors1 = PrApiCalls.lstColors.ToList<TRSH_COLOR_Class>();
 
-        if ("MLI E-CLR D-CLR".Contains(doorConfig.TRSH_MODELNAME))
+        if ("MLI E-CLR D-CLR".Contains(doorConfig.TRSH_MODELNAME) )
         {
             lstColorsNum1.Remove("מגולוון");
             //note : for now we can't implement the following logic in the TRSH_DEFAULTS table because the COLORS LOV is used by many Color fields
