@@ -1208,8 +1208,13 @@ namespace BlazorServerApp1.Data
 		}
 		public static string getLockDrilHMeasure(int LOCKDRILHEIGHT)
 		{
-			string measureName = lstLock_Hinge_Dril_Heights.Find(x => x.LOCKDRILHEIGHT == LOCKDRILHEIGHT).MEASURENAME;
-			return measureName;
+			if (lstLock_Hinge_Dril_Heights.Exists(x => x.LOCKDRILHEIGHT == LOCKDRILHEIGHT))
+			{
+				string measureName = lstLock_Hinge_Dril_Heights.Find(x => x.LOCKDRILHEIGHT == LOCKDRILHEIGHT).MEASURENAME;
+				return measureName;
+			}
+			else
+				return HebNouns.Manual;
 		}
 		//getHardwares
 		public static List<TRSH_HARDWARE_Class> getHardwares(ref string errMsg)

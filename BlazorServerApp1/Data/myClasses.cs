@@ -916,6 +916,7 @@ namespace BlazorServerApp1.Data
         public static string Designers = "מעצבים";
         public static string With = "עם";
         public static string Grid = "סורג";
+        public static string Manual = "ידני";
 		public static string requiredFieldsAreEmpty = "שדות חובה לא מולאו, על מנת להמשיך נדרש למלא את כל שדות החובה";
 	}
 
