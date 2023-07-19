@@ -508,6 +508,8 @@ namespace BlazorServerApp1.Data
         public string SWING_OPENSIDE { get; set; }  // at present - these three fields are not SERIALIZED !
         public string SWING_OPENSIDE_RIGHT { get; set; }
 		public string SWING_OPENSIDE_LEFT { get; set; }
+		[DataMember(Order = 259), Order]
+		public int SWINGINTCOLORID { get; set; }  // new 19/07/2023 :    גוון פנים כנף קבועה - העתק מכנף נעה   
 
 		[DataMember(Order = 260), Order]
         

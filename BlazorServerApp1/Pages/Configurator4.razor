@@ -1586,6 +1586,9 @@
                                                         doorConfig.FAMILYNAME = familyOfPart.FAMILYNAME;
                                                         doorConfig.FAMILYDES = familyOfPart.FAMILYDES;
                                                     }
+                                                    //log
+                                                    myLogger.log.Info(string.Format("MODELNAME = {0}, FAMILYDES = {1}", doorConfig.TRSH_MODELNAME, doorConfig.FAMILYDES));
+
                                                     UiLogic.applyModelDefaults(doorConfig);
                                                     applyDecorFormat2Btns();
                                                     dbg = doorConfig.TRSH_HARDWARE;
@@ -1935,7 +1938,7 @@
                                         clear9999Fields();
                                         var response = (PrApiCalls.SendToPriority("TRSH_DOORCONFIG", doorConfig, ref errMsg)).StatusCode;
 
-                                        if (response != System.Net.HttpStatusCode.Created)
+                                        if (response != System.Net.HttpStatusCode.Created && response.ToString().ToUpper() != "OK")
                                         {
                                             //myMessageBox.Show(Page, errMsg);
                                             //UiLogic.displayErrMsg(lblMsg, "Api call failed : " + errMsg);
