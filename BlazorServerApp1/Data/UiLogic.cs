@@ -1416,7 +1416,7 @@ namespace BlazorServerApp1.Data
 
 						// configFldName example : dlstDecorFormat , cfld.FIELDNAME is DECORFORMAT 
 						string configFldName = rowsDefVal[r]["CONFIG_FIELDNAME"].ToString();  //dlstDecorFormat 
-						if (configFldName == "chkbTwoColors")
+						if (configFldName == "dlstDecorFormat")
 						{
 							int dbg = 17;
 						}
@@ -1510,6 +1510,8 @@ namespace BlazorServerApp1.Data
 							{
 								if (defRec.DEFVAL != "noDefVal")
 									UiLogic.setConfFieldVal(doorConfig, fldName, defRec.FIELDDATATYPE, defRec.DEFVAL, ref errMsg);
+								if (defRec.VAL_LOCKED == "Y")
+									doorConfig.disabledFlds[fldName] = true;
 							}
 						}
 					}
