@@ -41,6 +41,7 @@ namespace BlazorServerApp1.Data
 		//public static int MAX_MOVINWING = 1400;
 
 		public static int MIN_SWING_WITHLOCK_W = 300;
+		public static int MAX_SMOOTH_SWING_WIDTH = 680;  //new 26/07/2023
 		//public static int MAX_SWING_WITHLOCK = 1400;
 
 		public static int MIN_SWING_NOLOCK_W = 160;
@@ -366,7 +367,7 @@ namespace BlazorServerApp1.Data
 			{
 				doorConfig.btnClasses[tabBtnCssName] = "buttonFilled";
 				doorConfig.btnClasses[nextTabBtnCssName] = "buttonActive";
-				// 04/11/2022 hardcode the case of staticwing filled skips hinges and jumps to accesspries . 
+				// 4/11/2022 based on Tzvi Okun's mail on 31/10/2022 : hardcode the case of staticwing filled skips hinges and jumps to accesspries . 
 				// make also hinges button acive !
 				if (tabName == "staticwing" && nextTabBtnCssName == "accessories")
 					doorConfig.btnClasses[getTabBtnCssName(doorConfig, "hinges")] = "buttonActive";
@@ -2292,6 +2293,15 @@ namespace BlazorServerApp1.Data
 		public static bool wingWidthIsOk(DoorConfig doorConfig, int wingWidth, ref string errMsg)
 		{
 			int minWingWidth = MIN_SWING_WITHLOCK_W;
+			if (doorConfig.FAMILYDES == HebNouns.SmoothDoors && doorConfig.currTabName == "staticwing")
+			{
+				if (wingWidth > MAX_SMOOTH_SWING_WIDTH)
+				{
+					errMsg = "לא ניתן להמשיך ! יש לשנות ההגדרה ל'דו כנפית'";
+					return false;
+				}
+			}
+
 			if (doorConfig.currTabName == "staticwing" && doorConfig.SWINGHASLOCK != "Y")
 				minWingWidth = MIN_SWING_NOLOCK_W;
 

@@ -158,6 +158,9 @@
                         doorConfig.disabledFlds["WETCOLORBOXQ"] = (doorConfig.WETCOLORBOXID == 0);
                         doorConfig.borderColors["WETCOLORBOXQ"] = (doorConfig.WETCOLORBOXQ != 0 ? "blueBorder" : "redBorder");
 
+                        if (doorConfig.WETCOLORBOXID == 0)
+                            doorConfig.WETCOLORBOXQ = 0;
+
                         if (UiLogic.try2UpdateBtnClass(doorConfig, "accessories"))
                             config4.RefreshState();
                     }
@@ -252,7 +255,10 @@
                     {
                         doorConfig.COLORSPRAYID = _ColorSprayID;
                         doorConfig.disabledFlds["COLORSPRAYQ"] = (doorConfig.COLORSPRAYID == 0);
-                        doorConfig.borderColors["COLORSPRAYQ"] = (doorConfig.COLORSPRAYQ != 0 ? "blueBorder" : "redBorder"); 
+                        doorConfig.borderColors["COLORSPRAYQ"] = (doorConfig.COLORSPRAYQ != 0 ? "blueBorder" : "redBorder");
+
+                        if (doorConfig.COLORSPRAYID == 0)
+                            doorConfig.COLORSPRAYQ = 0;
                     }
                 }
             }

@@ -2184,6 +2184,10 @@ namespace BlazorServerApp1.Data
 			}
 		}
 
+		public static string getCylDesName (List<CYLINDER_Class> lstCyls, int TRSH_CYLINDER )
+		{
+			return lstCyls.Find(x => x.TRSH_CYLINDER == TRSH_CYLINDER).PARTDES;
+		}
 		// new
 		public static List<TRSH_HARDWARE_Class> getHws4Cyl(int TRSH_CYLINDER, DoorConfig doorConfig, ref string errMsg)
 		{

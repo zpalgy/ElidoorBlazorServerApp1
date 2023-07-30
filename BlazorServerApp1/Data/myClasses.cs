@@ -899,6 +899,7 @@ namespace BlazorServerApp1.Data
         public static string Staticwing = "כנף קבועה";
 		public static string NameOfSmooth = "Smooth";
 		public static string Smooth = "חלק";
+        public static string SmoothDoors = "חלקות";
 		public static string NameOfFluted = "Fluted";
 		public static string Fluted = "מחורץ";
 		public static string External = "חוץ";

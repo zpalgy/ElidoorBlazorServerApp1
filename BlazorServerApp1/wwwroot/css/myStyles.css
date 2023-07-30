@@ -290,6 +290,22 @@ input[type="checkbox"]:focus {
     color:gray;
 }
 
+.fontSize20 {
+    font-size :20px;
+}
+.fontSmall {
+    font-size : 14px;
+}
+.cylFontSize20 {
+    border-color: blue;
+    font-size: 20px;
+}
+.cylFontSmall {
+    border-color: blue;
+    font-size: 20px;
+}
+
+/
 /*
 .tabHeader {
     float:right;
