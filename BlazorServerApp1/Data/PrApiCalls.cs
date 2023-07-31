@@ -1017,6 +1017,76 @@ namespace BlazorServerApp1.Data
 			}
 		}
 
+		public static void refreshInMemoryDataSources()
+		{
+			try
+			{
+				dtMeagedFields = new DataTable();
+				lstConfFields = new List<ConfField_Class>();
+				dtConfFields = new DataTable();
+				lstDefaults = new List<Defaults_Class>();
+				dtDefaults = new DataTable();
+				lstWingsNum = new List<WingsNum_Class>();
+				dtWingsNum = new DataTable();
+
+				lstModels = new List<Model_Class>();
+				dtModels = new DataTable();
+				lstModel_Parts = new List<Model_Part_Class>();
+				dtModel_Parts = new DataTable();
+				lstFamilies = new List<FAMILY_Class>();
+				lstDecorations = new List<Decoration_Class>();
+				dtDecorations = new DataTable();
+				dtComplients = new DataTable();
+
+				lstParts = new List<PART_Class>();
+				dtParts = new DataTable();
+				lstColors = new List<TRSH_COLOR_Class>();
+				lstGlassColors4Diamond = new List<TRSH_COLOR_Class>();
+				lstLock_Hinge_Dril_Heights = new List<TRSH_LOCKHINGE_DRILH_Class>();
+				dtLock_Hinge_Dril_Heights = new DataTable();
+				lstHardwares = new List<TRSH_HARDWARE_Class>();
+				dtHardwares = new DataTable();
+				lstHwAccessories = new List<HWACCESSORY_Class>();
+				lstHwAccRels = new List<HW_ACC_REL_Class>();
+				lstDril4Hw = new List<DRIL4HW_Class>();
+				dtDril4Hws = new DataTable();
+				lstCylinders = new List<CYLINDER_Class>();
+				dtCylinders = new DataTable();
+				lstCYLHWs = new List<CYLHW_Class>();
+				lstCylGrp4Decor = new List<CYLGRP4DECOR_Class>();
+				lstLocks = new List<TRSH_LOCK_Class>();
+				dtLocks = new DataTable();
+
+				lstWindowWidths = new List<WINDOWWIDTH_Class>();
+				dtWindowWidths = new DataTable();
+				lstWWidth_Statics = new List<WWIDTH_STATIC_Class>();
+				dtWWidth_Statics = new DataTable();
+
+				lstWindowHeights = new List<WINDOWHEIGHT_Class>();
+				dtWindowHeights = new DataTable();
+				lstVitrages4Diamond = new List<VITRAGE4DIAMOND_Class>();
+				lstVitrages = new List<VITRAGE_Class>();
+				lstTileTypes = new List<TILETYPE_Class>();
+				lstRaw4CPlates = new List<RAW4CPLATES_Class>();
+				lstProfiles4Windows = new List<PROFILE4WINDOW_Class>();
+				lstHandles = new List<HANDLE_Class>();
+				dtHandles = new DataTable();
+				lstHandles4Diamond = new List<HANDLE4DIAMOND_Class>();
+				lstGrid4HT1084 = new List<GRID4HT1084_Class>();
+				lstGrids = new List<GRID_Class>();
+				lstGlasses4Windows = new List<GLASS4WINDOW_Class>();
+
+				string errMsg = string.Empty;
+				InitInMemoryDataSources(ref errMsg);
+			}
+			catch (Exception ex)
+			{
+				string errMsg2 = string.Format("Unexpected error: {0} check Whether all Priority Forms are Prepared/Ready", ex.Message);
+				myLogger.log.Error(errMsg2);
+				throw new Exception(errMsg2);
+			}
+		}
+
 		//public static List<string> getColorsNum()
 		//{
 		//    return new List<string> { string.Empty, "מגולוון", "1", "2" };

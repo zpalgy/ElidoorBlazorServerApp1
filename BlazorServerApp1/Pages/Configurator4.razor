@@ -359,6 +359,10 @@
     //private void doRestart()
     async Task doRestart()
     {
+        lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+        lstAgents = PrApiCalls.getAgents(ref errMsg);
+        PrApiCalls.refreshInMemoryDataSources();
+        
         UiLogic.clearDoorConfig(doorConfig);
 
         //does also in OnInitializedAsync() of the current page
