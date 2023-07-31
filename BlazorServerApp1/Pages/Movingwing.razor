@@ -195,6 +195,9 @@ protected override async Task OnInitializedAsync()
     // set the style of the outLine of Movingwing and Mwdecor divs
     doorConfig.divClasses["movingwing"] = (doorConfig.disabledFlds["DOORWIDTH"] ? "divNotActive" : "divActive");
     tabTtl = tabTtl + @"\" + doorConfig.FAMILYDES;
+
+    myLogger.log.Info(string.Format("Movingwing.razor : OnInitializedAsync() , doorConfig.TRSH_MODELNAME = {0}, doorConfig.DECORFORMAT={1}", 
+            doorConfig.TRSH_MODELNAME, doorConfig.DECORFORMAT));
 }
 
 

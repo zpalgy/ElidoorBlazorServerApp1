@@ -23,17 +23,17 @@
 	@inject NavigationManager NavigationManager;
 
 
-    private bool openMsgBox = false;
-    string errMsg2 = string.Empty;
-    string errMsg3 = "xxxxxxxxxxxxxxxxxx";
-    private string msgCaption = "שגיאה";
-    string msgClass = "modal-body centeredMsg";
-    private string MsgTitleCssClass = string.Empty;
+	private bool openMsgBox = false;
+	string errMsg2 = string.Empty;
+	string errMsg3 = "xxxxxxxxxxxxxxxxxx";
+	private string msgCaption = "שגיאה";
+	string msgClass = "modal-body centeredMsg";
+	private string MsgTitleCssClass = string.Empty;
 	private string ErrMsgCssClass = "modal-body centeredMsg"; //"modal-body";  // "modal-body centeredMsg" 
 	string msgBorder1Style = string.Empty;
 
-    protected override async Task OnInitializedAsync()
-    {
+	protected override async Task OnInitializedAsync()
+	{
 
 		//if (!ExtdecorIsFull)
 		//{
@@ -57,23 +57,26 @@
 		//Js.InvokeVoidAsync("alert", string.Format("in Extdecor:onInitializedAsync doorConfig.EXTCOLORID = {0}", doorConfig.EXTCOLORID));  //debug
 		setHingesBorderColors();
 		if (UiLogic.try2UpdateBtnClass(doorConfig, "hinges"))
-							config4.RefreshState();
-     }
-    
-    
-    async void IDisposable.Dispose()
-    {
-		 //if (!UiLogic.tabPageIsFilled("intdecor", doorConfig))
-   //     {
-   //         Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה פנים' י");
-   //     }
-        //int x = 17;
-        //if (x == 18)
-        //{
-        //    Js.InvokeVoidAsync("alert", "error !");
-        //    //NavigationManager.NavigateTo("Movingwing", true);
-        //}
-    }
+			config4.RefreshState();
+
+		myLogger.log.Info(string.Format("Hinges.razor : OnInitializedAsync() , doorConfig.TRSH_MODELNAME = {0}, doorConfig.DECORFORMAT={1}",
+			doorConfig.TRSH_MODELNAME, doorConfig.DECORFORMAT));
+	}
+
+
+	async void IDisposable.Dispose()
+	{
+		//if (!UiLogic.tabPageIsFilled("intdecor", doorConfig))
+		//     {
+		//         Js.InvokeVoidAsync("alert", "יש למלא את כל השדות בלשונית 'דקורציה פנים' י");
+		//     }
+		//int x = 17;
+		//if (x == 18)
+		//{
+		//    Js.InvokeVoidAsync("alert", "error !");
+		//    //NavigationManager.NavigateTo("Movingwing", true);
+		//}
+	}
 }
 <br />
 <table>

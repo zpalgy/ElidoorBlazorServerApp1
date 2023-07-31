@@ -48,13 +48,13 @@
 
         doorConfig.dtTabFlds = UiLogic.getTabFields("decor", doorConfig, ref errMsg);
         doorConfig.lstTabFlds = UiLogic.getLstTabFields("decor", doorConfig, ref errMsg);
-        
+
         setDisabled();
         applySepLines(doorConfig);
         applyCentralSideGrid(doorConfig);
         UiLogic.setHiddens(doorConfig, "decor");
         doorConfig.decor = this;
-        
+
         UiLogic.clearDisabledFields(doorConfig);
         UiLogic.syncFldHeaderWithBody(doorConfig);
 
@@ -99,6 +99,9 @@
             if (doorConfig.DECORFORMAT == HebNouns.Internal || doorConfig.DECORFORMAT == HebNouns.BothSides)
                 applyDesignersIntSideGrid(doorConfig);
         }
+
+        myLogger.log.Info(string.Format("Decor.razor : OnInitializedAsync() , doorConfig.TRSH_MODELNAME = {0}, doorConfig.DECORFORMAT={1}"
+                    , doorConfig.TRSH_MODELNAME, doorConfig.DECORFORMAT));
     }
 
     void setDisabled()  // used in UiLogic.doorFldIsFilled(...)

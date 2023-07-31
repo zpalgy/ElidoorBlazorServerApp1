@@ -152,7 +152,7 @@
                 doorConfig.SWING_TURBO = ((doorConfig.SWINGHASLOCK == "Y" && doorConfig.useLOGO) ? "Y" : string.Empty);   // new 11/07/2022 , updated 28/07/2022
                 doorConfig.disabledFlds["LOGO"] = true;
 
-            } // end of if (!doorConfig.staticWingChanged), teh user did not SET any value in any field on teh tabPage
+            } // end of if (!doorConfig.staticWingChanged), the user did not SET any value in any field on the tabPage
         }  // end of tabPage is not filled
 
         if (doorConfig.SWINGHASLOCK == "Y" && doorConfig.HW4EXTRAWING == 0 && doorConfig.TRSH_HARDWARE != 0)
@@ -166,6 +166,9 @@
             doorConfig.disabledFlds["SWING_HWACCESSORYID"] = true;
 
         tabTtl = tabTtl + @"\" + doorConfig.FAMILYDES;
+
+        myLogger.log.Info(string.Format("Staticwing.razor : OnInitializedAsync() , doorConfig.TRSH_MODELNAME = {0}, doorConfig.DECORFORMAT ={1}",
+        doorConfig.TRSH_MODELNAME, doorConfig.DECORFORMAT));
     }
     void setHiddens(DoorConfig doorConfig)
     {
