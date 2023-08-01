@@ -33,8 +33,8 @@
         private string MsgTitleCssClass = "modal-title";  //"modal-title redTitle";
         private bool openYesNo = false;
 
-        protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
-        protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
+        //protected List<CUSTOMER_Class>? lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+        //protected List<AGENT_Class>? lstAgents = PrApiCalls.getAgents(ref errMsg);
 
         protected bool hideDivDoor = true;
 
@@ -231,6 +231,7 @@
                 //doorConfig.btnClasses[tabName] = "buttonActive";
                 doorConfig.markButton(tabName);
 
+                #region toDel
                 // commented on 18/09/2022
                 //if (!string.IsNullOrEmpty(doorConfig.prevTabName))
                 //{
@@ -250,6 +251,7 @@
                 //    doorConfig.currTabName = tabName;
                 //    doorConfig.btnClasses[doorConfig.prevTabName] = "buttonFilled";
                 //}
+                #endregion toDel
 
                 if (tabName != doorConfig.prevTabName)
                 {
@@ -359,10 +361,10 @@
     //private void doRestart()
     async Task doRestart()
     {
-        lstCustomers = PrApiCalls.getCustomers(ref errMsg);
-        lstAgents = PrApiCalls.getAgents(ref errMsg);
-        PrApiCalls.refreshInMemoryDataSources();
-        
+        //lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+        //lstAgents = PrApiCalls.getAgents(ref errMsg);
+        //PrApiCalls.refreshInMemoryDataSources();
+
         UiLogic.clearDoorConfig(doorConfig);
 
         //does also in OnInitializedAsync() of the current page
@@ -374,7 +376,7 @@
         showDynComp = false;
         hideDivDoor = true;
 
-
+        #region toDel
         //doorConfig.btnClasses["restart"] = "buttonRed";
         //doorConfig.btnClasses["general"] = "buttonActive";
         //doorConfig.btnClasses["selectprod"] =
@@ -387,6 +389,8 @@
 
         //doorConfig.currTabName = "divHeader";
         //doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
+        #endregion toDel
+
         initFormStuffInDoorConfig(doorConfig);
         UiLogic.tabPageIsFilled("divHeader", doorConfig);
 
@@ -410,11 +414,12 @@
             doorConfig.disabledFlds[fld.FIELDNAME] = true;
         }
     }
-    void submitForm()  //called when Enter is hit and not caught by onKeypressed event
+    void submitForm()  //Debug : this method is called when Enter is hit and not caught by onKeypressed event
     {
         int x = 17;
     }
 
+    #region oldStuff
     //private async Task GetClaimsPrincipalData()
     //{
     //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -432,10 +437,11 @@
     //        authMessage = "The user is NOT authenticated.";
     //    }
     //}
+    #endregion oldStuff
     }
 
 
-    <table id="tblMainContainer">
+    <table id="tblMainContainer"  @onkeydown="keyDownInMainPage">
         <tr>
             <td>
                 <div id="divMainMenuButtons" dir="rtl" class="menuButtonsDiv">
@@ -1021,9 +1027,9 @@
 
                                             @*     onkeydown="@KeyPressHandler"  > *@
 
-                                            @if (lstCustomers != null)
+                                            @if (PrApiCalls.lstCustomers != null)
                                             {
-                                                @foreach (CUSTOMER_Class c in lstCustomers)
+                                                @foreach (CUSTOMER_Class c in PrApiCalls.lstCustomers)
                                                 {
                                                     <option value="@c.CUST">@c.CUSTDES</option>
                                                 }

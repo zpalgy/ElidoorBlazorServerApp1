@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlazorServerApp1.Data;
+using Microsoft.AspNetCore.Components.Web;
+
 namespace BlazorServerApp1.Pages
 {
 	public class Configurator4Base : ComponentBase
@@ -18,9 +20,9 @@ namespace BlazorServerApp1.Pages
 			string prevTab = string.Empty;
 
 			if (tabName == "accessories")
-            {
+			{
 				int dbg = 17;
-            }
+			}
 
 			if (doorConfig.CUST != 0 && !string.IsNullOrEmpty(doorConfig.TRSH_WINGSNUMDES) && !string.IsNullOrEmpty(doorConfig.TRSH_MODELNAME))
 			{
@@ -47,8 +49,8 @@ namespace BlazorServerApp1.Pages
 						prevText = UiLogic.tabTexts[t - 2];
 					}
 
-                    #region to del
-                    if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor)
+					#region to del
+					if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor)
 					{
 						if (!hideBtnExtDecor)
 						{
@@ -60,20 +62,20 @@ namespace BlazorServerApp1.Pages
 							prevTab = UiLogic.tabNames[t - 3];  //extdecor or movingwing
 							prevText = UiLogic.tabTexts[t - 3];
 							if (prevTab.ToLower() == "extdecor" && hideBtnExtDecor)
-                            {
+							{
 								prevTab = "movingwing";
-                            }
+							}
 						}
 					}
-                    #endregion to del 
+					#endregion to del 
 
-                    //if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor && hideBtnExtDecor)
-                    //{
-                    //	prevTab = UiLogic.tabNames[t - 3];
-                    //	prevText = UiLogic.tabTexts[t - 3];
-                    //}
+					//if (prevTab.ToLower() == "intdecor" && hideBtnIntDecor && hideBtnExtDecor)
+					//{
+					//	prevTab = UiLogic.tabNames[t - 3];
+					//	prevText = UiLogic.tabTexts[t - 3];
+					//}
 
-                    if (t == 0)
+					if (t == 0)
 					{
 						//ActivePage = page;
 						return true;
@@ -107,7 +109,7 @@ namespace BlazorServerApp1.Pages
 																//openMsgBox = true;
 					return false;
 				}
-            }
+			}
 			else
 			{
 				if (doorConfig.CUST == null || doorConfig.CUST == 0)
@@ -122,6 +124,13 @@ namespace BlazorServerApp1.Pages
 				return false;
 			}
 		}
-		
+
+		public async Task keyDownInMainPage(KeyboardEventArgs e)     //Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+		{
+			if (e.Key.ToLower() == "f4")
+			{
+				PrApiCalls.refreshInMemoryDataSources();
+			}
+		}
 	}
 }

@@ -30,6 +30,9 @@ namespace BlazorServerApp1.Data
 		public static int IDS_ONESIDE;
 		public static int IDS_TWOSIDES;
 
+		public static List<CUSTOMER_Class>? lstCustomers = new List<CUSTOMER_Class>();
+		public static List<AGENT_Class>? lstAgents = new List<AGENT_Class>();
+
 		public static DataTable dtMeagedFields;
 		public static DataTable dtDecorSideFlds;
 
@@ -942,6 +945,9 @@ namespace BlazorServerApp1.Data
 		{
 			try
 			{
+				lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+				lstAgents = PrApiCalls.getAgents(ref errMsg);
+
 				dtMeagedFields = getAllMeagedFields(ref errMsg);
 				if (dtMeagedFields == null)
 					return;  // abort 
@@ -1021,6 +1027,9 @@ namespace BlazorServerApp1.Data
 		{
 			try
 			{
+				lstCustomers = new List<CUSTOMER_Class>();
+				lstAgents = new List<AGENT_Class>();
+
 				dtMeagedFields = new DataTable();
 				lstConfFields = new List<ConfField_Class>();
 				dtConfFields = new DataTable();
