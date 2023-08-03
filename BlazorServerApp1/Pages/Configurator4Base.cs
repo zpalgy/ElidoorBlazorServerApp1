@@ -125,12 +125,13 @@ namespace BlazorServerApp1.Pages
 			}
 		}
 
-		public async Task keyDownInMainPage(KeyboardEventArgs e)     //Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
-		{
-			if (e.Key.ToLower() == "f4")
-			{
-				PrApiCalls.refreshInMemoryDataSources();
-			}
-		}
+		//public async Task keyDownInMainPage(KeyboardEventArgs e)     //Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+		//{
+		//	if (e.Key.ToLower() == "f4")
+		//	{
+		//		PrApiCalls.refreshInMemoryDataSources();
+		//		myLogger.log.Info("f4 pressed : After PrApiCalls.refreshInMemoryDataSources() ");
+		//	}
+		//}
 	}
 }

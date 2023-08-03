@@ -784,7 +784,12 @@ namespace BlazorServerApp1.Data
                     }
                 }
             }
-        }
+            else if (e.Key.ToLowerInvariant() == "f4")
+			{
+				PrApiCalls.refreshInMemoryDataSources();
+				myLogger.log.Info("f4 pressed : After PrApiCalls.refreshInMemoryDataSources() ");
+			}
+		}
     }
     public class ValuesDoorConfig
     {

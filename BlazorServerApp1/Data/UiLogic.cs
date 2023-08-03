@@ -626,9 +626,18 @@ namespace BlazorServerApp1.Data
 				{
 					var val = props[p].GetValue(doorConfig);
 					if (val == null)
+					{
+						//errMsg = string.Format("Unexpected error: fldname = {0} , val == null", fldName);
+						//myLogger.log.Error(errMsg);
 						return false;
+					}
 					else
 					{
+						if (fldDataType == null)
+						{
+							errMsg = string.Format("Unexpected error: fldname = {0} , fldDataType == null", fldName);
+							myLogger.log.Error(errMsg);
+						}
 						switch (fldDataType)
 						{
 							case "CHAR":
@@ -674,19 +683,38 @@ namespace BlazorServerApp1.Data
 		}
 		public static bool isHWCOLORID_filled(DoorConfig doorConfig)
 		{
-			doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
-			bool isFilled = (doorConfig.disabledFlds["HWCOLORID"] ? true : (doorConfig.HWCOLORID != 0));
-			return isFilled;
+			string errMsg = string.Empty;
+			try
+			{
+				doorConfig.disabledFlds["HWCOLORID"] = !PrApiCalls.isHWColored(doorConfig.TRSH_HARDWARE);
+				bool isFilled = (doorConfig.disabledFlds["HWCOLORID"] ? true : (doorConfig.HWCOLORID != 0));
+				return isFilled;
+			}
+			catch (Exception ex)
+			{
+				errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
+				myLogger.log.Error(errMsg);
+				return false;
+			}
 		}
 		public static bool isDRIL4HW_filled(DoorConfig doorConfig)
 		{
 			// 26/03/2023 I don't remember the reason for changing doorConfig.disabledFlds["DRIL4HW"] here, in a method that just checks
 			//   whether DRIL4HW field is filled , so in case of DECORATED door I do not modify this property.
-			if (!UiLogic.isDecorated(doorConfig))
-				doorConfig.disabledFlds["DRIL4HW"] = (doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
+			try
+			{
+				if (!UiLogic.isDecorated(doorConfig))
+					doorConfig.disabledFlds["DRIL4HW"] = (doorConfig.TRSH_HARDWARE == HebNouns.IdOfNone);
 
-			bool isFilled = (doorConfig.disabledFlds["DRIL4HW"] ? true : (doorConfig.DRIL4HW != 0));
-			return isFilled;
+				bool isFilled = (doorConfig.disabledFlds["DRIL4HW"] ? true : (doorConfig.DRIL4HW != 0));
+				return isFilled;
+			}
+			catch (Exception ex)
+			{
+				string errMsg = string.Format("Unexpected error: {0} .  Stacktrace : {1}", ex.Message, ex.StackTrace);
+				myLogger.log.Error(errMsg);
+				return false;
+			}
 		}
 		public static void calcCentralColClrID(DoorConfig doorConfig)
 		{
@@ -1189,6 +1217,7 @@ namespace BlazorServerApp1.Data
 			}
 		}
 
+		#region toDel
 		//public static bool hideStaticWing(string wingsNum)
 		//{
 		//    return (wingsNum == "כנף");
@@ -1218,8 +1247,9 @@ namespace BlazorServerApp1.Data
 		//    btn.Enabled = false;
 		//    btn.BackColor = Color.Gray;
 		//}
-
+		#endregion toDel
 		#region Meageds
+		#region toDel
 		//public static void applyMeaged(string PARTNAME, DataTable MeagedFields, HtmlGenericControl dvTab, ref string errMsg)
 		//{
 		//    try
@@ -1294,7 +1324,7 @@ namespace BlazorServerApp1.Data
 		//        return;
 		//    }
 		//}
-
+		#endregion toDel
 		public static bool meagedContains(string meaged, string thTdFIELDNAME, DataTable MeagedFields)
 		{
 			try
@@ -1315,6 +1345,11 @@ namespace BlazorServerApp1.Data
 				string thName = string.Empty;
 				string tdName = string.Empty;
 				string FIELDNAME = string.Empty;
+
+				if (meaged == "900" && thTdFIELDNAME.ToUpper() == "DECORFORMAT")
+				{
+					int dbg = 19;
+				}
 
 				if (thTdFIELDNAME.StartsWith("th"))
 					thName = thTdFIELDNAME;
@@ -2261,25 +2296,34 @@ namespace BlazorServerApp1.Data
 		}
 		public static bool fldIsMandatory(DoorConfig doorConfig, string fldName)
 		{
-			if (doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing)  //"חצי כנף")  //new 15/07/2022
+			try
 			{
-				return (lstHalfwingMfields.Contains(fldName));
-			}
-			if (doorConfig.COLORSNUM == "2")
-			{
-				if ("EXTCOLORID INTCOLORID".Contains(fldName))
-					return true;
-			}
+				if (doorConfig.TRSH_WINGSNUMDES == HebNouns.HalfWing)  //"חצי כנף")  //new 15/07/2022
+				{
+					return (lstHalfwingMfields.Contains(fldName));
+				}
+				if (doorConfig.COLORSNUM == "2")
+				{
+					if ("EXTCOLORID INTCOLORID".Contains(fldName))
+						return true;
+				}
 
-			string query = string.Format("FIELDNAME='{0}'", fldName);
-			DataRow[] fldRows = PrApiCalls.dtConfFields.Select(query);
-			if (fldRows.Length > 0)
-				return (fldRows[0]["MANDATORY"].ToString() == "M");
-			else
+				string query = string.Format("FIELDNAME='{0}'", fldName);
+				DataRow[] fldRows = PrApiCalls.dtConfFields.Select(query);
+				if (fldRows.Length > 0)
+					return (fldRows[0]["MANDATORY"].ToString() == "M");
+				else
+				{
+					string errMsg = string.Format("Unexpected error: FIELDNAME {0} not found in PrApiCalls.dtConfFields", fldName);
+					myLogger.log.Error(errMsg);
+					throw new Exception(errMsg);    //return string.Empty;
+				}
+			}
+			catch (Exception ex)
 			{
-				string errMsg = string.Format("Unexpected error: FIELDNAME {0} not found in PrApiCalls.dtConfFields", fldName);
+				string errMsg = string.Format("Unexpected error : fldName = {0} .  error: {1} .  Stacktrace : {2}", fldName, ex.Message, ex.StackTrace);
 				myLogger.log.Error(errMsg);
-				throw new Exception(errMsg);    //return string.Empty;
+				return false;
 			}
 		}
 		public static void LostFocus(DoorConfig doorConfig)
