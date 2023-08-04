@@ -69,12 +69,12 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 14), Order]
         public string OPENMODE { get; set; }  // in,out  D-40   >> moved to Movingwing
 
-		[DataMember(Order = 15), Order]
-		public string OPENIN { get; set; }
-		[DataMember(Order = 16), Order]
-		public string OPENOUT { get; set; }
+        [DataMember(Order = 15), Order]
+        public string OPENIN { get; set; }
+        [DataMember(Order = 16), Order]
+        public string OPENOUT { get; set; }
 
-		[DataMember(Order = 17), Order]
+        [DataMember(Order = 17), Order]
         //public string COMPLIENTDOOR { get; set; }  // Y | N | '' D-920
         public int TRSH_COMPLIENT { get; set; }   //D-920 
                                                   //[DataMember(Order = 23), Order]
@@ -105,20 +105,20 @@ namespace BlazorServerApp1.Data
                            //public int FAMILY;
         [NonSerialized]
         public string FAMILYNAME; // = string.Empty;   // TRSH_DOORCONFIG.FAMILYNAME does not exist in Priority 
-		[NonSerialized]
-		public string FAMILYDES;
+        [NonSerialized]
+        public string FAMILYDES;
 
-		[DataMember(Order = 21), Order]
+        [DataMember(Order = 21), Order]
         public int TRSH_DOOR_HWCATCODE { get; set; }
 
-		//[DataMember(Order = 22), Order]
-		//[NonSerialized] - 23/03/2023 : TRSH_CYLCATEGORY is NonSerialized !
-		public int TRSH_CYLCATEGORY { get; set; }
+        //[DataMember(Order = 22), Order]
+        //[NonSerialized] - 23/03/2023 : TRSH_CYLCATEGORY is NonSerialized !
+        public int TRSH_CYLCATEGORY { get; set; }
 
-		//[NonSerialized]
-		//public int TRSH_DOOR_HWCATCODE;
+        //[NonSerialized]
+        //public int TRSH_DOOR_HWCATCODE;
 
-		[DataMember(Order = 23), Order]
+        [DataMember(Order = 23), Order]
         public string MEASURESDOC { get; set; }  // Y | N |  D-922 assigned by me 
 
         //[NonSerialized]
@@ -135,12 +135,12 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 29), Order]
         public string OPENSIDE { get; set; }  //R, L    D-50
 
-		[DataMember(Order = 30), Order]
-		public string OPENSIDE_RIGHT { get; set; }
-		[DataMember(Order = 31), Order]
-		public string OPENSIDE_LEFT { get; set; }
+        [DataMember(Order = 30), Order]
+        public string OPENSIDE_RIGHT { get; set; }
+        [DataMember(Order = 31), Order]
+        public string OPENSIDE_LEFT { get; set; }
 
-		[DataMember(Order = 40), Order]
+        [DataMember(Order = 40), Order]
         public string DECORFORMAT { get; set; }      // D-60
         [DataMember(Order = 41), Order]
         public string COLORSNUM { get; set; }  // was D-70  string TwoColors  (boolean)   Y | N | '' D-72,  now:  ללא ,1,2
@@ -173,8 +173,8 @@ namespace BlazorServerApp1.Data
                                           //public string DRIL4HWDES { get; set; }
         [DataMember(Order = 63), Order]
         public int TRSH_CYLINDER { get; set; }  //D-900  , table 310
-                                                  //[DataMember(Order = 64), Order]
-                                                  //public string PARTDES { get; set; }
+                                                //[DataMember(Order = 64), Order]
+                                                //public string PARTDES { get; set; }
         [DataMember(Order = 65), Order]
         public string ELECTRICAPPARATUS { get; set; } // Y, N, ''  D-910
 
@@ -255,31 +255,31 @@ namespace BlazorServerApp1.Data
                                                    //public string EXTSEPLINESCLRDES { get; set; }  
         [DataMember(Order = 90), Order]
         public int EXTCPLATEHTDMNDCLRID { get; set; }   //D-170
-														//[DataMember(Order = 100), Order]
-														//public string EXTCPLATEHTDMNDCLDES { get; set; }
+                                                        //[DataMember(Order = 100), Order]
+                                                        //public string EXTCPLATEHTDMNDCLDES { get; set; }
 
-		[DataMember(Order = 100), Order]
-		public string EXTPERIFPROFILETYPE { get; set; }  //26/04/2023 new field 4mm | 8mm
+        [DataMember(Order = 100), Order]
+        public string EXTPERIFPROFILETYPE { get; set; }  //26/04/2023 new field 4mm | 8mm
 
-		[DataMember(Order = 101), Order]
+        [DataMember(Order = 101), Order]
         public int EXTPERIFPROFILECLRID { get; set; }  // D-180
                                                        //[DataMember(Order = 102), Order]
                                                        //public string EXTPERIFPROFILECLDES { get; set; }
         [DataMember(Order = 103), Order]
         public int EXTCGRIDPLATECLRID { get; set; }  //D-250  21/04/2023  צ. לוח\סורג מרכז חוץ  EXTCGRIDPLATECLRID 
-													   //[DataMember(Order = 104), Order]
-													   //public string EXTMODERNCPLATECLDES { get; set; }
-		[DataMember(Order = 105), Order]
+                                                     //[DataMember(Order = 104), Order]
+                                                     //public string EXTMODERNCPLATECLDES { get; set; }
+        [DataMember(Order = 105), Order]
         public int EXTCGRIDBKGDCLRID { get; set; }    // D-260    21/04/2023 in decor  EXTCGRIDBKGDCLRID  צבע רקע לסורג מרכזי חוץ
-		                                          //  FOR TABLE TRSH_DOORCONFIG
-                                                  //  COLUMN EXTCGRIDCLRID
-                                                  //  CHANGE NAME TO EXTCGRIDBKGDCLRID ;
+                                                      //  FOR TABLE TRSH_DOORCONFIG
+                                                      //  COLUMN EXTCGRIDCLRID
+                                                      //  CHANGE NAME TO EXTCGRIDBKGDCLRID ;
 
-												  //[DataMember(Order = 106), Order]
-												  //public string EXTCGTIDCLRDES { get; set; }
-		#endregion extDecorL1
-		#region extDecorL2
-		[DataMember(Order = 107), Order]
+        //[DataMember(Order = 106), Order]
+        //public string EXTCGTIDCLRDES { get; set; }
+        #endregion extDecorL1
+        #region extDecorL2
+        [DataMember(Order = 107), Order]
         public int EXTHTPLATESCLRID { get; set; }  // D-270
                                                    //[DataMember(Order = 108), Order]
                                                    //public string EXTHTPLATESCLRDES { get; set; }
@@ -364,17 +364,17 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 169), Order]
         public string EXTGRIDCPLATEDES { get; set; }  // D-760
         [DataMember(Order = 175), Order]
-		public string EXTSIDEGRID { get; set; }
+        public string EXTSIDEGRID { get; set; }
 
-		[DataMember(Order = 176), Order]
-		public int EXTSIDEGRIDCLRID { get; set; }
+        [DataMember(Order = 176), Order]
+        public int EXTSIDEGRIDCLRID { get; set; }
 
-		[DataMember(Order = 177), Order]
-		public int EXTSIDEGRIDBKGDCLRID { get; set; }
+        [DataMember(Order = 177), Order]
+        public int EXTSIDEGRIDBKGDCLRID { get; set; }
 
 
-		[DataMember(Order = 180), Order]
-		public string EXTHTPLATENAME { get; set; }  // D-770
+        [DataMember(Order = 180), Order]
+        public string EXTHTPLATENAME { get; set; }  // D-770
         [DataMember(Order = 181), Order]
         public string VITRAGE4DIAMONDNAME { get; set; }  // D-800
                                                          //[DataMember(Order = 181), Order]
@@ -404,13 +404,13 @@ namespace BlazorServerApp1.Data
                                               //public string INTCOLORDES { get; set; }
         [DataMember(Order = 200), Order]
         public int INTCPLATEHTDMNDCLRID { get; set; }  //D-190
-													   //[DataMember(Order = 201), Order]
-													   //public string INTCPLATEHTDMNDCLDES { get; set; }
+                                                       //[DataMember(Order = 201), Order]
+                                                       //public string INTCPLATEHTDMNDCLDES { get; set; }
 
-		[DataMember(Order = 201), Order]
-		public string INTPERIFPROFILETYPE { get; set; }  //26/04/2023 new field 4mm | 8mm
+        [DataMember(Order = 201), Order]
+        public string INTPERIFPROFILETYPE { get; set; }  //26/04/2023 new field 4mm | 8mm
 
-		[DataMember(Order = 202), Order]
+        [DataMember(Order = 202), Order]
         public int INTPERIFPROFILECLRID { get; set; }  //D-200
                                                        //[DataMember(Order = 203), Order]
                                                        //public string INTPERIFPROFILECLDES { get; set; }
@@ -428,15 +428,15 @@ namespace BlazorServerApp1.Data
                                                             //public string INTSEPLINESCLRDES { get; set; }
         [DataMember(Order = 208), Order]
         public int INTCGRIDPLATECLRID { get; set; }      //D-240  21/04/2023
-                                                            //FOR TABLE TRSH_DOORCONFIG
-                                                            //COLUMN INTMODERNCPLATECLRID
-                                                            //CHANGE NAME TO INTCGRIDPLATECLRID ;
-                                                           //[DataMember(Order = 209), Order]
-                                                           //public string INTMODERNCPLATECLDES { get; set; }
+                                                         //FOR TABLE TRSH_DOORCONFIG
+                                                         //COLUMN INTMODERNCPLATECLRID
+                                                         //CHANGE NAME TO INTCGRIDPLATECLRID ;
+                                                         //[DataMember(Order = 209), Order]
+                                                         //public string INTMODERNCPLATECLDES { get; set; }
         [DataMember(Order = 210), Order]
         public int INTCGRIDCLRID { get; set; }  //D-290
-												//[DataMember(Order = 220), Order]
-												//public string INTCGRIDCLRDES { get; set; }
+                                                //[DataMember(Order = 220), Order]
+                                                //public string INTCGRIDCLRDES { get; set; }
                                                 //  21/04/2023
                                                 //		FOR TABLE TRSH_DOORCONFIG
                                                 //        COLUMN EXTCGRIDCLRID
@@ -486,33 +486,33 @@ namespace BlazorServerApp1.Data
         public string INTFINMODERNSEPLINE { get; set; } //D-960
         [DataMember(Order = 247), Order]
         public string INTFINMODERNPLATE { get; set; } //D-990
-		[DataMember(Order = 248), Order]
-		public int INTCGRIDBKGDCLRID { get; set; }
+        [DataMember(Order = 248), Order]
+        public int INTCGRIDBKGDCLRID { get; set; }
 
-		[DataMember(Order = 249), Order]
-		public string INTSIDEGRID { get; set; } //new 27/04/2023
-		[DataMember(Order = 250), Order]
-		public int INTSIDEGRIDCLRID { get; set; } //new 27/04/2023
-		[DataMember(Order = 251), Order]
-		public int INTSIDEGRIDBKGDCLRID { get; set; }
+        [DataMember(Order = 249), Order]
+        public string INTSIDEGRID { get; set; } //new 27/04/2023
+        [DataMember(Order = 250), Order]
+        public int INTSIDEGRIDCLRID { get; set; } //new 27/04/2023
+        [DataMember(Order = 251), Order]
+        public int INTSIDEGRIDBKGDCLRID { get; set; }
 
-		#endregion Internal decoration L3
-		#endregion Internal decoration (intdecor)
+        #endregion Internal decoration L3
+        #endregion Internal decoration (intdecor)
 
-		#region staticwing
+        #region staticwing
 
-		[DataMember(Order = 255), Order]
+        [DataMember(Order = 255), Order]
         public string SWINGHASLOCK { get; set; }  // "Y" | "" (string.empty) FIELDCODE = "SWINGHASLOCK"  - new 
-        
+
         //[NonSerialized]                         //TODO - check this : in case of half wing only staticwing is filled so SWING_OPENSIDE should also be saved in Priority !
         public string SWING_OPENSIDE { get; set; }  // at present - these three fields are not SERIALIZED !
         public string SWING_OPENSIDE_RIGHT { get; set; }
-		public string SWING_OPENSIDE_LEFT { get; set; }
-		[DataMember(Order = 259), Order]
-		public int SWINGINTCOLORID { get; set; }  // new 19/07/2023 :    גוון פנים כנף קבועה - העתק מכנף נעה   
+        public string SWING_OPENSIDE_LEFT { get; set; }
+        [DataMember(Order = 259), Order]
+        public int SWINGINTCOLORID { get; set; }  // new 19/07/2023 :    גוון פנים כנף קבועה - העתק מכנף נעה   
 
-		[DataMember(Order = 260), Order]
-        
+        [DataMember(Order = 260), Order]
+
         public int CENTRALCOLCLRID { get; set; }         //D-390
         [DataMember(Order = 261), Order]
         public string CENTRALCOLCLRDES { get; set; }
@@ -564,7 +564,7 @@ namespace BlazorServerApp1.Data
         //[XmlIgnore]
         //[ScriptIgnore]
         //[DataMember(Order = 277), Order]
-        
+
         // fields added on 17/10/2022 for handling meaged 903 - of Model A-GLVN  
         public int SWINGCOLORID { get; set; } // just for css class disabled and hidden actually gets the value of movingwing DOORCOLORID (D-510)
         public int SWINGEXTCOLORID { get; set; } //  just for css class disabled and hidden actually gets the value of movingwing EXTCOLORID
@@ -595,7 +595,7 @@ namespace BlazorServerApp1.Data
         [DataMember(Order = 300), Order]
         public string HANDLENAME { get; set; }   //D-940
         [NonSerialized]
-        public string handleName1;   
+        public string handleName1;
         [DataMember(Order = 301), Order]
         public int HANDLECOLORID { get; set; }   //D-950
         [DataMember(Order = 302), Order]
@@ -640,9 +640,9 @@ namespace BlazorServerApp1.Data
         public string currTabName = String.Empty;
         [NonSerialized]
         public string prevTabName = string.Empty;
-		[NonSerialized]
-		public List<ConfField_Class> lstTabFlds = new List<ConfField_Class>();
-		[NonSerialized]
+        [NonSerialized]
+        public List<ConfField_Class> lstTabFlds = new List<ConfField_Class>();
+        [NonSerialized]
         public System.Data.DataTable dtTabFlds = new System.Data.DataTable();
         [NonSerialized]
         public BlazorServerApp1.Pages.Configurator4 config4;
@@ -668,10 +668,10 @@ namespace BlazorServerApp1.Data
         public bool showDecor = false;
         [NonSerialized]
         public bool LockDrilHChanged = false;
-		[NonSerialized]
-		public Pages.Decor decor;
+        [NonSerialized]
+        public Pages.Decor decor;
 
-		public void initBorderColors()
+        public void initBorderColors()
         {
             Type objType = this.GetType();
             PropertyInfo[] props = objType.GetProperties();
@@ -684,7 +684,7 @@ namespace BlazorServerApp1.Data
             {
                 if (pinfo.Name == "SWING_OPENSIDE")
                 {
-                    int dbg = 17;  
+                    int dbg = 17;
                 }
                 borderColors.Add(pinfo.Name, "blueBorder"); //string.Empty);
                 thClasses.Add(pinfo.Name, "thBlue");
@@ -750,49 +750,63 @@ namespace BlazorServerApp1.Data
         }
         public async Task KeyPressHandler(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
         {
-            //string currTabName = "movingwing";
-            RestartClicked = false;  // this handler is launched when a key is pressed in a field not btnRestart !
-            if (e.Key.ToLowerInvariant() == "enter")
+            try
             {
-                //RestartClicked = false;
-                int j = 0;
-                //DataTable dtTabFlds = new DataTable();
-                //string currTabName = UiLogic.getTabOfField(doorConfig.currPropName);
-                string nextfld = UiLogic.getNextTabFld(this, dtTabFlds, currPropName);
-                if (!string.IsNullOrEmpty(nextfld))
-                {
-                    j = Array.IndexOf(UiLogic.propNames, nextfld);
-                    if (j < 0 || j > UiLogic.propNames.Length)
-                    {
-                        string errFmt = "doorConfig.KeyPressHandler() index out of range! : nextFld = {0} , j=Array.IndexOf(UiLogic.propNames, nextfld) = {1}"
-                                         + " pls check in Priority that nextfld is in TRSH_CONF_FIELDS table/form and in DoorConfig class";
-                        myLogger.log.Error(string.Format(errFmt, nextfld, j));
-                        return;  // indexOutOfRange 
-                    }
-
-                    if (dicRefs.ContainsKey(UiLogic.propNames[j]))
-                        dicRefs[UiLogic.propNames[j]].FocusAsync();
+                //string currTabName = "movingwing";
+                RestartClicked = false;  // this handler is launched when a key is pressed in a field not btnRestart !
+                
+                if (e == null || e.Key == null)   // for chrome
                     return;
-                }
-                else
+
+                if (e.Key.ToLowerInvariant() == "enter")
                 {
-                    string nextTabName = UiLogic.getNextTabName(this, currTabName);
-                    if (UiLogic.try2UpdateBtnClass(this, currTabName))
+                    //RestartClicked = false;
+                    int j = 0;
+                    //DataTable dtTabFlds = new DataTable();
+                    //string currTabName = UiLogic.getTabOfField(doorConfig.currPropName);
+                    string nextfld = UiLogic.getNextTabFld(this, dtTabFlds, currPropName);
+                    if (!string.IsNullOrEmpty(nextfld))
                     {
-                        if (config4 != null)
-                            config4.RefreshState();
+                        j = Array.IndexOf(UiLogic.propNames, nextfld);
+                        if (j < 0 || j > UiLogic.propNames.Length)
+                        {
+                            string errFmt = "doorConfig.KeyPressHandler() index out of range! : nextFld = {0} , j=Array.IndexOf(UiLogic.propNames, nextfld) = {1}"
+                                             + " pls check in Priority that nextfld is in TRSH_CONF_FIELDS table/form and in DoorConfig class";
+                            myLogger.log.Error(string.Format(errFmt, nextfld, j));
+                            return;  // indexOutOfRange 
+                        }
+
+                        if (dicRefs.ContainsKey(UiLogic.propNames[j]))
+                            dicRefs[UiLogic.propNames[j]].FocusAsync();
+                        return;
                     }
+                    else
+                    {
+                        string nextTabName = UiLogic.getNextTabName(this, currTabName);
+                        if (UiLogic.try2UpdateBtnClass(this, currTabName))
+                        {
+                            if (config4 != null)
+                                config4.RefreshState();
+                        }
+                    }
+                }
+                else if (e.Key.ToLowerInvariant() == "f4")
+                {
+                    PrApiCalls.refreshInMemoryDataSources();
+                    myLogger.log.Info("f4 pressed : After PrApiCalls.refreshInMemoryDataSources() ");
                 }
             }
-            else if (e.Key.ToLowerInvariant() == "f4")
-			{
-				PrApiCalls.refreshInMemoryDataSources();
-				myLogger.log.Info("f4 pressed : After PrApiCalls.refreshInMemoryDataSources() ");
-			}
-		}
+            catch (Exception ex)
+            {
+                string errMsg = string.Empty;
+                errMsg = string.Format("unexpected error : {0}, stacktrace: {1}", ex.Message, ex.StackTrace);
+                myLogger.log.Error(errMsg);
+            }
+        }
     }
-    public class ValuesDoorConfig
-    {
-        public List<DoorConfig> value { get; set; }
-    }
+        public class ValuesDoorConfig
+        {
+            public List<DoorConfig> value { get; set; }
+        }
+    
 }
