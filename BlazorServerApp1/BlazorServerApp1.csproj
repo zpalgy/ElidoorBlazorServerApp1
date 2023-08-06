@@ -23,6 +23,7 @@
     <PackageReference Include="FubarCoder.RestSharp.Portable.Core" Version="4.0.8" />
     <PackageReference Include="log4net" Version="2.0.14" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="PSC.Blazor.Components.BrowserDetect" Version="1.0.11" />
     <PackageReference Include="RestSharp.Newtonsoft.Json" Version="1.5.1" />
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
   </ItemGroup>

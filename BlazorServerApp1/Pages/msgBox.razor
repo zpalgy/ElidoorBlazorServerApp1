@@ -1,101 +1,103 @@
 ﻿@* ref: https://medium.com/informatics/blazor-server-project-6-how-to-create-reusable-modal-dialog-component-e2fdc612089b *@
 
+@using BlazorServerApp1.Pages
+
 <div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
     <div class="modal-dialog" style="@Border1Style">
-    <div class="modal-dialog" style="border:solid;border-color:black;margin:10px">
-        <div class="modal-content" >
-              <div class="modal-header centeredMsg" >
-                <h4 class="@MsgTitleCssClass" style="margin-right: 170px;" >@Caption</h4>
+        <div class="modal-dialog" style="border:solid;border-color:black;margin:10px">
+            <div class="modal-content">
+                <div class="modal-header centeredMsg">
+                    <h4 class="@MsgTitleCssClass" style="margin-right: 170px;">@Caption</h4>
 
-                @*  CU asked to remove the close X from the messageBox *@
-                @*
-                @if (Type != Category.YesNo )
-                {
-                    <button type="button" class="close"
-                        @onclick="@Cancel">
-                        &times;
-                    </button>
-                }
-                *@
-              </div>
-            @* div class="modal-body redMessage" *@
+                    @*  CU asked to remove the close X from the messageBox *@
+                    @*
+                        @if (Type != Category.YesNo )
+                        {
+                            <button type="button" class="close"
+                                @onclick="@Cancel">
+                                &times;
+                            </button>
+                        }
+                    *@
+                </div>
+                @* div class="modal-body redMessage" *@
 
-            <div class="@ErrMsgCssClass">
-                <p>@Message</p>
-            </div>
-            <div class="modal-footer">
-                @switch (Type)
-                {
-                    case Category.Okay:
-                        <button type="button" class="btn btn-primary btnCentered"
-                        @onclick=@Ok>
-                            אישור
-                        </button>
-                        break;
-                    case Category.SaveNot:
-                        <button type="button" class="btn btn-primary"
-                        @onclick=@Ok>
-                            Save
-                        </button>
-                        <button type="button" class="btn btn-warning"
-                        @onclick="@Cancel">
-                            Don't Save
-                        </button>
-                        break;
-                    case Category.DeleteNot:
-                        <button type="button" class="btn btn-danger"
-                        @onclick=@Ok>
-                            Delete
-                        </button>
-                        <button type="button" class="btn btn-warning"
-                        @onclick="@Cancel">
-                            Don't Delete
-                        </button>
-                        break;
-                    case Category.YesNo:
-                        @*
-                            <table id="tblYesNo" >
-                            <tr>
-                            <td class="tdYesNo floatR">
-                            <button type="button" class="btn btnYesNo"
-                            @onclick=@Yes>
-                            כן
+                <div class="@ErrMsgCssClass">
+                    <p>@Message</p>
+                </div>
+                <div class="modal-footer">
+                    @switch (Type)
+                    {
+                        case Category.Okay:
+                            <button type="button" class="btn btn-primary btnCentered"
+                                    @onclick=@Ok>
+                                אישור
                             </button>
-                            </td>
-                            <td class="tdYesNo floatL">
-                            <button type="button" class="btn btnYesNo"
-                            @onclick="@Cancel">
-                            לא
+                            break;
+                        case Category.SaveNot:
+                            <button type="button" class="btn btn-primary"
+                                    @onclick=@Ok>
+                                Save
                             </button>
-                            </td>
-                            </tr>
-                            </table>
-                            <!-- end tblYesNo -->
-                        *@
-                        @*<div class="buttons"> *@
+                            <button type="button" class="btn btn-warning"
+                                    @onclick="@Cancel">
+                                Don't Save
+                            </button>
+                            break;
+                        case Category.DeleteNot:
+                            <button type="button" class="btn btn-danger"
+                                    @onclick=@Ok>
+                                Delete
+                            </button>
+                            <button type="button" class="btn btn-warning"
+                                    @onclick="@Cancel">
+                                Don't Delete
+                            </button>
+                            break;
+                        case Category.YesNo:
+                            @*
+                                <table id="tblYesNo" >
+                                <tr>
+                                <td class="tdYesNo floatR">
+                                <button type="button" class="btn btnYesNo"
+                                @onclick=@Yes>
+                                כן
+                                </button>
+                                </td>
+                                <td class="tdYesNo floatL">
+                                <button type="button" class="btn btnYesNo"
+                                @onclick="@Cancel">
+                                לא
+                                </button>
+                                </td>
+                                </tr>
+                                </table>
+                                <!-- end tblYesNo -->
+                            *@
+                            @*<div class="buttons"> *@
                             <table>
                                 <tr>
                                     <td style="padding-left: 70px">
-                            <button type="button" class="btn btnYesNo floatR" style="padding: 15px 40px;"
-                            @onclick=@Yes>
-                                כן
-                            </button>
-                            </td>
-                            <td style="padding-right: 150px" >
-                            <button type="button" class="btn btnYesNo floatL" style="padding: 15px 40px;"
-                            @onclick="@Cancel">
-                                לא
-                            </button>
-                            </td>
-                            </tr>
+                                        <button type="button" class="btn btnYesNo floatR" style="padding: 15px 40px;"
+                                                @onclick=@Yes>
+                                            כן
+                                        </button>
+                                    </td>
+                                    <td style="padding-right: 150px">
+                                        <button type="button" class="btn btnYesNo floatL" style="padding: 15px 40px;"
+                                                @onclick="@Cancel">
+                                            לא
+                                        </button>
+                                    </td>
+                                </tr>
                             </table>
-                        @*</div> *@
-                        break;
-                }
+                            @*</div> *@
+                            break;
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 @code {
     [Parameter]
@@ -115,7 +117,7 @@
     [Parameter]
     public string ErrMsgCssClass { get; set; }   //= "modal-body redMessage";
     [Parameter]
-    public string  Border1Style { get; set; }  // e.g. "border:solid;border-color:red" , default is empty.String .
+    public string Border1Style { get; set; }  // e.g. "border:solid;border-color:red" , default is empty.String .
 
     private Task Cancel()
     {
