@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using System.Web.Script.Serialization;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
+using PSC.Blazor.Components.BrowserDetect;
 
 namespace BlazorServerApp1.Data
 {
@@ -670,8 +671,12 @@ namespace BlazorServerApp1.Data
         public bool LockDrilHChanged = false;
         [NonSerialized]
         public Pages.Decor decor;
+        [NonSerialized]
+        public BrowserInfo browserInfo;
+        [NonSerialized]
+		public bool browserInfoLogged = false;
 
-        public void initBorderColors()
+		public void initBorderColors()
         {
             Type objType = this.GetType();
             PropertyInfo[] props = objType.GetProperties();

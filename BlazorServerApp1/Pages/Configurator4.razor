@@ -6,11 +6,12 @@
 @using System.Data;
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Components.Authorization
+@using PSC.Blazor.Components.BrowserDetect
+
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor httpContextAccessor
-
 @* @page "/Configurator4" *@
 
 @inherits Configurator4Base
@@ -73,6 +74,9 @@
         private string dbgstr = string.Empty;
         private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
         ElementReference refBtnDoor;
+
+        BrowserInfo brInfo { get; set; }
+        bool browserInfoLogged = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -285,163 +289,164 @@
             doorConfig.divClasses["divProducts"] =
             doorConfig.divClasses["divDoorTitle"] = "divNotActive";
             @* doorConfig.divClasses["dynCompStyle"] = (doorConfig.showDecor ? "noBorder" : "divActive"); *@
-        doorConfig.divClasses["dynCompStyle"] = "divActive";
-        pageParams["disableLogo"] = disableLogo;
-        UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
-        doorConfig.disabledFlds["btnDoor"] = true;  //
-        if (showTabPage(typeof(Movingwing), "movingwing"))
-        {
-            if (!UiLogic.tabPageIsNotEmpty("movingwing", doorConfig))
+            doorConfig.divClasses["dynCompStyle"] = "divActive";
+            pageParams["disableLogo"] = disableLogo;
+            UiLogic.tabPageIsFilled("movingwing", doorConfig);  //set redBorder on empty controls
+            doorConfig.disabledFlds["btnDoor"] = true;  //
+            if (showTabPage(typeof(Movingwing), "movingwing"))
             {
-                StateHasChanged();
-                await Task.Delay(1);
-                await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
-            }
-            doorConfig.btnClasses["general"] =
-            doorConfig.btnClasses["selectprod"] =
-            doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
-            doorConfig.btnClasses["movingwing"] = "buttonActive";
+                if (!UiLogic.tabPageIsNotEmpty("movingwing", doorConfig))
+                {
+                    StateHasChanged();
+                    await Task.Delay(1);
+                    await doorConfig.dicRefs["DOORWIDTH"].FocusAsync();
+                }
+                doorConfig.btnClasses["general"] =
+                doorConfig.btnClasses["selectprod"] =
+                doorConfig.btnClasses["proddes"] = "buttonFilled";  //"buttonDisabled";
+                doorConfig.btnClasses["movingwing"] = "buttonActive";
 
-            // disable prev navigation buttons
-            doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
-            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                // disable prev navigation buttons
+                doorConfig.disabledFlds["general"] = doorConfig.disabledFlds["selectprod"] = doorConfig.disabledFlds["proddes"] = true;
+                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+            }
         }
-    }
 
-    async Task showStaticwing()
-    {
-        //showTabPage(typeof(Staticwing), "staticwing");
-        UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-        Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing ? typeof(Staticwing) : typeof(Halfwing));
-
-        //if (showTabPage(typeof(Staticwing), "staticwing"))
-        if (showTabPage(staticwingType, "staticwing"))
+        async Task showStaticwing()
         {
-            if (staticwingType == typeof(Staticwing))
-                doorConfig.btnClasses["movingwing"] = "buttonFilled";
+            //showTabPage(typeof(Staticwing), "staticwing");
+            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+            Type staticwingType = (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing ? typeof(Staticwing) : typeof(Halfwing));
 
-            if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
+            //if (showTabPage(typeof(Staticwing), "staticwing"))
+            if (showTabPage(staticwingType, "staticwing"))
             {
-                StateHasChanged();
-                await Task.Delay(1);
-                await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
+                if (staticwingType == typeof(Staticwing))
+                    doorConfig.btnClasses["movingwing"] = "buttonFilled";
+
+                if (!UiLogic.tabPageIsNotEmpty("staticwing", doorConfig))
+                {
+                    StateHasChanged();
+                    await Task.Delay(1);
+                    await doorConfig.dicRefs["SWINGHASLOCK"].FocusAsync();
+                }
+                // debug
+                if (doorConfig.staticwingChanged)
+                {
+                    int dbg = 17;
+                }
+                else
+                {
+                    int dbg2 = 18;
+                }
             }
-            // debug
-            if (doorConfig.staticwingChanged)
+        }
+        async Task showMoving_Static_Wing()
+        {
+            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+            if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing)  //"חצי כנף")
             {
-                int dbg = 17;
+                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                showMw();
             }
             else
             {
-                int dbg2 = 18;
+                UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
+                showStaticwing();
             }
         }
-    }
-    async Task showMoving_Static_Wing()
-    {
-        UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-        if (doorConfig.TRSH_WINGSNUMDES != HebNouns.HalfWing)  //"חצי כנף")
+
+        //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
+        //  the 2nd answer
+        public void RefreshState()
         {
-            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-            showMw();
+            this.StateHasChanged();
         }
-        else
+        //private void doRestart()
+        async Task doRestart()
         {
-            UiLogic.disableTabFlds(doorConfig, "divDoorTitle");
-            showStaticwing();
+            //lstCustomers = PrApiCalls.getCustomers(ref errMsg);
+            //lstAgents = PrApiCalls.getAgents(ref errMsg);
+            //PrApiCalls.refreshInMemoryDataSources();
+
+            UiLogic.clearDoorConfig(doorConfig);
+
+            //does also in OnInitializedAsync() of the current page
+            formDate = DateTime.Now;
+            UiLogic.AppAllDefaults(doorConfig, ref errMsg);
+
+            showProducts = false;
+            hideDoorTitle = true;
+            showDynComp = false;
+            hideDivDoor = true;
+
+            #region toDel
+            //doorConfig.btnClasses["restart"] = "buttonRed";
+            //doorConfig.btnClasses["general"] = "buttonActive";
+            //doorConfig.btnClasses["selectprod"] =
+            //doorConfig.btnClasses["btnDoor"] =
+            //doorConfig.btnClasses["proddes"] = "button";
+
+            //doorConfig.divClasses["divHeader"] = "divActive";
+            //doorConfig.divClasses["divProducts"] =
+            //doorConfig.divClasses["divDoorTitle"] = "divNotActive";
+
+            //doorConfig.currTabName = "divHeader";
+            //doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
+            #endregion toDel
+
+            initFormStuffInDoorConfig(doorConfig);
+            UiLogic.tabPageIsFilled("divHeader", doorConfig);
+
+            // done also in OnAfterRender firstRenter==true  of the current page
+            if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+            {
+                StateHasChanged();
+                await Task.Delay(1);
+                await doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+            }
         }
-    }
 
-    //ref :https://stackoverflow.com/questions/55775060/blazor-component-refresh-parent-when-model-is-updated-from-child-component
-    //  the 2nd answer
-    public void RefreshState()
-    {
-        this.StateHasChanged();
-    }
-    //private void doRestart()
-    async Task doRestart()
-    {
-        //lstCustomers = PrApiCalls.getCustomers(ref errMsg);
-        //lstAgents = PrApiCalls.getAgents(ref errMsg);
-        //PrApiCalls.refreshInMemoryDataSources();
-
-        UiLogic.clearDoorConfig(doorConfig);
-
-        //does also in OnInitializedAsync() of the current page
-        formDate = DateTime.Now;
-        UiLogic.AppAllDefaults(doorConfig, ref errMsg);
-
-        showProducts = false;
-        hideDoorTitle = true;
-        showDynComp = false;
-        hideDivDoor = true;
-
-        #region toDel
-        //doorConfig.btnClasses["restart"] = "buttonRed";
-        //doorConfig.btnClasses["general"] = "buttonActive";
-        //doorConfig.btnClasses["selectprod"] =
-        //doorConfig.btnClasses["btnDoor"] =
-        //doorConfig.btnClasses["proddes"] = "button";
-
-        //doorConfig.divClasses["divHeader"] = "divActive";
-        //doorConfig.divClasses["divProducts"] =
-        //doorConfig.divClasses["divDoorTitle"] = "divNotActive";
-
-        //doorConfig.currTabName = "divHeader";
-        //doorConfig.dtTabFlds = UiLogic.getTabFields("divHeader", doorConfig, ref errMsg);
-        #endregion toDel
-
-        initFormStuffInDoorConfig(doorConfig);
-        UiLogic.tabPageIsFilled("divHeader", doorConfig);
-
-        // done also in OnAfterRender firstRenter==true  of the current page
-        if (doorConfig != null && doorConfig.dicRefs.ContainsKey("FORMFILLER"))
+        void lockDecorFields()
         {
-            StateHasChanged();
-            await Task.Delay(1);
-            await doorConfig.dicRefs["FORMFILLER"].FocusAsync();
+            string errMsg = string.Empty;
+            List<ConfField_Class> lstDecorFlds = UiLogic.getLstTabFields("decor", doorConfig, ref errMsg); //new List<ConfField_Class>();
+                                                                                                           //lstDecorFlds = UiLogic.getLstTabFields("decor", doorConfig, ref errMsg);
+
+            foreach (ConfField_Class fld in lstDecorFlds)
+            {
+                doorConfig.disabledFlds[fld.FIELDNAME] = true;
+            }
         }
-    }
-
-    void lockDecorFields()
-    {
-        string errMsg = string.Empty;
-        List<ConfField_Class> lstDecorFlds = UiLogic.getLstTabFields("decor", doorConfig, ref errMsg); //new List<ConfField_Class>();
-        //lstDecorFlds = UiLogic.getLstTabFields("decor", doorConfig, ref errMsg);
-
-        foreach (ConfField_Class fld in lstDecorFlds)
+        void submitForm()  //Debug : this method is called when Enter is hit and not caught by onKeypressed event
         {
-            doorConfig.disabledFlds[fld.FIELDNAME] = true;
+            int x = 17;
         }
-    }
-    void submitForm()  //Debug : this method is called when Enter is hit and not caught by onKeypressed event
-    {
-        int x = 17;
-    }
 
-    #region oldStuff
-    //private async Task GetClaimsPrincipalData()
-    //{
-    //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    //    var user = authState.User;
+        #region oldStuff
+        //private async Task GetClaimsPrincipalData()
+        //{
+        //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        //    var user = authState.User;
 
-    //    if (user.Identity.IsAuthenticated)
-    //    {
-    //        authMessage = $"{user.Identity.Name} is authenticated.";
-    //        claims = user.Claims;
-    //        surnameMessage =
-    //            $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
-    //    }
-    //    else
-    //    {
-    //        authMessage = "The user is NOT authenticated.";
-    //    }
-    //}
-    #endregion oldStuff
+        //    if (user.Identity.IsAuthenticated)
+        //    {
+        //        authMessage = $"{user.Identity.Name} is authenticated.";
+        //        claims = user.Claims;
+        //        surnameMessage =
+        //            $"Surname: {user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value}";
+        //    }
+        //    else
+        //    {
+        //        authMessage = "The user is NOT authenticated.";
+        //    }
+        //}
+        #endregion oldStuff
     }
 
 
-    <table id="tblMainContainer"  @onkeydown="doorConfig.KeyPressHandler">      @* keyDownInMainPage   *@>
+    <table id="tblMainContainer" @onkeydown="doorConfig.KeyPressHandler">
+        @* keyDownInMainPage   *@>
         <tr>
             <td>
                 <div id="divMainMenuButtons" dir="rtl" class="menuButtonsDiv">
@@ -770,110 +775,110 @@
 
                                     @code {
 
-            //ElementReference txtFormFiller;
+                                        //ElementReference txtFormFiller;
                                         protected string _formFiller;
-                                                protected string formFiller
+                                        protected string formFiller
+                                        {
+                                            get
+                                            {
+                                                //currPropName = "FORMFILLER";
+                                                if (doorConfig != null)
+                                                    _formFiller = doorConfig.FORMFILLER;
+
+                                                return _formFiller;
+                                            }
+                                            set
+                                            {
+                                                // currPropName = "FORMFILLER";
+                                                _formFiller = value;
+                                                if (doorConfig != null)
                                                 {
-                                                    get
-                                                    {
-                                                        //currPropName = "FORMFILLER";
-                                                        if (doorConfig != null)
-                                                            _formFiller = doorConfig.FORMFILLER;
-
-                                                        return _formFiller;
-                                                    }
-                                                    set
-                                                    {
-                                                        // currPropName = "FORMFILLER";
-                                                        _formFiller = value;
-                                                        if (doorConfig != null)
-                                                        {
-                                                            doorConfig.FORMFILLER = _formFiller;
-                                                            doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
-                                                            //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
-                                                            UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
-                                                            StateHasChanged();
-                                                            myLogger.log.Info(string.Format("txtFormFiller filled : doorConfig.FORMFILLER = {0}", doorConfig.FORMFILLER));
-                                                        }
-                                                    }
-                                                }
-                                                //string[] Elements = {"txtFormFiller", "dlstCustDes", "txtEndCustDes", "txtInstallAddress", "ShipAddress"  };
-                                                //ElementReference txtShipAddress;
-
-                                                bool RestartClicked = true;  // initialize
-
-                                                #region toDel
-                                                //async Task KeyPressHandler(KeyboardEventArgs e)
-                                                //{
-                                                //                                doorConfig.RestartClicked = false;  // we're in a field not btnRestart !
-                                                //                                //DataTable dtTabFlds = new DataTable();
-                                                //                                if (e.Key.ToLowerInvariant() == "enter")
-                                                //                                {
-                                                //                                    //RestartClicked = false;
-                                                //                                    int j = 0;
-                                                //                                    DataTable dtTabFlds = new DataTable();
-                                                //                                    string currTabName = UiLogic.getTabOfField(currPropName);
-                                                //                                    switch (currTabName)
-                                                //                                    {
-                                                //                                        case "divHeader":
-                                                //                                            dtTabFlds = dtDivHeader;
-                                                //                                            break;
-                                                //                                        case "divDoorTitle":
-                                                //                                            dtTabFlds = dtDivHeaderDoorTitle;
-                                                //                                            break;
-                                                //                                    }
-                                                //                                    string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, currPropName);
-                                                //                                    if (!string.IsNullOrEmpty(nextfld))
-                                                //                                    {
-                                                //                                            // if (nextfld == "SHIPADDRESS")
-                                                //                                    // {
-                                                //                                    //     //int x = 17;
-                                                //                                    //     txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
-                                                //                                        //                                   //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-                                                //                                        //                                   //  when UiLogic.propNames[j] == "SHIPADDRESS" !!!
-                                                //                                        //
-                                                //                                        //}
-                                                //                                        // else
-                                                //                                        // {
-                                                //                                        j = Array.IndexOf(UiLogic.propNames, nextfld);
-                                                //                                        if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
-                                                //                                            doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
-                                                //                                        return;
-                                                //                                        //}
-                                                //                                    }
-                                                //                                    else
-                                                //                                    {
-                                                //                                        if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
-                                                //                                        {
-                                                //                                            if (currTabName == "divHeader")
-                                                //                                            {
-                                                //                                                showProducts = true;
-                                                //                                                await refBtnDoor.FocusAsync();
-                                                //                                                this.StateHasChanged();
-                                                //                                            }
-                                                //                                            else if (currTabName == "divDoorTitle")
-                                                //                                                showMw();
-                                                //                                        }
-                                                //                                    }
-                                                //                                }
-                                                //                                else if (e.Key.ToLowerInvariant() == "down")
-                                                //                                {
-                                                //                                    int x = 17;
-                                                //                                }
-                                                //}    // end keyPressHandler()
-                                                #endregion toDel
-
-                                                void HasFocus(string currFldName)
-                                                {
-                                                    currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
-                                                    doorConfig.borderColors[currFldName] = "focusBorder";
-                                                }
-                                                void LostFocus()
-                                                {
-                                                    doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(_formFiller) ? "blueBorder" : "redBorder");
-                                                    //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+                                                    doorConfig.FORMFILLER = _formFiller;
+                                                    doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(value) ? "blueBorder" : "redBorder");
+                                                    //UiLogic.try2UpdateBtnClass(doorConfig, "divHeader", "general", "proddes");
+                                                    UiLogic.try2UpdateBtnClass(doorConfig, "divHeader");
+                                                    StateHasChanged();
+                                                    myLogger.log.Info(string.Format("txtFormFiller filled : doorConfig.FORMFILLER = {0}", doorConfig.FORMFILLER));
                                                 }
                                             }
+                                        }
+                                        //string[] Elements = {"txtFormFiller", "dlstCustDes", "txtEndCustDes", "txtInstallAddress", "ShipAddress"  };
+                                        //ElementReference txtShipAddress;
+
+                                        bool RestartClicked = true;  // initialize
+
+                                        #region toDel
+                                        //async Task KeyPressHandler(KeyboardEventArgs e)
+                                        //{
+                                        //                                doorConfig.RestartClicked = false;  // we're in a field not btnRestart !
+                                        //                                //DataTable dtTabFlds = new DataTable();
+                                        //                                if (e.Key.ToLowerInvariant() == "enter")
+                                        //                                {
+                                        //                                    //RestartClicked = false;
+                                        //                                    int j = 0;
+                                        //                                    DataTable dtTabFlds = new DataTable();
+                                        //                                    string currTabName = UiLogic.getTabOfField(currPropName);
+                                        //                                    switch (currTabName)
+                                        //                                    {
+                                        //                                        case "divHeader":
+                                        //                                            dtTabFlds = dtDivHeader;
+                                        //                                            break;
+                                        //                                        case "divDoorTitle":
+                                        //                                            dtTabFlds = dtDivHeaderDoorTitle;
+                                        //                                            break;
+                                        //                                    }
+                                        //                                    string nextfld = UiLogic.getNextTabFld(doorConfig, dtTabFlds, currPropName);
+                                        //                                    if (!string.IsNullOrEmpty(nextfld))
+                                        //                                    {
+                                        //                                            // if (nextfld == "SHIPADDRESS")
+                                        //                                    // {
+                                        //                                    //     //int x = 17;
+                                        //                                    //     txtShipAddress.FocusAsync();  // Hardcoded the ElementReference of SHIPADDRESS
+                                        //                                        //                                   //  as it does not set focus to by  doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                        //                                        //                                   //  when UiLogic.propNames[j] == "SHIPADDRESS" !!!
+                                        //                                        //
+                                        //                                        //}
+                                        //                                        // else
+                                        //                                        // {
+                                        //                                        j = Array.IndexOf(UiLogic.propNames, nextfld);
+                                        //                                        if (doorConfig.dicRefs.ContainsKey(UiLogic.propNames[j]))
+                                        //                                            doorConfig.dicRefs[UiLogic.propNames[j]].FocusAsync();
+                                        //                                        return;
+                                        //                                        //}
+                                        //                                    }
+                                        //                                    else
+                                        //                                    {
+                                        //                                        if (UiLogic.try2UpdateBtnClass(doorConfig, currTabName))
+                                        //                                        {
+                                        //                                            if (currTabName == "divHeader")
+                                        //                                            {
+                                        //                                                showProducts = true;
+                                        //                                                await refBtnDoor.FocusAsync();
+                                        //                                                this.StateHasChanged();
+                                        //                                            }
+                                        //                                            else if (currTabName == "divDoorTitle")
+                                        //                                                showMw();
+                                        //                                        }
+                                        //                                    }
+                                        //                                }
+                                        //                                else if (e.Key.ToLowerInvariant() == "down")
+                                        //                                {
+                                        //                                    int x = 17;
+                                        //                                }
+                                        //}    // end keyPressHandler()
+                                        #endregion toDel
+
+                                        void HasFocus(string currFldName)
+                                        {
+                                            currPropName = currFldName;       // System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+                                            doorConfig.borderColors[currFldName] = "focusBorder";
+                                        }
+                                        void LostFocus()
+                                        {
+                                            doorConfig.borderColors["FORMFILLER"] = (!string.IsNullOrEmpty(_formFiller) ? "blueBorder" : "redBorder");
+                                            //System.Windows.Forms.InputLanguage.CurrentInputLanguage = System.Windows.Forms.InputLanguage.FromCulture(hebrew);
+                                        }
+                                    }
                                 </td>
                                 <!-- end tdFormFiller -->
                                 <td id=tdCustOrdName>
@@ -888,7 +893,7 @@
                                         </input >
                                     }
 
-                                        @code {
+                                    @code {
 
                                         protected string _custOrdName;
                                         protected string custOrdName
@@ -1869,9 +1874,9 @@
                             </div>
                             //}
                             @if (doorConfig.showDecor && (dyncompType == typeof(Movingwing) || dyncompType == typeof(Staticwing) || dyncompType == typeof(Halfwing)))
-                                {
-                                    if (dyncompType == typeof(Staticwing))
-                                          lockDecorFields();   // lock just the <td> input textBoxes not the <th> titles
+                            {
+                                if (dyncompType == typeof(Staticwing))
+                                    lockDecorFields();   // lock just the <td> input textBoxes not the <th> titles
 
                                 <div dir="rtl" class="@doorConfig.divClasses["dynCompStyle"]">
                                     <DynamicComponent Type="@dyncompType2" Parameters="@pageParams2" />
@@ -2064,5 +2069,44 @@
             openYesNo = false;
             errMsg2 = string.Empty;
         }
+    }
+}
+@*
+    ref: https://www.puresourcecode.com/dotnet/blazor/browser-detect-component-for-blazor/
+*@
+<BrowserDetect @bind-BrowserInfo="@Info"
+               OSArchitectureUpdate="OSArchitectureString"
+               OSVersionUpdate="OSUpdateString" />
+@if (Info != null)
+{
+    if (doorConfig != null)
+    {
+        doorConfig.browserInfo = Info;
+        if (!doorConfig.browserInfoLogged)
+        {
+            myLogger.log.Info(string.Format("Configurator4.razor : BrowserName = {0}, Client IP={1}, EngineName={2}, OSName={3}, OSVersion={4}",
+                     Info.BrowserName, Info.IP, Info.EngineName, Info.OSName, Info.OSVersion));
+            doorConfig.browserInfoLogged = true;
+        }
+    }
+    else  //doorConfig is null
+    {
+        myLogger.log.Info(string.Format("Configurator4.razor : BrowserName = {0}   (doorConfig instance not created yet )", Info.BrowserName));
+    }
+}
+
+@code {
+    public BrowserInfo? Info { get; set; }
+    public string? OSInfo { get; set; } = "";
+    public string? CPUInfoString { get; set; }
+
+    private void OSArchitectureString(string cpu)
+    {
+        CPUInfoString = cpu;
+    }
+
+    private void OSUpdateString(string version)
+    {
+        OSInfo = version;
     }
 }
